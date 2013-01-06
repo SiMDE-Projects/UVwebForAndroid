@@ -7,17 +7,17 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 /**
  * An activity representing a list of UVs. This activity has different
  * presentations for handset and tablet-size devices. On handsets, the activity
- * presents a list of items, which when touched, lead to a
- * {@link UVDetailActivity} representing item details. On tablets, the activity
- * presents the list of items and item details side-by-side using two vertical
+ * presents a list of UVs, which when touched, lead to a
+ * {@link UVDetailActivity} representing UV details. On tablets, the activity
+ * presents the list of UVs and UV details side-by-side using two vertical
  * panes.
  * <p>
- * The activity makes heavy use of fragments. The list of items is a
- * {@link UVListFragment} and the item details (if present) is a
+ * The activity makes heavy use of fragments. The list of UVs is a
+ * {@link UVListFragment} and the UV details (if present) is a
  * {@link UVDetailFragment}.
  * <p>
  * This activity also implements the required {@link UVListFragment.Callbacks}
- * interface to listen for item selections.
+ * interface to listen for UV selections.
  */
 public class UVListActivity extends SherlockFragmentActivity implements
 		UVListFragment.Callbacks {
@@ -51,7 +51,7 @@ public class UVListActivity extends SherlockFragmentActivity implements
 
 	/**
 	 * Callback method from {@link UVListFragment.Callbacks} indicating that the
-	 * item with the given ID was selected.
+	 * UV with the given ID was selected.
 	 */
 	@Override
 	public void onItemSelected(String id) {
@@ -60,7 +60,7 @@ public class UVListActivity extends SherlockFragmentActivity implements
 			// adding or replacing the detail fragment using a
 			// fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(UVDetailFragment.ARG_ITEM_ID, id);
+			arguments.putString(UVDetailFragment.ARG_UV_ID, id);
 			UVDetailFragment fragment = new UVDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
@@ -68,9 +68,9 @@ public class UVListActivity extends SherlockFragmentActivity implements
 
 		} else {
 			// In single-pane mode, simply start the detail activity
-			// for the selected item ID.
+			// for the selected UV ID.
 			Intent detailIntent = new Intent(this, UVDetailActivity.class);
-			detailIntent.putExtra(UVDetailFragment.ARG_ITEM_ID, id);
+			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
 			startActivity(detailIntent);
 		}
 	}

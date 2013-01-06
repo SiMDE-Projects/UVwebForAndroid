@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
-import fr.utc.assos.uvweb.dummy.DummyContent;
+import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
  * A fragment representing a single UV detail screen. This fragment is either
@@ -15,15 +15,15 @@ import fr.utc.assos.uvweb.dummy.DummyContent;
  */
 public class UVDetailFragment extends SherlockFragment {
 	/**
-	 * The fragment argument representing the item ID that this fragment
+	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
 	 */
-	public static final String ARG_ITEM_ID = "item_id";
+	public static final String ARG_UV_ID = "item_id";
 
 	/**
-	 * The dummy content this fragment is presenting.
+	 * The UV this fragment is presenting.
 	 */
-	private DummyContent.DummyItem mItem;
+	private UVwebContent.UV mItem;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -36,12 +36,12 @@ public class UVDetailFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		if (getArguments().containsKey(ARG_ITEM_ID)) {
-			// Load the dummy content specified by the fragment
+		if (getArguments().containsKey(ARG_UV_ID)) {
+			// Load the UV specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			mItem = DummyContent.ITEM_MAP.get(getArguments().getString(
-					ARG_ITEM_ID));
+			mItem = UVwebContent.UV_MAP.get(getArguments().getString(
+					ARG_UV_ID));
 		}
 	}
 
@@ -51,11 +51,10 @@ public class UVDetailFragment extends SherlockFragment {
 		View rootView = inflater.inflate(R.layout.fragment_uv_detail,
 				container, false);
 
-		// Show the dummy content as text in a TextView.
+		// Show the UV as text in a TextView.
 		if (mItem != null) {
-            // TODO: debug code
 			((TextView) rootView.findViewById(R.id.uv_detail))
-					.setText(mItem.content);
+					.setText(mItem.getName());
 		}
 
 		return rootView;

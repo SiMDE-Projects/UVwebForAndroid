@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockListFragment;
-import fr.utc.assos.uvweb.dummy.DummyContent;
+import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
  * A list fragment representing a list of UVs. This fragment also supports
@@ -73,8 +73,8 @@ public class UVListFragment extends SherlockListFragment {
 		// TODO: replace with a real list adapter.
 		int layout = (Build.VERSION.SDK_INT >= 11) ? android.R.layout.simple_list_item_activated_1
 				: android.R.layout.simple_list_item_1;
-		setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-				layout, android.R.id.text1, DummyContent.ITEMS));
+		setListAdapter(new ArrayAdapter<UVwebContent.UV>(getActivity(),
+				layout, android.R.id.text1, UVwebContent.UVS));
 	}
 
 	@Override
@@ -117,7 +117,7 @@ public class UVListFragment extends SherlockListFragment {
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+		mCallbacks.onItemSelected(UVwebContent.UVS.get(position).getId());
 	}
 
 	@Override
