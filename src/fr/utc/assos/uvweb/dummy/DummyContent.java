@@ -28,33 +28,29 @@ public class DummyContent {
 		addItem(new DummyItem("1", "MT23"));
 		addItem(new DummyItem("2", "CM11"));
 		addItem(new DummyItem("3", "PS91"));
-        addItem(new DummyItem("4", "PS04"));
-        addItem(new DummyItem("5", "NF16"));
-        addItem(new DummyItem("6", "HE03"));
-        addItem(new DummyItem("7", "MT91"));
-        addItem(new DummyItem("8", "IA01"));
-        addItem(new DummyItem("9", "MI01"));
-        addItem(new DummyItem("10", "SY01"));
-        addItem(new DummyItem("11", "LO21"));
-        addItem(new DummyItem("12", "SI07"));
-        addItem(new DummyItem("13", "SC22"));
-        addItem(new DummyItem("14", "TN04"));
-        addItem(new DummyItem("15", "AR03"));
-        addItem(new DummyItem("16", "CM12"));
-        addItem(new DummyItem("17", "BL01"));
-        addItem(new DummyItem("18", "NF17"));
-        addItem(new DummyItem("19", "BL09"));
-        addItem(new DummyItem("20", "MT12"));
+		addItem(new DummyItem("4", "PS04"));
+		addItem(new DummyItem("5", "NF16"));
+		addItem(new DummyItem("6", "HE03"));
+		addItem(new DummyItem("7", "MT91"));
+		addItem(new DummyItem("8", "IA01"));
+		addItem(new DummyItem("9", "MI01"));
+		addItem(new DummyItem("10", "SY01"));
+		addItem(new DummyItem("11", "LO21"));
+		addItem(new DummyItem("12", "SI07"));
+		addItem(new DummyItem("13", "SC22"));
+		addItem(new DummyItem("14", "TN04"));
+		addItem(new DummyItem("15", "AR03"));
+		addItem(new DummyItem("16", "CM12"));
+		addItem(new DummyItem("17", "BL01"));
+		addItem(new DummyItem("18", "NF17"));
+		addItem(new DummyItem("19", "BL09"));
+		addItem(new DummyItem("20", "MT12"));
 	}
 
 	private static void addItem(DummyItem item) {
 		ITEMS.add(item);
 		ITEM_MAP.put(item.id, item);
 	}
-
-    public static DummyItem getItem(String id) {
-        return ITEM_MAP.get(id);
-    }
 
 	/**
 	 * A dummy item representing a piece of content.

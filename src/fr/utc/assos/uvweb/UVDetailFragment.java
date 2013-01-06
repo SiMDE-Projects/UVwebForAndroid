@@ -54,8 +54,8 @@ public class UVDetailFragment extends SherlockFragment {
 		// Show the dummy content as text in a TextView.
 		if (mItem != null) {
             // TODO: debug code
-			//((TextView) rootView.findViewById(R.id.uv_detail))
-					//.setText(mItem.content);
+			((TextView) rootView.findViewById(R.id.uv_detail))
+					.setText(mItem.content);
 		}
 
 		return rootView;

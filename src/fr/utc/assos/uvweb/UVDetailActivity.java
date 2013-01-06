@@ -29,7 +29,7 @@ public class UVDetailActivity extends SherlockFragmentActivity {
 
         // Show the UV title
         String uvId = getIntent().getStringExtra(UVDetailFragment.ARG_ITEM_ID);
-        actionBar.setTitle(DummyContent.getItem(uvId).toString());
+        actionBar.setTitle(DummyContent.ITEM_MAP.get(uvId).toString());
 
         // savedInstanceState is non-null when there is fragment state
 		// saved from previous configurations of this activity
@@ -48,8 +48,8 @@ public class UVDetailActivity extends SherlockFragmentActivity {
 			UVDetailFragment fragment = new UVDetailFragment();
 			fragment.setArguments(arguments);
             // TODO: debug code
-			//getSupportFragmentManager().beginTransaction()
-					//.add(R.id.uv_detail_container, fragment).commit();
+			getSupportFragmentManager().beginTransaction()
+					.add(R.id.uv_detail_container, fragment).commit();
 		}
 	}
 
