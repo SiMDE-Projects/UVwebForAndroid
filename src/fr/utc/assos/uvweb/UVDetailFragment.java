@@ -53,8 +53,12 @@ public class UVDetailFragment extends SherlockFragment {
 
 		// Show the UV as text in a TextView.
 		if (mItem != null) {
-			((TextView) rootView.findViewById(R.id.uv_detail))
+			((TextView) rootView.findViewById(R.id.uv_detail_name))
 					.setText(mItem.getName());
+            ((TextView) rootView.findViewById(R.id.uv_detail_description))
+                    .setText(mItem.getDescription());
+            ((TextView) rootView.findViewById(R.id.uv_detail_rate))
+                    .setText(String.valueOf(mItem.getRate()));
 		}
 
 		return rootView;

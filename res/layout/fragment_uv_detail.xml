@@ -1,8 +1,29 @@
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/uv_detail"
-    style="?android:attr/textAppearanceLarge"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".UVDetailFragment" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:id="@+id/uv_detail"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          tools:context=".UVDetailFragment">
+    <TextView
+          style="?android:attr/textAppearanceLarge"
+          android:id="@+id/uv_detail_name"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="16dp"
+    />
+    <TextView
+          style="?android:attr/textAppearanceLarge"
+          android:id="@+id/uv_detail_description"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="16dp"
+    />
+    <TextView
+          style="?android:attr/textAppearanceLarge"
+          android:id="@+id/uv_detail_rate"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:padding="16dp"
+    />
+</LinearLayout>

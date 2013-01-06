@@ -11,7 +11,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- *
+ * An adapter used all together with the {@link UVListFragment}'s ListView.
+ * It relies on a standard ViewHolder pattern implemented in the {@link UVHolder} class and thus allows UVs recycling.
  */
 public class UVAdapter extends BaseAdapter {
 
