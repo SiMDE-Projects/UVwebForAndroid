@@ -13,7 +13,7 @@ public class UVwebContent {
 	/**
 	 * An array of UVs.
 	 */
-	public static List<UV> UVS = new ArrayList<UV>();
+    public static List<UV> UVS = new ArrayList<UV>();
 
 	/**
 	 * A map of UVs, by ID.
@@ -44,7 +44,7 @@ public class UVwebContent {
 		addItem(new UV("20", "MT12", "Algèbre linéaire", 8));
 	}
 
-	private static void addItem(UV item) {
+	public static void addItem(UV item) {
 		UVS.add(item);
 		UV_MAP.put(item.getId(), item);
 	}
@@ -63,6 +63,8 @@ public class UVwebContent {
             this.mName = name;
 			this.mDescription = description;
             this.mRate = rate;
+
+            //addItem(this);
 		}
 
 		@Override

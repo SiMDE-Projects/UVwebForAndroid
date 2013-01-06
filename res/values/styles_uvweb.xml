@@ -6,9 +6,9 @@
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
-  
+
           http://www.apache.org/licenses/LICENSE-2.0
-  
+
      Unless required by applicable law or agreed to in writing, software
      distributed under the License is distributed on an "AS IS" BASIS,
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="Theme.uvweb" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
@@ -33,10 +33,10 @@
         <item name="android:actionDropDownStyle">@style/uvweb_DropDownNav</item>
         <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_uvweb</item>
-        
+
                 <!-- Light.DarkActionBar specific -->
-        <item name="actionBarWidgetTheme">@style/Theme.uvweb.widget</item>
-        <item name="android:actionBarWidgetTheme">@style/Theme.uvweb.widget</item>
+        <item name="actionBarWidgetTheme">@style/Theme.UVweb.widget</item>
+        <item name="android:actionBarWidgetTheme">@style/Theme.UVweb.widget</item>
 
     </style>
 
@@ -45,25 +45,29 @@
         <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
         <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
+        <item name="icon">@drawable/uvweblogo</item>
+        <item name="titleTextStyle">@style/uvweb_noTitleText</item>
 
         <item name="android:background">@drawable/ab_solid_uvweb</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
         <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
+        <item name="android:icon">@drawable/uvweblogo</item>
+        <item name="android:titleTextStyle">@style/uvweb_noTitleText</item>
     </style>
 
     <style name="uvweb_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
         <item name="background">@drawable/ab_transparent_uvweb</item>
         <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
-        
+
         <item name="android:background">@drawable/ab_transparent_uvweb</item>
         <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
     </style>
-	
-    <style name="uvweb_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">	
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>	
+
+    <style name="uvweb_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
     </style>
-	
+
     <style name="uvweb_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_uvweb</item>
     </style>
@@ -73,7 +77,7 @@
 
         <item name="android:background">@drawable/tab_indicator_ab_uvweb</item>
     </style>
-	
+
     <style name="uvweb_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_uvweb</item>
 
@@ -81,18 +85,23 @@
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
         <item name="android:dropDownSelector">@drawable/selectable_background_uvweb</item>
     </style>
-    
+
     <style name="uvweb_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
     </style>
-    
+
     <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.uvweb.widget" parent="@style/Theme.Sherlock">
+    <style name="Theme.UVweb.widget" parent="@style/Theme.Sherlock">
         <item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
-        
+
         <item name="android:popupMenuStyle">@style/uvweb_PopupMenu</item>
         <item name="android:dropDownListViewStyle">@style/uvweb_DropDownListView</item>
+    </style>
+
+    <style name="uvweb_noTitleText">
+        <item name="android:textSize">0sp</item>
+        <item name="android:textColor">#00000000</item>
     </style>
 
 </resources>

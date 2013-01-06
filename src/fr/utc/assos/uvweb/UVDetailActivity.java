@@ -21,6 +21,8 @@ public class UVDetailActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setContentView(R.layout.activity_uv_detail);
+        // If we want to override default Activity animation
+        //overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
         super.onCreate(savedInstanceState);
 
 		// Show the Up button in the action bar.
@@ -37,9 +39,7 @@ public class UVDetailActivity extends SherlockFragmentActivity {
         // In this case, the fragment will automatically be re-added
 		// to its container so we don't need to manually add it.
 		// For more information, see the Fragments API guide at:
-		//
 		// http://developer.android.com/guide/components/fragments.html
-		//
 		if (savedInstanceState == null) {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.

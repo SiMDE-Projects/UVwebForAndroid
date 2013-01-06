@@ -1,10 +1,8 @@
 package fr.utc.assos.uvweb;
 
 import android.app.Activity;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockListFragment;
 import fr.utc.assos.uvweb.data.UVwebContent;
@@ -70,11 +68,10 @@ public class UVListFragment extends SherlockListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// TODO: replace with a real list adapter.
-		int layout = (Build.VERSION.SDK_INT >= 11) ? android.R.layout.simple_list_item_activated_1
-				: android.R.layout.simple_list_item_1;
-		setListAdapter(new ArrayAdapter<UVwebContent.UV>(getActivity(),
-				layout, android.R.id.text1, UVwebContent.UVS));
+		//setListAdapter(new UVAdapter<UVwebContent.UV>(getActivity());
+        UVAdapter adapter = new UVAdapter(getActivity());
+        adapter.updateUVs(UVwebContent.UVS);
+        setListAdapter(adapter);
 	}
 
 	@Override
