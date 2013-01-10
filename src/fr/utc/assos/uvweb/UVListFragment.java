@@ -69,7 +69,7 @@ public class UVListFragment extends SherlockListFragment {
 		super.onCreate(savedInstanceState);
 
 		//setListAdapter(new UVAdapter<UVwebContent.UV>(getActivity());
-        UVAdapter adapter = new UVAdapter(getActivity());
+        UVAdapter adapter = new UVAdapter(getSherlockActivity());
         adapter.updateUVs(UVwebContent.UVS);
         setListAdapter(adapter);
 	}
