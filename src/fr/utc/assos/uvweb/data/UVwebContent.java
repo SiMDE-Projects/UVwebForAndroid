@@ -121,10 +121,10 @@ public class UVwebContent {
             return mName.substring(2,4);
         }
         public String getFormattedSuccessRate(){
-            return (new DecimalFormat("0")).format(mSuccessRate) + "%";
+            return (new DecimalFormat("0.0")).format(mSuccessRate) + "%";
         }
         public String getFormattedRate(){
-            return (new DecimalFormat("0.0")).format(mRate) + "/10";
+            return (new DecimalFormat("0")).format(mRate) + "/10";
         }
 	}
 }
