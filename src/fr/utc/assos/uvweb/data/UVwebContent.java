@@ -23,45 +23,43 @@ public class UVwebContent {
 
 	static {
 		// Add sample items.
-		addItem(new UV("1", "MT23", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("2", "CM11", "Algèbre linéaire", 2.7, 56.89));
-		addItem(new UV("3", "PS91", "Algèbre linéaire", 4.5, 56.89));
-		addItem(new UV("4", "PS04", "Algèbre linéaire", 5.2, 56.89));
-		addItem(new UV("5", "NF16", "Algèbre linéaire", 6.45, 56.89));
-		addItem(new UV("6", "HE03", "Algèbre linéaire", 7.97, 56.89));
-		addItem(new UV("7", "MT91", "Algèbre linéaire", 8.34, 56.89));
-		addItem(new UV("8", "IA01", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("9", "MI01", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("10", "SY01", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("11", "LO21", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("12", "SI07", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("13", "SC22", "Algèbre linéaire", 8, 100));
-		addItem(new UV("14", "TN04", "Algèbre linéaire", 8, 100));
-		addItem(new UV("15", "AR03", "Algèbre linéaire", 8, 100));
-		addItem(new UV("16", "CM12", "Algèbre linéaire", 8, 100));
-		addItem(new UV("17", "BL01", "Algèbre linéaire", 8, 100));
-		addItem(new UV("18", "NF17", "Algèbre linéaire", 8, 100));
-		addItem(new UV("19", "BL09", "Algèbre linéaire", 8, 100));
-		addItem(new UV("20", "MT12", "Algèbre linéaire", 8, 100));
+		addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
+		addItem(new UV("CM11", "Algèbre linéaire", 2.7, 56.89));
+		addItem(new UV("PS91", "Algèbre linéaire", 4.5, 56.89));
+		addItem(new UV("PS04", "Algèbre linéaire", 5.2, 56.89));
+		addItem(new UV("NF16", "Algèbre linéaire", 6.45, 56.89));
+		addItem(new UV("HE03", "Algèbre linéaire", 7.97, 56.89));
+		addItem(new UV("MT91", "Algèbre linéaire", 8.34, 56.89));
+		addItem(new UV("IA01", "Algèbre linéaire", 8, 56.89));
+		addItem(new UV("MI01", "Algèbre linéaire", 8, 56.89));
+		addItem(new UV("SY01", "Algèbre linéaire", 8, 56.89));
+		addItem(new UV("LO21", "Algèbre linéaire", 8, 56.89));
+		addItem(new UV("SI07", "Algèbre linéaire", 8, 56.89));
+		addItem(new UV("SC22", "Algèbre linéaire", 8, 100));
+		addItem(new UV("TN04", "Algèbre linéaire", 8, 100));
+		addItem(new UV("AR03", "Algèbre linéaire", 8, 100));
+		addItem(new UV("CM12", "Algèbre linéaire", 8, 100));
+		addItem(new UV("BL01", "Algèbre linéaire", 8, 100));
+		addItem(new UV("NF17", "Algèbre linéaire", 8, 100));
+		addItem(new UV("BL09", "Algèbre linéaire", 8, 100));
+		addItem(new UV("MT12", "Algèbre linéaire", 8, 100));
 	}
 
 	public static void addItem(UV item) {
 		UVS.add(item);
-		UV_MAP.put(item.getId(), item);
+		UV_MAP.put(item.getName(), item);
 	}
 
 	/**
 	 * A UV representing a piece of content.
 	 */
 	public static class UV {
-		private String mId;
         private String mName;
         private String mDescription;
         private double mRate;
         private double mSuccessRate;
 
-		public UV(String id, String name, String description, double rate, double successRate) {
-			this.mId = id;
+		public UV(String name, String description, double rate, double successRate) {
             this.mName = name;
 			this.mDescription = description;
             this.mRate = rate;
@@ -76,9 +74,6 @@ public class UVwebContent {
 		}
 
         // Getters
-        public String getId() {
-            return this.mId;
-        }
 
         public String getName() {
             return this.mName;
