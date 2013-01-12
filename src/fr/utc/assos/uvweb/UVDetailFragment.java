@@ -46,19 +46,15 @@ public class UVDetailFragment extends SherlockFragment {
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_uv_detail,
 				container, false);
 
 		// Show the UV as text in a TextView.
 		if (mItem != null) {
-			((TextView) rootView.findViewById(R.id.uv_detail_name))
-					.setText(mItem.getName());
-            ((TextView) rootView.findViewById(R.id.uv_detail_description))
-                    .setText(mItem.getDescription());
-            ((TextView) rootView.findViewById(R.id.uv_detail_rate))
-                    .setText(String.valueOf(mItem.getRate()));
+            ((TextView)rootView.findViewById(R.id.lettercode)).setText(mItem.getLetterCode());
+            ((TextView)rootView.findViewById(R.id.numbercode)).setText(mItem.getNumberCode());
+            ((TextView)rootView.findViewById(R.id.desc)).setText(mItem.getDescription());
 		}
 
 		return rootView;
