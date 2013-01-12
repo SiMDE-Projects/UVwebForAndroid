@@ -60,7 +60,7 @@ public class UVAdapter extends BaseAdapter {
         letterCodeView.setText(UV.getLetterCode());
         numberCodeView.setText(UV.getNumberCode());
         descView.setText(UV.getDescription());
-        rateView.setText(UV.getRate()+"/10");
+        rateView.setText(UV.getFormattedRate());
 
         return convertView;
     }
