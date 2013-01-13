@@ -109,16 +109,16 @@ public class UVwebContent {
         }
 
         // Public methods
-        public String getLetterCode(){
+        public String getLetterCode() {
             return mName.substring(0,2);
         }
-        public String getNumberCode(){
+        public String getNumberCode() {
             return mName.substring(2,4);
         }
-        public String getFormattedSuccessRate(){
+        public String getFormattedSuccessRate() {
             return (new DecimalFormat("0.0")).format(mSuccessRate) + "%";
         }
-        public String getFormattedRate(){
+        public String getFormattedRate() {
             return (new DecimalFormat("0")).format(mRate) + "/10";
         }
 	}
