@@ -14,9 +14,11 @@
 
 
         <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" android:background="@color/uvdetail_header_background">
+			android:orientation="horizontal"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:background="@color/uvdetail_header_background">
+
             <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
