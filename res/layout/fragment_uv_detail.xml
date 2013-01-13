@@ -10,44 +10,74 @@
     <ScrollView
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-    >
+			>
 
 
         <LinearLayout
-			android:orientation="horizontal"
+			android:orientation="vertical"
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
-			android:background="@color/uvdetail_header_background">
+			android:background="@color/uvdetail_header_background"
+			android:paddingBottom="4dp"
+			android:paddingRight="4dp"
+			android:paddingLeft="4dp">
 
-            <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:padding="8dp">
-                <TextView
-                        android:id="@+id/lettercode"
-                        android:layout_height="match_parent"
-                        android:layout_width="wrap_content"
-                        android:textSize="72sp"
-                        android:textStyle="bold"
-                        android:typeface="normal"/>
-                <TextView
-                        android:id="@+id/numbercode"
-                        android:layout_height="match_parent"
-                        android:layout_width="wrap_content"
-                        android:textSize="70sp"
-                        android:textStyle="bold"
-                        android:typeface="normal"
-                        android:textColor="@color/abs__holo_blue_light"/>
-            </LinearLayout>
-            <TextView
+			<LinearLayout
+					android:orientation="horizontal"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content">
+				<LinearLayout
+						android:orientation="horizontal"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						>
+					<TextView
+							android:id="@+id/lettercode"
+							android:layout_height="match_parent"
+							android:layout_width="wrap_content"
+							android:textSize="60sp"
+							android:textStyle="bold"
+							android:typeface="normal"
+							android:text="MT"/>
+					<TextView
+							android:id="@+id/numbercode"
+							android:layout_height="match_parent"
+							android:layout_width="wrap_content"
+							android:textSize="60sp"
+							android:textStyle="bold"
+							android:typeface="normal"
+							android:textColor="@color/abs__holo_blue_light"
+							android:text="23"/>
+				</LinearLayout>
+				<LinearLayout
+						android:orientation="vertical"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent"
+						android:paddingTop="4dp">
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="right"
+							android:text="@string/average_rating"
+							android:textSize="16dp"/>
+					<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="match_parent"
+							android:textSize="36sp"
+							android:id="@+id/rate"
+							android:layout_gravity="right"
+							android:gravity="center_vertical"
+							android:textStyle="bold"/>
+				</LinearLayout>
+			</LinearLayout>
+			<TextView
                     android:id="@+id/desc"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="36sp"
-                    android:gravity="left"
-                    android:layout_gravity="center_vertical"/>
-        </LinearLayout>
+                    android:textSize="24sp"
+					android:layout_gravity="center_vertical"/>
+		</LinearLayout>
+
+
     </ScrollView>
 </LinearLayout>

@@ -55,6 +55,11 @@ public class UVDetailFragment extends SherlockFragment {
             ((TextView)rootView.findViewById(R.id.lettercode)).setText(mItem.getLetterCode());
             ((TextView)rootView.findViewById(R.id.numbercode)).setText(mItem.getNumberCode());
             ((TextView)rootView.findViewById(R.id.desc)).setText(mItem.getDescription());
+
+            //Testing if null because rate view is not implemented for xlarge yet
+            TextView rate = (TextView)rootView.findViewById(R.id.rate);
+            if (rate!=null) rate.setText(mItem.getFormattedRate());
+
 		}
 
 		return rootView;
