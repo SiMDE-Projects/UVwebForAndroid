@@ -92,8 +92,8 @@ public class UVListFragment extends SherlockListFragment {
 					.getInt(STATE_ACTIVATED_POSITION));
 		}
 
+        // Enable fastScroll
         mListView.setFastScrollEnabled(true);
-        mListView.setFastScrollAlwaysVisible(true);
 	}
 
 	@Override

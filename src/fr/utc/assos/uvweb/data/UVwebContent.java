@@ -43,6 +43,46 @@ public class UVwebContent {
 		addItem(new UV("NF17", "Conception de bases de données", 8, 100));
 		addItem(new UV("BL09", "Biophysique des systèmes biologiques", 8, 100));
 		addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
+        addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
+        addItem(new UV("CM11", "Chimie générale", 2.7, 56.89));
+        addItem(new UV("PS91", "Mécanique physique", 4.5, 56.89));
+        addItem(new UV("PS04", "Thermodynamique", 5.2, 56.89));
+        addItem(new UV("NF16", "Algorithmique et structures de données", 6.45, 56.89));
+        addItem(new UV("HE03", "Logique : histoire et formalisme", 7.97, 56.89));
+        addItem(new UV("MT91", "Fonctions d'une variable réelle 2", 8.34, 56.89));
+        addItem(new UV("IA01", "Intelligence artificielle : apprentissage, représentation", 8, 56.89));
+        addItem(new UV("MI01", "Structure d'un calculateur", 8, 56.89));
+        addItem(new UV("SY01", "Elements de probabilités", 8, 56.89));
+        addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
+        addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
+        addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
+        addItem(new UV("TN04", "Réalisation", 8, 100));
+        addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
+        addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
+        addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
+        addItem(new UV("NF17", "Conception de bases de données", 8, 100));
+        addItem(new UV("BL09", "Biophysique des systèmes biologiques", 8, 100));
+        addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
+        addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
+        addItem(new UV("CM11", "Chimie générale", 2.7, 56.89));
+        addItem(new UV("PS91", "Mécanique physique", 4.5, 56.89));
+        addItem(new UV("PS04", "Thermodynamique", 5.2, 56.89));
+        addItem(new UV("NF16", "Algorithmique et structures de données", 6.45, 56.89));
+        addItem(new UV("HE03", "Logique : histoire et formalisme", 7.97, 56.89));
+        addItem(new UV("MT91", "Fonctions d'une variable réelle 2", 8.34, 56.89));
+        addItem(new UV("IA01", "Intelligence artificielle : apprentissage, représentation", 8, 56.89));
+        addItem(new UV("MI01", "Structure d'un calculateur", 8, 56.89));
+        addItem(new UV("SY01", "Elements de probabilités", 8, 56.89));
+        addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
+        addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
+        addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
+        addItem(new UV("TN04", "Réalisation", 8, 100));
+        addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
+        addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
+        addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
+        addItem(new UV("NF17", "Conception de bases de données", 8, 100));
+        addItem(new UV("BL09", "Biophysique des systèmes biologiques", 8, 100));
+        addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
 	}
 
 	public static void addItem(UV item) {
