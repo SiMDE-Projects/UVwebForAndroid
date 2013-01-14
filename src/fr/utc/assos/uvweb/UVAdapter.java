@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -18,9 +19,11 @@ public class UVAdapter extends BaseAdapter {
 
     private static List<UVwebContent.UV> mUVs = Collections.emptyList();
     private Context mContext;
+    private String mFormattedUVPattern;
 
     public UVAdapter(Context context) {
         this.mContext = context;
+        //mFormattedUVPattern = context.getResources().getString(R.string.title_uv);
     }
 
     @Override
@@ -51,14 +54,13 @@ public class UVAdapter extends BaseAdapter {
             convertView = View.inflate(mContext, R.layout.uv, null);
         }
 
-        TextView letterCodeView = UVHolder.get(convertView, R.id.lettercode);
-        TextView numberCodeView = UVHolder.get(convertView, R.id.numbercode);
+        TextView codeView = UVHolder.get(convertView, R.id.uvcode);
         TextView rateView = UVHolder.get(convertView, R.id.rate);
         TextView descView = UVHolder.get(convertView, R.id.desc);
 
         UVwebContent.UV UV = getItem(position);
-        letterCodeView.setText(UV.getLetterCode());
-        numberCodeView.setText(UV.getNumberCode());
+        //String uvName = String.format(mFormattedUVPattern, "MT", "23");
+        codeView.setText(Html.fromHtml("<font color='#000000'>" + UV.getLetterCode()  + "</font>" + UV.getNumberCode()));
         descView.setText(UV.getDescription());
         rateView.setText(UV.getFormattedRate());
 

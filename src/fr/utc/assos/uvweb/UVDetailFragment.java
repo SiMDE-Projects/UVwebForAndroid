@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb;
 
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,8 +53,7 @@ public class UVDetailFragment extends SherlockFragment {
 
 		// Show the UV as text in a TextView.
 		if (mItem != null) {
-            ((TextView)rootView.findViewById(R.id.lettercode)).setText(mItem.getLetterCode());
-            ((TextView)rootView.findViewById(R.id.numbercode)).setText(mItem.getNumberCode());
+            ((TextView)rootView.findViewById(R.id.uvcode)).setText(Html.fromHtml("<font color='#000000'>" + mItem.getLetterCode() + "</font>" + mItem.getNumberCode()));
             ((TextView)rootView.findViewById(R.id.desc)).setText(mItem.getDescription());
 
             //Testing if null because rate view is not implemented for xlarge yet

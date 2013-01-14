@@ -11,15 +11,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
         <TextView
-                android:id="@+id/lettercode"
-                android:layout_height="match_parent"
-                android:layout_width="wrap_content"
-                android:textSize="35sp"
-                android:gravity="center_vertical"
-                android:textStyle="bold"
-                android:typeface="normal"/>
-        <TextView
-                android:id="@+id/numbercode"
+                android:id="@+id/uvcode"
                 android:layout_height="match_parent"
                 android:layout_width="wrap_content"
                 android:textSize="35sp"

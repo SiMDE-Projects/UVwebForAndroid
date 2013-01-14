@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
     >
 
-
         <LinearLayout
 			android:orientation="horizontal"
 			android:layout_width="fill_parent"
@@ -26,17 +25,10 @@
                     android:layout_gravity="center_vertical"
                     android:padding="8dp">
                 <TextView
-                        android:id="@+id/lettercode"
+                        android:id="@+id/uvcode"
                         android:layout_height="match_parent"
                         android:layout_width="wrap_content"
                         android:textSize="72sp"
-                        android:textStyle="bold"
-                        android:typeface="normal"/>
-                <TextView
-                        android:id="@+id/numbercode"
-                        android:layout_height="match_parent"
-                        android:layout_width="wrap_content"
-                        android:textSize="70sp"
                         android:textStyle="bold"
                         android:typeface="normal"
                         android:textColor="@color/abs__holo_blue_light"/>
@@ -49,5 +41,6 @@
                     android:gravity="left"
                     android:layout_gravity="center_vertical"/>
         </LinearLayout>
+
     </ScrollView>
 </LinearLayout>
