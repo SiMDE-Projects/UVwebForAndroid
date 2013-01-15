@@ -51,10 +51,9 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer {
         for (int i = 0, l = UVs.size(); i < l; i++) {
             final UVwebContent.UV UV = UVs.get(i);
             final String s = UV.getLetterCode().substring(0, 1).toUpperCase();
+
             // HashMap will prevent duplicates
-            if (!mAlphaIndexer.containsKey(s)) {
-                mAlphaIndexer.put(s, i);
-            }
+            mAlphaIndexer.put(s, i);
         }
 
         // create a list from the set to sort
