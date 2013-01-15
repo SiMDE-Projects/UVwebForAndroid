@@ -77,6 +77,7 @@ public class UVListFragment extends SherlockListFragment {
         UVAdapter adapter = new UVAdapter(getSherlockActivity());
         adapter.updateUVs(UVwebContent.UVS);
         setListAdapter(adapter);
+
 	}
 
 	@Override
@@ -94,6 +95,9 @@ public class UVListFragment extends SherlockListFragment {
 
         // Enable fastScroll
         mListView.setFastScrollEnabled(true);
+
+        // Disable bitmap scrolling cache to avoid destruction and reallocation on < 3.0
+        mListView.setScrollingCacheEnabled(false);
 	}
 
 	@Override
