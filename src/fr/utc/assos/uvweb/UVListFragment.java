@@ -40,6 +40,11 @@ public class UVListFragment extends SherlockListFragment {
      */
     private ListView mListView;
 
+    /**
+     * The {@link UVAdapter} ListAdapter instance
+     */
+    private UVAdapter mAdapter;
+
 	/**
 	 * A callback interface that all activities containing this fragment must
 	 * implement. This mechanism allows activities to be notified of item
@@ -73,10 +78,13 @@ public class UVListFragment extends SherlockListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//setListAdapter(new UVAdapter<UVwebContent.UV>(getActivity());
-        UVAdapter adapter = new UVAdapter(getSherlockActivity());
-        adapter.updateUVs(UVwebContent.UVS);
-        setListAdapter(adapter);
+        // Fragment configuration
+        setRetainInstance(true);
+
+        // Adapter setup
+        mAdapter = new UVAdapter(getSherlockActivity());
+        mAdapter.updateUVs(UVwebContent.UVS);
+        setListAdapter(mAdapter);
 	}
 
 	@Override
@@ -84,6 +92,7 @@ public class UVListFragment extends SherlockListFragment {
 		super.onViewCreated(view, savedInstanceState);
 
         mListView = getListView();
+        setEmptyText(getResources().getString(R.string.no_uv));
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
