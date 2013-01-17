@@ -2,7 +2,10 @@ package fr.utc.assos.uvweb;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 /**
  * An activity representing a list of UVs. This activity has different
@@ -74,4 +77,20 @@ public class UVListActivity extends SherlockFragmentActivity implements
 			startActivity(detailIntent);
 		}
 	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.activity_list, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.about:
+                Toast.makeText(this, getResources().getString(R.string.about), Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
