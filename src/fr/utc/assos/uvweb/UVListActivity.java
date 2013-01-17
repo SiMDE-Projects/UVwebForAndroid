@@ -2,7 +2,6 @@ package fr.utc.assos.uvweb;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -88,7 +87,7 @@ public class UVListActivity extends SherlockFragmentActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.about:
-                Toast.makeText(this, getResources().getString(R.string.about), Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this, AboutActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);
