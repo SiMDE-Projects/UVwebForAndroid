@@ -47,7 +47,7 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer {
 
     public void updateUVs(List<UVwebContent.UV> UVs) {
         ThreadPreconditions.checkOnMainThread();
-        mUVs = UVs;
+
         for (int i = 0, l = UVs.size(); i < l; i++) {
             final UVwebContent.UV UV = UVs.get(i);
             final String s = UV.getLetterCode().substring(0, 1).toUpperCase();
@@ -62,6 +62,7 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer {
         mSections = new String[sectionList.size()];
         sectionList.toArray(mSections);
 
+        mUVs = UVs;
         notifyDataSetChanged();
     }
 
