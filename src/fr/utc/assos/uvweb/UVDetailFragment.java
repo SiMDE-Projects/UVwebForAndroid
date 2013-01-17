@@ -24,7 +24,7 @@ public class UVDetailFragment extends SherlockFragment {
 	/**
 	 * The UV this fragment is presenting.
 	 */
-	private UVwebContent.UV mItem;
+	private UVwebContent.UV mUV;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -41,7 +41,7 @@ public class UVDetailFragment extends SherlockFragment {
 			// Load the UV specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			mItem = UVwebContent.UV_MAP.get(getArguments().getString(
+			mUV = UVwebContent.UV_MAP.get(getArguments().getString(
 					ARG_UV_ID));
 		}
 	}
@@ -52,13 +52,15 @@ public class UVDetailFragment extends SherlockFragment {
 				container, false);
 
 		// Show the UV as text in a TextView.
-		if (mItem != null) {
-            ((TextView)rootView.findViewById(R.id.uvcode)).setText(Html.fromHtml("<font color='#000000'>" + mItem.getLetterCode() + "</font>" + mItem.getNumberCode()));
-            ((TextView)rootView.findViewById(R.id.desc)).setText(mItem.getDescription());
+		if (mUV != null) {
+            ((TextView)rootView.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
+            ((TextView)rootView.findViewById(R.id.desc)).setText(mUV.getDescription());
 
             //Testing if null because rate view is not implemented for xlarge yet
             TextView rate = (TextView)rootView.findViewById(R.id.rate);
-            if (rate!=null) rate.setText(mItem.getFormattedRate());
+            if (rate != null) {
+                rate.setText(mUV.getFormattedRate());
+            }
 
 		}
 

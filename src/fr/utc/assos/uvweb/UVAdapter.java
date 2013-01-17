@@ -9,7 +9,10 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * An adapter used all together with the {@link UVListFragment}'s ListView.
@@ -19,15 +22,12 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer {
 
     private static List<UVwebContent.UV> mUVs = Collections.emptyList();
     private Context mContext;
-    private String mFormattedUVPattern;
-
     private HashMap<String, Integer> mAlphaIndexer;
     private String[] mSections;
 
     public UVAdapter(Context context) {
         this.mContext = context;
-        //mFormattedUVPattern = context.getResources().getString(R.string.title_uv);
-        mAlphaIndexer = new HashMap<String, Integer>();
+        this.mAlphaIndexer = new HashMap<String, Integer>();
     }
 
     @Override
@@ -78,8 +78,7 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer {
         TextView descView = UVHolder.get(convertView, R.id.desc);
 
         UVwebContent.UV UV = getItem(position);
-        //String uvName = String.format(mFormattedUVPattern, "MT", "23");
-        codeView.setText(Html.fromHtml("<font color='#000000'>" + UV.getLetterCode()  + "</font>" + UV.getNumberCode()));
+        codeView.setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, UV.getLetterCode(), UV.getNumberCode())));
         descView.setText(UV.getDescription());
         rateView.setText(UV.getFormattedRate());
 

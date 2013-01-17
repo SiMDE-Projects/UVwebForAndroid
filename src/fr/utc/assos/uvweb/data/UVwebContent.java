@@ -18,6 +18,11 @@ public class UVwebContent {
 	 */
 	public static Map<String, UV> UV_MAP = new HashMap<String, UV>();
 
+    /**
+     * UV title format pattern, consistent accross the application.
+     */
+    public static final String UV_TITLE_FORMAT = "<font color='#000000'>%1$s</font>%2$s";
+
 	static {
 		// Add sample items.
 		addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
