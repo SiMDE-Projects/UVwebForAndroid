@@ -3,7 +3,6 @@
 
     <string name="app_name">UVweb</string>
     <string name="no_uv">Aucune UV trouvée</string>
-    <string name="title_uv_detail">UV Detail</string>
 	<string name="average_rating">Note moyenne :</string>
 
     <!-- Menu -->
