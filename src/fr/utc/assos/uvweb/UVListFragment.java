@@ -2,9 +2,13 @@ package fr.utc.assos.uvweb;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
@@ -16,7 +20,7 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class UVListFragment extends SherlockListFragment {
+public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
@@ -38,7 +42,7 @@ public class UVListFragment extends SherlockListFragment {
     /**
      * The associated ListView object
      */
-    private ListView mListView;
+    private StickyListHeadersListView mListView;
 
     /**
      * The {@link UVAdapter} ListAdapter instance
@@ -84,15 +88,11 @@ public class UVListFragment extends SherlockListFragment {
         // Adapter setup
         mAdapter = new UVAdapter(getSherlockActivity());
         mAdapter.updateUVs(UVwebContent.UVS);
-        setListAdapter(mAdapter);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-        mListView = getListView();
-        setEmptyText(getResources().getString(R.string.no_uv));
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
@@ -127,9 +127,8 @@ public class UVListFragment extends SherlockListFragment {
 	}
 
 	@Override
-	public void onListItemClick(ListView listView, View view, int position,
+	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		super.onListItemClick(listView, view, position, id);
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
@@ -166,4 +165,18 @@ public class UVListFragment extends SherlockListFragment {
 
 		mActivatedPosition = position;
 	}
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_uv_list,
+                container, false);
+
+        mListView = (StickyListHeadersListView) rootView.findViewById(android.R.id.list);
+        mListView.setOnItemClickListener(this);
+        mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+
+        mListView.setAdapter(mAdapter);
+
+        return rootView;
+    }
 }

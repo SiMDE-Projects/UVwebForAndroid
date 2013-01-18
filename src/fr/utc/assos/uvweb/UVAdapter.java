@@ -7,7 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.holders.UVHeaderHolder;
+import fr.utc.assos.uvweb.holders.UVHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,9 +19,10 @@ import java.util.List;
 
 /**
  * An adapter used all together with the {@link UVListFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link UVHolder} class and thus allows UVs recycling.
+ * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVHolder} class and thus allows UVs recycling.
+ * It implements both SectionIndexer and StickyListHeadersAdapter interfaces
  */
-public class UVAdapter extends BaseAdapter implements SectionIndexer {
+public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyListHeadersAdapter {
 
     private static List<UVwebContent.UV> mUVs = Collections.emptyList();
     private Context mContext;
@@ -101,5 +105,26 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer {
     @Override
     public Object[] getSections() {
         return mSections;
+    }
+
+    /**
+     * StickyListHeadersAdapter interface's methods
+     */
+    @Override
+    public View getHeaderView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = View.inflate(mContext, R.layout.header_uv_list, null);
+        }
+
+        // Set header text as first char in name
+        char headerChar = mUVs.get(position).getLetterCode().subSequence(0, 1).charAt(0);
+        UVHeaderHolder.get(convertView).setText(String.valueOf(headerChar));
+
+        return convertView;
+    }
+
+    @Override
+    public long getHeaderId(int position) {
+        return mUVs.get(position).getLetterCode().subSequence(0, 1).charAt(0);
     }
 }

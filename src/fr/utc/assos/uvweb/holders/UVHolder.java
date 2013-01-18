@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.holders;
 
 import android.util.SparseArray;
 import android.view.View;
@@ -6,8 +6,8 @@ import android.view.View;
 /**
  * A holder using the ViewHolder pattern. This class keeps ListView's UVs views references using tags,
  * which allows recycling. If the view is not stored yet, is it found using View#fiendViewById()
- * It also automatically cast the returned View in order to reduce boilerplate.
- * {@link UVAdapter}.
+ * It also automatically casts the returned View in order to reduce boilerplate.
+ * {@link fr.utc.assos.uvweb.UVAdapter}.
  */
 public class UVHolder {
     @SuppressWarnings("unchecked")
