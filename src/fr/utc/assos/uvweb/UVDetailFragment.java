@@ -37,6 +37,9 @@ public class UVDetailFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+        // Fragment configuration
+        setRetainInstance(true);
+
 		if (getArguments().containsKey(ARG_UV_ID)) {
 			// Load the UV specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
