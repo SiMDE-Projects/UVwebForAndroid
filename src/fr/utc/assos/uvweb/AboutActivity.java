@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.app.TaskStackBuilder;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -31,7 +32,19 @@ public class AboutActivity extends SherlockFragmentActivity {
                 //
                 // http://developer.android.com/design/patterns/navigation.html#up-vs-back
                 //
-                NavUtils.navigateUpTo(this, new Intent(this, UVListActivity.class));
+                Intent upIntent = new Intent(this, UVListActivity.class);
+                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+                    // This activity is not part of the application's task, so create a new task
+                    // with a synthesized back stack.
+                    TaskStackBuilder.from(this)
+                            .addNextIntent(upIntent)
+                            .startActivities();
+                    finish();
+                } else {
+                    // This activity is part of the application's task, so simply
+                    // navigate up to the hierarchical parent activity.
+                    NavUtils.navigateUpTo(this, upIntent);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

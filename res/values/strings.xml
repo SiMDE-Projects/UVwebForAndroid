@@ -6,6 +6,8 @@
 	<string name="average_rating">Note moyenne :</string>
 
     <!-- Menu -->
+    <string name="refresh">Actualiser</string>
     <string name="about">A propos</string>
+    <string name="licenses">Licences open source</string>
 
 </resources>

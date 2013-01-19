@@ -6,7 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
@@ -39,6 +43,7 @@ public class UVDetailFragment extends SherlockFragment {
 
         // Fragment configuration
         setRetainInstance(true);
+        setHasOptionsMenu(true);
 
 		if (getArguments().containsKey(ARG_UV_ID)) {
 			// Load the UV specified by the fragment
@@ -69,4 +74,20 @@ public class UVDetailFragment extends SherlockFragment {
 
 		return rootView;
 	}
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_uv_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                Toast.makeText(getActivity(), "Refresh clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
