@@ -79,7 +79,7 @@ public class UVListActivity extends SherlockFragmentActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.activity_list, menu);
+        getSupportMenuInflater().inflate(R.menu.activities_global, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
