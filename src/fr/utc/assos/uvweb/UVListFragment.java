@@ -100,9 +100,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			setActivatedPosition(savedInstanceState
 					.getInt(STATE_ACTIVATED_POSITION));
 		}
-
-        // Enable fastScroll
-        mListView.setFastScrollEnabled(true);
 	}
 
 	@Override
@@ -148,12 +145,14 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * Turns on activate-on-click mode. When this mode is on, list items will be
 	 * given the 'activated' state when touched.
 	 */
-	public void setActivateOnItemClick(boolean activateOnItemClick) {
-		// When setting CHOICE_MODE_SINGLE, ListView will automatically
-		// give items the 'activated' state when touched.
-		mListView.setChoiceMode(
-				activateOnItemClick ? ListView.CHOICE_MODE_SINGLE
-						: ListView.CHOICE_MODE_NONE);
+	public void configureListView(boolean twoPane) {
+        if (twoPane) {
+		    mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
+        }
+		else {
+            mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+        }
 	}
 
 	private void setActivatedPosition(int position) {
@@ -171,9 +170,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
         View rootView = inflater.inflate(R.layout.fragment_uv_list,
                 container, false);
 
+        // ListView setup
         mListView = (StickyListHeadersListView) rootView.findViewById(android.R.id.list);
         mListView.setOnItemClickListener(this);
         mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+        mListView.setFastScrollEnabled(true);
 
         mListView.setAdapter(mAdapter);
 
