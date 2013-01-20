@@ -35,6 +35,8 @@ public class UVListActivity extends UVwebMenuActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_uv_list);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
 		if (findViewById(R.id.uv_detail_container) != null) {
 			// The detail container view will be present only in the
 			// large-screen layouts (res/values-large and

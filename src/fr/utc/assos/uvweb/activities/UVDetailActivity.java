@@ -16,7 +16,7 @@ import fr.utc.assos.uvweb.data.UVwebContent;
 public class UVDetailActivity extends UVwebMenuActivity {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uv_detail);
 

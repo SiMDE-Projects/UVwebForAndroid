@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyListHeadersAdapter {
 
-    private static List<UVwebContent.UV> mUVs = Collections.emptyList();
+    private List<UVwebContent.UV> mUVs = Collections.emptyList();
     private Context mContext;
     private HashMap<String, Integer> mSectionToPosition = new HashMap<String, Integer>();
-    private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>();
-    private String[] mSections;
+    private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>(); // TODO: int[] ?
+    private String[] mSections; // TODO: Character[] ?
 
     public UVAdapter(Context context) {
         mContext = context;
