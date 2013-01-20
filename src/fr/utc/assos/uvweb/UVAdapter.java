@@ -26,12 +26,14 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyList
 
     private static List<UVwebContent.UV> mUVs = Collections.emptyList();
     private Context mContext;
-    private HashMap<String, Integer> mAlphaIndexer;
+    private HashMap<String, Integer> mSectionToPosition = new HashMap<String, Integer>();
+    private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>();
     private String[] mSections;
 
     public UVAdapter(Context context) {
-        this.mContext = context;
-        this.mAlphaIndexer = new HashMap<String, Integer>();
+        mContext = context;
+        mSectionToPosition = new HashMap<String, Integer>();
+        mSectionHeaderPosition = new HashMap<Integer, String>();
     }
 
     @Override
@@ -52,16 +54,18 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyList
     public void updateUVs(List<UVwebContent.UV> UVs) {
         ThreadPreconditions.checkOnMainThread();
 
-        for (int i = 0, l = UVs.size(); i < l; i++) {
-            final UVwebContent.UV UV = UVs.get(i);
+        int i = 0;
+        for (UVwebContent.UV UV : UVs) {
             final String s = UV.getLetterCode().substring(0, 1).toUpperCase();
-
-            // HashMap will prevent duplicates
-            mAlphaIndexer.put(s, i);
+            if (!mSectionToPosition.containsKey(s)) {
+                mSectionToPosition.put(s, i);
+            }
+            mSectionHeaderPosition.put(i, s);
+            i++;
         }
 
         // create a list from the set to sort
-        ArrayList<String> sectionList = new ArrayList<String>(mAlphaIndexer.keySet());
+        ArrayList<String> sectionList = new ArrayList<String>(mSectionToPosition.keySet());
         Collections.sort(sectionList);
         mSections = new String[sectionList.size()];
         sectionList.toArray(mSections);
@@ -94,12 +98,12 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyList
      */
     @Override
     public int getSectionForPosition(int position) {
-         return 1;
+        return 1;
     }
 
     @Override
-    public int getPositionForSection(int position) {
-        return mAlphaIndexer.get(mSections[position]);
+    public int getPositionForSection(int section) {
+        return mSectionToPosition.get(mSections[Math.min(section, mSections.length - 1)]);
     }
 
     @Override
@@ -117,14 +121,21 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyList
         }
 
         // Set header text as first char in name
-        char headerChar = mUVs.get(position).getLetterCode().subSequence(0, 1).charAt(0);
-        UVHeaderHolder.get(convertView).setText(String.valueOf(headerChar));
+        UVHeaderHolder.get(convertView).setText(String.valueOf(getSectionName(position)));
 
         return convertView;
     }
 
     @Override
     public long getHeaderId(int position) {
-        return mUVs.get(position).getLetterCode().subSequence(0, 1).charAt(0);
+        return getSectionName(position);
+    }
+
+    /**
+     * @param position the position of a given item in the ListView
+     * @return the name of the corresponding section
+     */
+    private char getSectionName(int position) {
+        return mSectionHeaderPosition.get(position).charAt(0);
     }
 }
