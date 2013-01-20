@@ -15,8 +15,8 @@ import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
  * A fragment representing a single UV detail screen. This fragment is either
- * contained in a {@link UVListActivity} in two-pane mode (on tablets) or a
- * {@link UVDetailActivity} on handsets.
+ * contained in a {@link fr.utc.assos.uvweb.activities.UVListActivity} in two-pane mode (on tablets) or a
+ * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
 public class UVDetailFragment extends SherlockFragment {
 	/**

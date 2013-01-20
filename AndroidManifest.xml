@@ -17,7 +17,7 @@
         android:theme="@style/Theme.UVweb"
         android:hardwareAccelerated="true" >
         <activity
-            android:name=".UVListActivity"
+            android:name=".activities.UVListActivity"
             android:theme="@style/Theme.UVweb.Logo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,19 +25,27 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UVDetailActivity"
+            android:name=".activities.UVDetailActivity"
             android:parentActivityName=".UVListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UVListActivity" />
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".activities.AboutActivity"
             android:label="@string/about"
             android:parentActivityName=".UVListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UVListActivity" />
+        </activity>
+        <activity
+                android:name=".activities.LicensesActivity"
+                android:label="@string/licenses"
+                android:parentActivityName=".UVListActivity" >
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".UVListActivity" />
         </activity>
     </application>
 
