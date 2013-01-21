@@ -24,6 +24,7 @@ public abstract class UVwebMenuActivity extends UVwebActivity {
                 return true;
             case R.id.licenses:
                 startActivity(new Intent(this, LicensesActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

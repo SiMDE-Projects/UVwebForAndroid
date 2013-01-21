@@ -7,7 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
@@ -84,6 +88,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
         // Fragment configuration
         setRetainInstance(true);
+        setHasOptionsMenu(true);
 
         // Adapter setup
         mAdapter = new UVAdapter(getSherlockActivity());
@@ -179,5 +184,21 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
         mListView.setAdapter(mAdapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_uv_list, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_search:
+                Toast.makeText(getActivity(), "Search clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

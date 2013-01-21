@@ -68,7 +68,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 			UVDetailFragment fragment = new UVDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.replace(R.id.uv_detail_container, fragment).commit();
+                    .replace(R.id.uv_detail_container, fragment).commit();
 
 		} else {
 			// In single-pane mode, simply start the detail activity
