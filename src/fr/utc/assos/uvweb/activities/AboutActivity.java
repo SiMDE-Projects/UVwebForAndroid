@@ -17,6 +17,5 @@ public class AboutActivity extends UVwebActivity {
         ((TextView) findViewById(R.id.credits)).setText(Html.fromHtml(getResources().getString(R.string.credits)));
 
         // TODO: click on buttons
-        // TODO: line separator
     }
 }
