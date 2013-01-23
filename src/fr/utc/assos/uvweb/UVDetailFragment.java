@@ -37,6 +37,10 @@ public class UVDetailFragment extends SherlockFragment {
 	 * The UV this fragment is presenting.
 	 */
 	private UVwebContent.UV mUV;
+
+    /**
+     * The ListView containing all comment items.
+     */
     private ListView mListView;
 
 	/**
@@ -122,7 +126,7 @@ public class UVDetailFragment extends SherlockFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case id.menu_refresh:
+            case R.id.menu_refresh:
                 Toast.makeText(getActivity(), "Refresh clicked", Toast.LENGTH_SHORT).show();
                 return true;
             default:
