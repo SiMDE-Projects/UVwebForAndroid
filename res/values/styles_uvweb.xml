@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light">
         <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
@@ -33,40 +33,49 @@
         <item name="android:actionDropDownStyle">@style/uvweb_DropDownNav</item>
         <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_uvweb</item>
-
-        <!-- Light.DarkActionBar specific -->
-        <item name="actionBarWidgetTheme">@style/Theme.UVweb.widget</item>
-        <item name="android:actionBarWidgetTheme">@style/Theme.UVweb.widget</item>
     </style>
 
-    <style name="Theme.UVweb.Logo" parent="@style/Theme.UVweb">
-        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
+    <style name="Theme.UVweb.Logo" parent="Theme.UVweb">
         <item name="actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
+
+        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
     </style>
 
-    <style name="uvweb_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+    <style name="Theme.UVweb.NoLogo" parent="Theme.UVweb">
+        <item name="actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
+
+        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
+    </style>
+
+    <style name="uvweb_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
         <item name="background">@drawable/ab_solid_uvweb</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
         <item name="backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
         <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
-        <item name="displayOptions">showTitle|showHome</item>
+        <item name="displayOptions">homeAsUp|showHome|showTitle</item>
 
         <item name="android:background">@drawable/ab_solid_uvweb</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
         <item name="android:backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
         <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
-        <item name="android:displayOptions">showTitle</item>
+        <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
     </style>
 
-    <style name="uvweb_solid_ActionBar_Logo" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
-        <item name="icon">@drawable/uvweb_logo</item>
+    <style name="uvweb_solid_ActionBar_Logo" parent="uvweb_solid_ActionBar">
         <item name="displayOptions">useLogo|showHome</item>
+        <item name="icon">@drawable/uvweb_logo</item>
 
-        <item name="android:icon">@drawable/uvweb_logo</item>
         <item name="android:displayOptions">useLogo|showHome</item>
+        <item name="android:icon">@drawable/uvweb_logo</item>
     </style>
 
-    <style name="uvweb_transparent_ActionBar" parent="@style/Widget.Sherlock.ActionBar">
+    <style name="uvweb_solid_ActionBar_NoLogo" parent="uvweb_solid_ActionBar">
+        <item name="displayOptions">showTitle|homeAsUp</item>
+
+        <item name="android:displayOptions">showTitle|homeAsUp</item>
+    </style>
+
+    <style name="uvweb_transparent_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
         <item name="background">@drawable/ab_transparent_uvweb</item>
         <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
 
@@ -74,20 +83,21 @@
         <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
     </style>
 
-    <style name="uvweb_PopupMenu" parent="@style/Widget.Sherlock.ListPopupWindow">
+    <style name="uvweb_PopupMenu" parent="@style/Widget.Sherlock.Light.ListPopupWindow">
         <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
     </style>
 
-    <style name="uvweb_DropDownListView" parent="@style/Widget.Sherlock.ListView.DropDown">
+    <style name="uvweb_DropDownListView" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
         <item name="android:listSelector">@drawable/selectable_background_uvweb</item>
     </style>
 
-    <style name="uvweb_ActionBarTabStyle" parent="@style/Widget.Sherlock.ActionBar.TabView">
+    <style name="uvweb_ActionBarTabStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
         <item name="background">@drawable/tab_indicator_ab_uvweb</item>
+
         <item name="android:background">@drawable/tab_indicator_ab_uvweb</item>
     </style>
 
-    <style name="uvweb_DropDownNav" parent="@style/Widget.Sherlock.Spinner.DropDown.ActionBar">
+    <style name="uvweb_DropDownNav" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
         <item name="background">@drawable/spinner_background_ab_uvweb</item>
 
         <item name="android:background">@drawable/spinner_background_ab_uvweb</item>
@@ -95,17 +105,8 @@
         <item name="android:dropDownSelector">@drawable/selectable_background_uvweb</item>
     </style>
 
-    <style name="uvweb_ProgressBar" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
+    <style name="uvweb_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
-    </style>
-
-    <!-- this style is only referenced in a Light.DarkActionBar based theme -->
-    <style name="Theme.UVweb.widget" parent="@style/Theme.Sherlock">
-        <item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
-        <item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
-
-        <item name="android:popupMenuStyle">@style/uvweb_PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@style/uvweb_DropDownListView</item>
     </style>
 
 </resources>

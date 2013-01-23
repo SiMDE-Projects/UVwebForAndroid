@@ -26,7 +26,8 @@
         </activity>
         <activity
             android:name=".activities.UVDetailActivity"
-            android:parentActivityName=".UVListActivity" >
+            android:parentActivityName=".UVListActivity"
+            android:theme="@style/Theme.UVweb.NoLogo" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".UVListActivity" />

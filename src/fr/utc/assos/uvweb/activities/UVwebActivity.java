@@ -13,7 +13,8 @@ public abstract class UVwebActivity extends SherlockFragmentActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // TODO: understand why it's needed on Android < 4.2 (the Theme should be enough)
+
+        getSupportActionBar().setHomeButtonEnabled(true);  // Mandatory in ICS, not anymore after
     }
 
     @Override
