@@ -5,6 +5,9 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -12,6 +15,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import fr.utc.assos.uvweb.data.UVwebContent;
+
+
+import java.util.ArrayList;
+
+import static fr.utc.assos.uvweb.R.*;
 
 /**
  * A fragment representing a single UV detail screen. This fragment is either
@@ -29,6 +37,7 @@ public class UVDetailFragment extends SherlockFragment {
 	 * The UV this fragment is presenting.
 	 */
 	private UVwebContent.UV mUV;
+    private ListView mListView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -59,21 +68,51 @@ public class UVDetailFragment extends SherlockFragment {
 		View rootView = inflater.inflate(R.layout.fragment_uv_detail,
 				container, false);
 
+
+        mListView = (ListView)rootView.findViewById(android.R.id.list);
+        mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+
+
+        // Adapter setup
+        UVAdapter adapter = new UVAdapter(getSherlockActivity());
+        //adapter.updateUVs(new ArrayList<UVwebContent.UV>());
+        adapter.updateUVs(UVwebContent.UVS);
+
+        View headerView;
+
 		// Show the UV as text in a TextView.
 		if (mUV != null) {
-            ((TextView)rootView.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
-            ((TextView)rootView.findViewById(R.id.desc)).setText(mUV.getDescription());
-
-            //Testing if null because rate view is not implemented for xlarge yet
-            TextView rate = (TextView)rootView.findViewById(R.id.rate);
-            if (rate != null) {
-                rate.setText(mUV.getFormattedRate());
+            if (adapter.isEmpty()) {
+                headerView = mListView.getEmptyView();
+                ((ViewStub)headerView).setOnInflateListener(new ViewStub.OnInflateListener() {
+                    @Override
+                    public void onInflate(ViewStub stub, View inflated) {
+                        setHeaderData(inflated);
+                    }
+                });
+            } else {
+                headerView = inflater.inflate(R.layout.uv_detail_header, null);
+                setHeaderData(headerView);
+                mListView.addHeaderView(headerView);
             }
 
 		}
 
+        mListView.setAdapter(adapter);
+
 		return rootView;
 	}
+
+    void setHeaderData(View inflatedHeader){
+        ((TextView)inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
+        ((TextView)inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
+
+        //Testing if null because rate view is not implemented for xlarge yet
+        TextView rate = (TextView)inflatedHeader.findViewById(R.id.rate);
+        if (rate != null) {
+            rate.setText(mUV.getFormattedRate());
+        }
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -83,7 +122,7 @@ public class UVDetailFragment extends SherlockFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_refresh:
+            case id.menu_refresh:
                 Toast.makeText(getActivity(), "Refresh clicked", Toast.LENGTH_SHORT).show();
                 return true;
             default:
