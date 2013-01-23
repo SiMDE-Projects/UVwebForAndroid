@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:padding="40dp"
+            android:padding="30dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/uvweb_logo" />
 

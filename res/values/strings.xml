@@ -12,7 +12,7 @@
     <string name="licenses">Licences open source</string>
 
     <!-- AboutActivity -->
-    <string name="credits"><![CDATA[<b>Crédits</b><br>Thomas Keunebroek \u0026 Alexandre Masciulli]]></string>
+    <string name="credits"><![CDATA[<b>Crédits</b><br>tkeunebr \u0026 amasciul]]></string>
     <string name="go_to_uvweb">Aller sur UVweb</string>
     <string name="go_to_utc">Voir le site de l\'UTC</string>
     <string name="contact">Nous contacter</string>
