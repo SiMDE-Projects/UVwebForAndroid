@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,6 @@ import fr.utc.assos.uvweb.data.UVwebContent;
 
 
 import java.util.ArrayList;
-
-import static fr.utc.assos.uvweb.R.*;
 
 /**
  * A fragment representing a single UV detail screen. This fragment is either
@@ -74,26 +73,28 @@ public class UVDetailFragment extends SherlockFragment {
 
 
         mListView = (ListView)rootView.findViewById(android.R.id.list);
-        mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+        //mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
 
         // Adapter setup
         UVAdapter adapter = new UVAdapter(getSherlockActivity());
-        //adapter.updateUVs(new ArrayList<UVwebContent.UV>());
-        adapter.updateUVs(UVwebContent.UVS);
+        adapter.updateUVs(new ArrayList<UVwebContent.UV>());
+        //adapter.updateUVs(UVwebContent.UVS);
 
         View headerView;
 
 		// Show the UV as text in a TextView.
 		if (mUV != null) {
+            headerView = rootView.findViewById(android.R.id.empty);
             if (adapter.isEmpty()) {
-                headerView = mListView.getEmptyView();
                 ((ViewStub)headerView).setOnInflateListener(new ViewStub.OnInflateListener() {
                     @Override
                     public void onInflate(ViewStub stub, View inflated) {
+                        mListView.setEmptyView(inflated);
                         setHeaderData(inflated);
                     }
                 });
+                ((ViewStub) headerView).inflate();
             } else {
                 headerView = inflater.inflate(R.layout.uv_detail_header, null);
                 setHeaderData(headerView);
