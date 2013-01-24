@@ -210,24 +210,24 @@ public class UVwebContent {
             return mComment;
         }
 
-        public void setAuthor(String mAuthor) {
-            this.mAuthor = mAuthor;
-        }
-
-        public void setDate(Date mDate) {
-            this.mDate = mDate;
-        }
-
         public int getGlobalRate() {
             return mGlobalRate;
         }
 
-        public void setComment(String mComment) {
-            this.mComment = mComment;
+        public void setAuthor(String author) {
+            this.mAuthor = author;
         }
 
-        public void setGlobalRate(int mGlobalRate) {
-            this.mGlobalRate = mGlobalRate;
+        public void setDate(Date date) {
+            this.mDate = date;
+        }
+
+        public void setComment(String comment) {
+            this.mComment = comment;
+        }
+
+        public void setGlobalRate(int globalRate) {
+            this.mGlobalRate = globalRate;
         }
 
         public String getFormattedRate() {
