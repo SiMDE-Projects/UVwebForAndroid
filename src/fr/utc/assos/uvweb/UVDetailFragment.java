@@ -73,7 +73,6 @@ public class UVDetailFragment extends SherlockFragment {
 
 
         mListView = (ListView)rootView.findViewById(android.R.id.list);
-        //mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
 
         // Adapter setup
