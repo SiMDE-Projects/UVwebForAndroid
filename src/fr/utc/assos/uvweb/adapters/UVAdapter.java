@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.adapters;
 
 import android.content.Context;
 import android.text.Html;
@@ -8,9 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.ThreadPreconditions;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.holders.UVHeaderHolder;
-import fr.utc.assos.uvweb.holders.UVHolder;
+import fr.utc.assos.uvweb.holders.UVwebHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * An adapter used all together with the {@link UVListFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVHolder} class and thus allows UVs recycling.
+ * An adapter used all together with the {@link fr.utc.assos.uvweb.UVListFragment}'s ListView.
+ * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder} class and thus allows UVs recycling.
  * It implements both SectionIndexer and StickyListHeadersAdapter interfaces
  */
 public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyListHeadersAdapter {
@@ -81,9 +82,9 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyList
             convertView = View.inflate(mContext, R.layout.uv, null);
         }
 
-        TextView codeView = UVHolder.get(convertView, R.id.uvcode);
-        TextView rateView = UVHolder.get(convertView, R.id.rate);
-        TextView descView = UVHolder.get(convertView, R.id.desc);
+        TextView codeView = UVwebHolder.get(convertView, R.id.uvcode);
+        TextView rateView = UVwebHolder.get(convertView, R.id.rate);
+        TextView descView = UVwebHolder.get(convertView, R.id.desc);
 
         UVwebContent.UV UV = getItem(position);
         codeView.setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, UV.getLetterCode(), UV.getNumberCode())));
@@ -121,7 +122,8 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyList
         }
 
         // Set header text as first char in name
-        UVHeaderHolder.get(convertView).setText(String.valueOf(getSectionName(position)));
+        TextView headerView = UVwebHolder.get(convertView, R.id.header_text);
+        headerView.setText((String.valueOf(getSectionName(position))));
 
         return convertView;
     }

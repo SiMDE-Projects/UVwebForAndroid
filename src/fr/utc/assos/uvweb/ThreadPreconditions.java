@@ -5,7 +5,7 @@ import android.os.Looper;
 /**
  * This helper class ensures that the caller objects performs its operations in the main thread,
  * otherwise it throws an exception.
- * {@link UVAdapter}.
+ * {@link fr.utc.assos.uvweb.adapters.UVAdapter}.
  */
 public class ThreadPreconditions {
     public static void checkOnMainThread() {

@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
+import fr.utc.assos.uvweb.adapters.UVAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
@@ -49,7 +50,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
     private StickyListHeadersListView mListView;
 
     /**
-     * The {@link UVAdapter} ListAdapter instance
+     * The {@link fr.utc.assos.uvweb.adapters.UVAdapter} ListAdapter instance
      */
     private UVAdapter mAdapter;
 

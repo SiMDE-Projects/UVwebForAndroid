@@ -7,9 +7,9 @@ import android.view.View;
  * A holder using the ViewHolder pattern. This class keeps ListView's UVs views references using tags,
  * which allows recycling. If the view is not stored yet, is it found using View#fiendViewById()
  * It also automatically casts the returned View in order to reduce boilerplate.
- * {@link fr.utc.assos.uvweb.UVAdapter}.
+ * {@link fr.utc.assos.uvweb.adapters.UVAdapter}.
  */
-public class UVHolder {
+public class UVwebHolder {
     @SuppressWarnings("unchecked")
     public static <T extends View> T get(View view, int id) {
         SparseArray<View> viewHolder = (SparseArray<View>) view.getTag();

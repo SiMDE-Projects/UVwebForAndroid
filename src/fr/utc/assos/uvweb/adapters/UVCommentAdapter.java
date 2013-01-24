@@ -1,22 +1,21 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.adapters;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.ThreadPreconditions;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.holders.UVHolder;
+import fr.utc.assos.uvweb.holders.UVwebHolder;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class UVCommentAdapter extends BaseAdapter {
     private List<UVwebContent.UVComment> mComments = Collections.emptyList();
     private Context mContext;
-    private String[] mSections; // TODO: Character[] ?
 
     public UVCommentAdapter(Context context) {
         mContext = context;
@@ -61,32 +60,18 @@ public class UVCommentAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-
-        TextView userIDView;
-        TextView rateView;
-        TextView commentView;
-        TextView dateView;
-
         if (convertView == null) {
             convertView = View.inflate(mContext, R.layout.uvcomment, null);
-
-            userIDView = (TextView)convertView.findViewById(R.id.userid);
-            rateView = (TextView)convertView.findViewById(R.id.rate);
-            commentView = (TextView)convertView.findViewById(R.id.comment);
-            dateView = (TextView)convertView.findViewById(R.id.date);
-
-            convertView.setTag(new ViewHolder(userIDView, rateView, commentView, dateView));
-        } else {
-            ViewHolder viewHolder = (ViewHolder) convertView.getTag();
-            userIDView = viewHolder.userIDView;
-            rateView = viewHolder.rateView;
-            commentView = viewHolder.commentView;
-            dateView = viewHolder.dateView;
         }
+
+        TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
+        TextView rateView = UVwebHolder.get(convertView, R.id.rate);
+        TextView commentView = UVwebHolder.get(convertView, R.id.comment);
+        TextView dateView = (TextView)convertView.findViewById(R.id.date);
 
         UVwebContent.UVComment comment = getItem(position);
 
-        userIDView.setText(comment.getAuthor());
+        userIdView.setText(comment.getAuthor());
         rateView.setText(comment.getFormattedRate());
         commentView.setText(comment.getComment());
         dateView.setText(comment.getFormattedDate());
