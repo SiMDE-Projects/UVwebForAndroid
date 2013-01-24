@@ -183,12 +183,58 @@ public class UVwebContent {
             return (new DecimalFormat("0.0")).format(mSuccessRate) + "%";
         }
         public String getFormattedRate() {
-            return (new DecimalFormat("0")).format(mRate) + "/10";
+            return (new DecimalFormat("0.0")).format(mRate) + "/10";
         }
 
         @Override
         public int compareTo(UV uv) {
             return mName.compareTo(uv.getName());
         }
+    }
+
+    public static class UVcomment {
+        private String mAuthor;
+        private Date mDate;
+        private String mComment;
+        private int mGlobalRate;
+
+        public String getAuthor() {
+            return mAuthor;
+        }
+
+        public Date getDate() {
+            return mDate;
+        }
+
+        public String getComment() {
+            return mComment;
+        }
+
+        public void setAuthor(String mAuthor) {
+            this.mAuthor = mAuthor;
+        }
+
+        public void setDate(Date mDate) {
+            this.mDate = mDate;
+        }
+
+        public int getGlobalRate() {
+            return mGlobalRate;
+        }
+
+        public void setComment(String mComment) {
+            this.mComment = mComment;
+        }
+
+        public void setGlobalRate(int mGlobalRate) {
+            this.mGlobalRate = mGlobalRate;
+        }
+
+        public String getFormattedRate() {
+            return (new DecimalFormat("0")).format(mGlobalRate) + "/10";
+        }
+
+
+
     }
 }
