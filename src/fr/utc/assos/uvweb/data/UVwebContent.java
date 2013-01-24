@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.data;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -12,6 +13,12 @@ public class UVwebContent {
 	 * An array of UVs.
 	 */
     public static List<UV> UVS = new ArrayList<UV>();
+
+
+    /**
+     * An array of comments.
+     */
+    public static ArrayList<UVComment> Comments = new ArrayList<UVComment>();
 
 	/**
 	 * A map of UVs, by ID.
@@ -107,12 +114,25 @@ public class UVwebContent {
         addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
 
         Collections.sort(UVS);
+
+        String commentString = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+        addComment(new UVComment("amasciul",new Date(1955,11,5),commentString,5));
+        addComment(new UVComment("amasciul",new Date(1955,11,5),commentString,5));
+        addComment(new UVComment("amasciul",new Date(1955,11,5),commentString,5));
+        addComment(new UVComment("amasciul",new Date(1955,11,5),commentString,5));
+        addComment(new UVComment("amasciul",new Date(1955,11,5),commentString,5));
+        addComment(new UVComment("amasciul",new Date(1955,11,5),commentString,5));
+
 	}
 
 	public static void addItem(UV item) {
 		UVS.add(item);
 		UV_MAP.put(item.getName(), item);
 	}
+
+    public static void addComment(UVComment comment) {
+        Comments.add(comment);
+    }
 
 	/**
 	 * A UV representing a piece of content.
@@ -192,11 +212,20 @@ public class UVwebContent {
         }
     }
 
-    public static class UVcomment {
+    public static class UVComment {
+
         private String mAuthor;
         private Date mDate;
         private String mComment;
         private int mGlobalRate;
+
+        public UVComment(String author, Date date, String comment, int globalRate) {
+            mAuthor = author;
+            mDate = date;
+            mComment = comment;
+            mGlobalRate = globalRate;
+        }
+
 
         public String getAuthor() {
             return mAuthor;
@@ -232,6 +261,10 @@ public class UVwebContent {
 
         public String getFormattedRate() {
             return (new DecimalFormat("0")).format(mGlobalRate) + "/10";
+        }
+
+        public String getFormattedDate(){
+            return DateFormat.getDateInstance().format(mDate);
         }
 
 

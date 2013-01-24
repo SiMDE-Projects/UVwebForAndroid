@@ -76,9 +76,12 @@ public class UVDetailFragment extends SherlockFragment {
 
 
         // Adapter setup
-        UVAdapter adapter = new UVAdapter(getSherlockActivity());
-        adapter.updateUVs(new ArrayList<UVwebContent.UV>());
+        //UVAdapter adapter = new UVAdapter(getSherlockActivity());
+        //adapter.updateUVs(new ArrayList<UVwebContent.UV>());
         //adapter.updateUVs(UVwebContent.UVS);
+
+        UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
+        adapter.updateComments(UVwebContent.Comments);
 
         View headerView;
 
