@@ -47,10 +47,11 @@
 
     </LinearLayout>
     <TextView
-    android:id="@+id/desc"
-    android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:textSize="24sp"
-    android:layout_gravity="center_vertical" />
+        android:id="@+id/desc"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="24sp"
+        android:layout_gravity="center_vertical"
+        android:textIsSelectable="true" />
 
 </LinearLayout>
