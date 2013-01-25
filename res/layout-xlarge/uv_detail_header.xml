@@ -1,16 +1,15 @@
 <LinearLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
 		android:orientation="horizontal"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:background="@color/uvdetail_header_background">
-
-	<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_gravity="center_vertical"
-			android:padding="8dp">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="8dp">
 		<TextView
 				android:id="@+id/uvcode"
 				android:layout_height="match_parent"
@@ -18,13 +17,19 @@
 				android:textSize="72sp"
 				android:textStyle="bold"
 				android:typeface="normal"
-				android:textColor="@color/abs__holo_blue_light"/>
+				android:textColor="@color/abs__holo_blue_light" />
+        <TextView
+                android:id="@+id/rate"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="26sp" />
 	</LinearLayout>
 	<TextView
 			android:id="@+id/desc"
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent"
 			android:textSize="36sp"
-			android:gravity="left"
+			android:gravity="right"
+            android:paddingRight="10dp"
 			android:layout_gravity="center_vertical"/>
 </LinearLayout>
