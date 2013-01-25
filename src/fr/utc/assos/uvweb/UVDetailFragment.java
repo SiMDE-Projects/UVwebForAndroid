@@ -70,12 +70,6 @@ public class UVDetailFragment extends SherlockFragment {
 
         mListView = (ListView)rootView.findViewById(android.R.id.list);
 
-
-        // Adapter setup
-        //UVAdapter adapter = new UVAdapter(getSherlockActivity());
-        //adapter.updateUVs(new ArrayList<UVwebContent.UV>());
-        //adapter.updateUVs(UVwebContent.UVS);
-
         UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
         adapter.updateComments(UVwebContent.Comments);
 
