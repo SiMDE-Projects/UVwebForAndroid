@@ -18,7 +18,7 @@
 			<ImageView
 					android:layout_width="48dp"
 					android:layout_height="48dp"
-					android:id="@+id/imageView"
+					android:id="@+id/avatar"
 					android:contentDescription="User Avatar"
 					android:src="@drawable/ic_contact_picture"
 					android:layout_marginRight="8dp"/>
