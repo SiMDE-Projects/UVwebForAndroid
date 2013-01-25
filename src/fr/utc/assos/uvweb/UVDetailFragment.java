@@ -67,7 +67,6 @@ public class UVDetailFragment extends SherlockFragment {
 		View rootView = inflater.inflate(R.layout.fragment_uv_detail,
 				container, false);
 
-
         mListView = (ListView)rootView.findViewById(android.R.id.list);
 
         UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
@@ -92,7 +91,6 @@ public class UVDetailFragment extends SherlockFragment {
                 setHeaderData(headerView);
                 mListView.addHeaderView(headerView);
             }
-
 		}
 
         mListView.setAdapter(adapter);
@@ -100,7 +98,7 @@ public class UVDetailFragment extends SherlockFragment {
 		return rootView;
 	}
 
-    void setHeaderData(View inflatedHeader){
+    private void setHeaderData(View inflatedHeader) {
         ((TextView)inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
         ((TextView)inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
 
