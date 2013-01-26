@@ -63,10 +63,10 @@
 
     <style name="uvweb_solid_ActionBar_Logo" parent="uvweb_solid_ActionBar">
         <item name="displayOptions">useLogo|showHome</item>
-        <item name="icon">@drawable/uvweb_logo</item>
+        <item name="logo">@drawable/uvweb_logo</item>
 
         <item name="android:displayOptions">useLogo|showHome</item>
-        <item name="android:icon">@drawable/uvweb_logo</item>
+        <item name="android:logo">@drawable/uvweb_logo</item>
     </style>
 
     <style name="uvweb_solid_ActionBar_NoLogo" parent="uvweb_solid_ActionBar">
