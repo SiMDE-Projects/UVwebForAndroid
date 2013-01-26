@@ -3,7 +3,7 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-	android:background="?android:attr/activatedBackgroundIndicator"
+	android:background="@drawable/selectable_background_list_uvweb"
 	android:paddingLeft="24dp"
 	android:paddingRight="16dp"
 	android:paddingTop="8dp"
