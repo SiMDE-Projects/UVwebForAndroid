@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:divider="?android:attr/dividerHorizontal"
     android:orientation="horizontal"
-    android:showDividers="middle"
     tools:context=".UVListActivity" >
 
     <!--
