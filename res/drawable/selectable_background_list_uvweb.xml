@@ -4,5 +4,4 @@
     <item android:state_pressed="false" android:state_focused="false" android:state_activated="false" android:drawable="@drawable/list_background_holo" />
     <item android:state_pressed="false" android:state_focused="true" android:drawable="@drawable/list_focused_uvweb" />
     <item android:state_activated="true" android:drawable="@drawable/list_activated_holo" />
-    <item android:drawable="@android:color/transparent" />
 </selector>
