@@ -29,7 +29,7 @@ public class UVAdapter extends BaseAdapter implements SectionIndexer, StickyList
     private Context mContext;
     private HashMap<String, Integer> mSectionToPosition = new HashMap<String, Integer>();
     private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>(); // TODO: int[] ?
-    private String[] mSections; // TODO: Character[] ?
+    private String[] mSections;
 
     public UVAdapter(Context context) {
         mContext = context;
