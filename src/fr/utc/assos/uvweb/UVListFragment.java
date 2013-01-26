@@ -33,6 +33,12 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 */
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 
+    /**
+     * The String representing a special id for {@link fr.utc.assos.uvweb.activities.UVListActivity},
+     * indicating that the default detail fragment has to be shown.
+     */
+    public static final String DEFAULT_DETAIL_FRAGMENT = "default_detail_fragment";
+
 	/**
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.
@@ -43,6 +49,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * The current activated item position. Only used on tablets.
 	 */
 	private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    /**
+     * Indicates whether the default detail fragment has to be shown.
+     */
+    private boolean mShowDefaultDetailFragment;
 
     /**
      * The associated ListView object
@@ -88,7 +99,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		super.onCreate(savedInstanceState);
 
         // Fragment configuration
-        setRetainInstance(true);
         setHasOptionsMenu(true);
 
         // Adapter setup
@@ -105,7 +115,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
 			setActivatedPosition(savedInstanceState
 					.getInt(STATE_ACTIVATED_POSITION));
-		}
+        }
+        else {
+            mShowDefaultDetailFragment = true;
+        }
 	}
 
 	@Override
@@ -136,6 +149,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		mCallbacks.onItemSelected(UVwebContent.UVS.get(position).getName());
+        mActivatedPosition = position;
 	}
 
 	@Override
@@ -155,10 +169,14 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
         if (twoPane) {
 		    mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
             mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
+            if (mShowDefaultDetailFragment) {
+                mCallbacks.onItemSelected(DEFAULT_DETAIL_FRAGMENT);
+            }
         }
 		else {
             mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
         }
+
 	}
 
 	private void setActivatedPosition(int position) {

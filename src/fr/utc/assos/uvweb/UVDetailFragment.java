@@ -50,7 +50,6 @@ public class UVDetailFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 
         // Fragment configuration
-        setRetainInstance(true);
         setHasOptionsMenu(true);
 
 		if (getArguments().containsKey(ARG_UV_ID)) {
@@ -59,6 +58,8 @@ public class UVDetailFragment extends SherlockFragment {
 			// to load content from a content provider.
 			mUV = UVwebContent.UV_MAP.get(getArguments().getString(
 					ARG_UV_ID));
+
+            getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
 		}
 	}
 
@@ -72,11 +73,9 @@ public class UVDetailFragment extends SherlockFragment {
         UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
         adapter.updateComments(UVwebContent.Comments);
 
-        View headerView;
-
 		// Show the UV as text in a TextView.
 		if (mUV != null) {
-            headerView = rootView.findViewById(android.R.id.empty);
+            View headerView = rootView.findViewById(android.R.id.empty);
             if (adapter.isEmpty()) {
                 ((ViewStub)headerView).setOnInflateListener(new ViewStub.OnInflateListener() {
                     @Override
@@ -101,12 +100,7 @@ public class UVDetailFragment extends SherlockFragment {
     private void setHeaderData(View inflatedHeader) {
         ((TextView)inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
         ((TextView)inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
-
-        //Testing if null because rate view is not implemented for xlarge yet
-        TextView rate = (TextView)inflatedHeader.findViewById(R.id.rate);
-        if (rate != null) {
-            rate.setText(mUV.getFormattedRate());
-        }
+        ((TextView)inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
     }
 
     @Override

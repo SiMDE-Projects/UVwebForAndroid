@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.UVDetailDefaultFragment;
 import fr.utc.assos.uvweb.UVDetailFragment;
 import fr.utc.assos.uvweb.UVListFragment;
 
@@ -46,7 +47,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 			// 'activated' state when touched.
 			((UVListFragment) getSupportFragmentManager().findFragmentById(
 					R.id.uv_list)).configureListView(true);
-		}
+        }
 
 		// TODO: If exposing deep links into your app, handle intents here.
 	}
@@ -57,6 +58,16 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
+        if (id.equals(UVListFragment.DEFAULT_DETAIL_FRAGMENT)) {
+            // Default detail fragment management
+            if (mTwoPane) {
+                // Load default Detail fragment on tablet only
+                UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.uv_detail_container, fragment).commit();
+            }
+            return;
+        }
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a

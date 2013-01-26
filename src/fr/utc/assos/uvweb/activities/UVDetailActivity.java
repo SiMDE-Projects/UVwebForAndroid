@@ -3,7 +3,6 @@ package fr.utc.assos.uvweb.activities;
 import android.os.Bundle;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.UVDetailFragment;
-import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
  * An activity representing a single UV detail screen. This activity is only
@@ -20,10 +19,6 @@ public class UVDetailActivity extends UVwebMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_uv_detail);
 
-        // Show the UV title
-        String uvId = getIntent().getStringExtra(UVDetailFragment.ARG_UV_ID);
-        getSupportActionBar().setTitle(UVwebContent.UV_MAP.get(uvId).toString());
-
         // savedInstanceState is non-null when there is fragment state
 		// saved from previous configurations of this activity
 		// (e.g. when rotating the screen from portrait to landscape).
@@ -33,7 +28,7 @@ public class UVDetailActivity extends UVwebMenuActivity {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
 			Bundle arguments = new Bundle();
-			arguments.putString(UVDetailFragment.ARG_UV_ID, uvId);
+			arguments.putString(UVDetailFragment.ARG_UV_ID, getIntent().getStringExtra(UVDetailFragment.ARG_UV_ID));
 			UVDetailFragment fragment = new UVDetailFragment();
 			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
