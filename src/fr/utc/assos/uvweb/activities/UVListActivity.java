@@ -68,25 +68,27 @@ public class UVListActivity extends UVwebMenuActivity implements
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.uv_detail_container, fragment).commit();
             }
-            return;
         }
-		if (mTwoPane) {
-			// In two-pane mode, show the detail view in this activity by
-			// adding or replacing the detail fragment using a
-			// fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putString(UVDetailFragment.ARG_UV_ID, id);
-			UVDetailFragment fragment = new UVDetailFragment();
-			fragment.setArguments(arguments);
-			getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.uv_detail_container, fragment).commit();
+        else {
+            // Dynamically load the selected UV
+            if (mTwoPane) {
+                // In two-pane mode, show the detail view in this activity by
+                // adding or replacing the detail fragment using a
+                // fragment transaction.
+                Bundle arguments = new Bundle();
+                arguments.putString(UVDetailFragment.ARG_UV_ID, id);
+                UVDetailFragment fragment = new UVDetailFragment();
+                fragment.setArguments(arguments);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.uv_detail_container, fragment).commit();
 
-		} else {
-			// In single-pane mode, simply start the detail activity
-			// for the selected UV ID.
-			Intent detailIntent = new Intent(this, UVDetailActivity.class);
-			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
-			startActivity(detailIntent);
-		}
+            } else {
+                // In single-pane mode, simply start the detail activity
+                // for the selected UV ID.
+                Intent detailIntent = new Intent(this, UVDetailActivity.class);
+                detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
+                startActivity(detailIntent);
+            }
+        }
 	}
 }
