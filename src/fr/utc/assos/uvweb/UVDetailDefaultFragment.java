@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 25/01/13
- * Time: 20:19
- * To change this template use File | Settings | File Templates.
+ * A fragment representing the default detail screen. This fragment is
+ * contained in a {@link fr.utc.assos.uvweb.activities.UVListActivity} and
+ * used in tablet-mode only.
  */
 public class UVDetailDefaultFragment extends SherlockFragment {
     /**

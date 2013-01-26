@@ -171,6 +171,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
             mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
             if (mShowDefaultDetailFragment) {
                 mCallbacks.onItemSelected(DEFAULT_DETAIL_FRAGMENT);
+                mShowDefaultDetailFragment = false;
             }
         }
 		else {
