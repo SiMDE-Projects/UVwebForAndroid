@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
- >
-
-
-        <item android:state_activated="true" android:drawable="@drawable/list_activated_holo" />
-        <item android:state_pressed="true" android:drawable="@drawable/abs__list_pressed_holo_light" />
-        <item android:state_focused="true" android:drawable="@drawable/list_focused_uvweb" />
-        <item android:drawable="@drawable/list_background_holo" />
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_activated="true" android:drawable="@drawable/list_activated_holo" />
+    <item android:state_pressed="true" android:drawable="@drawable/abs__list_pressed_holo_light" />
+    <item android:state_focused="true" android:drawable="@drawable/list_focused_uvweb" />
+    <item android:drawable="@drawable/list_background_holo" />
 </selector>
