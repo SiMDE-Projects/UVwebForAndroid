@@ -67,7 +67,7 @@ public class UVCommentAdapter extends BaseAdapter {
         TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
         TextView rateView = UVwebHolder.get(convertView, R.id.rate);
         TextView commentView = UVwebHolder.get(convertView, R.id.comment);
-        TextView dateView = (TextView)convertView.findViewById(R.id.date);
+        TextView dateView = (TextView) convertView.findViewById(R.id.date);
 
         UVwebContent.UVComment comment = getItem(position);
 

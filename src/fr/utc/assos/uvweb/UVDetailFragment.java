@@ -24,63 +24,63 @@ import fr.utc.assos.uvweb.data.UVwebContent;
 public class UVDetailFragment extends SherlockFragment {
     private static final String TAG = "UVDetailFragment";
 
-	/**
-	 * The fragment argument representing the UV ID that this fragment
-	 * represents.
-	 */
-	public static final String ARG_UV_ID = "item_id";
+    /**
+     * The fragment argument representing the UV ID that this fragment
+     * represents.
+     */
+    public static final String ARG_UV_ID = "item_id";
 
-	/**
-	 * The UV this fragment is presenting.
-	 */
-	private UVwebContent.UV mUV;
+    /**
+     * The UV this fragment is presenting.
+     */
+    private UVwebContent.UV mUV;
 
     /**
      * The ListView containing all comment items.
      */
     private ListView mListView;
 
-	/**
-	 * Mandatory empty constructor for the fragment manager to instantiate the
-	 * fragment (e.g. upon screen orientation changes).
-	 */
-	public UVDetailFragment() {
-	}
+    /**
+     * Mandatory empty constructor for the fragment manager to instantiate the
+     * fragment (e.g. upon screen orientation changes).
+     */
+    public UVDetailFragment() {
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         // Fragment configuration
         setHasOptionsMenu(true);
         setRetainInstance(true);
 
-		if (getArguments().containsKey(ARG_UV_ID)) {
-			// Load the UV specified by the fragment
-			// arguments. In a real-world scenario, use a Loader
-			// to load content from a content provider.
-			mUV = UVwebContent.UV_MAP.get(getArguments().getString(
-					ARG_UV_ID));
+        if (getArguments().containsKey(ARG_UV_ID)) {
+            // Load the UV specified by the fragment
+            // arguments. In a real-world scenario, use a Loader
+            // to load content from a content provider.
+            mUV = UVwebContent.UV_MAP.get(getArguments().getString(
+                    ARG_UV_ID));
 
             getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
-		}
-	}
+        }
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_uv_detail,
-				container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_uv_detail,
+                container, false);
 
-        mListView = (ListView)rootView.findViewById(android.R.id.list);
+        mListView = (ListView) rootView.findViewById(android.R.id.list);
 
         UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
         adapter.updateComments(UVwebContent.Comments);
 
-		// Show the UV as text in a TextView.
-		if (mUV != null) {
+        // Show the UV as text in a TextView.
+        if (mUV != null) {
             View headerView = rootView.findViewById(android.R.id.empty);
             if (adapter.isEmpty()) {
-                ((ViewStub)headerView).setOnInflateListener(new ViewStub.OnInflateListener() {
+                ((ViewStub) headerView).setOnInflateListener(new ViewStub.OnInflateListener() {
                     @Override
                     public void onInflate(ViewStub stub, View inflated) {
                         mListView.setEmptyView(inflated);
@@ -93,17 +93,17 @@ public class UVDetailFragment extends SherlockFragment {
                 setHeaderData(headerView);
                 mListView.addHeaderView(headerView);
             }
-		}
+        }
 
         mListView.setAdapter(adapter);
 
-		return rootView;
-	}
+        return rootView;
+    }
 
     private void setHeaderData(View inflatedHeader) {
-        ((TextView)inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
-        ((TextView)inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
-        ((TextView)inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
+        ((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
+        ((TextView) inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
+        ((TextView) inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
     }
 
     @Override
