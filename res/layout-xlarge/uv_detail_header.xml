@@ -1,35 +1,39 @@
 <LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="horizontal"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="@color/uvdetail_header_background">
-        <LinearLayout
-                android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/uvdetail_header_background">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:padding="8dp">
+
+        <TextView
+                android:id="@+id/uvcode"
+                android:layout_height="match_parent"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:padding="8dp">
-		<TextView
-				android:id="@+id/uvcode"
-				android:layout_height="match_parent"
-				android:layout_width="wrap_content"
-				android:textSize="72sp"
-				android:textStyle="bold"
-				android:typeface="normal"
-				android:textColor="@color/abs__holo_blue_light" />
+                android:textSize="72sp"
+                android:textStyle="bold"
+                android:typeface="normal"
+                android:textColor="@color/main_color"/>
+
         <TextView
                 android:id="@+id/rate"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:textSize="26sp" />
-	</LinearLayout>
-	<TextView
-			android:id="@+id/desc"
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:textSize="36sp"
-			android:gravity="right"
+                android:textSize="26sp"/>
+    </LinearLayout>
+
+    <TextView
+            android:id="@+id/desc"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="36sp"
+            android:gravity="right"
             android:paddingRight="10dp"
-			android:layout_gravity="center_vertical"/>
+            android:layout_gravity="center_vertical"/>
 </LinearLayout>
