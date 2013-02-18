@@ -26,6 +26,7 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * interface.
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
+    private static final String TAG = "UVListFragment";
 
 	/**
 	 * The serialization (saved instance state) Bundle key representing the

@@ -22,6 +22,8 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
 public class UVDetailFragment extends SherlockFragment {
+    private static final String TAG = "UVDetailFragment";
+
 	/**
 	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
@@ -51,6 +53,7 @@ public class UVDetailFragment extends SherlockFragment {
 
         // Fragment configuration
         setHasOptionsMenu(true);
+        setRetainInstance(true);
 
 		if (getArguments().containsKey(ARG_UV_ID)) {
 			// Load the UV specified by the fragment
