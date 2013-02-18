@@ -118,12 +118,14 @@ public class UVwebContent {
 				"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in " +
 				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
 				"proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
-		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
-		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
-		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
-		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
-		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
-		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2009, 11, 5);
+		addComment(new UVComment("amasciul", calendar, commentString, 5));
+		addComment(new UVComment("amasciul", calendar, commentString, 5));
+		addComment(new UVComment("amasciul", calendar, commentString, 5));
+		addComment(new UVComment("amasciul", calendar, commentString, 5));
+		addComment(new UVComment("amasciul", calendar, commentString, 5));
+		addComment(new UVComment("amasciul", calendar, commentString, 5));
 	}
 
 	public static void addItem(UV item) {
@@ -218,9 +220,9 @@ public class UVwebContent {
 		private String mComment;
 		private int mGlobalRate;
 
-		public UVComment(String author, Date date, String comment, int globalRate) {
+		public UVComment(String author, Calendar calendar, String comment, int globalRate) {
 			mAuthor = author;
-			mDate = date;
+			mDate = calendar.getTime();
 			mComment = comment;
 			mGlobalRate = globalRate;
 		}
