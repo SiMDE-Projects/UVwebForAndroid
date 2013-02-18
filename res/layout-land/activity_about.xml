@@ -55,6 +55,7 @@
             android:layout_weight="4" >
 
             <Button
+                android:id="@+id/go_to_uvweb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -64,6 +65,7 @@
                 android:textSize="20sp" />
 
             <Button
+                android:id="@+id/go_to_utc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -73,6 +75,7 @@
                 android:textSize="20sp" />
 
             <Button
+                android:id="@+id/contact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
