@@ -80,14 +80,16 @@ public class UVDetailFragment extends SherlockFragment {
         if (mUV != null) {
             View headerView = rootView.findViewById(android.R.id.empty);
             if (adapter.isEmpty()) {
-                ((ViewStub) headerView).setOnInflateListener(new ViewStub.OnInflateListener() {
+				ViewStub headerViewStub = (ViewStub) headerView;
+				headerViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
                     @Override
                     public void onInflate(ViewStub stub, View inflated) {
-                        mListView.setEmptyView(inflated);
-                        setHeaderData(inflated);
+                	mListView.setEmptyView(inflated);
+                    setHeaderData(inflated);
                     }
                 });
-                ((ViewStub) headerView).inflate();
+				headerViewStub.inflate();
+				headerViewStub = null;
             } else {
                 headerView = inflater.inflate(R.layout.uv_detail_header, null);
                 setHeaderData(headerView);
