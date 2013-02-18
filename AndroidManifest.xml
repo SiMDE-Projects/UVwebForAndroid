@@ -26,27 +26,35 @@
         </activity>
         <activity
             android:name=".activities.UVDetailActivity"
-            android:parentActivityName=".UVListActivity"
+            android:parentActivityName=".activities.UVListActivity"
             android:theme="@style/Theme.UVweb.NoLogo" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UVListActivity" />
+                android:value=".activities.UVListActivity" />
         </activity>
         <activity
             android:name=".activities.AboutActivity"
             android:label="@string/about"
-            android:parentActivityName=".UVListActivity" >
+            android:parentActivityName=".activities.UVListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".UVListActivity" />
+                android:value=".activities.UVListActivity" />
         </activity>
         <activity
-                android:name=".activities.LicensesActivity"
-                android:label="@string/licenses"
-                android:parentActivityName=".UVListActivity" >
+                android:name=".activities.TestActivity"
+                android:label="Test"
+                android:parentActivityName=".activities.UVListActivity" >
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".UVListActivity" />
+                    android:value=".activities.UVListActivity" />
+        </activity>
+        <activity
+            android:name=".activities.LicensesActivity"
+            android:label="@string/licenses"
+            android:parentActivityName=".activities.UVListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.UVListActivity" />
         </activity>
     </application>
 
