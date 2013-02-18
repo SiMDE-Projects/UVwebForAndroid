@@ -13,7 +13,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
-import fr.utc.assos.uvweb.adapters.UVAdapter;
+import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
@@ -26,198 +26,190 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * interface.
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
-    private static final String TAG = "UVListFragment";
+	/**
+	 * The String representing a special id for {@link fr.utc.assos.uvweb.activities.UVListActivity},
+	 * indicating that the default detail fragment has to be shown.
+	 */
+	public static final String DEFAULT_DETAIL_FRAGMENT = "default_detail_fragment";
+	private static final String TAG = "UVListFragment";
+	/**
+	 * The serialization (saved instance state) Bundle key representing the
+	 * activated item position. Only used on tablets.
+	 */
+	private static final String STATE_ACTIVATED_POSITION = "activated_position";
+	/**
+	 * A dummy implementation of the {@link Callbacks} interface that does
+	 * nothing. Used only when this fragment is not attached to an activity.
+	 */
+	private static Callbacks sDummyCallbacks = new Callbacks() {
+		@Override
+		public void onItemSelected(String id) {
+		}
+	};
+	/**
+	 * The fragment's current callback object, which is notified of list item
+	 * clicks.
+	 */
+	private Callbacks mCallbacks = sDummyCallbacks;
+	/**
+	 * The current activated item position. Only used on tablets.
+	 */
+	private int mActivatedPosition = ListView.INVALID_POSITION;
+	/**
+	 * Indicates whether the default detail fragment has to be shown.
+	 */
+	private boolean mShowDefaultDetailFragment;
+	/**
+	 * The associated ListView object
+	 */
+	private StickyListHeadersListView mListView;
+	/**
+	 * The {@link fr.utc.assos.uvweb.adapters.UVAdapter} ListAdapter instance
+	 */
+	private UVListAdapter mAdapter;
 
-    /**
-     * The serialization (saved instance state) Bundle key representing the
-     * activated item position. Only used on tablets.
-     */
-    private static final String STATE_ACTIVATED_POSITION = "activated_position";
+	/**
+	 * Mandatory empty constructor for the fragment manager to instantiate the
+	 * fragment (e.g. upon screen orientation changes).
+	 */
+	public UVListFragment() {
+	}
 
-    /**
-     * The String representing a special id for {@link fr.utc.assos.uvweb.activities.UVListActivity},
-     * indicating that the default detail fragment has to be shown.
-     */
-    public static final String DEFAULT_DETAIL_FRAGMENT = "default_detail_fragment";
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    /**
-     * The fragment's current callback object, which is notified of list item
-     * clicks.
-     */
-    private Callbacks mCallbacks = sDummyCallbacks;
+		// Fragment configuration
+		setHasOptionsMenu(true);
 
-    /**
-     * The current activated item position. Only used on tablets.
-     */
-    private int mActivatedPosition = ListView.INVALID_POSITION;
+		// Adapter setup
+		mAdapter = new UVListAdapter(getSherlockActivity());
+		mAdapter.updateUVs(UVwebContent.UVS);
+	}
 
-    /**
-     * Indicates whether the default detail fragment has to be shown.
-     */
-    private boolean mShowDefaultDetailFragment;
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 
-    /**
-     * The associated ListView object
-     */
-    private StickyListHeadersListView mListView;
+		// Restore the previously serialized activated item position.
+		if (savedInstanceState != null
+				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+			setActivatedPosition(savedInstanceState
+					.getInt(STATE_ACTIVATED_POSITION));
+		} else {
+			mShowDefaultDetailFragment = true;
+		}
+	}
 
-    /**
-     * The {@link fr.utc.assos.uvweb.adapters.UVAdapter} ListAdapter instance
-     */
-    private UVAdapter mAdapter;
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
 
-    /**
-     * A callback interface that all activities containing this fragment must
-     * implement. This mechanism allows activities to be notified of item
-     * selections.
-     */
-    public interface Callbacks {
-        /**
-         * Callback for when an item has been selected.
-         */
-        public void onItemSelected(String id);
-    }
+		// Activities containing this fragment must implement its callbacks.
+		if (!(activity instanceof Callbacks)) {
+			throw new IllegalStateException(
+					"Activity must implement fragment's callbacks.");
+		}
 
-    /**
-     * A dummy implementation of the {@link Callbacks} interface that does
-     * nothing. Used only when this fragment is not attached to an activity.
-     */
-    private static Callbacks sDummyCallbacks = new Callbacks() {
-        @Override
-        public void onItemSelected(String id) {
-        }
-    };
+		mCallbacks = (Callbacks) activity;
+	}
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public UVListFragment() {
-    }
+	@Override
+	public void onDetach() {
+		super.onDetach();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		// Reset the active callbacks interface to the dummy implementation.
+		mCallbacks = sDummyCallbacks;
+	}
 
-        // Fragment configuration
-        setHasOptionsMenu(true);
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+							long id) {
 
-        // Adapter setup
-        mAdapter = new UVAdapter(getSherlockActivity());
-        mAdapter.updateUVs(UVwebContent.UVS);
-    }
+		// Notify the active callbacks interface (the activity, if the
+		// fragment is attached to one) that an item has been selected.
+		mCallbacks.onItemSelected(UVwebContent.UVS.get(position).getName());
+		mActivatedPosition = position;
+	}
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		if (mActivatedPosition != ListView.INVALID_POSITION) {
+			// Serialize and persist the activated item position.
+			outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+		}
+	}
 
-        // Restore the previously serialized activated item position.
-        if (savedInstanceState != null
-                && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-            setActivatedPosition(savedInstanceState
-                    .getInt(STATE_ACTIVATED_POSITION));
-        } else {
-            mShowDefaultDetailFragment = true;
-        }
-    }
+	/**
+	 * Turns on activate-on-click mode. When this mode is on, list items will be
+	 * given the 'activated' state when touched.
+	 */
+	public void configureListView(boolean twoPane) {
+		if (twoPane) {
+			mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
+			if (mShowDefaultDetailFragment) {
+				mCallbacks.onItemSelected(DEFAULT_DETAIL_FRAGMENT);
+				mShowDefaultDetailFragment = false;
+			}
+		} else {
+			mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+		}
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+	}
 
-        // Activities containing this fragment must implement its callbacks.
-        if (!(activity instanceof Callbacks)) {
-            throw new IllegalStateException(
-                    "Activity must implement fragment's callbacks.");
-        }
+	private void setActivatedPosition(int position) {
+		if (position == ListView.INVALID_POSITION) {
+			mListView.setItemChecked(mActivatedPosition, false);
+		} else {
+			mListView.setItemChecked(position, true);
+		}
 
-        mCallbacks = (Callbacks) activity;
-    }
+		mActivatedPosition = position;
+	}
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_uv_list,
+				container, false);
 
-        // Reset the active callbacks interface to the dummy implementation.
-        mCallbacks = sDummyCallbacks;
-    }
+		// ListView setup
+		mListView = (StickyListHeadersListView) rootView.findViewById(android.R.id.list);
+		mListView.setOnItemClickListener(this);
+		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+		mListView.setFastScrollEnabled(true);
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
+		mListView.setAdapter(mAdapter);
 
-        // Notify the active callbacks interface (the activity, if the
-        // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(UVwebContent.UVS.get(position).getName());
-        mActivatedPosition = position;
-    }
+		return rootView;
+	}
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mActivatedPosition != ListView.INVALID_POSITION) {
-            // Serialize and persist the activated item position.
-            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
-        }
-    }
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.fragment_uv_list, menu);
+	}
 
-    /**
-     * Turns on activate-on-click mode. When this mode is on, list items will be
-     * given the 'activated' state when touched.
-     */
-    public void configureListView(boolean twoPane) {
-        if (twoPane) {
-            mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
-            if (mShowDefaultDetailFragment) {
-                mCallbacks.onItemSelected(DEFAULT_DETAIL_FRAGMENT);
-                mShowDefaultDetailFragment = false;
-            }
-        } else {
-            mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
-        }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search:
+				Toast.makeText(getActivity(), "Search clicked", Toast.LENGTH_SHORT).show();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 
-    }
-
-    private void setActivatedPosition(int position) {
-        if (position == ListView.INVALID_POSITION) {
-            mListView.setItemChecked(mActivatedPosition, false);
-        } else {
-            mListView.setItemChecked(position, true);
-        }
-
-        mActivatedPosition = position;
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_uv_list,
-                container, false);
-
-        // ListView setup
-        mListView = (StickyListHeadersListView) rootView.findViewById(android.R.id.list);
-        mListView.setOnItemClickListener(this);
-        mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
-        mListView.setFastScrollEnabled(true);
-
-        mListView.setAdapter(mAdapter);
-
-        return rootView;
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_uv_list, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_search:
-                Toast.makeText(getActivity(), "Search clicked", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+	/**
+	 * A callback interface that all activities containing this fragment must
+	 * implement. This mechanism allows activities to be notified of item
+	 * selections.
+	 */
+	public interface Callbacks {
+		/**
+		 * Callback for when an item has been selected.
+		 */
+		public void onItemSelected(String id);
+	}
 }
