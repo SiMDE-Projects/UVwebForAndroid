@@ -23,7 +23,6 @@ public abstract class UVwebActivity extends SherlockFragmentActivity {
             case android.R.id.home:
                 Intent intent = new Intent(this, UVListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                // TODO: understand why not | Intent.FLAG_ACTIVITY_NEW_TASK
                 // http://developer.android.com/training/implementing-navigation/ancestral.html
                 startActivity(intent);
                 finish();
