@@ -30,8 +30,6 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 	public UVListAdapter(Context context) {
 		super(context);
-		mSectionToPosition = new HashMap<String, Integer>();
-		mSectionHeaderPosition = new HashMap<Integer, String>();
 	}
 
 	@Override

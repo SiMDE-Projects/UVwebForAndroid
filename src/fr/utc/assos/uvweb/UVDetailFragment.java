@@ -74,7 +74,7 @@ public class UVDetailFragment extends SherlockFragment {
         mListView = (ListView) rootView.findViewById(android.R.id.list);
 
         UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
-        adapter.updateComments(UVwebContent.Comments);
+        adapter.updateComments(UVwebContent.COMMENTS);
 
         // Show the UV as text in a TextView.
         if (mUV != null) {
@@ -103,7 +103,8 @@ public class UVDetailFragment extends SherlockFragment {
     }
 
     private void setHeaderData(View inflatedHeader) {
-        ((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
+        ((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(
+				UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
         ((TextView) inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
         ((TextView) inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
     }

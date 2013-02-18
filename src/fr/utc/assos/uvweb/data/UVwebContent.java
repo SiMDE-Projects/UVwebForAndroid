@@ -17,10 +17,16 @@ public class UVwebContent {
 	 * An array of UVs.
 	 */
 	public static List<UV> UVS = new ArrayList<UV>();
+
+	/**
+	 * A map of UVs, by ID.
+	 */
+	public static Map<String, UV> UV_MAP = new HashMap<String, UV>();
+
 	/**
 	 * An array of comments.
 	 */
-	public static ArrayList<UVComment> Comments = new ArrayList<UVComment>();
+	public static ArrayList<UVComment> COMMENTS = new ArrayList<UVComment>();
 
 	static {
 		// Add sample items.
@@ -107,20 +113,18 @@ public class UVwebContent {
 
 		Collections.sort(UVS);
 
-		String commentString = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
+		String commentString = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor " +
+				"incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
+				"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in " +
+				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
+				"proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
 		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
 		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
 		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
 		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
 		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
 		addComment(new UVComment("amasciul", new Date(1955, 11, 5), commentString, 5));
-
 	}
-
-	/**
-	 * A map of UVs, by ID.
-	 */
-	public static Map<String, UV> UV_MAP = new HashMap<String, UV>();
 
 	public static void addItem(UV item) {
 		UVS.add(item);
@@ -128,7 +132,7 @@ public class UVwebContent {
 	}
 
 	public static void addComment(UVComment comment) {
-		Comments.add(comment);
+		COMMENTS.add(comment);
 	}
 
 	/**
@@ -154,13 +158,10 @@ public class UVwebContent {
 			return mName;
 		}
 
-		// Getters
-
 		public String getName() {
 			return this.mName;
 		}
 
-		// Setters
 		public void setName(String name) {
 			this.mName = name;
 		}
@@ -189,7 +190,6 @@ public class UVwebContent {
 			this.mSuccessRate = successRate;
 		}
 
-		// Public methods
 		public String getLetterCode() {
 			return mName.substring(0, 2);
 		}
