@@ -12,7 +12,7 @@ import fr.utc.assos.uvweb.UVDetailFragment;
  * This activity is mostly just a 'shell' activity containing nothing more than
  * a {@link fr.utc.assos.uvweb.UVDetailFragment}.
  */
-public class UVDetailActivity extends UVwebMenuActivity {
+public class UVDetailActivity extends UVwebActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
