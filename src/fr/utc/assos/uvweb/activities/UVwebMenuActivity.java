@@ -10,23 +10,23 @@ import fr.utc.assos.uvweb.R;
  * Every activity of the application requiring such a menu must extend this class
  */
 public abstract class UVwebMenuActivity extends UVwebActivity {
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getSupportMenuInflater().inflate(R.menu.activities_global, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.activities_global, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.about:
-                startActivity(new Intent(this, AboutActivity.class));
-                return true;
-            case R.id.licenses:
-                startActivity(new Intent(this, LicensesActivity.class));
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.about:
+				startActivity(new Intent(this, AboutActivity.class));
+				return true;
+			case R.id.licenses:
+				startActivity(new Intent(this, LicensesActivity.class));
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
 }

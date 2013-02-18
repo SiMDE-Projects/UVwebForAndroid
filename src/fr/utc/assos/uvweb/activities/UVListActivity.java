@@ -23,71 +23,71 @@ import fr.utc.assos.uvweb.UVListFragment;
  * interface to listen for UV selections.
  */
 public class UVListActivity extends UVwebMenuActivity implements
-        UVListFragment.Callbacks {
+		UVListFragment.Callbacks {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
-    private boolean mTwoPane;
+	/**
+	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
+	 * device.
+	 */
+	private boolean mTwoPane;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_uv_list);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_uv_list);
 
-        getSupportActionBar().setHomeButtonEnabled(false);
+		getSupportActionBar().setHomeButtonEnabled(false);
 
-        if (findViewById(R.id.uv_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-large and
-            // res/values-sw600dp). If this view is present, then the
-            // activity should be in two-pane mode.
-            mTwoPane = true;
+		if (findViewById(R.id.uv_detail_container) != null) {
+			// The detail container view will be present only in the
+			// large-screen layouts (res/values-large and
+			// res/values-sw600dp). If this view is present, then the
+			// activity should be in two-pane mode.
+			mTwoPane = true;
 
-            // In two-pane mode, list items should be given the
-            // 'activated' state when touched.
-            ((UVListFragment) getSupportFragmentManager().findFragmentById(
-                    R.id.uv_list)).configureListView(true);
-        }
+			// In two-pane mode, list items should be given the
+			// 'activated' state when touched.
+			((UVListFragment) getSupportFragmentManager().findFragmentById(
+					R.id.uv_list)).configureListView(true);
+		}
 
-        // TODO: If exposing deep links into your app, handle intents here.
-    }
+		// TODO: If exposing deep links into your app, handle intents here.
+	}
 
-    /**
-     * Callback method from {@link UVListFragment.Callbacks} indicating that the
-     * UV with the given ID was selected.
-     */
-    @Override
-    public void onItemSelected(String id) {
-        if (id.equals(UVListFragment.DEFAULT_DETAIL_FRAGMENT)) {
-            // Default detail fragment management
-            if (mTwoPane) {
-                // Load default Detail fragment on tablet only
-                UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.uv_detail_container, fragment).commit();
-            }
-        } else {
-            // Dynamically load the selected UV
-            if (mTwoPane) {
-                // In two-pane mode, show the detail view in this activity by
-                // adding or replacing the detail fragment using a
-                // fragment transaction.
-                Bundle arguments = new Bundle();
-                arguments.putString(UVDetailFragment.ARG_UV_ID, id);
-                UVDetailFragment fragment = new UVDetailFragment();
-                fragment.setArguments(arguments);
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.uv_detail_container, fragment).commit();
+	/**
+	 * Callback method from {@link UVListFragment.Callbacks} indicating that the
+	 * UV with the given ID was selected.
+	 */
+	@Override
+	public void onItemSelected(String id) {
+		if (id.equals(UVListFragment.DEFAULT_DETAIL_FRAGMENT)) {
+			// Default detail fragment management
+			if (mTwoPane) {
+				// Load default Detail fragment on tablet only
+				UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.uv_detail_container, fragment).commit();
+			}
+		} else {
+			// Dynamically load the selected UV
+			if (mTwoPane) {
+				// In two-pane mode, show the detail view in this activity by
+				// adding or replacing the detail fragment using a
+				// fragment transaction.
+				Bundle arguments = new Bundle();
+				arguments.putString(UVDetailFragment.ARG_UV_ID, id);
+				UVDetailFragment fragment = new UVDetailFragment();
+				fragment.setArguments(arguments);
+				getSupportFragmentManager().beginTransaction()
+						.replace(R.id.uv_detail_container, fragment).commit();
 
-            } else {
-                // In single-pane mode, simply start the detail activity
-                // for the selected UV ID.
-                Intent detailIntent = new Intent(this, UVDetailActivity.class);
-                detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
-                startActivity(detailIntent);
-            }
-        }
-    }
+			} else {
+				// In single-pane mode, simply start the detail activity
+				// for the selected UV ID.
+				Intent detailIntent = new Intent(this, UVDetailActivity.class);
+				detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
+				startActivity(detailIntent);
+			}
+		}
+	}
 }

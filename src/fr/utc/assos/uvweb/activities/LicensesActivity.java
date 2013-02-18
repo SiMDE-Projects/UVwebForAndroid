@@ -11,25 +11,25 @@ import fr.utc.assos.uvweb.R;
  * used to build the application
  */
 public class LicensesActivity extends UVwebActivity {
-    public void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        super.onCreate(savedInstanceState);
+	public void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.licenses_activity);
+		setContentView(R.layout.licenses_activity);
 
-        WebView webView = (WebView) findViewById(R.id.web_view);
-        webView.setWebViewClient(new UVwebClient());
+		WebView webView = (WebView) findViewById(R.id.web_view);
+		webView.setWebViewClient(new UVwebClient());
 
-        setSupportProgressBarIndeterminateVisibility(true);
+		setSupportProgressBarIndeterminateVisibility(true);
 
-        webView.loadUrl("file:///android_asset/licenses.html");
-    }
+		webView.loadUrl("file:///android_asset/licenses.html");
+	}
 
-    private class UVwebClient extends WebViewClient {
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            setSupportProgressBarIndeterminateVisibility(false);
-        }
-    }
+	private class UVwebClient extends WebViewClient {
+		@Override
+		public void onPageFinished(WebView view, String url) {
+			super.onPageFinished(view, url);
+			setSupportProgressBarIndeterminateVisibility(false);
+		}
+	}
 }
