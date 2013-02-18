@@ -12,16 +12,16 @@ import com.actionbarsherlock.app.SherlockFragment;
  * used in tablet-mode only.
  */
 public class UVDetailDefaultFragment extends SherlockFragment {
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public UVDetailDefaultFragment() {
-    }
+	/**
+	 * Mandatory empty constructor for the fragment manager to instantiate the
+	 * fragment (e.g. upon screen orientation changes).
+	 */
+	public UVDetailDefaultFragment() {
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_uv_detail_default,
-                container, false);
-    }
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.fragment_uv_detail_default,
+				container, false);
+	}
 }

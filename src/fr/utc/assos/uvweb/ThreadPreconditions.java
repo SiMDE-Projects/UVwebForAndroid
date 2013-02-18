@@ -8,11 +8,11 @@ import android.os.Looper;
  * {@link fr.utc.assos.uvweb.adapters.UVAdapter}.
  */
 public class ThreadPreconditions {
-    public static void checkOnMainThread() {
-        if (BuildConfig.DEBUG) {
-            if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
-                throw new IllegalStateException("This method should be called from the Main Thread");
-            }
-        }
-    }
+	public static void checkOnMainThread() {
+		if (BuildConfig.DEBUG) {
+			if (Thread.currentThread() != Looper.getMainLooper().getThread()) {
+				throw new IllegalStateException("This method should be called from the Main Thread");
+			}
+		}
+	}
 }
