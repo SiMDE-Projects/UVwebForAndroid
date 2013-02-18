@@ -1,6 +1,5 @@
 package fr.utc.assos.uvweb.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -21,10 +20,6 @@ public abstract class UVwebActivity extends SherlockFragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, UVListActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                // http://developer.android.com/training/implementing-navigation/ancestral.html
-                startActivity(intent);
                 finish();
                 return true;
         }
