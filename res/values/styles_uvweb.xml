@@ -18,112 +18,155 @@
 
 <resources>
 
-    <style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light">
-        <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
-        <item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
-        <item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
-        <item name="actionBarTabStyle">@style/uvweb_ActionBarTabStyle</item>
-        <item name="actionDropDownStyle">@style/uvweb_DropDownNav</item>
-        <item name="actionBarStyle">@style/uvweb_solid_ActionBar</item>
+	<style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light">
+		<item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
+		<item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
+		<item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
+		<item name="actionBarTabStyle">@style/uvweb_ActionBarTabStyle</item>
+		<item name="actionDropDownStyle">@style/uvweb_DropDownNav</item>
+		<item name="actionBarStyle">@style/uvweb_solid_ActionBar</item>
 
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_uvweb</item>
-        <item name="android:popupMenuStyle">@style/uvweb_PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@style/uvweb_DropDownListView</item>
-        <item name="android:actionBarTabStyle">@style/uvweb_ActionBarTabStyle</item>
-        <item name="android:actionDropDownStyle">@style/uvweb_DropDownNav</item>
-        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar</item>
-        <item name="android:panelBackground">@drawable/menu_hardkey_panel_uvweb</item>
-    </style>
+		<item name="android:actionBarItemBackground">@drawable/selectable_background_uvweb</item>
+		<item name="android:popupMenuStyle">@style/uvweb_PopupMenu</item>
+		<item name="android:dropDownListViewStyle">@style/uvweb_DropDownListView</item>
+		<item name="android:actionBarTabStyle">@style/uvweb_ActionBarTabStyle</item>
+		<item name="android:actionDropDownStyle">@style/uvweb_DropDownNav</item>
+		<item name="android:actionBarStyle">@style/uvweb_solid_ActionBar</item>
+		<item name="android:panelBackground">@drawable/menu_hardkey_panel_uvweb</item>
+	</style>
 
-    <style name="Theme.UVweb.Logo" parent="Theme.UVweb">
-        <item name="actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
+	<style name="Theme.UVweb.Logo" parent="Theme.UVweb">
+		<item name="actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
 
-        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
-    </style>
+		<item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
+	</style>
 
-    <style name="Theme.UVweb.NoLogo" parent="Theme.UVweb">
-        <item name="actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
+	<style name="Theme.UVweb.NoLogo" parent="Theme.UVweb">
+		<item name="actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
 
-        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
-    </style>
+		<item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
+	</style>
 
-    <style name="uvweb_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
-        <item name="background">@color/main_color</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
-        <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
-        <item name="displayOptions">homeAsUp|showHome|showTitle</item>
+	<style name="uvweb_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
+		<item name="background">@color/main_color</item>
+		<item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
+		<item name="backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
+		<item name="progressBarStyle">@style/uvweb_ProgressBar</item>
+		<item name="displayOptions">homeAsUp|showHome|showTitle</item>
 
-        <item name="android:background">@color/main_color</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
-        <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
-        <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
-    </style>
+		<item name="android:background">@color/main_color</item>
+		<item name="android:backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
+		<item name="android:backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
+		<item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
+		<item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
+	</style>
 
-    <style name="uvweb_solid_ActionBar_Logo" parent="uvweb_solid_ActionBar">
-        <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@drawable/uvweb_logo</item>
+	<style name="uvweb_solid_ActionBar_Logo" parent="uvweb_solid_ActionBar">
+		<item name="displayOptions">useLogo|showHome</item>
+		<item name="logo">@drawable/uvweb_logo</item>
 
-        <item name="android:displayOptions">useLogo|showHome</item>
-        <item name="android:logo">@drawable/uvweb_logo</item>
-    </style>
+		<item name="android:displayOptions">useLogo|showHome</item>
+		<item name="android:logo">@drawable/uvweb_logo</item>
+	</style>
 
-    <style name="uvweb_solid_ActionBar_NoLogo" parent="uvweb_solid_ActionBar">
-        <item name="displayOptions">showTitle|homeAsUp</item>
+	<style name="uvweb_solid_ActionBar_NoLogo" parent="uvweb_solid_ActionBar">
+		<item name="displayOptions">showTitle|homeAsUp</item>
 
-        <item name="android:displayOptions">showTitle|homeAsUp</item>
-    </style>
+		<item name="android:displayOptions">showTitle|homeAsUp</item>
+	</style>
 
-    <style name="uvweb_transparent_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
-        <item name="background">@drawable/ab_transparent_uvweb</item>
-        <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
+	<style name="uvweb_transparent_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
+		<item name="background">@drawable/ab_transparent_uvweb</item>
+		<item name="progressBarStyle">@style/uvweb_ProgressBar</item>
 
-        <item name="android:background">@drawable/ab_transparent_uvweb</item>
-        <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
-    </style>
+		<item name="android:background">@drawable/ab_transparent_uvweb</item>
+		<item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
+	</style>
 
-    <style name="uvweb_PopupMenu" parent="@style/Widget.Sherlock.Light.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
-    </style>
+	<style name="uvweb_PopupMenu" parent="@style/Widget.Sherlock.Light.ListPopupWindow">
+		<item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
+	</style>
 
-    <style name="uvweb_DropDownListView" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_uvweb</item>
-    </style>
+	<style name="uvweb_DropDownListView" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
+		<item name="android:listSelector">@drawable/selectable_background_uvweb</item>
+	</style>
 
-    <style name="uvweb_ActionBarTabStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
-        <item name="background">@drawable/tab_indicator_ab_uvweb</item>
+	<style name="uvweb_ActionBarTabStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
+		<item name="background">@drawable/tab_indicator_ab_uvweb</item>
 
-        <item name="android:background">@drawable/tab_indicator_ab_uvweb</item>
-    </style>
+		<item name="android:background">@drawable/tab_indicator_ab_uvweb</item>
+	</style>
 
-    <style name="uvweb_DropDownNav" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
-        <item name="background">@drawable/spinner_background_ab_uvweb</item>
+	<style name="uvweb_DropDownNav" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
+		<item name="background">@drawable/spinner_background_ab_uvweb</item>
 
-        <item name="android:background">@drawable/spinner_background_ab_uvweb</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_uvweb</item>
-    </style>
+		<item name="android:background">@drawable/spinner_background_ab_uvweb</item>
+		<item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
+		<item name="android:dropDownSelector">@drawable/selectable_background_uvweb</item>
+	</style>
 
-    <style name="uvweb_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
-    </style>
+	<style name="uvweb_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
+		<item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
+	</style>
 
-    <style name="uvweb_sectionHeader">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <!-- See comments for @dimen/list_section_divider_min_height -->
-        <!--<item name="android:minHeight">@dimen/list_section_divider_min_height</item>-->
-        <item name="android:minHeight">32dip</item>
-        <item name="android:background">@drawable/list_section_divider_holo_custom</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/main_color</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">8dip</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textAllCaps">true</item>
-    </style>
+	<style name="uvweb_sectionHeader">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<!-- See comments for @dimen/list_section_divider_min_height -->
+		<!--<item name="android:minHeight">@dimen/list_section_divider_min_height</item>-->
+		<item name="android:minHeight">32dip</item>
+		<item name="android:background">@drawable/list_section_divider_holo_custom</item>
+		<item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">@color/main_color</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:paddingLeft">8dip</item>
+		<item name="android:ellipsize">end</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:textAllCaps">true</item>
+	</style>
+
+	<!-- UV item styles -->
+	<!-- Default styles -->
+	<style name="uvweb_uv_root_default">
+		<item name="android:orientation">horizontal</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+	</style>
+	<style name="uvweb_uv_name_default">
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:textStyle">bold</item>
+		<item name="android:typeface">normal</item>
+		<item name="android:textColor">@color/main_color</item>
+	</style>
+	<style name="uvweb_uv_description_default">
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:gravity">right</item>
+	</style>
+	<style name="uvweb_uv_rate_default">
+		<item name="android:layout_height">match_parent</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:textIsSelectable">false</item>
+		<item name="android:gravity">right</item>
+	</style>
+
+	<!-- Actual styles (phones) -->
+	<style name="uvweb_uv_root" parent="@style/uvweb_uv_name_default">
+	</style>
+
+	<style name="uvweb_uv_name" parent="@style/uvweb_uv_name_default">
+		<item name="android:textSize">35sp</item>
+	</style>
+
+	<style name="uvweb_uv_description" parent="@style/uvweb_uv_description_default">
+		<item name="android:textSize">15sp</item>
+	</style>
+
+	<style name="uvweb_uv_rate" parent="@style/uvweb_uv_rate_default">
+		<item name="android:textSize">22sp</item>
+	</style>
 
 </resources>

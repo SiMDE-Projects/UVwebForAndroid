@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<!-- UV item styles -->
+	<style name="uvweb_uv_root" parent="@style/uvweb_uv_root_default">
+		<item name="android:background">@drawable/selectable_background_list_uvweb</item>
+	</style>
+	<style name="uvweb_uv_name" parent="@style/uvweb_uv_name_default">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textSize">36sp</item>
+	</style>
+	<style name="uvweb_uv_description" parent="@style/uvweb_uv_description_default">
+		<item name="android:textSize">12sp</item>
+	</style>
+	<style name="uvweb_uv_rate" parent="@style/uvweb_uv_rate_default">
+		<item name="android:textSize">22sp</item>
+	</style>
+</resources>
