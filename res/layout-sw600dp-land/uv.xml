@@ -3,21 +3,17 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-	android:background="@drawable/selectable_background_list_uvweb"
-	android:paddingLeft="24dp"
-	android:paddingRight="16dp"
-	android:paddingTop="8dp"
-	android:paddingBottom="8dp">
+	android:background="@drawable/selectable_background_list_uvweb" >
 
     <TextView
         android:id="@+id/uvcode"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:textSize="48sp"
+        android:textSize="36sp"
         android:layout_gravity="center_vertical"
         android:textStyle="bold"
         android:typeface="normal"
-        android:textColor="@color/abs__holo_blue_light" />
+        android:textColor="@color/main_color" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -29,13 +25,13 @@
             android:id="@+id/desc"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:gravity="right" />
         <TextView
             android:id="@+id/rate"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
-            android:textSize="22sp"
+            android:textSize="16sp"
             android:textIsSelectable="false"
             android:gravity="right" />
 
