@@ -126,8 +126,20 @@
 		<item name="android:textAllCaps">true</item>
 	</style>
 
+	<!-- UV list styles -->
+		<!-- Default styles -->
+	<style name="uvweb_uv_list_default">
+		<item name="android:paddingLeft">16dp</item>
+		<item name="android:paddingRight">16dp</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">match_parent</item>
+	</style>
+		<!-- Actual styles (phones) -->
+	<style name="uvweb_uv_list" parent="@style/uvweb_uv_list_default">
+	</style>
+
 	<!-- UV item styles -->
-	<!-- Default styles -->
+		<!-- Default styles -->
 	<style name="uvweb_uv_root_default">
 		<item name="android:orientation">horizontal</item>
 		<item name="android:layout_width">match_parent</item>
@@ -154,7 +166,7 @@
 		<item name="android:gravity">right</item>
 	</style>
 
-	<!-- Actual styles (phones) -->
+		<!-- Actual styles (phones) -->
 	<style name="uvweb_uv_root" parent="@style/uvweb_uv_root_default">
 	</style>
 

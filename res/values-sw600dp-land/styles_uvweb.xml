@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- UV list styles -->
+	<style name="uvweb_uv_list" parent="@style/uvweb_uv_list_default">
+		<item name="android:paddingRight">0dp</item>
+	</style>
+
 	<!-- UV item styles -->
 	<style name="uvweb_uv_root" parent="@style/uvweb_uv_root_default">
 		<item name="android:background">@drawable/selectable_background_list_uvweb</item>

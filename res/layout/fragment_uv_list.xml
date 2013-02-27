@@ -6,12 +6,10 @@
 
     <com.emilsjolander.components.stickylistheaders.StickyListHeadersListView
             android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
             android:clipToPadding="false"
             android:fastScrollEnabled="true"
             android:fastScrollAlwaysVisible="true"
-			android:padding="16dp"/>
+			style="@style/uvweb_uv_list"/>
 
     <ViewStub
             android:id="@android:id/empty"
