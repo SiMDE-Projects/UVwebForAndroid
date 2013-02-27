@@ -41,14 +41,6 @@
                 android:value=".activities.UVListActivity" />
         </activity>
         <activity
-                android:name=".activities.TestActivity"
-                android:label="Test"
-                android:parentActivityName=".activities.UVListActivity" >
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".activities.UVListActivity" />
-        </activity>
-        <activity
             android:name=".activities.LicensesActivity"
             android:label="@string/licenses"
             android:parentActivityName=".activities.UVListActivity" >
