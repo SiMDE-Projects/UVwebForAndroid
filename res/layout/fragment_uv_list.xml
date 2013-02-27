@@ -11,8 +11,7 @@
             android:clipToPadding="false"
             android:fastScrollEnabled="true"
             android:fastScrollAlwaysVisible="true"
-			android:divider="@drawable/divider"
-			android:dividerHeight="1dp"/>
+			android:padding="16dp"/>
 
     <ViewStub
             android:id="@android:id/empty"

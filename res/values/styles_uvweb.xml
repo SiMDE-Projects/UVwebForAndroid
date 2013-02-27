@@ -132,6 +132,7 @@
 		<item name="android:orientation">horizontal</item>
 		<item name="android:layout_width">match_parent</item>
 		<item name="android:layout_height">wrap_content</item>
+		<item name="android:padding">8dp</item>
 	</style>
 	<style name="uvweb_uv_name_default">
 		<item name="android:layout_height">match_parent</item>
@@ -154,7 +155,7 @@
 	</style>
 
 	<!-- Actual styles (phones) -->
-	<style name="uvweb_uv_root" parent="@style/uvweb_uv_name_default">
+	<style name="uvweb_uv_root" parent="@style/uvweb_uv_root_default">
 	</style>
 
 	<style name="uvweb_uv_name" parent="@style/uvweb_uv_name_default">
