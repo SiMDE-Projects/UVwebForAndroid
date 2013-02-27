@@ -119,7 +119,7 @@ public class UVwebContent {
 				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
 				"proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(2009, 11, 5);
+		calendar.set(2009, Calendar.NOVEMBER, 5);
 		addComment(new UVComment("amasciul", calendar, commentString, 5));
 		addComment(new UVComment("amasciul", calendar, commentString, 5));
 		addComment(new UVComment("amasciul", calendar, commentString, 5));
