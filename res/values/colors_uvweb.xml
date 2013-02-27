@@ -20,4 +20,5 @@
     <color name="pressed_uvweb">#CC33B5E5</color>
     <color name="uvdetail_header_background">#FFDDDDDD</color>
     <color name="main_color">#FF73BBAB</color>
+	<color name="list_divider">#1a000000</color>
 </resources>

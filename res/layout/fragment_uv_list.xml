@@ -10,7 +10,9 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:fastScrollEnabled="true"
-            android:fastScrollAlwaysVisible="true"/>
+            android:fastScrollAlwaysVisible="true"
+			android:divider="@drawable/divider"
+			android:dividerHeight="1dp"/>
 
     <ViewStub
             android:id="@android:id/empty"
