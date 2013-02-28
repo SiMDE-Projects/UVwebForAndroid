@@ -23,6 +23,8 @@ import java.util.List;
  * It implements both SectionIndexer and StickyListHeadersAdapter interfaces
  */
 public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyListHeadersAdapter {
+	private static final String TAG = "UVListAdapter";
+
 	private List<UVwebContent.UV> mUVs = Collections.emptyList();
 	private HashMap<String, Integer> mSectionToPosition = new HashMap<String, Integer>();
 	private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>(); // TODO: int[] ?
