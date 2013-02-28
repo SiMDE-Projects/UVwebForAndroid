@@ -26,12 +26,13 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * interface.
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
+	private static final String TAG = "UVListFragment";
+
 	/**
 	 * The String representing a special id for {@link fr.utc.assos.uvweb.activities.UVListActivity},
 	 * indicating that the default detail fragment has to be shown.
 	 */
 	public static final String DEFAULT_DETAIL_FRAGMENT = "default_detail_fragment";
-	private static final String TAG = "UVListFragment";
 	/**
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
@@ -156,7 +157,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		} else {
 			mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
 		}
-
 	}
 
 	private void setActivatedPosition(int position) {
@@ -175,7 +175,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				container, false);
 
 		// ListView setup
-		mListView = (StickyListHeadersListView) rootView.findViewById(android.R.id.list);
+		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 

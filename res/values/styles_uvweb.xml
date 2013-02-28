@@ -18,7 +18,7 @@
 
 <resources>
 
-	<style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light">
+	<style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light.DarkActionBar">
 		<item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
 		<item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
 		<item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
@@ -47,7 +47,7 @@
 		<item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
 	</style>
 
-	<style name="uvweb_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid">
+	<style name="uvweb_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
 		<item name="background">@color/main_color</item>
 		<item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
 		<item name="backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
@@ -182,5 +182,9 @@
 	<style name="uvweb_uv_rate" parent="@style/uvweb_uv_rate_default">
 		<item name="android:textSize">22sp</item>
 	</style>
+
+    <style name="FastscrollThemedListView" parent="@android:style/Widget.ListView">
+        <item name="android:textColorPrimary">?android:textColorPrimaryInverse</item>
+    </style>
 
 </resources>
