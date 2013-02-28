@@ -6,11 +6,9 @@ import android.view.ContextThemeWrapper;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 28/02/13
- * Time: 17:51
- * To change this template use File | Settings | File Templates.
+ * A list view that inherits StickyHeadersListView, in order to easily implement sticky headers.
+ * It also implements the fastscroll workaround to fix wrong fastscroll color on devices running Android < 3.0.
+ * See https://gist.github.com/DHuckaby/d6b1d9c8e7f9d70c39de for more information.
  */
 public class FastscrollThemedStickyListHeadersListView extends StickyListHeadersListView {
 	public FastscrollThemedStickyListHeadersListView(Context context) {

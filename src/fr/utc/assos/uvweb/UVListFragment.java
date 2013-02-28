@@ -12,7 +12,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
@@ -22,8 +21,7 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * selection. This helps indicate which item is currently being viewed in a
  * {@link UVDetailFragment}.
  * <p/>
- * Activities containing this fragment MUST implement the {@link Callbacks}
- * interface.
+ * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
 	private static final String TAG = "UVListFragment";
@@ -63,7 +61,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	/**
 	 * The associated ListView object
 	 */
-	private StickyListHeadersListView mListView;
+	private FastscrollThemedStickyListHeadersListView mListView;
 	/**
 	 * The {@link fr.utc.assos.uvweb.adapters.UVAdapter} ListAdapter instance
 	 */
