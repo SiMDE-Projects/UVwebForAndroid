@@ -23,37 +23,35 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
 public class UVDetailFragment extends SherlockFragment {
-    private static final String TAG = "UVDetailFragment";
+	private static final String TAG = "UVDetailFragment";
 
-    /**
-     * The fragment argument representing the UV ID that this fragment
-     * represents.
-     */
-    public static final String ARG_UV_ID = "item_id";
+	/**
+	 * The fragment argument representing the UV ID that this fragment
+	 * represents.
+	 */
+	public static final String ARG_UV_ID = "item_id";
+	/**
+	 * The UV this fragment is presenting.
+	 */
+	private UVwebContent.UV mUV;
+	/**
+	 * The ListView containing all comment items.
+	 */
+	private ListView mListView;
 
-    /**
-     * The UV this fragment is presenting.
-     */
-    private UVwebContent.UV mUV;
+	/**
+	 * Mandatory empty constructor for the fragment manager to instantiate the
+	 * fragment (e.g. upon screen orientation changes).
+	 */
+	public UVDetailFragment() {
+	}
 
-    /**
-     * The ListView containing all comment items.
-     */
-    private ListView mListView;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public UVDetailFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Fragment configuration
-        setHasOptionsMenu(true);
+		// Fragment configuration
+		setHasOptionsMenu(true);
 
 		final Configuration config = getResources().getConfiguration();
 		if (config.smallestScreenWidthDp != 600 || config.orientation != Configuration.ORIENTATION_LANDSCAPE) {
@@ -62,73 +60,73 @@ public class UVDetailFragment extends SherlockFragment {
 			setRetainInstance(true);
 		}
 
-        if (getArguments().containsKey(ARG_UV_ID)) {
-            // Load the UV specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mUV = UVwebContent.UV_MAP.get(getArguments().getString(
-                    ARG_UV_ID));
+		if (getArguments().containsKey(ARG_UV_ID)) {
+			// Load the UV specified by the fragment
+			// arguments. In a real-world scenario, use a Loader
+			// to load content from a content provider.
+			mUV = UVwebContent.UV_MAP.get(getArguments().getString(
+					ARG_UV_ID));
 
-            getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
-        }
-    }
+			getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
+		}
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_uv_detail,
-                container, false);
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_uv_detail,
+				container, false);
 
-        mListView = (ListView) rootView.findViewById(android.R.id.list);
+		mListView = (ListView) rootView.findViewById(android.R.id.list);
 
-        UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
-        adapter.updateComments(UVwebContent.COMMENTS);
+		UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
+		adapter.updateComments(UVwebContent.COMMENTS);
 
-        // Show the UV as text in a TextView.
-        if (mUV != null) {
-            View headerView = rootView.findViewById(android.R.id.empty);
-            if (adapter.isEmpty()) {
+		// Show the UV as text in a TextView.
+		if (mUV != null) {
+			View headerView = rootView.findViewById(android.R.id.empty);
+			if (adapter.isEmpty()) {
 				ViewStub headerViewStub = (ViewStub) headerView;
 				headerViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
-                    @Override
-                    public void onInflate(ViewStub stub, View inflated) {
-                	mListView.setEmptyView(inflated);
-                    setHeaderData(inflated);
-                    }
-                });
+					@Override
+					public void onInflate(ViewStub stub, View inflated) {
+						mListView.setEmptyView(inflated);
+						setHeaderData(inflated);
+					}
+				});
 				headerViewStub.inflate();
 				headerViewStub = null;
-            } else {
-                headerView = inflater.inflate(R.layout.uv_detail_header, null);
-                setHeaderData(headerView);
-                mListView.addHeaderView(headerView);
-            }
-        }
+			} else {
+				headerView = inflater.inflate(R.layout.uv_detail_header, null);
+				setHeaderData(headerView);
+				mListView.addHeaderView(headerView);
+			}
+		}
 
-        mListView.setAdapter(adapter);
+		mListView.setAdapter(adapter);
 
-        return rootView;
-    }
+		return rootView;
+	}
 
-    private void setHeaderData(View inflatedHeader) {
-        ((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(
+	private void setHeaderData(View inflatedHeader) {
+		((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(
 				UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
-        ((TextView) inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
-        ((TextView) inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
-    }
+		((TextView) inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
+		((TextView) inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
+	}
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_uv_detail, menu);
-    }
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.fragment_uv_detail, menu);
+	}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                Toast.makeText(getActivity(), "Refresh clicked", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_refresh:
+				Toast.makeText(getActivity(), "Refresh clicked", Toast.LENGTH_SHORT).show();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
 }
