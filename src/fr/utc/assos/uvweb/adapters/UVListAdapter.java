@@ -82,7 +82,35 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		descView.setText(UV.getDescription());
 		rateView.setText(UV.getFormattedRate());
 
+		final View separatorView = UVwebHolder.get(convertView, R.id.list_divider);
+		if (separatorView != null) {
+			// In tablet mode, we need to remove the last horizontal divider from the section, because these
+			// are manually drawn
+			final int currentSection = computeSectionFromPosition(position);
+			if (currentSection != computeSectionFromPosition(position + 1) || currentSection == mSections.length - 1) {
+				separatorView.setVisibility(View.GONE);
+			}
+			else {
+				separatorView.setVisibility(View.VISIBLE);
+			}
+		}
+
 		return convertView;
+	}
+
+	/** This private method is used to compute the @return section from a
+	 * @param position
+	 */
+	private int computeSectionFromPosition(int position) {
+		int prevIndex = 0;
+		for (int i = 0; i < mSections.length; i++) {
+			if (getPositionForSection(i) > position && prevIndex <= position) {
+				prevIndex = i;
+				break;
+			}
+			prevIndex = i;
+		}
+		return prevIndex;
 	}
 
 	/**
