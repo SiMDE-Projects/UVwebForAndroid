@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:layout_height="wrap_content"
-			  android:layout_width="match_parent"
-			  android:orientation="vertical"
-			  android:paddingLeft="32dp"
-			  android:paddingRight="16dp"
-			  android:background="@drawable/selectable_background_list_uvweb">
-	<LinearLayout
-			style="@style/uvweb_uv_root">
+              android:layout_height="wrap_content"
+              android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:paddingLeft="32dp"
+              android:paddingRight="16dp"
+              android:background="@drawable/selectable_background_list_uvweb">
 
-		<TextView
-				android:id="@+id/uvcode"
-				style="@style/uvweb_uv_name"/>
+    <LinearLayout
+            style="@style/uvweb_uv_root">
 
-		<LinearLayout
-				android:orientation="vertical"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content">
+        <TextView
+                android:id="@+id/uvcode"
+                style="@style/uvweb_uv_name"/>
 
-			<TextView
-					android:id="@+id/desc"
-					style="@style/uvweb_uv_description"/>
-			<TextView
-					android:id="@+id/rate"
-					style="@style/uvweb_uv_rate"/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-		</LinearLayout>
+            <TextView
+                    android:id="@+id/desc"
+                    style="@style/uvweb_uv_description"/>
 
-	</LinearLayout>
-	<View android:background="@color/list_divider"
-		  android:layout_height="1dp"
-		  android:layout_width="match_parent"/>
+            <TextView
+                    android:id="@+id/rate"
+                    style="@style/uvweb_uv_rate"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+            android:background="@color/list_divider"
+            android:layout_height="1dp"
+            android:layout_width="match_parent"/>
 </LinearLayout>
