@@ -83,7 +83,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// Adapter setup
 		mAdapter = new UVListAdapter(getSherlockActivity());
-		//mAdapter.updateUVs(UVwebContent.UVS);
+		mAdapter.updateUVs(UVwebContent.UVS);
 	}
 
 	@Override
