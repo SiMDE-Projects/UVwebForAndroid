@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default height of an action bar. -->
+    <dimen name="uv_list_empty_right_padding">0px</dimen>
+</resources>
