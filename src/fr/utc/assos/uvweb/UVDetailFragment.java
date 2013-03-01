@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -53,7 +54,13 @@ public class UVDetailFragment extends SherlockFragment {
 
         // Fragment configuration
         setHasOptionsMenu(true);
-        setRetainInstance(true);
+
+		final Configuration config = getResources().getConfiguration();
+		if (config.smallestScreenWidthDp != 600 || config.orientation != Configuration.ORIENTATION_LANDSCAPE) {
+			// Workaround, we do not want to retain instance for a Nexus 7 for instance,
+			// since in portrait mode only the list is displayed
+			setRetainInstance(true);
+		}
 
         if (getArguments().containsKey(ARG_UV_ID)) {
             // Load the UV specified by the fragment
