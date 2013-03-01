@@ -25,6 +25,7 @@ import fr.utc.assos.uvweb.UVListFragment;
 public class UVListActivity extends UVwebMenuActivity implements
 		UVListFragment.Callbacks {
 
+	private static final String TAG = "UVListActivity";
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
@@ -40,8 +41,8 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 		if (findViewById(R.id.uv_detail_container) != null) {
 			// The detail container view will be present only in the
-			// large-screen layouts (res/values-large and
-			// res/values-sw600dp). If this view is present, then the
+			// large-screen layouts (res/values-sw720dp and
+			// res/values-sw600dp-land). If this view is present, then the
 			// activity should be in two-pane mode.
 			mTwoPane = true;
 
