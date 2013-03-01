@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:padding="8dp">
+			  android:orientation="vertical"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:padding="8dp">
 
-    <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+	<LinearLayout
+			android:orientation="horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent">
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="amasciul"
-                android:id="@+id/userid"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:textColor="@color/main_color"
-                android:layout_gravity="center_vertical"
-                android:drawableLeft="@drawable/ic_contact_picture"
-                android:drawablePadding="10dp"/>
+		<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:text="amasciul"
+				android:id="@+id/userid"
+				android:textStyle="bold"
+				android:textSize="24sp"
+				android:textColor="@color/main_color"
+				android:layout_gravity="center_vertical"
+				android:drawableLeft="@drawable/ic_contact_picture"
+				android:drawablePadding="10dp"/>
 
-        <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical">
+		<LinearLayout
+				android:orientation="vertical"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical">
 
-            <TextView
-                    android:id="@+id/date"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="3 septembre 1985"
-                    android:gravity="center_vertical|right"
-                    android:textSize="16sp"/>
+			<TextView
+					android:id="@+id/date"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="3 septembre 1985"
+					android:gravity="center_vertical|right"
+					android:textSize="16sp"/>
 
-            <TextView
-                    android:id="@+id/rate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="8/10"
-                    android:gravity="center_vertical|right"
-                    android:textSize="24sp"
-                    android:textStyle="bold"/>
+			<TextView
+					android:id="@+id/rate"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="8/10"
+					android:gravity="center_vertical|right"
+					android:textSize="24sp"
+					android:textStyle="bold"/>
 
-        </LinearLayout>
+		</LinearLayout>
 
-    </LinearLayout>
+	</LinearLayout>
 
-    <TextView
-            android:id="@+id/comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/uvcommentexample"
-/>
+	<TextView
+			android:id="@+id/comment"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/uvcommentexample"
+			/>
 
 </LinearLayout>
