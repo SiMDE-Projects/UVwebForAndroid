@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- Value of the list's empty view's right padding, to mind the border. -->
-    <dimen name="uv_list_empty_right_padding">6px</dimen>
-</resources>

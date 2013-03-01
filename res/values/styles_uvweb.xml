@@ -193,4 +193,18 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <!-- Empty uv list style -->
+    <style name="uv_empty_list_default">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">23sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:text">@string/no_uvs</item>
+    </style>
+    <!-- Default style -->
+    <!-- Actual style -->
+    <style name="uv_empty_list" parent="@style/uv_empty_list_default">
+    </style>
+
 </resources>
