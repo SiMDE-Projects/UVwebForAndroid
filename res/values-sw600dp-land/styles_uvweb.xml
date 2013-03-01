@@ -3,13 +3,10 @@
     <!-- UV list styles -->
     <style name="uvweb_uv_list" parent="@style/uvweb_uv_list_default">
         <item name="android:paddingRight">0dp</item>
+        <item name="android:divider">@null</item>
     </style>
 
     <!-- UV item styles -->
-    <style name="uvweb_uv_root" parent="@style/uvweb_uv_root_default">
-        <item name="android:background">@drawable/selectable_background_list_uvweb</item>
-    </style>
-
     <style name="uvweb_uv_name" parent="@style/uvweb_uv_name_default">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">36sp</item>
