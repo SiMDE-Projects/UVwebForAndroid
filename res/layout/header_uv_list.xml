@@ -4,10 +4,8 @@
 			  android:layout_width="match_parent"
 			  android:layout_height="wrap_content"
 			  android:orientation="vertical"
-			  android:background="@drawable/selectable_background_list_uvweb"
 			  android:focusable="false"
-			  android:paddingLeft="16dp"
-			  android:paddingRight="16dp">
+		style="@style/uvweb_stickyheader_root">
 
 	<TextView
 			android:id="@+id/header_text"

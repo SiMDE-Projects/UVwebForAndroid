@@ -29,4 +29,11 @@
         <item name="android:paddingRight">@dimen/uv_list_empty_right_padding</item>
         <item name="android:background">@drawable/selectable_background_list_uvweb</item>
     </style>
+
+	<!-- Sticky header style -->
+	<style name="uvweb_stickyheader_root" parent="@style/uvweb_stickyheader_root_default">
+		<item name="android:paddingLeft">24dp</item>
+		<item name="android:paddingRight">16dp</item>
+		<item name="android:background">@drawable/selectable_background_list_uvweb</item>
+	</style>
 </resources>
