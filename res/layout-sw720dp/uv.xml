@@ -3,8 +3,9 @@
 			  android:layout_height="wrap_content"
 			  android:layout_width="match_parent"
 			  android:orientation="vertical"
-			  android:background="@drawable/selectable_background_list_uvweb"
-		>
+			  android:paddingLeft="32dp"
+			  android:paddingRight="16dp"
+			  android:background="@drawable/selectable_background_list_uvweb">
 	<LinearLayout
 			style="@style/uvweb_uv_root">
 

@@ -2,7 +2,6 @@
 <resources>
     <!-- UV list styles -->
     <style name="uvweb_uv_list" parent="@style/uvweb_uv_list_default">
-        <item name="android:paddingRight">0dp</item>
         <item name="android:divider">@null</item>
     </style>
 
