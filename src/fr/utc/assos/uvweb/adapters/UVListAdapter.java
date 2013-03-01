@@ -24,7 +24,6 @@ import java.util.List;
  */
 public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyListHeadersAdapter {
 	private static final String TAG = "UVListAdapter";
-
 	private List<UVwebContent.UV> mUVs = Collections.emptyList();
 	private HashMap<String, Integer> mSectionToPosition = new HashMap<String, Integer>();
 	private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>(); // TODO: int[] ?
@@ -89,8 +88,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 			final int currentSection = computeSectionFromPosition(position);
 			if (currentSection != computeSectionFromPosition(position + 1) || currentSection == mSections.length - 1) {
 				separatorView.setVisibility(View.GONE);
-			}
-			else {
+			} else {
 				separatorView.setVisibility(View.VISIBLE);
 			}
 		}
@@ -98,7 +96,9 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		return convertView;
 	}
 
-	/** This private method is used to compute the @return section from a
+	/**
+	 * This private method is used to compute the @return section from a
+	 *
 	 * @param position
 	 */
 	private int computeSectionFromPosition(int position) {
@@ -142,7 +142,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 		// Set header text as first char in name
 		TextView headerView = UVwebHolder.get(convertView, R.id.header_text);
-        headerView.setEnabled(false);
+		headerView.setEnabled(false);
 		headerView.setText((String.valueOf(getSectionName(position))));
 
 		return convertView;
