@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
 	private static final String TAG = "UVListFragment";
+
 	/**
 	 * The String representing a special id for {@link fr.utc.assos.uvweb.activities.UVListActivity},
 	 * indicating that the default detail fragment has to be shown.
@@ -174,6 +176,16 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mListView.setAdapter(mAdapter);
 
 		return rootView;
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		if (ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
+				Configuration.ORIENTATION_PORTRAIT)) {
+			// Workaround: on a device like the Nexus 7 which has two different fragment configurations,
+			// we need to manually remove the items when changing orientation
+			menu.removeItem(R.id.menu_refresh);
+		}
 	}
 
 	@Override

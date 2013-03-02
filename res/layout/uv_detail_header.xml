@@ -17,9 +17,8 @@
 				android:layout_width="wrap_content"
 				android:textSize="60sp"
 				android:textStyle="bold"
-				android:typeface="normal"
 				android:textColor="@color/main_color"
-				android:textIsSelectable="true" android:text="MT23" android:layout_gravity="center_vertical"/>
+				android:text="MT23" android:layout_gravity="center_vertical"/>
 		<TextView
 				android:id="@+id/desc"
 				android:layout_height="wrap_content"
@@ -94,5 +93,4 @@
 					android:id="@+id/textView3" android:layout_gravity="right|center_vertical"/>
 		</LinearLayout>
 	</LinearLayout>
-
 </LinearLayout>
