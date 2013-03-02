@@ -34,6 +34,6 @@
 	<style name="uvweb_stickyheader_root" parent="@style/uvweb_stickyheader_root_default">
 		<item name="android:paddingLeft">32dp</item>
 		<item name="android:paddingRight">16dp</item>
-		<item name="android:background">@drawable/selectable_background_list_uvweb</item>
+		<item name="android:background">@drawable/list_background_holo</item>
 	</style>
 </resources>
