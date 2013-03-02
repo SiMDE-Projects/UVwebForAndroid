@@ -24,7 +24,6 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
 	private static final String TAG = "UVListFragment";
-
 	/**
 	 * The String representing a special id for {@link fr.utc.assos.uvweb.activities.UVListActivity},
 	 * indicating that the default detail fragment has to be shown.
@@ -79,15 +78,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// Fragment configuration
 		setHasOptionsMenu(true);
+		setRetainInstance(true);
 
 		// Adapter setup
 		mAdapter = new UVListAdapter(getSherlockActivity());
 		mAdapter.updateUVs(UVwebContent.UVS);
-	}
-
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState != null
