@@ -65,8 +65,7 @@ public class UVDetailFragment extends SherlockFragment {
 			// Load the UV specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			mUV = UVwebContent.UV_MAP.get(getArguments().getString(
-					ARG_UV_ID));
+			mUV = UVwebContent.UV_MAP.get(getArguments().getString(ARG_UV_ID));
 
 			getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
 		}
