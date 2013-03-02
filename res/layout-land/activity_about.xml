@@ -1,91 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:baselineAligned="false" >
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:baselineAligned="false">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:layout_weight="3" >
-
-            <ImageView
-                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/uvweb_logo" />
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_weight="3">
 
             <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/divider_horizontal_bright"
-                android:scaleType="fitXY" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/uvweb_logo"/>
+
+            <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/divider_horizontal_bright"
+                    android:scaleType="fitXY"/>
 
             <TextView
-                android:id="@+id/credits"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:textSize="20sp" />
+                    android:id="@+id/credits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:textSize="20sp"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_weight="4" >
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="15dp"
+                android:layout_weight="4">
 
             <Button
-                android:id="@+id/go_to_uvweb"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="@string/go_to_uvweb"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:onClick="openUVwebSite"/>
+                    android:id="@+id/go_to_uvweb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/go_to_uvweb"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:onClick="openUVwebSite"/>
 
             <Button
-                android:id="@+id/go_to_utc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="@string/go_to_utc"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:onClick="openUTCwebSite"/>
+                    android:id="@+id/go_to_utc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/go_to_utc"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:onClick="openUTCwebSite"/>
 
             <Button
-                android:id="@+id/contact"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:text="@string/contact"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:onClick="contactUs"/>
+                    android:id="@+id/contact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center"
+                    android:text="@string/contact"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:onClick="contactUs"/>
 
         </LinearLayout>
 
