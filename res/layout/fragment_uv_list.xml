@@ -9,6 +9,7 @@
             android:clipToPadding="false"
             android:fastScrollEnabled="true"
             android:fastScrollAlwaysVisible="true"
+            android:cacheColorHint="@android:color/transparent"
             style="@style/uvweb_uv_list"/>
 
     <ViewStub

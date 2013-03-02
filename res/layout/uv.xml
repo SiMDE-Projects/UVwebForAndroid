@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/uvweb_uv_root">
+              style="@style/uvweb_uv_root"
+              android:background="@drawable/selectable_background_list_uvweb">
 
     <TextView
             android:id="@+id/uvcode"

@@ -33,6 +33,8 @@
         <item name="android:actionDropDownStyle">@style/uvweb_DropDownNav</item>
         <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar</item>
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_uvweb</item>
+
+        <item name="android:windowBackground">@color/abs__background_holo_light</item>
     </style>
 
     <style name="Theme.UVweb.Logo" parent="Theme.UVweb">
@@ -140,8 +142,8 @@
     </style>
     <!-- Actual styles (phones) -->
     <style name="uvweb_uv_list" parent="@style/uvweb_uv_list_default">
-		<item name="android:paddingLeft">16dp</item>
-		<item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
     </style>
 
     <!-- UV item styles -->
@@ -158,7 +160,6 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:typeface">normal</item>
         <item name="android:textColor">@color/main_color</item>
     </style>
 
@@ -192,7 +193,7 @@
     </style>
 
     <!-- Empty uv list style -->
-		<!-- Default style -->
+    <!-- Default style -->
     <style name="uv_empty_list_default">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -201,16 +202,17 @@
         <item name="android:textStyle">bold</item>
         <item name="android:text">@string/no_uvs</item>
     </style>
-		<!-- Actual style -->
+    <!-- Actual style -->
     <style name="uv_empty_list" parent="@style/uv_empty_list_default">
     </style>
 
-	<!-- Sticky header style -->
-		<!-- Default style -->
-	<style name="uvweb_stickyheader_root_default">
-	</style>
-		<!-- Actual style -->
-	<style name="uvweb_stickyheader_root" parent="@style/uvweb_stickyheader_root_default">
-	</style>
+    <!-- Sticky header style -->
+    <!-- Default style -->
+    <style name="uvweb_stickyheader_root_default">
+    </style>
+    <!-- Actual style -->
+    <style name="uvweb_stickyheader_root" parent="@style/uvweb_stickyheader_root_default">
+        <item name="android:background">@color/abs__background_holo_light</item>
+    </style>
 
 </resources>
