@@ -20,8 +20,7 @@
                 android:textSize="60sp"
                 android:textStyle="bold"
                 android:typeface="normal"
-                android:textColor="@color/main_color"
-                android:textIsSelectable="true"/>
+                android:textColor="@color/main_color"/>
 
         <LinearLayout
                 android:orientation="vertical"
