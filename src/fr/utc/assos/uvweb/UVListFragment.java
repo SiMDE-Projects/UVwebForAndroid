@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -191,7 +190,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_search:
-				Toast.makeText(getActivity(), "Search clicked", Toast.LENGTH_SHORT).show();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
