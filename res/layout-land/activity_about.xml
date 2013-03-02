@@ -62,7 +62,8 @@
                 android:gravity="center"
                 android:text="@string/go_to_uvweb"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:onClick="openUVwebSite"/>
 
             <Button
                 android:id="@+id/go_to_utc"
@@ -72,7 +73,8 @@
                 android:gravity="center"
                 android:text="@string/go_to_utc"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:onClick="openUTCwebSite"/>
 
             <Button
                 android:id="@+id/contact"
@@ -82,7 +84,8 @@
                 android:gravity="center"
                 android:text="@string/contact"
                 android:textStyle="bold"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:onClick="contactUs"/>
 
         </LinearLayout>
 
