@@ -180,6 +180,7 @@
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">right</item>
+        <item name="android:textColor">@drawable/selectable_text_list_uvweb</item>
     </style>
 
     <style name="uvweb_uv_rate_default">
@@ -187,6 +188,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:gravity">right</item>
+        <item name="android:textColor">@drawable/selectable_text_list_uvweb</item>
     </style>
 
     <!-- Actual styles (phones) -->
