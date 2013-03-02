@@ -55,7 +55,7 @@ public class UVDetailFragment extends SherlockFragment {
 
 		if (!ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
 				Configuration.ORIENTATION_LANDSCAPE)) {
-			// Workaround, we do not want to retain instance for a device like the Nexus 7,
+			// Workaround: we do not want to retain instance for a device like the Nexus 7,
 			// since in portrait mode, only the list is displayed
 			setRetainInstance(true);
 		}

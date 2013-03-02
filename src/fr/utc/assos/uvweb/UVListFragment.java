@@ -180,7 +180,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		if (ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(), Configuration.ORIENTATION_PORTRAIT)) {
+		if (ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
+				Configuration.ORIENTATION_PORTRAIT)) {
+			// Workaround: on a device like the Nexus 7 which has two different fragment configurations,
+			// we need to manually remove the items when changing orientation
 			menu.removeItem(R.id.menu_refresh);
 		}
 	}
