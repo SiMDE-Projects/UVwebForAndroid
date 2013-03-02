@@ -12,8 +12,7 @@
             android:layout_height="match_parent"
             android:listSelector="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
-            android:background="@android:color/white"
-            />
+            android:background="@android:color/white"/>
 
     <ViewStub
             android:id="@android:id/empty"
