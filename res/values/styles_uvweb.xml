@@ -18,7 +18,7 @@
 
 <resources>
 
-    <style name="Theme.UVweb" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+    <style name="Theme.UVweb_Default" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
         <item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
@@ -35,6 +35,11 @@
         <item name="android:panelBackground">@drawable/menu_hardkey_panel_uvweb</item>
 
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
+    </style>
+
+    <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">
+        <item name="android:listViewStyle">@style/uvweb_listView</item>
+        <item name="android:spinnerItemStyle">@style/uvweb_spinnerItem</item>
     </style>
 
     <style name="Theme.UVweb.Logo" parent="Theme.UVweb">
@@ -109,6 +114,14 @@
 
     <style name="uvweb_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
+    </style>
+
+    <style name="uvweb_listView" parent="android:Widget.ListView">
+        <item name="android:listSelector">@drawable/list_selector_holo_light</item>
+    </style>
+
+    <style name="uvweb_spinnerItem" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+        <item name="android:textColor">#000000</item>
     </style>
 
     <style name="uvweb_sectionHeader">
