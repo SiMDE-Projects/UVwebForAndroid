@@ -109,7 +109,7 @@ public class UVDetailFragment extends SherlockFragment {
 
 	private void setHeaderData(View inflatedHeader) {
 		((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(
-				UVwebContent.UV_TITLE_FORMAT, mUV.getLetterCode(), mUV.getNumberCode())));
+				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
 		((TextView) inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
 		((TextView) inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
 	}
