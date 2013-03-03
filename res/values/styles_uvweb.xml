@@ -19,112 +19,58 @@
 <resources>
 
     <style name="Theme.UVweb_Default" parent="@style/Theme.Sherlock.Light.DarkActionBar">
-        <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
-        <item name="popupMenuStyle">@style/uvweb_PopupMenu</item>
-        <item name="dropDownListViewStyle">@style/uvweb_DropDownListView</item>
-        <item name="actionBarTabStyle">@style/uvweb_ActionBarTabStyle</item>
-        <item name="actionDropDownStyle">@style/uvweb_DropDownNav</item>
-        <item name="actionBarStyle">@style/uvweb_solid_ActionBar</item>
-
-        <item name="android:actionBarItemBackground">@drawable/selectable_background_uvweb</item>
-        <item name="android:popupMenuStyle">@style/uvweb_PopupMenu</item>
-        <item name="android:dropDownListViewStyle">@style/uvweb_DropDownListView</item>
-        <item name="android:actionBarTabStyle">@style/uvweb_ActionBarTabStyle</item>
-        <item name="android:actionDropDownStyle">@style/uvweb_DropDownNav</item>
-        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar</item>
-        <item name="android:panelBackground">@drawable/menu_hardkey_panel_uvweb</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.UVweb</item>
 
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
+
+
     </style>
 
     <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">
-        <item name="android:listViewStyle">@style/uvweb_listView</item>
-        <item name="android:spinnerItemStyle">@style/uvweb_spinnerItem</item>
+        <item name="android:listViewStyle">@style/ListView.UVweb</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItem.UVweb</item>
     </style>
 
     <style name="Theme.UVweb.Logo" parent="Theme.UVweb">
-        <item name="actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
-
-        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_Logo</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.UVweb.Logo</item>
     </style>
 
     <style name="Theme.UVweb.NoLogo" parent="Theme.UVweb">
-        <item name="actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
-
-        <item name="android:actionBarStyle">@style/uvweb_solid_ActionBar_NoLogo</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.UVweb.NoLogo</item>
     </style>
 
-    <style name="uvweb_solid_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
+    <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/main_color</item>
-        <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
-        <item name="backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
-        <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
+        <item name="progressBarStyle">@style/ProgressBar.UVweb</item>
         <item name="displayOptions">homeAsUp|showHome|showTitle</item>
-
-        <item name="android:background">@color/main_color</item>
-        <item name="android:backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
-        <item name="android:backgroundSplit">@drawable/ab_bottom_solid_uvweb</item>
-        <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
-        <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
     </style>
 
-    <style name="uvweb_solid_ActionBar_Logo" parent="uvweb_solid_ActionBar">
+    <style name="ActionBar.Solid.UVweb.Logo" parent="ActionBar.Solid.UVweb">
         <item name="displayOptions">useLogo|showHome</item>
         <item name="logo">@drawable/uvweb_logo</item>
-
-        <item name="android:displayOptions">useLogo|showHome</item>
-        <item name="android:logo">@drawable/uvweb_logo</item>
     </style>
 
-    <style name="uvweb_solid_ActionBar_NoLogo" parent="uvweb_solid_ActionBar">
+    <style name="ActionBar.Solid.UVweb.NoLogo" parent="ActionBar.Solid.UVweb">
         <item name="displayOptions">showTitle|homeAsUp</item>
-
-        <item name="android:displayOptions">showTitle|homeAsUp</item>
     </style>
 
-    <style name="uvweb_transparent_ActionBar" parent="@style/Widget.Sherlock.Light.ActionBar">
-        <item name="background">@drawable/ab_transparent_uvweb</item>
-        <item name="progressBarStyle">@style/uvweb_ProgressBar</item>
-
-        <item name="android:background">@drawable/ab_transparent_uvweb</item>
-        <item name="android:progressBarStyle">@style/uvweb_ProgressBar</item>
+    <style name="ActionBar.Transparent.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar">
+        <item name="progressBarStyle">@style/ProgressBar.UVweb</item>
     </style>
 
-    <style name="uvweb_PopupMenu" parent="@style/Widget.Sherlock.Light.ListPopupWindow">
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
-    </style>
-
-    <style name="uvweb_DropDownListView" parent="@style/Widget.Sherlock.Light.ListView.DropDown">
-        <item name="android:listSelector">@drawable/selectable_background_uvweb</item>
-    </style>
-
-    <style name="uvweb_ActionBarTabStyle" parent="@style/Widget.Sherlock.Light.ActionBar.TabView">
-        <item name="background">@drawable/tab_indicator_ab_uvweb</item>
-
-        <item name="android:background">@drawable/tab_indicator_ab_uvweb</item>
-    </style>
-
-    <style name="uvweb_DropDownNav" parent="@style/Widget.Sherlock.Light.Spinner.DropDown.ActionBar">
-        <item name="background">@drawable/spinner_background_ab_uvweb</item>
-
-        <item name="android:background">@drawable/spinner_background_ab_uvweb</item>
-        <item name="android:popupBackground">@drawable/menu_dropdown_panel_uvweb</item>
-        <item name="android:dropDownSelector">@drawable/selectable_background_uvweb</item>
-    </style>
-
-    <style name="uvweb_ProgressBar" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
+    <style name="ProgressBar.UVweb" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
         <item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
     </style>
 
-    <style name="uvweb_listView" parent="android:Widget.ListView">
+    <style name="ListView.UVweb" parent="android:Widget.ListView">
         <item name="android:listSelector">@drawable/list_selector_holo_light</item>
     </style>
 
-    <style name="uvweb_spinnerItem" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
+    <style name="SpinnerItem.UVweb" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
         <item name="android:textColor">#000000</item>
     </style>
 
-    <style name="uvweb_sectionHeader">
+    <style name="SectionHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <!-- See comments for @dimen/list_section_divider_min_height -->
@@ -143,32 +89,32 @@
     <!-- Workaround for the Fastscrolling wrong color on devices running Android < 3.0
         See https://gist.github.com/DHuckaby/d6b1d9c8e7f9d70c39de for more information
     -->
-    <style name="FastscrollThemedListView" parent="@android:style/Widget.ListView">
+    <style name="ListView.UVweb.fastScrollThemed" parent="@android:style/Widget.ListView">
         <item name="android:textColorPrimary">?android:textColorPrimaryInverse</item>
     </style>
 
     <!-- UV list styles -->
     <!-- Default styles -->
-    <style name="uvweb_uv_list_default">
+    <style name="ListDefault">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
     </style>
     <!-- Actual styles (phones) -->
-    <style name="uvweb_uv_list" parent="@style/uvweb_uv_list_default">
+    <style name="List" parent="@style/ListDefault">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
     </style>
 
     <!-- UV item styles -->
     <!-- Default styles -->
-    <style name="uvweb_uv_root_default">
+    <style name="RootDefault">
         <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">8dp</item>
     </style>
 
-    <style name="uvweb_uv_name_default">
+    <style name="NameDefault">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:gravity">center_vertical</item>
@@ -176,14 +122,14 @@
         <item name="android:textColor">@color/main_color</item>
     </style>
 
-    <style name="uvweb_uv_description_default">
+    <style name="DescriptionDefault">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:gravity">right</item>
         <item name="android:textColor">@drawable/selectable_text_list_uvweb</item>
     </style>
 
-    <style name="uvweb_uv_rate_default">
+    <style name="RateDefault">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:textIsSelectable">false</item>
@@ -192,24 +138,24 @@
     </style>
 
     <!-- Actual styles (phones) -->
-    <style name="uvweb_uv_root" parent="@style/uvweb_uv_root_default">
+    <style name="Root" parent="@style/RootDefault">
     </style>
 
-    <style name="uvweb_uv_name" parent="@style/uvweb_uv_name_default">
+    <style name="Name" parent="@style/NameDefault">
         <item name="android:textSize">35sp</item>
     </style>
 
-    <style name="uvweb_uv_description" parent="@style/uvweb_uv_description_default">
+    <style name="Description" parent="@style/DescriptionDefault">
         <item name="android:textSize">15sp</item>
     </style>
 
-    <style name="uvweb_uv_rate" parent="@style/uvweb_uv_rate_default">
+    <style name="Rate" parent="@style/RateDefault">
         <item name="android:textSize">22sp</item>
     </style>
 
     <!-- Empty uv list style -->
     <!-- Default style -->
-    <style name="uv_empty_list_default">
+    <style name="EmptyListDefault">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
@@ -218,15 +164,15 @@
         <item name="android:text">@string/no_uvs</item>
     </style>
     <!-- Actual style -->
-    <style name="uv_empty_list" parent="@style/uv_empty_list_default">
+    <style name="EmptyList" parent="@style/EmptyListDefault">
     </style>
 
     <!-- Sticky header style -->
     <!-- Default style -->
-    <style name="uvweb_stickyheader_root_default">
+    <style name="StickyHeaderRootDefault">
     </style>
     <!-- Actual style -->
-    <style name="uvweb_stickyheader_root" parent="@style/uvweb_stickyheader_root_default">
+    <style name="StickyHeaderRoot" parent="@style/StickyHeaderRootDefault">
         <item name="android:background">@color/abs__background_holo_light</item>
     </style>
 

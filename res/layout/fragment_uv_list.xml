@@ -10,7 +10,7 @@
             android:fastScrollEnabled="true"
             android:fastScrollAlwaysVisible="true"
             android:cacheColorHint="@android:color/transparent"
-            style="@style/uvweb_uv_list"/>
+            style="@style/List"/>
 
     <ViewStub
             android:id="@android:id/empty"

@@ -5,11 +5,11 @@
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:focusable="false"
-              style="@style/uvweb_stickyheader_root">
+              style="@style/StickyHeaderRoot">
 
     <TextView
             android:id="@+id/header_text"
-            style="@style/uvweb_sectionHeader"/>
+            style="@style/SectionHeader"/>
 
     <View
             android:background="@color/main_color"

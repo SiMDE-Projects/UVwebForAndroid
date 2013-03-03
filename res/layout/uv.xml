@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/uvweb_uv_root"
+              style="@style/Root"
               android:background="@drawable/selectable_background_list_uvweb">
 
     <TextView
             android:id="@+id/uvcode"
-            style="@style/uvweb_uv_name"/>
+            style="@style/Name"/>
 
     <LinearLayout
             android:orientation="vertical"
@@ -14,11 +14,11 @@
 
         <TextView
                 android:id="@+id/desc"
-                style="@style/uvweb_uv_description"/>
+                style="@style/Description"/>
 
         <TextView
                 android:id="@+id/rate"
-                style="@style/uvweb_uv_rate"/>
+                style="@style/Rate"/>
 
     </LinearLayout>
 

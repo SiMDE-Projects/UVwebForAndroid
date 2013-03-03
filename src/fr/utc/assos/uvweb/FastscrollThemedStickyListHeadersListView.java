@@ -12,10 +12,10 @@ import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
  */
 public class FastscrollThemedStickyListHeadersListView extends StickyListHeadersListView {
 	public FastscrollThemedStickyListHeadersListView(Context context) {
-		super(new ContextThemeWrapper(context, R.style.FastscrollThemedListView));
+		super(new ContextThemeWrapper(context, R.style.ListView_UVweb_fastScrollThemed));
 	}
 
 	public FastscrollThemedStickyListHeadersListView(Context context, AttributeSet attrs) {
-		super(new ContextThemeWrapper(context, R.style.FastscrollThemedListView), attrs);
+		super(new ContextThemeWrapper(context, R.style.ListView_UVweb_fastScrollThemed), attrs);
 	}
 }

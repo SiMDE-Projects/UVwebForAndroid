@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- UV list styles -->
-    <style name="uvweb_uv_list" parent="@style/uvweb_uv_list_default">
+    <style name="List" parent="@style/ListDefault">
         <item name="android:divider">@null</item>
     </style>
 
     <!-- UV item styles -->
-    <style name="uvweb_uv_root" parent="@style/uvweb_uv_root_default">
+    <style name="Root" parent="@style/RootDefault">
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
     </style>
 
-    <style name="uvweb_uv_name" parent="@style/uvweb_uv_name_default">
+    <style name="Name" parent="@style/NameDefault">
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">36sp</item>
     </style>
 
-    <style name="uvweb_uv_description" parent="@style/uvweb_uv_description_default">
+    <style name="Description" parent="@style/DescriptionDefault">
         <item name="android:textSize">12sp</item>
     </style>
 
-    <style name="uvweb_uv_rate" parent="@style/uvweb_uv_rate_default">
+    <style name="Rate" parent="@style/RateDefault">
         <item name="android:textSize">18sp</item>
     </style>
 
     <!-- Empty uv list style -->
-    <style name="uv_empty_list" parent="@style/uv_empty_list_default">
+    <style name="EmptyList" parent="@style/EmptyListDefault">
         <item name="android:paddingRight">@dimen/uv_list_empty_right_padding</item>
         <item name="android:background">@drawable/selectable_background_list_uvweb</item>
     </style>
 
-	<!-- Sticky header style -->
-	<style name="uvweb_stickyheader_root" parent="@style/uvweb_stickyheader_root_default">
-		<item name="android:paddingLeft">32dp</item>
-		<item name="android:paddingRight">16dp</item>
-		<item name="android:background">@drawable/list_background_holo</item>
-	</style>
+    <!-- Sticky header style -->
+    <style name="StickyHeaderRoot" parent="@style/StickyHeaderRootDefault">
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:background">@drawable/list_background_holo</item>
+    </style>
 </resources>
