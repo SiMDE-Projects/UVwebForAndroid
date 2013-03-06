@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb.adapters;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SectionIndexer;
@@ -24,6 +23,7 @@ import java.util.List;
  */
 public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyListHeadersAdapter {
 	private static final String TAG = "UVListAdapter";
+
 	private List<UVwebContent.UV> mUVs = Collections.emptyList();
 	private HashMap<String, Integer> mSectionToPosition = new HashMap<String, Integer>();
 	private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>(); // TODO: int[] ?
@@ -72,12 +72,15 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 			convertView = mLayoutInflater.inflate(R.layout.uv, null);
 		}
 
-		TextView codeView = UVwebHolder.get(convertView, R.id.uvcode);
-		TextView rateView = UVwebHolder.get(convertView, R.id.rate);
-		TextView descView = UVwebHolder.get(convertView, R.id.desc);
+		final TextView code1View = UVwebHolder.get(convertView, R.id.uv_code_letter);
+		final TextView code2View = UVwebHolder.get(convertView, R.id.uv_code_number);
+		final TextView rateView = UVwebHolder.get(convertView, R.id.rate);
+		final TextView descView = UVwebHolder.get(convertView, R.id.desc);
 
 		final UVwebContent.UV UV = getItem(position);
-		codeView.setText(Html.fromHtml(String.format(UVwebContent.UV_TITLE_FORMAT, UV.getLetterCode(), UV.getNumberCode())));
+
+		code1View.setText(UV.getLetterCode());
+		code2View.setText(UV.getNumberCode());
 		descView.setText(UV.getDescription());
 		rateView.setText(UV.getFormattedRate());
 
@@ -104,7 +107,8 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	private int computeSectionFromPosition(int position) {
 		int prevIndex = 0;
 		for (int i = 0; i < mSections.length; i++) {
-			if (getPositionForSection(i) > position && prevIndex <= position) {
+			final int positionForSection = getPositionForSection(i);
+			if (positionForSection > position && prevIndex <= position) {
 				prevIndex = i;
 				break;
 			}

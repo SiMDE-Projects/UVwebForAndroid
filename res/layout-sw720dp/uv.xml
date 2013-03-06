@@ -5,14 +5,18 @@
               android:orientation="vertical"
               android:paddingLeft="32dp"
               android:paddingRight="16dp"
-              android:background="@drawable/selectable_background_list_uvweb">
+              android:background="@drawable/list_selector_holo_light">
 
     <LinearLayout
             style="@style/Root">
 
         <TextView
-                android:id="@+id/uvcode"
-                style="@style/Name"/>
+                android:id="@+id/uv_code_letter"
+                style="@style/Name.Letter"/>
+
+        <TextView
+                android:id="@+id/uv_code_number"
+                style="@style/Name.Number"/>
 
         <LinearLayout
                 android:orientation="vertical"

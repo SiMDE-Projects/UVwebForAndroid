@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
  * mandatory BaseAdapter methods that won't be used
  */
 public abstract class UVAdapter extends BaseAdapter {
-	protected LayoutInflater mLayoutInflater;
+	protected final LayoutInflater mLayoutInflater;
 
 	public UVAdapter(Context context) {
 		mLayoutInflater = LayoutInflater.from(context);

@@ -25,6 +25,7 @@
 
     <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">
         <item name="android:listViewStyle">@style/ListView.UVweb</item>
+        <item name="android:listViewWhiteStyle">@style/ListView.UVweb.White</item>
         <item name="android:spinnerItemStyle">@style/SpinnerItem.UVweb</item>
     </style>
 
@@ -60,6 +61,10 @@
     </style>
 
     <style name="ListView.UVweb" parent="android:Widget.ListView">
+        <item name="android:listSelector">@drawable/list_selector_holo_light</item>
+    </style>
+
+    <style name="ListView.UVweb.White" parent="android:Widget.ListView.White">
         <item name="android:listSelector">@drawable/list_selector_holo_light</item>
     </style>
 
@@ -112,26 +117,33 @@
     </style>
 
     <style name="NameDefault">
-        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Name.LetterDefault" parent="@style/Name">
+        <item name="android:textColor">@drawable/selectable_text_name_list_uvweb</item>
+    </style>
+
+    <style name="Name.NumberDefault" parent="@style/Name">
         <item name="android:textColor">@color/main_color</item>
     </style>
 
     <style name="DescriptionDefault">
-        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">right</item>
-        <item name="android:textColor">@drawable/selectable_text_list_uvweb</item>
+        <item name="android:textColor">@drawable/selectable_text_infos_list_uvweb</item>
     </style>
 
     <style name="RateDefault">
-        <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:gravity">right</item>
-        <item name="android:textColor">@drawable/selectable_text_list_uvweb</item>
+        <item name="android:textColor">@drawable/selectable_text_infos_list_uvweb</item>
     </style>
 
     <!-- Actual styles (phones) -->
@@ -142,6 +154,12 @@
         <item name="android:textSize">35sp</item>
     </style>
 
+    <style name="Name.Letter" parent="@style/Name.LetterDefault">
+    </style>
+
+    <style name="Name.Number" parent="@style/Name.NumberDefault">
+    </style>
+
     <style name="Description" parent="@style/DescriptionDefault">
         <item name="android:textSize">15sp</item>
     </style>
@@ -150,7 +168,7 @@
         <item name="android:textSize">22sp</item>
     </style>
 
-    <!-- Empty uv list style -->
+    <!-- >empty uv list style -->
     <!-- Default style -->
     <style name="EmptyListDefault">
         <item name="android:layout_width">wrap_content</item>

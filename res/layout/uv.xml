@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/Root"
-              android:background="@drawable/selectable_background_list_uvweb">
+              style="@style/Root">
 
     <TextView
-            android:id="@+id/uvcode"
-            style="@style/Name"/>
+            android:id="@+id/uv_code_letter"
+            style="@style/Name.Letter"/>
+
+    <TextView
+            android:id="@+id/uv_code_number"
+            style="@style/Name.Number"/>
 
     <LinearLayout
             android:orientation="vertical"

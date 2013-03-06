@@ -122,11 +122,11 @@ public class UVwebContent {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(2009, Calendar.NOVEMBER, 5);
 		addComment(new UVComment("amasciul", calendar, commentString, 5));
+		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
 		addComment(new UVComment("amasciul", calendar, commentString, 5));
 		addComment(new UVComment("amasciul", calendar, commentString, 5));
-		addComment(new UVComment("amasciul", calendar, commentString, 5));
-		addComment(new UVComment("amasciul", calendar, commentString, 5));
-		addComment(new UVComment("amasciul", calendar, commentString, 5));
+		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
+		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
 	}
 
 	public static void addItem(UV item) {
@@ -202,11 +202,11 @@ public class UVwebContent {
 		}
 
 		public String getFormattedSuccessRate() {
-			return (new DecimalFormat("0.0")).format(mSuccessRate) + "%";
+			return new DecimalFormat("0.0").format(mSuccessRate) + "%";
 		}
 
 		public String getFormattedRate() {
-			return (new DecimalFormat("0.0")).format(mRate) + "/10";
+			return new DecimalFormat("0.0").format(mRate) + "/10";
 		}
 
 		@Override
@@ -261,7 +261,7 @@ public class UVwebContent {
 		}
 
 		public String getFormattedRate() {
-			return (new DecimalFormat("0")).format(mGlobalRate) + "/10";
+			return new DecimalFormat("0").format(mGlobalRate) + "/10";
 		}
 
 		public String getFormattedDate() {

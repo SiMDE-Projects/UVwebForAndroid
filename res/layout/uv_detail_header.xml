@@ -1,96 +1,105 @@
 <LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:orientation="vertical"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:paddingBottom="8dp">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp">
 
-	<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:padding="8dp"
-			android:background="@color/abs__bright_foreground_disabled_holo_dark">
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:padding="8dp"
+            android:background="@color/grey_background">
 
-		<TextView
-				android:id="@+id/uvcode"
-				android:layout_height="wrap_content"
-				android:layout_width="wrap_content"
-				android:textSize="60sp"
-				android:textStyle="bold"
-				android:textColor="@color/main_color"
-				android:text="MT23" android:layout_gravity="center_vertical"/>
-		<TextView
-				android:id="@+id/desc"
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:textSize="24sp"
-				android:layout_gravity="center_vertical"
-				android:textIsSelectable="true" android:text="Algèbre linéaire" android:gravity="right"
-				android:textColor="#fff"/>
+        <TextView
+                android:id="@+id/uvcode"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:textSize="60sp"
+                android:textStyle="bold"
+                android:textColor="@color/main_color"
+                android:text="MT23" android:layout_gravity="center_vertical"/>
 
-	</LinearLayout>
+        <TextView
+                android:id="@+id/desc"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="24sp"
+                android:layout_gravity="center_vertical"
+                android:textIsSelectable="true" android:text="Algèbre linéaire" android:gravity="right"
+                android:textColor="#fff"/>
 
-	<LinearLayout
-			android:orientation="horizontal"
-			android:layout_width="fill_parent"
-			android:layout_height="match_parent" android:paddingLeft="8dp" android:paddingRight="8dp"
-			android:paddingTop="8dp">
-		<LinearLayout
-				android:orientation="vertical"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				android:paddingTop="4dp" android:layout_gravity="center">
+    </LinearLayout>
 
-			<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="@string/average_rating"
-					android:textSize="16sp"/>
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent" android:paddingLeft="8dp" android:paddingRight="8dp"
+            android:paddingTop="8dp">
 
-			<TextView
-					android:id="@+id/rate"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:textSize="48sp"
-					android:textStyle="bold" android:text="8,0/10" android:singleLine="false"
-					/>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingTop="4dp" android:layout_gravity="center">
 
-		</LinearLayout>
-		<LinearLayout
-				android:orientation="vertical"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent">
-			<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="Taux de réussite"
-					android:id="@+id/textView" android:layout_gravity="right" android:textSize="16sp"/>
-			<LinearLayout
-					android:orientation="horizontal"
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content" android:layout_gravity="center|right">
-				<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="P12 : "
-						android:id="@+id/textView4" android:layout_gravity="left|center_vertical"
-						android:textSize="20sp"/>
-				<TextView
-						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
-						android:text="81%"
-						android:id="@+id/textView1" android:layout_gravity="right" android:textSize="36sp"/>
-			</LinearLayout>
-			<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="A11 : 57%"
-					android:id="@+id/textView2" android:layout_gravity="right|center_vertical"/>
-			<TextView
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:text="P11 : 68%"
-					android:id="@+id/textView3" android:layout_gravity="right|center_vertical"/>
-		</LinearLayout>
-	</LinearLayout>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/average_rating"
+                    android:textSize="16sp"/>
+
+            <TextView
+                    android:id="@+id/rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="48sp"
+                    android:textStyle="bold" android:text="8,0/10" android:singleLine="false"
+                    />
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Taux de réussite"
+                    android:id="@+id/textView" android:layout_gravity="right" android:textSize="16sp"/>
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_gravity="center|right">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="P12 : "
+                        android:id="@+id/textView4" android:layout_gravity="left|center_vertical"
+                        android:textSize="20sp"/>
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="81%"
+                        android:id="@+id/textView1" android:layout_gravity="right" android:textSize="36sp"/>
+            </LinearLayout>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A11 : 57%"
+                    android:id="@+id/textView2" android:layout_gravity="right|center_vertical"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="P11 : 68%"
+                    android:id="@+id/textView3" android:layout_gravity="right|center_vertical"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
