@@ -47,10 +47,10 @@ public class UVCommentAdapter extends UVAdapter {
 			convertView = mLayoutInflater.inflate(R.layout.uvcomment, null);
 		}
 
-		TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
-		TextView rateView = UVwebHolder.get(convertView, R.id.rate);
-		TextView commentView = UVwebHolder.get(convertView, R.id.comment);
-		TextView dateView = (TextView) convertView.findViewById(R.id.date);
+		final TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
+		final TextView rateView = UVwebHolder.get(convertView, R.id.rate);
+		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
+		final TextView dateView = (TextView) convertView.findViewById(R.id.date);
 
 		final UVwebContent.UVComment comment = getItem(position);
 
