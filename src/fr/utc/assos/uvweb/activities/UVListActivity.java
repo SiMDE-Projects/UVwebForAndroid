@@ -24,8 +24,8 @@ import fr.utc.assos.uvweb.UVListFragment;
  */
 public class UVListActivity extends UVwebMenuActivity implements
 		UVListFragment.Callbacks {
-
 	private static final String TAG = "UVListActivity";
+
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
@@ -80,6 +80,8 @@ public class UVListActivity extends UVwebMenuActivity implements
 				UVDetailFragment fragment = new UVDetailFragment();
 				fragment.setArguments(arguments);
 				getSupportFragmentManager().beginTransaction()
+						.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+								android.R.anim.fade_in, android.R.anim.fade_out)
 						.replace(R.id.uv_detail_container, fragment).commit();
 
 			} else {
