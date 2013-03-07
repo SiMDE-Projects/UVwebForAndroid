@@ -1,6 +1,8 @@
 package fr.utc.assos.uvweb.adapters;
 
 import android.content.Context;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SectionIndexer;
@@ -25,9 +27,15 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	private static final String TAG = "UVListAdapter";
 
 	private List<UVwebContent.UV> mUVs = Collections.emptyList();
-	private HashMap<String, Integer> mSectionToPosition = new HashMap<String, Integer>();
-	private HashMap<Integer, String> mSectionHeaderPosition = new HashMap<Integer, String>(); // TODO: int[] ?
-	private String[] mSections;
+	/**
+	 * Used to dynamically build the sections array
+	 */
+	private HashMap<Character, Integer> mSectionToPosition = new HashMap<Character, Integer>();
+	/**
+	 * Used to keep track the
+	 */
+	private SparseArray<Character> mSectionPosition;
+	private Character[] mSections;
 
 	public UVListAdapter(Context context) {
 		super(context);
@@ -46,22 +54,24 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	public void updateUVs(List<UVwebContent.UV> UVs) {
 		ThreadPreconditions.checkOnMainThread();
 
+		mSectionPosition = new SparseArray<Character>(UVs.size());
+
 		int i = 0;
 		for (UVwebContent.UV UV : UVs) {
-			final String s = UV.getLetterCode().substring(0, 1).toUpperCase();
-			if (!mSectionToPosition.containsKey(s)) {
-				mSectionToPosition.put(s, i);
+			final char section = UV.getLetterCode().charAt(0);
+			if (!mSectionToPosition.containsKey(section)) {
+				mSectionToPosition.put(section, i);
 			}
-			mSectionHeaderPosition.put(i, s);
+
+			mSectionPosition.append(i, section);
 			i++;
 		}
 
 		// create a list from the set to sort
-		ArrayList<String> sectionList = new ArrayList<String>(mSectionToPosition.keySet());
+		ArrayList<Character> sectionList = new ArrayList<Character>(mSectionToPosition.keySet());
 		Collections.sort(sectionList);
-		mSections = new String[sectionList.size()];
+		mSections = new Character[sectionList.size()];
 		sectionList.toArray(mSections);
-
 		mUVs = UVs;
 		notifyDataSetChanged();
 	}
@@ -88,8 +98,12 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		if (separatorView != null) {
 			// In tablet mode, we need to remove the last horizontal divider from the section, because these
 			// are manually drawn
-			final int currentSection = computeSectionFromPosition(position);
-			if (currentSection != computeSectionFromPosition(position + 1) || currentSection == mSections.length - 1) {
+			final int currentSection = computeSectionFromPosition(position),
+					nextSection = computeSectionFromPosition(position + 1);
+			if (currentSection != nextSection) {
+				// TODO: fix issue with the last separator from the penultimate section which won't be removed
+				Log.d(TAG, "mSections[currentSection] == " + mSections[currentSection]);
+				Log.d(TAG, "mSections[nextSection] == " + mSections[nextSection]);
 				separatorView.setVisibility(View.GONE);
 			} else {
 				separatorView.setVisibility(View.VISIBLE);
@@ -107,7 +121,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	private int computeSectionFromPosition(int position) {
 		int prevIndex = 0;
 		for (int i = 0; i < mSections.length; i++) {
-			final int positionForSection = getPositionForSection(i);
+			final int positionForSection = computePositionFromSectionIndex(i);
 			if (positionForSection > position && prevIndex <= position) {
 				prevIndex = i;
 				break;
@@ -115,6 +129,17 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 			prevIndex = i;
 		}
 		return prevIndex;
+	}
+
+	/**
+	 * This private method is used to compute the @return position from a
+	 *
+	 * @param sectionIndex in the mSections array
+	 *                     It doesn't need the workaround from getPositionForSection() (which is automatically called by the system),
+	 *                     meaning we don't need the Math.min calculation and thus have to rewrite this method that don't use it.
+	 */
+	private int computePositionFromSectionIndex(int sectionIndex) {
+		return mSectionPosition.indexOfValue(mSections[sectionIndex]);
 	}
 
 	/**
@@ -127,7 +152,9 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 	@Override
 	public int getPositionForSection(int section) {
-		return mSectionToPosition.get(mSections[Math.min(section, mSections.length - 1)]);
+		final int actualSection = Math.min(section, mSections.length - 1); // Workaround for the fastScroll issue
+		// See https://code.google.com/p/android/issues/detail?id=33293 for more information
+		return mSectionPosition.indexOfValue(mSections[actualSection]);
 	}
 
 	@Override
@@ -145,7 +172,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		}
 
 		// Set header text as first char in name
-		TextView headerView = UVwebHolder.get(convertView, R.id.header_text);
+		final TextView headerView = UVwebHolder.get(convertView, R.id.header_text);
 		headerView.setEnabled(false);
 		headerView.setText((String.valueOf(getSectionName(position))));
 
@@ -162,6 +189,6 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	 * @return the name of the corresponding section
 	 */
 	private char getSectionName(int position) {
-		return mSectionHeaderPosition.get(position).charAt(0);
+		return mSectionPosition.get(position);
 	}
 }
