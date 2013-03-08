@@ -32,6 +32,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 */
 	public static final String DEFAULT_DETAIL_FRAGMENT = "default_detail_fragment";
 	/**
+	 * Special mUVDisplayed case where no UV is actually displayed.
+	 */
+	private static final String NO_UV_DISPLAYED = "no_uv_displayed";
+	/**
 	 * The serialization (saved instance state) Bundle key representing the
 	 * activated item position. Only used on tablets.
 	 */
@@ -66,6 +70,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * The {@link fr.utc.assos.uvweb.adapters.UVAdapter} ListAdapter instance
 	 */
 	private UVListAdapter mAdapter;
+	/**
+	 * The displayed UV name
+	 */
+	private String mDisplayedUVName = NO_UV_DISPLAYED;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -123,7 +131,9 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		mCallbacks.onItemSelected(UVwebContent.UVS.get(position).getName());
+		final String toBeDisplayed = UVwebContent.UVS.get(position).getName();
+		mCallbacks.onItemSelected(toBeDisplayed);
+		mDisplayedUVName = toBeDisplayed;
 		mActivatedPosition = position;
 	}
 
@@ -161,6 +171,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		}
 
 		mActivatedPosition = position;
+	}
+
+	public String getDisplayedUVName() {
+		return mDisplayedUVName;
 	}
 
 	@Override

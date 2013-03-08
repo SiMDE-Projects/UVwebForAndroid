@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Value of the list's empty view's right padding, to mind the border (tablet only). -->
+    <dimen name="uv_list_empty_right_padding">6dp</dimen>
+    <!-- Sticky list headers' min height. -->
+    <dimen name="list_section_divider_min_height">31dip</dimen>
+</resources>

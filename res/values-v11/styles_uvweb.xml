@@ -25,7 +25,7 @@
     </style>
 
     <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">
-        <item name="android:listChoiceBackgroundIndicator">@drawable/list_selector_holo_light</item>
+        <item name="android:listChoiceBackgroundIndicator">@drawable/list_selector_uvweb</item>
     </style>
 
     <style name="Theme.UVweb.Logo" parent="Theme.UVweb">

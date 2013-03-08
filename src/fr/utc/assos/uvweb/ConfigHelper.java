@@ -16,8 +16,8 @@ public class ConfigHelper {
 	 */
 	public static boolean hasSeveralFragmentConfigurations(Context context, int orientation) {
 		final Configuration config = context.getResources().getConfiguration();
-		return (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2 &&
-				config.smallestScreenWidthDp == 600 && config.orientation == orientation);
+		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2 &&
+				config.smallestScreenWidthDp == 600 && config.orientation == orientation;
 	}
 
 }

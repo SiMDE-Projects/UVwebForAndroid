@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.UVDetailDefaultFragment;
 import fr.utc.assos.uvweb.UVDetailFragment;
@@ -25,12 +26,15 @@ import fr.utc.assos.uvweb.UVListFragment;
 public class UVListActivity extends UVwebMenuActivity implements
 		UVListFragment.Callbacks {
 	private static final String TAG = "UVListActivity";
-
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
 	private boolean mTwoPane;
+	/**
+	 *
+	 */
+	private UVListFragment mUVListFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -48,11 +52,9 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			((UVListFragment) getSupportFragmentManager().findFragmentById(
-					R.id.uv_list)).configureListView(true);
+			mUVListFragment = (UVListFragment) getSupportFragmentManager().findFragmentById(R.id.uv_list);
+			mUVListFragment.configureListView(true);
 		}
-
-		// TODO: If exposing deep links into your app, handle intents here.
 	}
 
 	/**
@@ -61,36 +63,33 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
-		if (id.equals(UVListFragment.DEFAULT_DETAIL_FRAGMENT)) {
-			// Default detail fragment management
-			if (mTwoPane) {
-				// Load default Detail fragment on tablet only
-				UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
-				getSupportFragmentManager().beginTransaction()
-						.replace(R.id.uv_detail_container, fragment).commit();
+		final boolean displayDefaultDetailFragment = id.equals(UVListFragment.DEFAULT_DETAIL_FRAGMENT);
+		if (mTwoPane) {
+			if (!mUVListFragment.getDisplayedUVName().equalsIgnoreCase(id)) {
+				if (displayDefaultDetailFragment) {
+					// Default detail fragment management
+					UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
+					getSupportFragmentManager().beginTransaction()
+							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+							.replace(R.id.uv_detail_container, fragment).commit();
+				} else {
+					// In two-pane mode, show the detail view in this activity by
+					// adding or replacing the detail fragment using a
+					// fragment transaction, if the new item is not already displayed.
+					Bundle arguments = new Bundle();
+					arguments.putString(UVDetailFragment.ARG_UV_ID, id);
+					UVDetailFragment fragment = new UVDetailFragment();
+					fragment.setArguments(arguments);
+					getSupportFragmentManager().beginTransaction()
+							.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+									android.R.anim.fade_in, android.R.anim.fade_out)
+							.replace(R.id.uv_detail_container, fragment).commit();
+				}
 			}
-		} else {
-			// Dynamically load the selected UV
-			if (mTwoPane) {
-				// In two-pane mode, show the detail view in this activity by
-				// adding or replacing the detail fragment using a
-				// fragment transaction.
-				Bundle arguments = new Bundle();
-				arguments.putString(UVDetailFragment.ARG_UV_ID, id);
-				UVDetailFragment fragment = new UVDetailFragment();
-				fragment.setArguments(arguments);
-				getSupportFragmentManager().beginTransaction()
-						.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-								android.R.anim.fade_in, android.R.anim.fade_out)
-						.replace(R.id.uv_detail_container, fragment).commit();
-
-			} else {
-				// In single-pane mode, simply start the detail activity
-				// for the selected UV ID.
-				Intent detailIntent = new Intent(this, UVDetailActivity.class);
-				detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
-				startActivity(detailIntent);
-			}
+		} else if (!displayDefaultDetailFragment) {
+			Intent detailIntent = new Intent(this, UVDetailActivity.class);
+			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
+			startActivity(detailIntent);
 		}
 	}
 }

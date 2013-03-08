@@ -19,13 +19,13 @@
 <resources>
 
     <style name="Theme.UVweb_Default" parent="@style/Theme.Sherlock.Light.DarkActionBar">
+        <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb</item>
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
     </style>
 
     <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">
         <item name="android:listViewStyle">@style/ListView.UVweb</item>
-        <item name="android:listViewWhiteStyle">@style/ListView.UVweb.White</item>
         <item name="android:spinnerItemStyle">@style/SpinnerItem.UVweb</item>
     </style>
 
@@ -61,31 +61,12 @@
     </style>
 
     <style name="ListView.UVweb" parent="android:Widget.ListView">
-        <item name="android:listSelector">@drawable/list_selector_holo_light</item>
-    </style>
-
-    <style name="ListView.UVweb.White" parent="android:Widget.ListView.White">
-        <item name="android:listSelector">@drawable/list_selector_holo_light</item>
+        <item name="android:listSelector">@drawable/list_selector_uvweb</item>
+        <item name="android:divider">@drawable/list_divider_holo_light</item>
     </style>
 
     <style name="SpinnerItem.UVweb" parent="android:TextAppearance.Widget.TextView.SpinnerItem">
         <item name="android:textColor">#000000</item>
-    </style>
-
-    <style name="SectionHeader">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <!-- See comments for @dimen/list_section_divider_min_height -->
-        <!--<item name="android:minHeight">@dimen/list_section_divider_min_height</item>-->
-        <item name="android:minHeight">31dip</item>
-        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/main_color</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingLeft">8dip</item>
-        <item name="android:ellipsize">end</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textAllCaps">true</item>
     </style>
 
     <!-- Workaround for the Fastscrolling wrong color on devices running Android < 3.0
@@ -189,6 +170,19 @@
     <!-- Actual style -->
     <style name="StickyHeaderRoot" parent="@style/StickyHeaderRootDefault">
         <item name="android:background">@color/abs__background_holo_light</item>
+    </style>
+    <style name="SectionHeader">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/list_section_divider_min_height</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceSmall</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/main_color</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingLeft">8dip</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textAllCaps">true</item>
     </style>
 
 </resources>

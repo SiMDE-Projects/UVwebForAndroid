@@ -5,7 +5,7 @@
               android:orientation="vertical"
               android:paddingLeft="32dp"
               android:paddingRight="16dp"
-              android:background="@drawable/list_selector_holo_light">
+              android:background="@drawable/list_selector_uvweb">
 
     <LinearLayout
             style="@style/Root">
@@ -37,7 +37,7 @@
 
     <View
             android:id="@+id/list_divider"
-            android:background="@color/list_divider"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_width="match_parent"/>
+            android:background="@drawable/list_divider_holo_light"/>
 </LinearLayout>
