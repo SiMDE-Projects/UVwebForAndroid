@@ -31,10 +31,6 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 * device.
 	 */
 	private boolean mTwoPane;
-	/**
-	 *
-	 */
-	private UVListFragment mUVListFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,8 +48,22 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			mUVListFragment = (UVListFragment) getSupportFragmentManager().findFragmentById(R.id.uv_list);
-			mUVListFragment.configureListView(true);
+			((UVListFragment) getSupportFragmentManager().findFragmentById(R.id.uv_list)).configureListView();
+		}
+	}
+
+	/**
+	 * Callback method from {@link UVListFragment.Callbacks} indicating that the
+	 * default DetailFragment must be displayed (no UV has been selected yet).
+	 */
+	@Override
+	public void showDefaultDetailFragment() {
+		if (mTwoPane) {
+			// Default detail fragment management
+			UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
+			getSupportFragmentManager().beginTransaction()
+					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+					.replace(R.id.uv_detail_container, fragment).commit();
 		}
 	}
 
@@ -63,30 +73,19 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 */
 	@Override
 	public void onItemSelected(String id) {
-		final boolean displayDefaultDetailFragment = id.equals(UVListFragment.DEFAULT_DETAIL_FRAGMENT);
 		if (mTwoPane) {
-			if (!mUVListFragment.getDisplayedUVName().equalsIgnoreCase(id)) {
-				if (displayDefaultDetailFragment) {
-					// Default detail fragment management
-					UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
-					getSupportFragmentManager().beginTransaction()
-							.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-							.replace(R.id.uv_detail_container, fragment).commit();
-				} else {
-					// In two-pane mode, show the detail view in this activity by
-					// adding or replacing the detail fragment using a
-					// fragment transaction, if the new item is not already displayed.
-					Bundle arguments = new Bundle();
-					arguments.putString(UVDetailFragment.ARG_UV_ID, id);
-					UVDetailFragment fragment = new UVDetailFragment();
-					fragment.setArguments(arguments);
-					getSupportFragmentManager().beginTransaction()
-							.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-									android.R.anim.fade_in, android.R.anim.fade_out)
-							.replace(R.id.uv_detail_container, fragment).commit();
-				}
-			}
-		} else if (!displayDefaultDetailFragment) {
+			// In two-pane mode, show the detail view in this activity by
+			// adding or replacing the detail fragment using a
+			// fragment transaction, if the new item is not already displayed.
+			Bundle arguments = new Bundle();
+			arguments.putString(UVDetailFragment.ARG_UV_ID, id);
+			UVDetailFragment fragment = new UVDetailFragment();
+			fragment.setArguments(arguments);
+			getSupportFragmentManager().beginTransaction()
+					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+							android.R.anim.fade_in, android.R.anim.fade_out)
+					.replace(R.id.uv_detail_container, fragment).commit();
+		} else {
 			Intent detailIntent = new Intent(this, UVDetailActivity.class);
 			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
 			startActivity(detailIntent);

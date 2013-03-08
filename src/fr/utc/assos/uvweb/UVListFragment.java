@@ -25,12 +25,6 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
 	private static final String TAG = "UVListFragment";
-
-	/**
-	 * The String representing a special id for {@link fr.utc.assos.uvweb.activities.UVListActivity},
-	 * indicating that the default detail fragment has to be shown.
-	 */
-	public static final String DEFAULT_DETAIL_FRAGMENT = "default_detail_fragment";
 	/**
 	 * Special mUVDisplayed case where no UV is actually displayed.
 	 */
@@ -47,6 +41,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private static Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
 		public void onItemSelected(String id) {
+		}
+
+		@Override
+		public void showDefaultDetailFragment() {
 		}
 	};
 	/**
@@ -132,9 +130,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
 		final String toBeDisplayed = UVwebContent.UVS.get(position).getName();
-		mCallbacks.onItemSelected(toBeDisplayed);
-		mDisplayedUVName = toBeDisplayed;
-		mActivatedPosition = position;
+		if (!toBeDisplayed.equalsIgnoreCase(mDisplayedUVName)) {
+			mCallbacks.onItemSelected(toBeDisplayed);
+			mDisplayedUVName = toBeDisplayed;
+			mActivatedPosition = position;
+		}
 	}
 
 	@Override
@@ -150,16 +150,12 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * Turns on activate-on-click mode. When this mode is on, list items will be
 	 * given the 'activated' state when touched.
 	 */
-	public void configureListView(boolean twoPane) {
-		if (twoPane) {
-			mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-			mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
-			if (mShowDefaultDetailFragment) {
-				mCallbacks.onItemSelected(DEFAULT_DETAIL_FRAGMENT);
-				mShowDefaultDetailFragment = false;
-			}
-		} else {
-			mListView.setChoiceMode(ListView.CHOICE_MODE_NONE);
+	public void configureListView() {
+		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
+		if (mShowDefaultDetailFragment) {
+			mCallbacks.showDefaultDetailFragment();
+			mShowDefaultDetailFragment = false;
 		}
 	}
 
@@ -171,10 +167,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		}
 
 		mActivatedPosition = position;
-	}
-
-	public String getDisplayedUVName() {
-		return mDisplayedUVName;
 	}
 
 	@Override
@@ -227,5 +219,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		 * Callback for when an item has been selected.
 		 */
 		public void onItemSelected(String id);
+
+		/**
+		 * Callback to display the default DetailFragment.
+		 */
+		public void showDefaultDetailFragment();
 	}
 }
