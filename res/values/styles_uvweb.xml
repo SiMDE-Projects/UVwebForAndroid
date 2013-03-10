@@ -22,6 +22,7 @@
         <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb</item>
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
+        <item name="actionBarWidgetTheme">@style/ActionBarWidget.UVweb</item>
     </style>
 
     <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">
@@ -54,6 +55,10 @@
 
     <style name="ActionBar.Transparent.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar">
         <item name="progressBarStyle">@style/ProgressBar.UVweb</item>
+    </style>
+
+    <style name="ActionBarWidget.UVweb" parent="@style/Theme.Sherlock">
+        <item name="android:textColorHint">@android:color/white</item>
     </style>
 
     <style name="ProgressBar.UVweb" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">

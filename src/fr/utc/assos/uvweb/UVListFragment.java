@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
@@ -178,7 +180,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
-
+		mListView.setTextFilterEnabled(true);
 		mListView.setAdapter(mAdapter);
 
 		return rootView;
@@ -197,6 +199,30 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.fragment_uv_list, menu);
+
+		// SearchView configuration
+		final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+		searchView.setQueryHint(getResources().getString(R.string.search_uv_hint));
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				if (TextUtils.isEmpty(newText)) {
+					mListView.clearTextFilter();
+					mListView.setFastScrollEnabled(true);
+				} else {
+					mListView.setFastScrollEnabled(false); // Workaround to avoid broken fastScroll
+					// when in search mode
+					mAdapter.getFilter().filter(newText.toString());
+					mListView.setFilterText(newText);
+				}
+				return true;
+			}
+		});
 	}
 
 	@Override

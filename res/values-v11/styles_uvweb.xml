@@ -22,6 +22,7 @@
         <item name="android:actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="android:actionBarStyle">@style/ActionBar.Solid.UVweb</item>
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
+        <item name="android:actionBarWidgetTheme">@style/ActionBarWidget.UVweb</item>
     </style>
 
     <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">

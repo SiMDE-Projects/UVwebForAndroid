@@ -3,6 +3,7 @@
 
     <string name="app_name">UVweb</string>
     <string name="no_uvs">Aucune UV trouvée.</string>
+    <string name="search_uv_hint">Rechercher une UV</string>
     <string name="average_rating">Note moyenne</string>
 
     <!-- Menu -->

@@ -5,6 +5,8 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
@@ -15,7 +17,6 @@ import fr.utc.assos.uvweb.holders.UVwebHolder;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -23,22 +24,32 @@ import java.util.List;
  * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder} class and thus allows UVs recycling.
  * It implements both SectionIndexer and StickyListHeadersAdapter interfaces
  */
-public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyListHeadersAdapter {
+public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyListHeadersAdapter, Filterable {
 	private static final String TAG = "UVListAdapter";
-
+	/**
+	 * Size of the French alphabet. We use it to instantiate our data structures and avoid memory
+	 * reallocation, since we can fairly surely assume we'll have a section for each letter
+	 */
+	private static final int ALPHABET_LENGTH = 26;
+	/**
+	 * Custom Filterable interface implementation
+	 */
+	private final UVFilter mFilter = new UVFilter();
+	/**
+	 * Set of data
+	 */
 	private List<UVwebContent.UV> mUVs = Collections.emptyList();
 	/**
-	 * Used to dynamically build the sections array
+	 * Data structures that help us keep track of a comprehensive list of sections and bind these sections
+	 * with the ListView's items' positions
 	 */
-	private HashMap<Character, Integer> mSectionToPosition = new HashMap<Character, Integer>();
-	/**
-	 * Used to keep track the
-	 */
-	private SparseArray<Character> mSectionPosition;
-	private Character[] mSections;
+	private SparseArray<Character> mSectionToPosition;
+	private List<Character> mComprehensiveSectionsList;
 
 	public UVListAdapter(Context context) {
 		super(context);
+		mComprehensiveSectionsList = new ArrayList<Character>(ALPHABET_LENGTH);
+		mSectionToPosition = new SparseArray<Character>(ALPHABET_LENGTH);
 	}
 
 	@Override
@@ -54,24 +65,21 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	public void updateUVs(List<UVwebContent.UV> UVs) {
 		ThreadPreconditions.checkOnMainThread();
 
-		mSectionPosition = new SparseArray<Character>(UVs.size());
+		mSectionToPosition.clear();
+		mComprehensiveSectionsList.clear();
 
 		int i = 0;
 		for (UVwebContent.UV UV : UVs) {
 			final char section = UV.getLetterCode().charAt(0);
-			if (!mSectionToPosition.containsKey(section)) {
-				mSectionToPosition.put(section, i);
+			mSectionToPosition.append(i, section);
+			if (!mComprehensiveSectionsList.contains(section)) {
+				mComprehensiveSectionsList.add(section);
 			}
-
-			mSectionPosition.append(i, section);
 			i++;
 		}
 
 		// create a list from the set to sort
-		ArrayList<Character> sectionList = new ArrayList<Character>(mSectionToPosition.keySet());
-		Collections.sort(sectionList);
-		mSections = new Character[sectionList.size()];
-		sectionList.toArray(mSections);
+		Collections.sort(mComprehensiveSectionsList);
 		mUVs = UVs;
 		notifyDataSetChanged();
 	}
@@ -95,15 +103,12 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		rateView.setText(UV.getFormattedRate());
 
 		final View separatorView = UVwebHolder.get(convertView, R.id.list_divider);
-		if (separatorView != null) {
+		if (separatorView != null && position < mUVs.size() - 1) {
 			// In tablet mode, we need to remove the last horizontal divider from the section, because these
 			// are manually drawn
-			final int currentSection = computeSectionFromPosition(position),
-					nextSection = computeSectionFromPosition(position + 1);
-			if (currentSection != nextSection) {
-				// TODO: fix issue with the last separator from the penultimate section which won't be removed
-				Log.d(TAG, "mSections[currentSection] == " + mSections[currentSection]);
-				Log.d(TAG, "mSections[nextSection] == " + mSections[nextSection]);
+			final long currentHeaderId = getHeaderId(position),
+					nextHeaderId = getHeaderId(position + 1);
+			if (currentHeaderId != nextHeaderId) {
 				separatorView.setVisibility(View.GONE);
 			} else {
 				separatorView.setVisibility(View.VISIBLE);
@@ -111,35 +116,6 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		}
 
 		return convertView;
-	}
-
-	/**
-	 * This private method is used to compute the @return section from a
-	 *
-	 * @param position
-	 */
-	private int computeSectionFromPosition(int position) {
-		int prevIndex = 0;
-		for (int i = 0; i < mSections.length; i++) {
-			final int positionForSection = computePositionFromSectionIndex(i);
-			if (positionForSection > position && prevIndex <= position) {
-				prevIndex = i;
-				break;
-			}
-			prevIndex = i;
-		}
-		return prevIndex;
-	}
-
-	/**
-	 * This private method is used to compute the @return position from a
-	 *
-	 * @param sectionIndex in the mSections array
-	 *                     It doesn't need the workaround from getPositionForSection() (which is automatically called by the system),
-	 *                     meaning we don't need the Math.min calculation and thus have to rewrite this method that don't use it.
-	 */
-	private int computePositionFromSectionIndex(int sectionIndex) {
-		return mSectionPosition.indexOfValue(mSections[sectionIndex]);
 	}
 
 	/**
@@ -152,14 +128,14 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 	@Override
 	public int getPositionForSection(int section) {
-		final int actualSection = Math.min(section, mSections.length - 1); // Workaround for the fastScroll issue
+		final int actualSection = Math.min(section, mComprehensiveSectionsList.size() - 1); // Workaround for the fastScroll issue
 		// See https://code.google.com/p/android/issues/detail?id=33293 for more information
-		return mSectionPosition.indexOfValue(mSections[actualSection]);
+		return mSectionToPosition.indexOfValue(mComprehensiveSectionsList.get(actualSection));
 	}
 
 	@Override
 	public Object[] getSections() {
-		return mSections;
+		return mComprehensiveSectionsList.toArray(new Character[mComprehensiveSectionsList.size()]);
 	}
 
 	/**
@@ -188,7 +164,54 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	 * @param position the position of a given item in the ListView
 	 * @return the name of the corresponding section
 	 */
-	private char getSectionName(int position) {
-		return mSectionPosition.get(position);
+	private char getSectionName(final int position) {
+		return mSectionToPosition.get(position);
+	}
+
+	@Override
+	public Filter getFilter() {
+		return mFilter;
+	}
+
+	private final class UVFilter extends Filter {
+		private final FilterResults mFilterResults = new FilterResults();
+		private final List<UVwebContent.UV> mFoundedUVs = new ArrayList<UVwebContent.UV>();
+
+		@Override
+		protected FilterResults performFiltering(CharSequence charSequence) {
+			final FilterResults filterResults = mFilterResults;
+			Log.d(TAG, "performFiltering");
+			if (charSequence == null || charSequence.length() == 0) {
+				filterResults.values = mUVs;
+				filterResults.count = mUVs.size();
+				return filterResults;
+			}
+
+			final List<UVwebContent.UV> foundedUVs = mFoundedUVs;
+			final String query = charSequence.toString().toUpperCase();
+			for (UVwebContent.UV UV : mUVs) {
+				Log.d(TAG, "looping in performFiltering, query == " + query);
+				Log.d(TAG, "looping in performFiltering, UV.getName() == " + UV.getName());
+				if (UV.getName().startsWith(query)) {
+					Log.d(TAG, "performFiltering : foundedUV = " + UV.getName());
+					foundedUVs.add(UV);
+				}
+			}
+			filterResults.values = foundedUVs;
+			filterResults.count = foundedUVs.size();
+			return filterResults;
+		}
+
+		@Override
+		@SuppressWarnings("unchecked")
+		protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+			Log.d(TAG, "publishResults");
+			if (filterResults.count == 0) {
+				notifyDataSetInvalidated();
+			} else {
+				List<UVwebContent.UV> results = (List<UVwebContent.UV>) filterResults.values;
+				updateUVs(results);
+			}
+		}
 	}
 }
