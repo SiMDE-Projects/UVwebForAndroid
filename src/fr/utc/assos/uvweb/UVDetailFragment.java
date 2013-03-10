@@ -106,7 +106,7 @@ public class UVDetailFragment extends SherlockFragment {
 		return rootView;
 	}
 
-	private void setHeaderData(View inflatedHeader) {
+	private void setHeaderData(final View inflatedHeader) {
 		((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(
 				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
 		((TextView) inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());

@@ -14,7 +14,7 @@ public class ConfigHelper {
 	 * and if the @param orientation matches the device orientation
 	 * otherwise, @return false
 	 */
-	public static boolean hasSeveralFragmentConfigurations(Context context, int orientation) {
+	public static boolean hasSeveralFragmentConfigurations(final Context context, final int orientation) {
 		final Configuration config = context.getResources().getConfiguration();
 		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2 &&
 				config.smallestScreenWidthDp == 600 && config.orientation == orientation;
