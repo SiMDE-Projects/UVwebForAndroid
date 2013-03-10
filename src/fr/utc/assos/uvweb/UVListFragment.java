@@ -180,7 +180,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
-		mListView.setTextFilterEnabled(true);
 		mListView.setAdapter(mAdapter);
 
 		return rootView;
