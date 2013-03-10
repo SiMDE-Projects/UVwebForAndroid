@@ -12,7 +12,6 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
@@ -151,6 +150,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	/**
 	 * Turns on activate-on-click mode. When this mode is on, list items will be
 	 * given the 'activated' state when touched.
+	 * Carefull, this method is only called in two-pane mode (i.e. tablet)
 	 */
 	public void configureListView() {
 		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -216,22 +216,12 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				} else {
 					mListView.setFastScrollEnabled(false); // Workaround to avoid broken fastScroll
 					// when in search mode
-					mAdapter.getFilter().filter(newText.toString());
-					mListView.setFilterText(newText);
+					mAdapter.getFilter().filter(newText);
 				}
 				return true;
 			}
 		});
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_search:
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
+		// TODO: workaround onCloseListener not working in order to setFastScrollEnabled(true) again
 	}
 
 	/**
