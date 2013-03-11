@@ -12,6 +12,7 @@ import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
@@ -200,7 +201,8 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		inflater.inflate(R.menu.fragment_uv_list, menu);
 
 		// SearchView configuration
-		final SearchView searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+		final MenuItem searchMenuItem = menu.findItem(R.id.menu_search);
+		final SearchView searchView = (SearchView) searchMenuItem.getActionView();
 		searchView.setQueryHint(getResources().getString(R.string.search_uv_hint));
 		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 			@Override
@@ -221,7 +223,19 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				return true;
 			}
 		});
-		// TODO: workaround onCloseListener not working in order to setFastScrollEnabled(true) again
+
+		searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+			@Override
+			public boolean onMenuItemActionExpand(MenuItem item) {
+				return true;
+			}
+
+			@Override
+			public boolean onMenuItemActionCollapse(MenuItem item) {
+				mListView.setFastScrollEnabled(true);
+				return true;
+			}
+		});
 	}
 
 	/**
