@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb.adapters;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +38,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	 * Set of data
 	 */
 	private List<UVwebContent.UV> mUVs = Collections.emptyList();
+	private List<UVwebContent.UV> mSavedUVs = Collections.emptyList();
 	/**
 	 * Data structures that help us keep track of a comprehensive list of sections and bind these sections
 	 * with the ListView's items' positions
@@ -63,6 +63,10 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	}
 
 	public void updateUVs(List<UVwebContent.UV> UVs) {
+		updateUVs(UVs, false);
+	}
+
+	protected void updateUVs(List<UVwebContent.UV> UVs, boolean dueToFilterOperation) {
 		ThreadPreconditions.checkOnMainThread();
 
 		mSectionToPosition.clear();
@@ -82,6 +86,10 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		Collections.sort(mComprehensiveSectionsList);
 		mUVs = UVs;
 		notifyDataSetChanged();
+
+		if (!dueToFilterOperation) {
+			mSavedUVs = new ArrayList<UVwebContent.UV>(UVs);
+		}
 	}
 
 	@Override
@@ -180,20 +188,19 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		@Override
 		protected FilterResults performFiltering(CharSequence charSequence) {
 			final FilterResults filterResults = mFilterResults;
-			Log.d(TAG, "performFiltering");
+
 			if (charSequence == null || charSequence.length() == 0) {
-				filterResults.values = mUVs;
-				filterResults.count = mUVs.size();
+				filterResults.values = mSavedUVs;
+				filterResults.count = mSavedUVs.size();
 				return filterResults;
 			}
 
+			mFoundedUVs.clear();
 			final List<UVwebContent.UV> foundedUVs = mFoundedUVs;
+
 			final String query = charSequence.toString().toUpperCase();
-			for (UVwebContent.UV UV : mUVs) {
-				Log.d(TAG, "looping in performFiltering, query == " + query);
-				Log.d(TAG, "looping in performFiltering, UV.getName() == " + UV.getName());
+			for (UVwebContent.UV UV : mSavedUVs) {
 				if (UV.getName().startsWith(query)) {
-					Log.d(TAG, "performFiltering : foundedUV = " + UV.getName());
 					foundedUVs.add(UV);
 				}
 			}
@@ -205,12 +212,11 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		@Override
 		@SuppressWarnings("unchecked")
 		protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-			Log.d(TAG, "publishResults");
 			if (filterResults.count == 0) {
 				notifyDataSetInvalidated();
 			} else {
 				List<UVwebContent.UV> results = (List<UVwebContent.UV>) filterResults.values;
-				updateUVs(results);
+				updateUVs(results, true);
 			}
 		}
 	}

@@ -91,4 +91,8 @@ public class UVListActivity extends UVwebMenuActivity implements
 			startActivity(detailIntent);
 		}
 	}
+
+	public boolean isTwoPane() {
+		return mTwoPane;
+	}
 }

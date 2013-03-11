@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
+import fr.utc.assos.uvweb.activities.UVListActivity;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
@@ -131,12 +132,18 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
-		final String toBeDisplayed = UVwebContent.UVS.get(position).getName();
-		if (!toBeDisplayed.equalsIgnoreCase(mDisplayedUVName)) {
-			mCallbacks.onItemSelected(toBeDisplayed);
-			mDisplayedUVName = toBeDisplayed;
-			mActivatedPosition = position;
+		final UVwebContent.UV UV = mAdapter.getItem(position);
+		final String toBeDisplayed = UV.getName();
+
+		if (TextUtils.equals(toBeDisplayed, mDisplayedUVName) &&
+				((UVListActivity) getSherlockActivity()).isTwoPane()) {
+			// If in tablet mode and the dislayed UV is the same UV clicked, nothing to do here
+			return;
 		}
+
+		mCallbacks.onItemSelected(toBeDisplayed);
+		mDisplayedUVName = toBeDisplayed;
+		mActivatedPosition = position;
 	}
 
 	@Override
@@ -213,13 +220,12 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			@Override
 			public boolean onQueryTextChange(String newText) {
 				if (TextUtils.isEmpty(newText)) {
-					mListView.clearTextFilter();
 					mListView.setFastScrollEnabled(true);
 				} else {
 					mListView.setFastScrollEnabled(false); // Workaround to avoid broken fastScroll
 					// when in search mode
-					mAdapter.getFilter().filter(newText);
 				}
+				mAdapter.getFilter().filter(newText);
 				return true;
 			}
 		});
@@ -233,6 +239,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
 				mListView.setFastScrollEnabled(true);
+				mAdapter.getFilter().filter(null);
 				return true;
 			}
 		});
