@@ -64,7 +64,7 @@ public class UVwebContent {
 		addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
 		addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
 		addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
-		addItem(new UV("TN04", "Réalisation", 8, 100));
+		addItem(new UV("TN06", "Transmission des efforts en mécanique", 4, 67));
 		addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
 		addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
 		addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
@@ -84,7 +84,7 @@ public class UVwebContent {
 		addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
 		addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
 		addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
-		addItem(new UV("TN04", "Réalisation", 8, 100));
+		addItem(new UV("TN01", "Eléments de dessin technique", 6.7, 85));
 		addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
 		addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
 		addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
@@ -104,7 +104,7 @@ public class UVwebContent {
 		addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
 		addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
 		addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
-		addItem(new UV("TN04", "Réalisation", 8, 100));
+		addItem(new UV("TN03", "Fabrication mécanique", 4.2, 70));
 		addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
 		addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
 		addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
