@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,10 +14,10 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.widget.SearchView;
-import fr.utc.assos.uvweb.activities.UVListActivity;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+
+import java.util.List;
 
 /**
  * A list fragment representing a list of UVs. This fragment also supports
@@ -26,7 +27,8 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
-public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener {
+public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener,
+		UVListAdapter.SearchCallbacks, UVwebSearchView.OnQueryTextListener {
 	private static final String TAG = "UVListFragment";
 	/**
 	 * Special mUVDisplayed case where no UV is actually displayed.
@@ -38,12 +40,17 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 */
 	private static final String STATE_ACTIVATED_POSITION = "activated_position";
 	/**
+	 * The serialization (saved instance state) Bundle key representing the
+	 * current search query
+	 */
+	private static final String STATE_SEARCH_QUERY = "search_query";
+	/**
 	 * A dummy implementation of the {@link Callbacks} interface that does
 	 * nothing. Used only when this fragment is not attached to an activity.
 	 */
-	private static Callbacks sDummyCallbacks = new Callbacks() {
+	private static final Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(String id) {
+		public void onItemSelected(final String id) {
 		}
 
 		@Override
@@ -76,6 +83,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 */
 	private String mDisplayedUVName = NO_UV_DISPLAYED;
 
+	private boolean mTwoPane = false;
+
+	private boolean mIsLoadingUV = false;
+	private String mQuery;
+
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
@@ -83,28 +95,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	public UVListFragment() {
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		// Fragment configuration
-		setHasOptionsMenu(true);
-		setRetainInstance(true);
-
-		// Adapter setup
-		mAdapter = new UVListAdapter(getSherlockActivity());
-		mAdapter.updateUVs(UVwebContent.UVS);
-
-		// Restore the previously serialized activated item position.
-		if (savedInstanceState != null
-				&& savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-			setActivatedPosition(savedInstanceState
-					.getInt(STATE_ACTIVATED_POSITION));
-		} else {
-			mShowDefaultDetailFragment = true;
-		}
-	}
-
+	// Fragment Lifecycle management
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -119,11 +110,66 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+
+		// Fragment configuration
+		setHasOptionsMenu(true);
+		setRetainInstance(true);
+
+		// Restore the previously serialized activated item position.
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+				setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+			}
+			if (savedInstanceState.containsKey(STATE_SEARCH_QUERY)) {
+
+			}
+		} else {
+			mShowDefaultDetailFragment = true;
+		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		View rootView = inflater.inflate(R.layout.fragment_uv_list,
+				container, false);
+
+		// ListView setup
+		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
+		mListView.setOnItemClickListener(this);
+		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+
+		return rootView;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		// Adapter setup
+		mAdapter = new UVListAdapter(getSherlockActivity());
+		mAdapter.setSearchCallbacks(this);
+		mAdapter.updateUVs(UVwebContent.UVS);
+		mListView.setAdapter(mAdapter);
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+
+		// Resources cleanup
+		mListView = null;
+		mAdapter = null;
+	}
+
+	@Override
 	public void onDetach() {
 		super.onDetach();
 
-		// Reset the active callbacks interface to the dummy implementation.
+		// Reset the active callbacks interface to the dummy implementation and some flags as well.
 		mCallbacks = sDummyCallbacks;
+		mIsLoadingUV = false;
 	}
 
 	@Override
@@ -132,35 +178,33 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// Notify the active callbacks interface (the activity, if the
 		// fragment is attached to one) that an item has been selected.
+
+		performClick(position);
+	}
+
+	private void performClick(final int position) {
 		final UVwebContent.UV UV = mAdapter.getItem(position);
 		final String toBeDisplayed = UV.getName();
 
-		if (TextUtils.equals(toBeDisplayed, mDisplayedUVName) &&
-				((UVListActivity) getSherlockActivity()).isTwoPane()) {
-			// If in tablet mode and the dislayed UV is the same UV clicked, nothing to do here
-			return;
-		}
+		if (!mTwoPane || ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
+				Configuration.ORIENTATION_PORTRAIT) || !TextUtils.equals(toBeDisplayed, mDisplayedUVName)) {
+			// If in tablet mode and the dislayed UV is not the same as the UV clicked, or in phone mode
+			// Lazy load the selected UV
+			mIsLoadingUV = true;
 
-		mCallbacks.onItemSelected(toBeDisplayed);
-		mDisplayedUVName = toBeDisplayed;
-		mActivatedPosition = position;
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		if (mActivatedPosition != ListView.INVALID_POSITION) {
-			// Serialize and persist the activated item position.
-			outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+			mCallbacks.onItemSelected(toBeDisplayed);
+			mDisplayedUVName = toBeDisplayed;
+			mActivatedPosition = position;
 		}
 	}
 
 	/**
 	 * Turns on activate-on-click mode. When this mode is on, list items will be
 	 * given the 'activated' state when touched.
-	 * Carefull, this method is only called in two-pane mode (i.e. tablet)
+	 * Careful, this method is only called in two-pane mode (i.e. tablet)
 	 */
 	public void configureListView() {
+		mTwoPane = true;
 		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
 		if (mShowDefaultDetailFragment) {
@@ -180,20 +224,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	}
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_uv_list,
-				container, false);
-
-		// ListView setup
-		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
-		mListView.setOnItemClickListener(this);
-		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
-		mListView.setAdapter(mAdapter);
-
-		return rootView;
-	}
-
-	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		if (ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
 				Configuration.ORIENTATION_PORTRAIT)) {
@@ -205,31 +235,21 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		Log.d(TAG, "onCreateOptionsMenu");
 		inflater.inflate(R.menu.fragment_uv_list, menu);
 
 		// SearchView configuration
 		final MenuItem searchMenuItem = menu.findItem(R.id.menu_search);
-		final SearchView searchView = (SearchView) searchMenuItem.getActionView();
-		searchView.setQueryHint(getResources().getString(R.string.search_uv_hint));
-		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-			@Override
-			public boolean onQueryTextSubmit(String query) {
-				return false;
-			}
+		final UVwebSearchView searchView = (UVwebSearchView) searchMenuItem.getActionView();
+		if (mQuery != null && !TextUtils.isEmpty(mQuery)) {
+			//searchView.onActionViewExpanded();
+			searchView.setQuery(mQuery, false);
+		}
+		searchView.setIsLoadingUV(mIsLoadingUV);
+		searchView.setOnQueryTextListener(this);
+		Log.d(TAG, "mQuery == " + mQuery);
 
-			@Override
-			public boolean onQueryTextChange(String newText) {
-				if (TextUtils.isEmpty(newText)) {
-					mListView.setFastScrollEnabled(true);
-				} else {
-					mListView.setFastScrollEnabled(false); // Workaround to avoid broken fastScroll
-					// when in search mode
-				}
-				mAdapter.getFilter().filter(newText);
-				return true;
-			}
-		});
-
+		// We can't call onCloseListener() since it's broken on ICS+
 		searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
 			@Override
 			public boolean onMenuItemActionExpand(MenuItem item) {
@@ -240,9 +260,54 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			public boolean onMenuItemActionCollapse(MenuItem item) {
 				mListView.setFastScrollEnabled(true);
 				mAdapter.getFilter().filter(null);
+				if (mIsLoadingUV) {
+					mIsLoadingUV = false;
+					searchView.setIsLoadingUV(mIsLoadingUV);
+				}
 				return true;
 			}
 		});
+	}
+
+	/**
+	 * {@link UVListAdapter} interface callbacks for search implementation
+	 */
+	@Override
+	public void onItemsFound(final List<UVwebContent.UV> results) {
+		if (mTwoPane && results.size() == 1) {
+			performClick(0);
+		}
+		else {
+			//setActivatedPosition();
+		}
+	}
+
+	@Override
+	public void onNothingFound() {
+		if (mTwoPane) {
+			mCallbacks.showDefaultDetailFragment();
+		}
+	}
+
+	/**
+	 * {@link UVwebSearchView} interface callbacks for text submission
+	 */
+	@Override
+	public boolean onQueryTextSubmit(String query) {
+		return false;
+	}
+
+	@Override
+	public boolean onQueryTextChange(String newText) {
+		if (TextUtils.isEmpty(newText)) {
+			mListView.setFastScrollEnabled(true);
+		} else {
+			mListView.setFastScrollEnabled(false); // Workaround to avoid broken fastScroll
+			// when in search mode
+		}
+		mQuery = newText;
+		mAdapter.getFilter().filter(newText);
+		return true;
 	}
 
 	/**
@@ -254,7 +319,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id);
+		public void onItemSelected(final String id);
 
 		/**
 		 * Callback to display the default DetailFragment.

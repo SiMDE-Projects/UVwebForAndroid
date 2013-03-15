@@ -39,34 +39,43 @@ public class UVDetailFragment extends SherlockFragment {
 	 */
 	private ListView mListView;
 
+	private boolean mTwoPane;
+
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public UVDetailFragment() {
+		this(false);
+	}
+
+	public UVDetailFragment(boolean twoPane) {
+		mTwoPane = twoPane;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// Fragment configuration
-		setHasOptionsMenu(true);
-
 		if (!ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
 				Configuration.ORIENTATION_LANDSCAPE)) {
 			// Workaround: we do not want to retain instance for a device like the Nexus 7,
-			// since in portrait mode, only the list is displayed
+			// since in portrait mode, only the list is displayed.
+			// When switching from landscape to portrait on such a device, the framework will try to restore
+			// this fragment and fail if we setRetainInstance(true).
 			setRetainInstance(true);
 		}
 
-		if (getArguments().containsKey(ARG_UV_ID)) {
+		final Bundle arguments = getArguments();
+		if (arguments.containsKey(ARG_UV_ID)) {
 			// Load the UV specified by the fragment
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
-			mUV = UVwebContent.UV_MAP.get(getArguments().getString(ARG_UV_ID));
-
+			mUV = UVwebContent.UV_MAP.get(arguments.getString(ARG_UV_ID));
 			getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
+
+			// Fragment configuration
+			setHasOptionsMenu(true);
 		}
 	}
 
