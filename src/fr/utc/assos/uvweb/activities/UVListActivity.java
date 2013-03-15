@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import fr.utc.assos.uvweb.*;
 
 /**
@@ -27,31 +29,32 @@ import fr.utc.assos.uvweb.*;
  * interface to listen for UV selections.
  */
 public class UVListActivity extends UVwebMenuActivity implements
-		UVListFragment.Callbacks, ActionBar.TabListener {
+		UVListFragment.Callbacks {
 	private static final String TAG = "UVListActivity";
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
 	private boolean mTwoPane = false;
-
-	private SectionsPagerAdapter mSectionsPagerAdapter;
-
+	/**
+	 * A reference to the Activity's own FragmentManager
+	 */
 	private FragmentManager mFragmentManager;
-
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
-	ViewPager mViewPager;
+	private ViewPager mViewPager;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_uv_list);
 
+		mFragmentManager = getSupportFragmentManager();
+
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS); // TODO: XML ?
 
 		if (findViewById(R.id.uv_detail_container) != null) {
 			// The detail container view will be present only in the
@@ -61,17 +64,16 @@ public class UVListActivity extends UVwebMenuActivity implements
 			mTwoPane = true;
 		}
 
-		// Create the adapter that will return a fragment for each of the three
-		// primary sections of the app.
-		mFragmentManager = getSupportFragmentManager();
-		mSectionsPagerAdapter = new SectionsPagerAdapter(mFragmentManager);
-
 		if (!mTwoPane) {
+			// Create the adapter that will return a fragment for each of the three
+			// primary sections of the app.
+			SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(mFragmentManager);
+
 			// Set up the ViewPager with the sections adapter.
 			mViewPager = (ViewPager) findViewById(R.id.pager);
-			mViewPager.setAdapter(mSectionsPagerAdapter);
+			mViewPager.setAdapter(sectionsPagerAdapter);
 
-        	// When swiping between different sections, select the corresponding
+			// When swiping between different sections, select the corresponding
 			// tab. We can also use ActionBar.Tab#select() to do this if we have
 			// a reference to the Tab.
 			mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -82,23 +84,20 @@ public class UVListActivity extends UVwebMenuActivity implements
 			});
 		}
 
-		Log.d(TAG, "onCreate, twoPane === " + String.valueOf(mTwoPane));
+		actionBar.addTab(actionBar.newTab()
+				.setText(getString(R.string.tab_title_feed))
+				.setTabListener(new UVwebTabListener<NewsFeedFragment>(this, NewsFeedFragment.class)));
 
-		// For each of the sections in the app, add a tab to the action bar.
-		for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
-			// Create a tab with text corresponding to the page title defined by
-			// the adapter. Also specify this Activity object, which implements
-			// the TabListener interface, as the callback (listener) for when
-			// this tab is selected.
-			actionBar.addTab(actionBar.newTab()
-					.setText(mSectionsPagerAdapter.getPageTitle(i))
-					.setTabListener(this));
-		}
+		actionBar.addTab(actionBar.newTab()
+				.setText(getString(R.string.tab_title_uvs))
+				.setTabListener(new UVwebTabListener<UVListFragment>(this, UVListFragment.class)));
+
+		Log.d(TAG, "onCreate, twoPane === " + String.valueOf(mTwoPane));
 
 		if (mTwoPane) {
 			// In two-pane mode, list items should be given the
 			// 'activated' state when touched.
-			((UVListFragment) mFragmentManager.findFragmentById(R.id.uv_list)).configureListView();
+			//((UVListFragment) mFragmentManager.findFragmentById(R.id.uv_list_container)).configureListView();
 		}
 	}
 
@@ -142,29 +141,6 @@ public class UVListActivity extends UVwebMenuActivity implements
 		}
 	}
 
-
-	/**
-	 *
-	 * @param tab The tab that was selected
-	 * @param ft A {@link FragmentTransaction} for queuing fragment operations to execute
-	 *        during a tab switch. The previous tab's unselect and this tab's select will be
-	 *        executed in a single transaction. This FragmentTransaction does not support
-	 */
-	@Override
-	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-		if (!mTwoPane) {
-			mViewPager.setCurrentItem(tab.getPosition());
-		}
-	}
-
-	@Override
-	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	}
-
-	@Override
-	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-	}
-
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
@@ -181,7 +157,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 			// Return a DummySectionFragment (defined as a static inner class
 			// below) with the page number as its lone argument.
 			Fragment fragment;
-			switch(position) {
+			switch (position) {
 				case 0:
 					fragment = new NewsFeedFragment();
 					break;
@@ -199,13 +175,56 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 		@Override
 		public CharSequence getPageTitle(int position) {
-			switch (position) {
-				case 0:
-					return getString(R.string.tab_title_feed).toUpperCase();
-				case 1:
-					return getString(R.string.tab_title_uvs).toUpperCase();
-			}
 			return null;
+		}
+	}
+
+	private final class UVwebTabListener<T extends SherlockFragment> implements ActionBar.TabListener {
+		private final SherlockFragmentActivity mActivity;
+		private final Class<T> mClass;
+		private SherlockFragment mFragment;
+
+		public UVwebTabListener(SherlockFragmentActivity activity, Class<T> className) {
+			mActivity = activity;
+			mClass = className;
+		}
+
+		/**
+		 * @param tab The tab that was selected
+		 * @param ft  A {@link FragmentTransaction} for queuing fragment operations to execute
+		 *            during a tab switch. The previous tab's unselect and this tab's select will be
+		 *            executed in a single transaction. This FragmentTransaction does not support
+		 */
+		@Override
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+			if (!mTwoPane) {
+				mViewPager.setCurrentItem(tab.getPosition());
+			} else {
+				// Check if the fragment is already initialized
+				if (mFragment == null) {
+					// If not, instantiate and add it to the activity
+					mFragment = (SherlockFragment) SherlockFragment.instantiate(mActivity, mClass.getName());
+					ft.replace(R.id.uv_list_container, mFragment);
+				} else {
+					// If it exists, simply attach it in order to show it
+					ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
+						android.R.anim.fade_in, android.R.anim.fade_out);
+					ft.attach(mFragment);
+					showDefaultDetailFragment();
+				}
+			}
+
+		}
+
+		@Override
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+			if (mTwoPane && mFragment != null) {
+				ft.detach(mFragment);
+			}
+		}
+
+		@Override
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
 	}
 }
