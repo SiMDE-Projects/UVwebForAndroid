@@ -46,10 +46,29 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	private SparseArray<Character> mSectionToPosition;
 	private List<Character> mComprehensiveSectionsList;
 
+	/**
+	 * A dummy implementation of the {@link SearchCallbacks} interface that does
+	 * nothing. Used only when this fragment is not attached to an activity.
+	 */
+	private static final SearchCallbacks sDummySearchCallbacks = new SearchCallbacks() {
+		@Override
+		public void onItemsFound(final List<UVwebContent.UV> results) {
+		}
+
+		@Override
+		public void onNothingFound() {
+		}
+	};
+	private SearchCallbacks mSearchCallbacks = sDummySearchCallbacks;
+
 	public UVListAdapter(Context context) {
 		super(context);
 		mComprehensiveSectionsList = new ArrayList<Character>(ALPHABET_LENGTH);
 		mSectionToPosition = new SparseArray<Character>(ALPHABET_LENGTH);
+	}
+
+	public void setSearchCallbacks(SearchCallbacks callbacks) {
+		mSearchCallbacks = callbacks;
 	}
 
 	@Override
@@ -136,7 +155,8 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 	@Override
 	public int getPositionForSection(int section) {
-		final int actualSection = Math.min(section, mComprehensiveSectionsList.size() - 1); // Workaround for the fastScroll issue
+		final int actualSection = Math.min(section, mComprehensiveSectionsList.size() - 1);
+		// Workaround for the fastScroll issue
 		// See https://code.google.com/p/android/issues/detail?id=33293 for more information
 		return mSectionToPosition.indexOfValue(mComprehensiveSectionsList.get(actualSection));
 	}
@@ -212,12 +232,25 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		@Override
 		@SuppressWarnings("unchecked")
 		protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+			List<UVwebContent.UV> results = (List<UVwebContent.UV>) filterResults.values;
+			updateUVs(results, true);
 			if (filterResults.count == 0) {
-				notifyDataSetInvalidated();
-			} else {
-				List<UVwebContent.UV> results = (List<UVwebContent.UV>) filterResults.values;
-				updateUVs(results, true);
+				mSearchCallbacks.onNothingFound();
+			}
+			else {
+				mSearchCallbacks.onItemsFound(results);
 			}
 		}
+	}
+
+	/**
+	 * A callback interface that each Fragment using this adapter
+	 * and using its Filterable interface should implement.
+	 * This mechanism allows the querier to be notified and to act accordingly.
+	 */
+	public interface SearchCallbacks {
+		public void onItemsFound(final List<UVwebContent.UV> results);
+
+		public void onNothingFound();
 	}
 }

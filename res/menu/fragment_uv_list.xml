@@ -6,7 +6,7 @@
             android:icon="@drawable/ic_action_search"
             android:title="@string/search"
             android:orderInCategory="9"
-            android:actionViewClass="com.actionbarsherlock.widget.SearchView"
+            android:actionViewClass="fr.utc.assos.uvweb.UVwebSearchView"
             android:showAsAction="always|collapseActionView">
     </item>
 </menu>
