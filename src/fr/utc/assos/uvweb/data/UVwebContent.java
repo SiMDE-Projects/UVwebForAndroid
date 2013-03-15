@@ -29,6 +29,11 @@ public class UVwebContent {
 	 */
 	public static ArrayList<UVComment> COMMENTS = new ArrayList<UVComment>();
 
+	/**
+	 * An array of news feed entries.
+	 */
+	public static ArrayList<NewsFeedEntry> NEWS_ENTRIES = new ArrayList<NewsFeedEntry>();
+
 	static {
 		// Add sample items.
 		addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
@@ -127,6 +132,19 @@ public class UVwebContent {
 		addComment(new UVComment("amasciul", calendar, commentString, 5));
 		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
 		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
+
+		String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
+				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
+				"a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of" +
+				" us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now." +
+				" We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but" +
+				" it doesn't hold a candle to man.";
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString));
 	}
 
 	public static void addItem(UV item) {
@@ -136,6 +154,10 @@ public class UVwebContent {
 
 	public static void addComment(UVComment comment) {
 		COMMENTS.add(comment);
+	}
+
+	public static void addNewsFeedEntry(NewsFeedEntry entry) {
+		NEWS_ENTRIES.add(entry);
 	}
 
 	/**
@@ -266,6 +288,42 @@ public class UVwebContent {
 
 		public String getFormattedDate() {
 			return DateFormat.getDateInstance().format(mDate);
+		}
+	}
+
+	public static class NewsFeedEntry {
+		private String mAuthor;
+		private Date mDate;
+		private String mComment;
+
+		public NewsFeedEntry(String author, Calendar calendar, String comment) {
+			mAuthor = author;
+			mDate = calendar.getTime();
+			mComment = comment;
+		}
+
+		public String getAuthor() {
+			return mAuthor;
+		}
+
+		public void setAuthor(String author) {
+			this.mAuthor = author;
+		}
+
+		public Date getDate() {
+			return mDate;
+		}
+
+		public void setDate(Date date) {
+			this.mDate = date;
+		}
+
+		public String getComment() {
+			return mComment;
+		}
+
+		public void setComment(String comment) {
+			this.mComment = comment;
 		}
 	}
 }

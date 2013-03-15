@@ -6,6 +6,10 @@
     <string name="search_uv_hint">Rechercher une UV</string>
     <string name="average_rating">Note moyenne</string>
 
+    <!-- Tabs -->
+    <string name="tab_title_feed">Activité</string>
+    <string name="tab_title_uvs">Liste des UVs</string>
+
     <!-- Menu -->
     <string name="search">Rechercher</string>
     <string name="refresh">Actualiser</string>

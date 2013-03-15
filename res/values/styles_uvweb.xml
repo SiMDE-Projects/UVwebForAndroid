@@ -21,6 +21,7 @@
     <style name="Theme.UVweb_Default" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb</item>
+
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
         <item name="actionBarWidgetTheme">@style/ActionBarWidget.UVweb</item>
     </style>
@@ -40,6 +41,7 @@
 
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@color/main_color</item>
+        <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
         <item name="progressBarStyle">@style/ProgressBar.UVweb</item>
         <item name="displayOptions">homeAsUp|showHome|showTitle</item>
     </style>
@@ -51,10 +53,6 @@
 
     <style name="ActionBar.Solid.UVweb.NoLogo" parent="ActionBar.Solid.UVweb">
         <item name="displayOptions">showTitle|homeAsUp</item>
-    </style>
-
-    <style name="ActionBar.Transparent.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar">
-        <item name="progressBarStyle">@style/ProgressBar.UVweb</item>
     </style>
 
     <style name="ActionBarWidget.UVweb" parent="@style/Theme.Sherlock">
