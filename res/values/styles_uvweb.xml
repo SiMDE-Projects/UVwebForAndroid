@@ -21,6 +21,7 @@
     <style name="Theme.UVweb_Default" parent="@style/Theme.Sherlock.Light.DarkActionBar">
         <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb</item>
+        <item name="actionBarTabTextStyle">@style/ActionBar.TabText.UVweb</item>
 
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
         <item name="actionBarWidgetTheme">@style/ActionBarWidget.UVweb</item>
@@ -40,10 +41,11 @@
     </style>
 
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
-        <item name="background">@color/main_color</item>
+        <item name="background">@drawable/ab_solid_uvweb</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
         <item name="progressBarStyle">@style/ProgressBar.UVweb</item>
         <item name="displayOptions">homeAsUp|showHome|showTitle</item>
+        <item name="navigationMode">tabMode</item>
     </style>
 
     <style name="ActionBar.Solid.UVweb.Logo" parent="ActionBar.Solid.UVweb">
@@ -57,6 +59,10 @@
 
     <style name="ActionBarWidget.UVweb" parent="@style/Theme.Sherlock">
         <item name="android:textColorHint">@android:color/white</item>
+    </style>
+
+    <style name="ActionBar.TabText.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.TabText.Inverse">
+        <item name="android:textSize">@dimen/tab_text_size</item>
     </style>
 
     <style name="ProgressBar.UVweb" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
@@ -94,7 +100,6 @@
     <!-- UV item styles -->
     <!-- Default styles -->
     <style name="RootDefault">
-        <item name="android:orientation">horizontal</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">8dp</item>
@@ -104,6 +109,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_centerVertical">true</item>
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -113,19 +119,29 @@
 
     <style name="Name.NumberDefault" parent="@style/Name">
         <item name="android:textColor">@color/main_color</item>
+        <item name="android:layout_marginRight">6dip</item>
+        <item name="android:layout_toRightOf">@id/uv_code_letter</item>
+    </style>
+
+    <style name="RightPartDefault">
+        <item name="android:orientation">vertical</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_toRightOf">@id/uv_code_number</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_alignParentRight">true</item>
     </style>
 
     <style name="DescriptionDefault">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">right</item>
-        <item name="android:textColor">@drawable/selectable_text_infos_list_uvweb</item>
+        <item name="android:textColor">@drawable/selectable_text_infos_list_bright_uvweb</item>
     </style>
 
     <style name="RateDefault">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textIsSelectable">false</item>
         <item name="android:gravity">right</item>
         <item name="android:textColor">@drawable/selectable_text_infos_list_uvweb</item>
     </style>
@@ -145,14 +161,14 @@
     </style>
 
     <style name="Description" parent="@style/DescriptionDefault">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <style name="Rate" parent="@style/RateDefault">
-        <item name="android:textSize">22sp</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
-    <!-- >empty uv list style -->
+    <!-- Empty uv list style -->
     <!-- Default style -->
     <style name="EmptyListDefault">
         <item name="android:layout_width">wrap_content</item>
@@ -174,6 +190,7 @@
     <style name="StickyHeaderRoot" parent="@style/StickyHeaderRootDefault">
         <item name="android:background">@color/abs__background_holo_light</item>
     </style>
+
     <style name="SectionHeader">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>

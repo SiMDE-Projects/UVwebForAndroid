@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.util.Log;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -45,6 +46,8 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 */
 	private ViewPager mViewPager;
 
+	private Fragment mDetailFragment;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,7 +57,6 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 		final ActionBar actionBar = getSupportActionBar();
 		actionBar.setHomeButtonEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS); // TODO: XML ?
 
 		if (findViewById(R.id.uv_detail_container) != null) {
 			// The detail container view will be present only in the
@@ -113,6 +115,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 			mFragmentManager.beginTransaction()
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 					.replace(R.id.uv_detail_container, fragment).commit();
+			mDetailFragment = fragment;
 		}
 	}
 
@@ -134,6 +137,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
 							android.R.anim.fade_in, android.R.anim.fade_out)
 					.replace(R.id.uv_detail_container, fragment).commit();
+			mDetailFragment = fragment;
 		} else {
 			Intent detailIntent = new Intent(this, UVDetailActivity.class);
 			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
@@ -183,6 +187,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 		private final SherlockFragmentActivity mActivity;
 		private final Class<T> mClass;
 		private SherlockFragment mFragment;
+		private boolean mFragmentTwoPane;
 
 		public UVwebTabListener(SherlockFragmentActivity activity, Class<T> className) {
 			mActivity = activity;
@@ -203,14 +208,27 @@ public class UVListActivity extends UVwebMenuActivity implements
 				// Check if the fragment is already initialized
 				if (mFragment == null) {
 					// If not, instantiate and add it to the activity
-					mFragment = (SherlockFragment) SherlockFragment.instantiate(mActivity, mClass.getName());
-					ft.replace(R.id.uv_list_container, mFragment);
+					final String className = mClass.getName();
+					mFragment = (SherlockFragment) SherlockFragment.instantiate(mActivity, className);
+					mFragmentTwoPane = TextUtils.equals(className, NewsFeedFragment.class.getName());
+					if (mFragmentTwoPane) {
+						ft.replace(android.R.id.content, mFragment);
+					}
+					else {
+						ft.replace(R.id.uv_list_container, mFragment);
+						showDefaultDetailFragment();
+					}
 				} else {
 					// If it exists, simply attach it in order to show it
+					if (mFragmentTwoPane && mDetailFragment != null) {
+						ft.hide(mDetailFragment);
+					}
 					ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
 						android.R.anim.fade_in, android.R.anim.fade_out);
 					ft.attach(mFragment);
-					showDefaultDetailFragment();
+					if (!mFragmentTwoPane && mDetailFragment != null) {
+						ft.show(mFragmentManager.findFragmentById(R.id.uv_detail_container));
+					}
 				}
 			}
 

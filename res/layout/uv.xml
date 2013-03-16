@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              style="@style/Root">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/Root">
 
     <TextView
             android:id="@+id/uv_code_letter"
@@ -11,18 +11,16 @@
             style="@style/Name.Number"/>
 
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <TextView
-                android:id="@+id/desc"
-                style="@style/Description"/>
+            style="@style/RightPartDefault">
 
         <TextView
                 android:id="@+id/rate"
                 style="@style/Rate"/>
 
+        <TextView
+                android:id="@+id/desc"
+                style="@style/Description"/>
+
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

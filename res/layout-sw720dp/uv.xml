@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_height="wrap_content"
-              android:layout_width="match_parent"
-              android:orientation="vertical"
-              android:paddingLeft="32dp"
-              android:paddingRight="16dp"
-              android:background="@drawable/list_selector_uvweb">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:paddingLeft="32dp"
+                android:paddingRight="16dp"
+                android:background="@drawable/list_selector_uvweb">
 
-    <LinearLayout
+    <RelativeLayout
             style="@style/Root">
 
         <TextView
@@ -19,9 +18,7 @@
                 style="@style/Name.Number"/>
 
         <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                style="@style/RightPartDefault">
 
             <TextView
                     android:id="@+id/desc"
@@ -33,11 +30,12 @@
 
         </LinearLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <View
             android:id="@+id/list_divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
             android:background="@drawable/list_divider_holo_light"/>
-</LinearLayout>
+</RelativeLayout>

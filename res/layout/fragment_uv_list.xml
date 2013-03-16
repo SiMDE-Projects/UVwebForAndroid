@@ -9,7 +9,7 @@
             android:clipToPadding="false"
             android:fastScrollEnabled="true"
             android:fastScrollAlwaysVisible="true"
-            android:cacheColorHint="@android:color/transparent"
+            android:cacheColorHint="@color/abs__background_holo_light"
             style="@style/List"/>
 
     <ViewStub
