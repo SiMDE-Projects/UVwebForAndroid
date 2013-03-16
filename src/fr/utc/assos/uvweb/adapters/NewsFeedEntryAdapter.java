@@ -66,4 +66,9 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 
 		return convertView;
 	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		return false;
+	}
 }

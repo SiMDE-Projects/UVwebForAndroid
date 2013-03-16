@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.UVweb.Logo.Transparent" parent="@style/Theme.UVweb.Logo">
+        <item name="android:windowBackground">@null</item>
+    </style>
+
     <!-- UV list styles -->
     <style name="List" parent="@style/ListDefault">
         <item name="android:divider">@null</item>

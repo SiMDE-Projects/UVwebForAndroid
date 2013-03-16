@@ -61,4 +61,9 @@ public class UVCommentAdapter extends UVAdapter {
 
 		return convertView;
 	}
+
+	@Override
+	public boolean isEnabled(int position) {
+		return false;
+	}
 }

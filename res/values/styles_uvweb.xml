@@ -40,6 +40,9 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb.NoLogo</item>
     </style>
 
+    <style name="Theme.UVweb.Logo.Transparent" parent="@style/Theme.UVweb.Logo">
+    </style>
+
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_uvweb</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
@@ -72,6 +75,7 @@
     <style name="ListView.UVweb" parent="android:Widget.ListView">
         <item name="android:listSelector">@drawable/list_selector_uvweb</item>
         <item name="android:divider">@drawable/list_divider_holo_light</item>
+        <item name="android:cacheColorHint">@color/background_holo_light</item>
     </style>
 
     <style name="SpinnerItem.UVweb" parent="android:TextAppearance.Widget.TextView.SpinnerItem">

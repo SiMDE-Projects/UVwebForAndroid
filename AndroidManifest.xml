@@ -18,7 +18,7 @@
             android:hardwareAccelerated="true">
         <activity
                 android:name=".activities.UVListActivity"
-                android:theme="@style/Theme.UVweb.Logo">
+                android:theme="@style/Theme.UVweb.Logo.Transparent">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

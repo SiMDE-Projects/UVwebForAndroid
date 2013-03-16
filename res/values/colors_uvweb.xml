@@ -19,6 +19,7 @@
 <resources>
     <color name="pressed_uvweb">#cc33b5e5</color>
     <color name="grey_background">#ff4c4c4c</color>
+    <color name="background_holo_light">#fff3f3f3</color>
     <color name="main_color">#ff73bbab</color>
 	<color name="list_divider">#1a000000</color>
 </resources>
