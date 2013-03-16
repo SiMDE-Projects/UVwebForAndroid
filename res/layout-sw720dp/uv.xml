@@ -21,12 +21,12 @@
                 style="@style/RightPartDefault">
 
             <TextView
-                    android:id="@+id/desc"
-                    style="@style/Description"/>
-
-            <TextView
                     android:id="@+id/rate"
                     style="@style/Rate"/>
+
+            <TextView
+                    android:id="@+id/desc"
+                    style="@style/Description"/>
 
         </LinearLayout>
 
