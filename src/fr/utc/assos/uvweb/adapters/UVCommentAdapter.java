@@ -44,7 +44,7 @@ public class UVCommentAdapter extends UVAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(R.layout.uvcomment, null);
+			convertView = mLayoutInflater.inflate(R.layout.uv_comment, null);
 		}
 
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
