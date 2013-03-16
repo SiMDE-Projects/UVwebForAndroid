@@ -102,7 +102,6 @@ public class UVDetailFragment extends SherlockFragment {
 					}
 				});
 				headerViewStub.inflate();
-				headerViewStub = null;
 			} else {
 				headerView = inflater.inflate(R.layout.uv_detail_header, null);
 				setHeaderData(headerView);

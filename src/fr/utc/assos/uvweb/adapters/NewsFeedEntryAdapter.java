@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -21,9 +22,11 @@ import java.util.List;
  */
 public class NewsFeedEntryAdapter extends UVAdapter {
 	private List<UVwebContent.NewsFeedEntry> mNewsFeedEntries = Collections.emptyList();
+	private final String mDatePresentation;
 
 	public NewsFeedEntryAdapter(Context context) {
 		super(context);
+		mDatePresentation = context.getString(R.string.date_presentation);
 	}
 
 	@Override
@@ -49,13 +52,17 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 			convertView = mLayoutInflater.inflate(R.layout.newsfeed_entry, null);
 		}
 
-		final TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
+		final TextView userIdView = UVwebHolder.get(convertView, R.id.user_id_action);
+		final TextView dateView = UVwebHolder.get(convertView, R.id.date);
 		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
 
 		final UVwebContent.NewsFeedEntry entry = getItem(position);
 
-		userIdView.setText(entry.getAuthor());
+		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
+				entry.getAuthor(), " " + entry.getAction())));
+		dateView.setText(mDatePresentation + " " + entry.getFormattedDate());
 		commentView.setText(entry.getComment());
+
 
 		return convertView;
 	}

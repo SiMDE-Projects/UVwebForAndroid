@@ -16,6 +16,9 @@
     <string name="about">A propos</string>
     <string name="licenses">Licences open source</string>
 
+    <!-- NewsFeed -->
+    <string name="date_presentation">Il y a</string>
+
     <!-- AboutActivity -->
     <string name="credits"><![CDATA[<b>Crédits</b><br>tkeunebr \u0026 amasciul]]></string>
     <string name="go_to_uvweb">Aller sur UVweb</string>

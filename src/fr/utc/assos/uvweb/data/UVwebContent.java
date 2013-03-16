@@ -14,6 +14,8 @@ public class UVwebContent {
 	public static final String UV_TITLE_FORMAT = "<font color='#000000'>%1$s</font>%2$s";
     public static final String UV_TITLE_FORMAT_LIGHT = "<font color='#ffffff'>%1$s</font>%2$s";
 
+	public static final String NEWSFEED_ACTION_FORMAT = "<b>%1$s</b><font color='#000000'>%2$s</font>";
+
 	/**
 	 * An array of UVs.
 	 */
@@ -139,12 +141,18 @@ public class UVwebContent {
 				" us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now." +
 				" We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but" +
 				" it doesn't hold a candle to man.";
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
 	}
 
 	public static void addItem(UV item) {
@@ -295,15 +303,21 @@ public class UVwebContent {
 		private String mAuthor;
 		private Date mDate;
 		private String mComment;
+		private String mAction;
 
-		public NewsFeedEntry(String author, Calendar calendar, String comment) {
+		public NewsFeedEntry(String author, Calendar calendar, String comment, String action) {
 			mAuthor = author;
 			mDate = calendar.getTime();
 			mComment = comment;
+			mAction = action;
 		}
 
 		public String getAuthor() {
 			return mAuthor;
+		}
+
+		public String getAction() {
+			return mAction;
 		}
 
 		public void setAuthor(String author) {
@@ -324,6 +338,10 @@ public class UVwebContent {
 
 		public void setComment(String comment) {
 			this.mComment = comment;
+		}
+
+		public String getFormattedDate() {
+			return DateFormat.getDateInstance().format(mDate);
 		}
 	}
 }
