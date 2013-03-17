@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -40,6 +40,8 @@ public class UVDetailFragment extends SherlockFragment {
 	private ListView mListView;
 
 	private boolean mTwoPane;
+
+	private final Handler mHandler = new Handler();
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -130,7 +132,14 @@ public class UVDetailFragment extends SherlockFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
-				Toast.makeText(getActivity(), "Refresh clicked", Toast.LENGTH_SHORT).show();
+				final MenuItem refresh = item;
+				refresh.setActionView(R.layout.progressbar);
+				mHandler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						refresh.setActionView(null);
+					}
+				}, 2000);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

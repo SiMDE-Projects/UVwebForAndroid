@@ -1,11 +1,11 @@
 package fr.utc.assos.uvweb;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -22,24 +22,18 @@ import fr.utc.assos.uvweb.data.UVwebContent;
  */
 public class NewsFeedFragment extends SherlockFragment {
 	private static final String TAG = "NewsFeedFragment";
+	private final Handler mHandler = new Handler();
 
 	/**
 	 * The ListView containing all comment items.
 	 */
 	private ListView mListView;
 
-	private boolean mTwoPane;
-
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public NewsFeedFragment() {
-		this(false);
-	}
-
-	public NewsFeedFragment(boolean twoPane) {
-		mTwoPane = twoPane;
 	}
 
 	@Override
@@ -67,14 +61,21 @@ public class NewsFeedFragment extends SherlockFragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.fragment_uv_detail, menu);
+		inflater.inflate(R.menu.fragment_newsfeed, menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
-				Toast.makeText(getActivity(), "Refresh clicked", Toast.LENGTH_SHORT).show();
+				final MenuItem refresh = item;
+				refresh.setActionView(R.layout.progressbar);
+				mHandler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						refresh.setActionView(null);
+					}
+				}, 2000);
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
