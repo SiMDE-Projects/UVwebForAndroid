@@ -82,9 +82,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * The displayed UV name
 	 */
 	private String mDisplayedUVName = NO_UV_DISPLAYED;
-
 	private boolean mTwoPane = false;
-
 	private boolean mIsLoadingUV = false;
 	private String mQuery;
 
@@ -93,6 +91,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public UVListFragment() {
+		this(false);
+	}
+
+	public UVListFragment(boolean twoPane) {
+		mTwoPane = twoPane;
 	}
 
 	// Fragment Lifecycle management
@@ -139,6 +142,10 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+
+		if (mTwoPane) {
+			configureListView();
+		}
 
 		return rootView;
 	}
@@ -204,13 +211,15 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * Careful, this method is only called in two-pane mode (i.e. tablet)
 	 */
 	public void configureListView() {
-		mTwoPane = true;
+		// In two-pane mode, list items should be given the
+		// 'activated' state when touched.
 		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
 		if (mShowDefaultDetailFragment) {
 			mCallbacks.showDefaultDetailFragment();
 			mShowDefaultDetailFragment = false;
 		}
+		getSherlockActivity().getWindow().setBackgroundDrawable(null);
 	}
 
 	private void setActivatedPosition(int position) {
@@ -276,8 +285,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	public void onItemsFound(final List<UVwebContent.UV> results) {
 		if (mTwoPane && results.size() == 1) {
 			performClick(0);
-		}
-		else {
+		} else {
 			//setActivatedPosition();
 		}
 	}
