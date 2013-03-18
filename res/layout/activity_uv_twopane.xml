@@ -3,8 +3,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="horizontal"
-              tools:context=".activities.UVListActivity"
-              android:baselineAligned="false">
+              tools:context=".activities.UVListActivity">
 
     <!--
     This layout is a two-pane layout for the UVs
@@ -17,11 +16,18 @@
     http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
     -->
 
-    <FrameLayout
-            android:id="@+id/uv_list_container"
+    <!--<FrameLayout-->
+            <!--android:id="@+id/uv_list_container"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1.25"/>-->
+
+    <fr.utc.assos.uvweb.UVwebViewPager
+            android:id="@+id/pager"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.25"/>
+            android:layout_weight="1.25"
+            tools:context=".activies.UVListActivity"/>
 
     <FrameLayout
             android:id="@+id/uv_detail_container"

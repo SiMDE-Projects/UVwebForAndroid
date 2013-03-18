@@ -14,20 +14,11 @@ import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 15/03/13
- * Time: 14:49
- * To change this template use File | Settings | File Templates.
+ * A list fragment representing a list of {@link UVwebContent.NewsFeedEntry}s.
  */
 public class NewsFeedFragment extends SherlockFragment {
 	private static final String TAG = "NewsFeedFragment";
 	private final Handler mHandler = new Handler();
-
-	/**
-	 * The ListView containing all comment items.
-	 */
-	private ListView mListView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,9 +40,9 @@ public class NewsFeedFragment extends SherlockFragment {
 		View rootView = inflater.inflate(R.layout.fragment_newsfeed,
 				container, false);
 
-		mListView = (ListView) rootView.findViewById(android.R.id.list);
+		final ListView mListView = (ListView) rootView.findViewById(android.R.id.list);
 
-		NewsFeedEntryAdapter adapter = new NewsFeedEntryAdapter(getSherlockActivity());
+		final NewsFeedEntryAdapter adapter = new NewsFeedEntryAdapter(getSherlockActivity());
 		adapter.updateNewsFeedEntries(UVwebContent.NEWS_ENTRIES);
 
 		mListView.setAdapter(adapter);

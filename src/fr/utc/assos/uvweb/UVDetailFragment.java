@@ -30,6 +30,8 @@ public class UVDetailFragment extends SherlockFragment {
 	 * represents.
 	 */
 	public static final String ARG_UV_ID = "item_id";
+
+	private final Handler mHandler = new Handler();
 	/**
 	 * The UV this fragment is presenting.
 	 */
@@ -39,20 +41,11 @@ public class UVDetailFragment extends SherlockFragment {
 	 */
 	private ListView mListView;
 
-	private boolean mTwoPane;
-
-	private final Handler mHandler = new Handler();
-
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public UVDetailFragment() {
-		this(false);
-	}
-
-	public UVDetailFragment(boolean twoPane) {
-		mTwoPane = twoPane;
 	}
 
 	@Override
@@ -114,6 +107,14 @@ public class UVDetailFragment extends SherlockFragment {
 		mListView.setAdapter(adapter);
 
 		return rootView;
+	}
+
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+
+		// Resources cleanup
+		mListView = null;
 	}
 
 	private void setHeaderData(final View inflatedHeader) {

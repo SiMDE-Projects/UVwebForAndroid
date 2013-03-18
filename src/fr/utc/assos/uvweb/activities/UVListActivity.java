@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.internal.app.ActionBarWrapper;
 import fr.utc.assos.uvweb.*;
@@ -46,19 +48,28 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 */
 	private FragmentManager mFragmentManager;
 	/**
-	 * The {@link ViewPager} that will host the section contents.
+	 * The {@link UVwebViewPager} that will host the section contents.
 	 */
-	private ViewPager mViewPager;
+	private UVwebViewPager mViewPager;
 	private ActionBar mActionBar;
 	private int mCurrentTab = 0;
 	private SharedPreferences mPrefs;
 	private UVListFragment mUVListFragment;
-	private NewsFeedFragment mNewsFeedFragment;
+	private View mContainer;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_uv_list);
+
+		if ((mContainer = findViewById(R.id.uv_detail_container)) != null) {
+			// The detail container view will be present only in the
+			// large-screen layouts (res/values-sw720dp and
+			// res/values-sw600dp-land). If this view is present, then the
+			// activity should be in two-pane mode.
+			mTwoPane = true;
+			setIsTwoPane();
+		}
 
 		mFragmentManager = getSupportFragmentManager();
 
@@ -67,23 +78,17 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		if (findViewById(R.id.uv_detail_container) != null) {
-			// The detail container view will be present only in the
-			// large-screen layouts (res/values-sw720dp and
-			// res/values-sw600dp-land). If this view is present, then the
-			// activity should be in two-pane mode.
-			mTwoPane = true;
+		// Create the adapter that will return a fragment for each of the two
+		// primary sections of the app.
+		final SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(mFragmentManager);
+
+		// Set up the ViewPager with the sections adapter.
+		mViewPager = (UVwebViewPager) findViewById(R.id.pager);
+		if (mTwoPane) {
+			// We disable ViewPager's swipe gesture on tablets because the tabs contain several Fragments
+			mViewPager.setDisableSwipe(true);
 		}
-
-		if (!mTwoPane) {
-			// Create the adapter that will return a fragment for each of the two
-			// primary sections of the app.
-			SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(mFragmentManager);
-
-			// Set up the ViewPager with the sections adapter.
-			mViewPager = (ViewPager) findViewById(R.id.pager);
-			mViewPager.setAdapter(sectionsPagerAdapter);
-
+		else {
 			// When swiping between different sections, select the corresponding
 			// tab.
 			mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -94,7 +99,9 @@ public class UVListActivity extends UVwebMenuActivity implements
 				}
 			});
 		}
+		mViewPager.setAdapter(sectionsPagerAdapter);
 
+		// We add our tabs
 		mActionBar.addTab(mActionBar.newTab()
 				.setText(getString(R.string.tab_title_feed))
 				.setTabListener(new UVwebTabListener()));
@@ -104,11 +111,40 @@ public class UVListActivity extends UVwebMenuActivity implements
 				.setTabListener(new UVwebTabListener()));
 
 		if (mTwoPane) {
-			setTabsAreEmbedded(mActionBar, true);
+			// In tablet mode, tabs are embedded even on portrait.
+			// We need to force this behavior using Reflection.
+			final Configuration config = getResources().getConfiguration();
+			if (config.orientation == Configuration.ORIENTATION_PORTRAIT) {
+				setTabsAreEmbedded(mActionBar, true);
+			}
 		}
 
+		// Restore saved tab position.
 		mCurrentTab = loadLastTabPreference();
 		mActionBar.setSelectedNavigationItem(mCurrentTab);
+	}
+
+	@Override
+	public void onAttachFragment(Fragment fragment) {
+		super.onAttachFragment(fragment);
+
+		if (mTwoPane && fragment instanceof UVListFragment) {
+			mUVListFragment = (UVListFragment) fragment;
+			mUVListFragment.setIsTwoPane(mTwoPane);
+			Log.d(TAG, "settingTwoPane 1");
+		}
+	}
+
+	/**
+	 * When the fragments are being restored during a configuration change, the onAttachFragment callback
+	 * is being called before we can determine if the layout is two-pane or not.
+	 * Therefore we need another way to set the two-pane boolean, thus the setIsTwoPane() method.
+	 */
+	private void setIsTwoPane() {
+		if (mUVListFragment != null) {
+			Log.d(TAG, "settingTwoPane");
+			mUVListFragment.setIsTwoPane(mTwoPane);
+		}
 	}
 
 	/**
@@ -139,7 +175,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 			// fragment transaction, if the new item is not already displayed.
 			Bundle arguments = new Bundle();
 			arguments.putString(UVDetailFragment.ARG_UV_ID, id);
-			UVDetailFragment fragment = new UVDetailFragment(true);
+			UVDetailFragment fragment = new UVDetailFragment();
 			fragment.setArguments(arguments);
 			mFragmentManager.beginTransaction()
 					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
@@ -203,7 +239,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 * one of the sections/tabs/pages.
 	 * It is used in phone-mode only (twoPane = false).
 	 */
-	public class SectionsPagerAdapter extends FragmentPagerAdapter {
+	private class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -211,6 +247,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
+			Log.d(TAG, "getItem, position === " + String.valueOf(position));
 			// getItem is called to instantiate the fragment for the given page.
 			Fragment fragment;
 			switch (position) {
@@ -246,43 +283,17 @@ public class UVListActivity extends UVwebMenuActivity implements
 		@Override
 		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 			final int position = tab.getPosition();
+			mViewPager.setCurrentItem(position);
 			if (mTwoPane) {
-				if (position != mCurrentTab) {
-					switch (position) {
-						case 0:
-							if (mUVListFragment != null) {
-								ft.hide(mUVListFragment);
-								ft.hide(mFragmentManager.findFragmentById(R.id.uv_detail_container));
-							}
-							if (mNewsFeedFragment == null) {
-								mNewsFeedFragment = new NewsFeedFragment();
-								ft.add(android.R.id.content, mNewsFeedFragment);
-							} else {
-								ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-										android.R.anim.fade_in, android.R.anim.fade_out);
-								ft.attach(mNewsFeedFragment);
-							}
-
-							break;
-						default:
-							if (mNewsFeedFragment != null) {
-								ft.hide(mNewsFeedFragment);
-							}
-							if (mUVListFragment == null) {
-								mUVListFragment = new UVListFragment(true);
-								ft.add(R.id.uv_list_container, mUVListFragment);
-							} else {
-								ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
-										android.R.anim.fade_in, android.R.anim.fade_out);
-								ft.attach(mUVListFragment);
-								ft.show(mFragmentManager.findFragmentById(R.id.uv_detail_container));
-							}
-							break;
-					}
-					saveLastTabPreference(position);
+				Log.d(TAG, "onTabSelected, position === " + String.valueOf(position));
+				switch (position) {
+					case 0:
+						mContainer.setVisibility(View.INVISIBLE);
+						break;
+					default:
+						mContainer.setVisibility(View.VISIBLE);
+						break;
 				}
-			} else {
-				mViewPager.setCurrentItem(position);
 			}
 		}
 

@@ -6,11 +6,9 @@ import android.util.Log;
 import com.actionbarsherlock.widget.SearchView;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 13/03/13
- * Time: 13:54
- * To change this template use File | Settings | File Templates.
+ * A very simple custom {@link SearchView} that allows to block some callbacks from being automatically called.
+ * This is particularly useful on tablets (two-pane mode), as we don't want the SearchView to clear it's
+ * content when we open an {@link UVDetailFragment}, which contains optionsMenu of its own.
  */
 public class UVwebSearchView extends SearchView {
 	private static final String TAG = "UVwebSearchViewTest";

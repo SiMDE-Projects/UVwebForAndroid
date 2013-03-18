@@ -20,7 +20,7 @@ import fr.utc.assos.uvweb.data.UVwebContent;
 import java.util.List;
 
 /**
- * A list fragment representing a list of UVs. This fragment also supports
+ * A list fragment representing a list of {@link UVwebContent.UV}s. This fragment also supports
  * tablet devices by allowing list items to be given an 'activated' state upon
  * selection. This helps indicate which item is currently being viewed in a
  * {@link UVDetailFragment}.
@@ -34,16 +34,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * Special mUVDisplayed case where no UV is actually displayed.
 	 */
 	private static final String NO_UV_DISPLAYED = "no_uv_displayed";
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * activated item position. Only used on tablets.
-	 */
-	private static final String STATE_ACTIVATED_POSITION = "activated_position";
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * current search query
-	 */
-	private static final String STATE_SEARCH_QUERY = "search_query";
 	/**
 	 * A dummy implementation of the {@link Callbacks} interface that does
 	 * nothing. Used only when this fragment is not attached to an activity.
@@ -91,11 +81,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public UVListFragment() {
-		this(false);
-	}
-
-	public UVListFragment(boolean twoPane) {
-		mTwoPane = twoPane;
 	}
 
 	// Fragment Lifecycle management
@@ -121,14 +106,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		setRetainInstance(true);
 
 		// Restore the previously serialized activated item position.
-		if (savedInstanceState != null) {
-			if (savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
-				setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
-			}
-			if (savedInstanceState.containsKey(STATE_SEARCH_QUERY)) {
-
-			}
-		} else {
+		if (savedInstanceState == null) {
 			mShowDefaultDetailFragment = true;
 		}
 	}
@@ -144,7 +122,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
 		if (mTwoPane) {
-			configureListView();
+			setupTwoPaneUi();
 		}
 
 		return rootView;
@@ -174,9 +152,8 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	public void onDetach() {
 		super.onDetach();
 
-		// Reset the active callbacks interface to the dummy implementation and some flags as well.
+		// Reset the active callbacks interface to the dummy implementation.
 		mCallbacks = sDummyCallbacks;
-		mIsLoadingUV = false;
 	}
 
 	@Override
@@ -205,12 +182,16 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		}
 	}
 
+	public void setIsTwoPane(boolean twoPane) {
+		mTwoPane = twoPane;
+	}
+
 	/**
 	 * Turns on activate-on-click mode. When this mode is on, list items will be
 	 * given the 'activated' state when touched.
-	 * Careful, this method is only called in two-pane mode (i.e. tablet)
+	 * Careful, this method should only be called in two-pane mode (i.e. tablet)
 	 */
-	public void configureListView() {
+	private void setupTwoPaneUi() {
 		// In two-pane mode, list items should be given the
 		// 'activated' state when touched.
 		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -219,7 +200,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			mCallbacks.showDefaultDetailFragment();
 			mShowDefaultDetailFragment = false;
 		}
-		getSherlockActivity().getWindow().setBackgroundDrawable(null);
+		//getSherlockActivity().getWindow().setBackgroundDrawable(null);
 	}
 
 	private void setActivatedPosition(int position) {
