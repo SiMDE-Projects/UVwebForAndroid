@@ -289,9 +289,11 @@ public class UVListActivity extends UVwebMenuActivity implements
 				switch (position) {
 					case 0:
 						mContainer.setVisibility(View.INVISIBLE);
+						saveLastTabPreference(0);
 						break;
 					default:
 						mContainer.setVisibility(View.VISIBLE);
+						saveLastTabPreference(1);
 						break;
 				}
 			}

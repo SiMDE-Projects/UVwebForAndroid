@@ -34,4 +34,7 @@
         deserunt mollit anim id est laborum
     </string>
 
+    <!-- Feedback messages -->
+    <string name="network_error_message">Erreur réseau</string>
+
 </resources>

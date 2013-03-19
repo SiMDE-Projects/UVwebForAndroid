@@ -141,19 +141,19 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 	@Override
 	public void onDestroyView() {
-		super.onDestroyView();
-
 		// Resources cleanup
 		mListView = null;
 		mAdapter = null;
+
+		super.onDestroyView();
 	}
 
 	@Override
 	public void onDetach() {
-		super.onDetach();
-
 		// Reset the active callbacks interface to the dummy implementation.
 		mCallbacks = sDummyCallbacks;
+
+		super.onDetach();
 	}
 
 	@Override

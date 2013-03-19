@@ -11,9 +11,11 @@ import android.view.ViewStub;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 
@@ -111,10 +113,10 @@ public class UVDetailFragment extends SherlockFragment {
 
 	@Override
 	public void onDestroyView() {
-		super.onDestroyView();
-
 		// Resources cleanup
 		mListView = null;
+
+		super.onDestroyView();
 	}
 
 	private void setHeaderData(final View inflatedHeader) {
@@ -133,14 +135,19 @@ public class UVDetailFragment extends SherlockFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
-				final MenuItem refresh = item;
-				refresh.setActionView(R.layout.progressbar);
-				mHandler.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						refresh.setActionView(null);
-					}
-				}, 2000);
+				final SherlockFragmentActivity context = getSherlockActivity();
+				if (!ConnectionCheckerHelper.isOnline(context)) {
+					Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionCheckerHelper.NETWORK_ERROR_STYLE).show();
+				} else {
+					final MenuItem refresh = item;
+					refresh.setActionView(R.layout.progressbar);
+					mHandler.postDelayed(new Runnable() {
+						@Override
+						public void run() {
+							refresh.setActionView(null);
+						}
+					}, 2000);
+				}
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);

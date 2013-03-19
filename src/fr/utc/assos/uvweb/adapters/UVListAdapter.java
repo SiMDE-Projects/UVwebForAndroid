@@ -20,7 +20,8 @@ import java.util.List;
 
 /**
  * An adapter used all together with the {@link fr.utc.assos.uvweb.UVListFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder} class and thus allows UVs recycling.
+ * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder}
+ * class and thus allows UVs recycling.
  * It implements both SectionIndexer and StickyListHeadersAdapter interfaces
  */
 public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyListHeadersAdapter, Filterable {
@@ -232,7 +233,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		@Override
 		@SuppressWarnings("unchecked")
 		protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-			List<UVwebContent.UV> results = (List<UVwebContent.UV>) filterResults.values;
+			final List<UVwebContent.UV> results = (List<UVwebContent.UV>) filterResults.values;
 			updateUVs(results, true);
 			if (filterResults.count == 0) {
 				mSearchCallbacks.onNothingFound();
