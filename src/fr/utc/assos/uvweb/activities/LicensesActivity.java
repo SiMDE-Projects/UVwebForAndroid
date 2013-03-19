@@ -11,18 +11,20 @@ import fr.utc.assos.uvweb.R;
  * used to build the application
  */
 public class LicensesActivity extends UVwebActivity {
+	private static final String LICENSES_URL = "file:///android_asset/licenses.html";
+
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.licenses_activity);
 
-		WebView webView = (WebView) findViewById(R.id.web_view);
+		final WebView webView = (WebView) findViewById(R.id.web_view);
 		webView.setWebViewClient(new UVwebClient());
 
 		setSupportProgressBarIndeterminateVisibility(true);
 
-		webView.loadUrl("file:///android_asset/licenses.html");
+		webView.loadUrl(LICENSES_URL);
 	}
 
 	private class UVwebClient extends WebViewClient {

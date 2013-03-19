@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.internal.app.ActionBarWrapper;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.*;
 
 import java.lang.reflect.Field;
@@ -133,6 +134,13 @@ public class UVListActivity extends UVwebMenuActivity implements
 			mUVListFragment.setIsTwoPane(mTwoPane);
 			Log.d(TAG, "settingTwoPane 1");
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		Crouton.cancelAllCroutons();
+
+		super.onDestroy();
 	}
 
 	/**

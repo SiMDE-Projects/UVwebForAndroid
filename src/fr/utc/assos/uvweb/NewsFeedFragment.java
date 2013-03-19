@@ -14,6 +14,7 @@ import com.actionbarsherlock.view.MenuItem;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
 
 /**
  * A list fragment representing a list of {@link UVwebContent.NewsFeedEntry}s.

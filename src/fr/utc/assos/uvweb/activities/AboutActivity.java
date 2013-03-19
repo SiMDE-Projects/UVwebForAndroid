@@ -9,7 +9,7 @@ import android.widget.TextView;
 import fr.utc.assos.uvweb.R;
 
 /**
- * An simple "About" activity. Here we are supposed to introduce ourselves as well as the project
+ * A simple "About" activity. Here we are supposed to introduce ourselves as well as the project
  */
 public class AboutActivity extends UVwebActivity {
 	public void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,8 @@ public class AboutActivity extends UVwebActivity {
 
 		setContentView(R.layout.activity_about);
 
-		((TextView) findViewById(R.id.credits)).setText(Html.fromHtml(getResources().getString(R.string.credits)));
+		((TextView) findViewById(R.id.credits))
+				.setText(Html.fromHtml(getResources().getString(R.string.credits)));
 	}
 
 	public void openUVwebSite(View v) {

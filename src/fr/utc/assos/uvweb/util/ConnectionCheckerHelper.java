@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

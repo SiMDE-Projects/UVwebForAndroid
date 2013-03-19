@@ -18,6 +18,8 @@ import com.actionbarsherlock.view.MenuItem;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.ConfigHelper;
+import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
 
 /**
  * A fragment representing a single UV detail screen. This fragment is either
