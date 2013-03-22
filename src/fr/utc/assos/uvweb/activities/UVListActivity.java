@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -36,9 +37,9 @@ import java.lang.reflect.Method;
  * interface to listen for UV selections.
  */
 public class UVListActivity extends UVwebMenuActivity implements
-		UVListFragment.Callbacks {
+		UVListFragment.Callbacks, ActionBar.TabListener {
 	private static final String TAG = "UVListActivity";
-	private static final String PERSISTENT_LAST_TAB = "UVweb.LastTab";
+	private static final String PERSISTENT_LAST_TAB = "UVwebLastTab";
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
@@ -105,11 +106,11 @@ public class UVListActivity extends UVwebMenuActivity implements
 		// We add our tabs
 		mActionBar.addTab(mActionBar.newTab()
 				.setText(getString(R.string.tab_title_feed))
-				.setTabListener(new UVwebTabListener()));
+				.setTabListener(this));
 
 		mActionBar.addTab(mActionBar.newTab()
 				.setText(getString(R.string.tab_title_uvs))
-				.setTabListener(new UVwebTabListener()));
+				.setTabListener(this));
 
 		if (mTwoPane) {
 			// In tablet mode, tabs are embedded even on portrait.
@@ -163,7 +164,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 	public void showDefaultDetailFragment() {
 		if (mTwoPane) {
 			// Default detail fragment management
-			UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
+			final UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
 			mFragmentManager.beginTransaction()
 					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
 					.replace(R.id.uv_detail_container, fragment)
@@ -181,9 +182,9 @@ public class UVListActivity extends UVwebMenuActivity implements
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction, if the new item is not already displayed.
-			Bundle arguments = new Bundle();
+			final Bundle arguments = new Bundle();
 			arguments.putString(UVDetailFragment.ARG_UV_ID, id);
-			UVDetailFragment fragment = new UVDetailFragment();
+			final UVDetailFragment fragment = new UVDetailFragment();
 			fragment.setArguments(arguments);
 			mFragmentManager.beginTransaction()
 					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
@@ -191,7 +192,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 					.replace(R.id.uv_detail_container, fragment)
 					.commit();
 		} else {
-			Intent detailIntent = new Intent(this, UVDetailActivity.class);
+			final Intent detailIntent = new Intent(this, UVDetailActivity.class);
 			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
 			startActivity(detailIntent);
 		}
@@ -229,8 +230,13 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 * Last selected tab save and restore management, using SharedPreferences
 	 */
 	private void saveLastTabPreference(int tab) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
+			mPrefs.edit().putInt(PERSISTENT_LAST_TAB, tab).apply();
+		}
+		else {
+			mPrefs.edit().putInt(PERSISTENT_LAST_TAB, tab).commit();
+		}
 		mCurrentTab = tab;
-		mPrefs.edit().putInt(PERSISTENT_LAST_TAB, tab).apply();
 	}
 
 	private int loadLastTabPreference() {
@@ -243,11 +249,46 @@ public class UVListActivity extends UVwebMenuActivity implements
 	}
 
 	/**
+	 * {@link ActionBar.TabListener}'s interface.
+	 * For each callback, method:
+	 * @param tab The tab that was selected
+	 * @param ft  A {@link FragmentTransaction} for queuing fragment operations to execute
+	 *            during a tab switch. The previous tab's unselect and this tab's select will be
+	 *            executed in a single transaction.
+	 */
+	@Override
+	public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+		final int position = tab.getPosition();
+		mViewPager.setCurrentItem(position);
+		if (mTwoPane) {
+			Log.d(TAG, "onTabSelected, position === " + String.valueOf(position));
+			switch (position) {
+				case 0:
+					mContainer.setVisibility(View.INVISIBLE);
+					saveLastTabPreference(0);
+					break;
+				default:
+					mContainer.setVisibility(View.VISIBLE);
+					saveLastTabPreference(1);
+					break;
+			}
+		}
+	}
+
+	@Override
+	public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	}
+
+	@Override
+	public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+	}
+
+	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
 	 * It is used in phone-mode only (twoPane = false).
 	 */
-	private class SectionsPagerAdapter extends FragmentPagerAdapter {
+	private final class SectionsPagerAdapter extends FragmentPagerAdapter {
 
 		public SectionsPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -278,41 +319,6 @@ public class UVListActivity extends UVwebMenuActivity implements
 		public CharSequence getPageTitle(int position) {
 			// We handle the page titles manually
 			return null;
-		}
-	}
-
-	private final class UVwebTabListener implements ActionBar.TabListener {
-		/**
-		 * @param tab The tab that was selected
-		 * @param ft  A {@link FragmentTransaction} for queuing fragment operations to execute
-		 *            during a tab switch. The previous tab's unselect and this tab's select will be
-		 *            executed in a single transaction.
-		 */
-		@Override
-		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-			final int position = tab.getPosition();
-			mViewPager.setCurrentItem(position);
-			if (mTwoPane) {
-				Log.d(TAG, "onTabSelected, position === " + String.valueOf(position));
-				switch (position) {
-					case 0:
-						mContainer.setVisibility(View.INVISIBLE);
-						saveLastTabPreference(0);
-						break;
-					default:
-						mContainer.setVisibility(View.VISIBLE);
-						saveLastTabPreference(1);
-						break;
-				}
-			}
-		}
-
-		@Override
-		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-		}
-
-		@Override
-		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
 	}
 }
