@@ -11,12 +11,16 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.github.espiandev.showcaseview.ShowcaseView;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ConfigHelper;
+import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
 
 import java.util.List;
 
@@ -77,6 +81,9 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private boolean mIsLoadingUV = false;
 	private String mQuery;
 
+	private ShowcaseView mShowcaseView;
+	private ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
+
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
@@ -105,6 +112,9 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		// Fragment configuration
 		setHasOptionsMenu(true);
 		setRetainInstance(true);
+
+		// ShowcaseView options
+		mOptions.block = false;
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState == null) {
@@ -229,6 +239,13 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		Log.d(TAG, "onCreateOptionsMenu");
 		inflater.inflate(R.menu.fragment_uv_list, menu);
 
+		// ShowcaseView configuration
+		mShowcaseView = ShowcaseView.insertShowcaseViewWithType(
+				ShowcaseView.ITEM_ACTION_OVERFLOW, R.id.menu_search,
+				getSherlockActivity(),
+				"ShowcaseView & action items", "Try touching action items to showcase them",
+				mOptions);
+
 		// SearchView configuration
 		final MenuItem searchMenuItem = menu.findItem(R.id.menu_search);
 		final UVwebSearchView searchView = (UVwebSearchView) searchMenuItem.getActionView();
@@ -258,6 +275,16 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				return true;
 			}
 		});
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_search) {
+			mShowcaseView.setShowcaseItem(ShowcaseView.ITEM_ACTION_ITEM,
+					R.id.menu_search, getSherlockActivity());
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**
