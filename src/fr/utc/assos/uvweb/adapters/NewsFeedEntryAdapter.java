@@ -14,11 +14,10 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 15/03/13
- * Time: 16:03
- * To change this template use File | Settings | File Templates.
+ * An adapter used all together with the {@link fr.utc.assos.uvweb.NewsFeedFragment}'s ListView.
+ * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder}
+ * class and thus allows UVs recycling.
+ * It is used to show the actions that can occur in UVweb as a dynamic feed
  */
 public class NewsFeedEntryAdapter extends UVAdapter {
 	private List<UVwebContent.NewsFeedEntry> mNewsFeedEntries = Collections.emptyList();

@@ -14,7 +14,8 @@ import java.util.List;
 
 /**
  * An adapter used all together with the {@link fr.utc.assos.uvweb.UVDetailFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder} class and thus allows UVs recycling.
+ * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder}
+ * class and thus allows UVs recycling.
  * It is used to show the users' comments of a given UV
  */
 public class UVCommentAdapter extends UVAdapter {
