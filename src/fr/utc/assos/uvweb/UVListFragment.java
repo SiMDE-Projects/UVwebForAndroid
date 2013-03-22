@@ -11,16 +11,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.github.espiandev.showcaseview.ShowcaseView;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ConfigHelper;
-import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
 
 import java.util.List;
 
@@ -80,7 +77,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private boolean mTwoPane = false;
 	private boolean mIsLoadingUV = false;
 	private String mQuery;
-
 	private ShowcaseView mShowcaseView;
 	private ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
@@ -115,6 +111,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// ShowcaseView options
 		mOptions.block = false;
+		mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState == null) {
@@ -241,9 +238,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// ShowcaseView configuration
 		mShowcaseView = ShowcaseView.insertShowcaseViewWithType(
-				ShowcaseView.ITEM_ACTION_OVERFLOW, R.id.menu_search,
+				ShowcaseView.ITEM_ACTION_OVERFLOW,
+				R.id.menu_search,
 				getSherlockActivity(),
-				"ShowcaseView & action items", "Try touching action items to showcase them",
+				"ShowcaseView & action items",
+				"Try touching action items to showcase them",
 				mOptions);
 
 		// SearchView configuration
@@ -275,16 +274,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				return true;
 			}
 		});
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menu_search) {
-			mShowcaseView.setShowcaseItem(ShowcaseView.ITEM_ACTION_ITEM,
-					R.id.menu_search, getSherlockActivity());
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**
