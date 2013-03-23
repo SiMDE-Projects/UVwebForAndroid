@@ -77,6 +77,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private boolean mTwoPane = false;
 	private boolean mIsLoadingUV = false;
 	private String mQuery;
+	private ShowcaseView mShowcaseView;
 	private ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
 	/**
@@ -109,6 +110,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		setRetainInstance(true);
 
 		// ShowcaseView options
+		mOptions.block = false;
 		mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
 
 		// Restore the previously serialized activated item position.
@@ -234,6 +236,15 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		Log.d(TAG, "onCreateOptionsMenu");
 		inflater.inflate(R.menu.fragment_uv_list, menu);
 
+		// ShowcaseView configuration
+		mShowcaseView = ShowcaseView.insertShowcaseViewWithType(
+				ShowcaseView.ITEM_ACTION_OVERFLOW,
+				R.id.menu_search,
+				getSherlockActivity(),
+				"ShowcaseView & action items",
+				"Try touching action items to showcase them",
+				mOptions);
+
 		// SearchView configuration
 		final MenuItem searchMenuItem = menu.findItem(R.id.menu_search);
 		final UVwebSearchView searchView = (UVwebSearchView) searchMenuItem.getActionView();
@@ -263,15 +274,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				return true;
 			}
 		});
-
-		// ShowcaseView configuration
-		ShowcaseView.insertShowcaseViewWithType(
-				ShowcaseView.ITEM_ACTION_ITEM,
-				R.id.menu_search,
-				getSherlockActivity(),
-				"Rechercher des UVs ici",
-				null,
-				mOptions);
 	}
 
 	/**
