@@ -60,6 +60,8 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		public void onNothingFound() {
 		}
 	};
+
+
 	private SearchCallbacks mSearchCallbacks = sDummySearchCallbacks;
 
 	public UVListAdapter(Context context) {
@@ -71,6 +73,8 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	public void setSearchCallbacks(SearchCallbacks callbacks) {
 		mSearchCallbacks = callbacks;
 	}
+
+
 
 	@Override
 	public int getCount() {
