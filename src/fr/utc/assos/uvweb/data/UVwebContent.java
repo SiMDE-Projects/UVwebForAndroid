@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.data;
 
-import java.text.DateFormat;
+import org.joda.time.LocalDate;
+
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -35,6 +36,11 @@ public class UVwebContent {
 	 * An array of news feed entries.
 	 */
 	public static ArrayList<NewsFeedEntry> NEWS_ENTRIES = new ArrayList<NewsFeedEntry>();
+
+	/**
+	 * Used to format grades.
+	 */
+	private static final DecimalFormat sDecimalFormat = new DecimalFormat("0");
 
 	static {
 		// Add sample items.
@@ -126,14 +132,13 @@ public class UVwebContent {
 				"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in " +
 				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
 				"proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(2009, Calendar.NOVEMBER, 5);
-		addComment(new UVComment("amasciul", calendar, commentString, 5));
-		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
-		addComment(new UVComment("amasciul", calendar, commentString, 5));
-		addComment(new UVComment("amasciul", calendar, commentString, 5));
-		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
-		addComment(new UVComment("tkeunebr", calendar, commentString, 5));
+		final LocalDate localDate = new LocalDate(2009, 11, 5);
+		addComment(new UVComment("amasciul", localDate, commentString, 5));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
+		addComment(new UVComment("amasciul", localDate, commentString, 5));
+		addComment(new UVComment("amasciul", localDate, commentString, 5));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
 
 		String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
 				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
@@ -141,17 +146,17 @@ public class UVwebContent {
 				" us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now." +
 				" We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but" +
 				" it doesn't hold a candle to man.";
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", calendar, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", calendar, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
 				"a publié un nouveau commentaire"));
 	}
 
@@ -178,10 +183,10 @@ public class UVwebContent {
 		private double mSuccessRate;
 
 		public UV(String name, String description, double rate, double successRate) {
-			this.mName = name;
-			this.mDescription = description;
-			this.mRate = rate;
-			this.mSuccessRate = successRate;
+			mName = name;
+			mDescription = description;
+			mRate = rate;
+			mSuccessRate = successRate;
 
 			//addItem(this);
 		}
@@ -192,27 +197,27 @@ public class UVwebContent {
 		}
 
 		public String getName() {
-			return this.mName;
+			return mName;
 		}
 
 		public void setName(String name) {
-			this.mName = name;
+			mName = name;
 		}
 
 		public String getDescription() {
-			return this.mDescription;
+			return mDescription;
 		}
 
 		public void setDescription(String description) {
-			this.mDescription = description;
+			mDescription = description;
 		}
 
 		public double getRate() {
-			return this.mRate;
+			return mRate;
 		}
 
 		public void setRate(double rate) {
-			this.mRate = rate;
+			mRate = rate;
 		}
 
 		public double getSuccessRate() {
@@ -220,7 +225,7 @@ public class UVwebContent {
 		}
 
 		public void setSuccessRate(double successRate) {
-			this.mSuccessRate = successRate;
+			mSuccessRate = successRate;
 		}
 
 		public String getLetterCode() {
@@ -232,11 +237,11 @@ public class UVwebContent {
 		}
 
 		public String getFormattedSuccessRate() {
-			return new DecimalFormat("0.0").format(mSuccessRate) + "%";
+			return sDecimalFormat.format(mSuccessRate) + "%";
 		}
 
 		public String getFormattedRate() {
-			return new DecimalFormat("0.0").format(mRate) + "/10";
+			return sDecimalFormat.format(mRate) + "/10";
 		}
 
 		@Override
@@ -247,13 +252,13 @@ public class UVwebContent {
 
 	public static class UVComment {
 		private String mAuthor;
-		private Date mDate;
+		private LocalDate mDate;
 		private String mComment;
 		private int mGlobalRate;
 
-		public UVComment(String author, Calendar calendar, String comment, int globalRate) {
+		public UVComment(String author, LocalDate localDate, String comment, int globalRate) {
 			mAuthor = author;
-			mDate = calendar.getTime();
+			mDate = localDate;
 			mComment = comment;
 			mGlobalRate = globalRate;
 		}
@@ -263,15 +268,15 @@ public class UVwebContent {
 		}
 
 		public void setAuthor(String author) {
-			this.mAuthor = author;
+			mAuthor = author;
 		}
 
-		public Date getDate() {
+		public LocalDate getDate() {
 			return mDate;
 		}
 
-		public void setDate(Date date) {
-			this.mDate = date;
+		public void setDate(LocalDate date) {
+			mDate = date;
 		}
 
 		public String getComment() {
@@ -279,7 +284,7 @@ public class UVwebContent {
 		}
 
 		public void setComment(String comment) {
-			this.mComment = comment;
+			mComment = comment;
 		}
 
 		public int getGlobalRate() {
@@ -287,27 +292,27 @@ public class UVwebContent {
 		}
 
 		public void setGlobalRate(int globalRate) {
-			this.mGlobalRate = globalRate;
+			mGlobalRate = globalRate;
 		}
 
 		public String getFormattedRate() {
-			return new DecimalFormat("0").format(mGlobalRate) + "/10";
+			return sDecimalFormat.format(mGlobalRate) + "/10";
 		}
 
 		public String getFormattedDate() {
-			return DateFormat.getDateInstance().format(mDate);
+			return mDate.toString();
 		}
 	}
 
 	public static class NewsFeedEntry {
 		private String mAuthor;
-		private Date mDate;
+		private LocalDate mDate;
 		private String mComment;
 		private String mAction;
 
-		public NewsFeedEntry(String author, Calendar calendar, String comment, String action) {
+		public NewsFeedEntry(String author, LocalDate localDate, String comment, String action) {
 			mAuthor = author;
-			mDate = calendar.getTime();
+			mDate = localDate;
 			mComment = comment;
 			mAction = action;
 		}
@@ -321,15 +326,15 @@ public class UVwebContent {
 		}
 
 		public void setAuthor(String author) {
-			this.mAuthor = author;
+			mAuthor = author;
 		}
 
-		public Date getDate() {
+		public LocalDate getDate() {
 			return mDate;
 		}
 
-		public void setDate(Date date) {
-			this.mDate = date;
+		public void setDate(LocalDate date) {
+			mDate = date;
 		}
 
 		public String getComment() {
@@ -337,11 +342,11 @@ public class UVwebContent {
 		}
 
 		public void setComment(String comment) {
-			this.mComment = comment;
+			mComment = comment;
 		}
 
 		public String getFormattedDate() {
-			return DateFormat.getDateInstance().format(mDate);
+			return mDate.toString();
 		}
 	}
 }
