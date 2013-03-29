@@ -77,7 +77,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private boolean mTwoPane = false;
 	private boolean mIsLoadingUV = false;
 	private String mQuery;
-	private ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
+	private static final ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
