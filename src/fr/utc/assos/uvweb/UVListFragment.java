@@ -77,8 +77,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private boolean mTwoPane = false;
 	private boolean mIsLoadingUV = false;
 	private String mQuery;
-	private ShowcaseView mShowcaseView;
-	private ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
+	private static final ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -110,7 +109,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		setRetainInstance(true);
 
 		// ShowcaseView options
-		mOptions.block = false;
 		mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
 
 		// Restore the previously serialized activated item position.
@@ -208,7 +206,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			mCallbacks.showDefaultDetailFragment();
 			mShowDefaultDetailFragment = false;
 		}
-		//getSherlockActivity().getWindow().setBackgroundDrawable(null);
+		//getSherlockActivity().getWindow().setBackgroundDrawable(null); // Reduce overdraw on tablets
 	}
 
 	private void setActivatedPosition(int position) {
@@ -235,15 +233,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		Log.d(TAG, "onCreateOptionsMenu");
 		inflater.inflate(R.menu.fragment_uv_list, menu);
-
-		// ShowcaseView configuration
-		mShowcaseView = ShowcaseView.insertShowcaseViewWithType(
-				ShowcaseView.ITEM_ACTION_OVERFLOW,
-				R.id.menu_search,
-				getSherlockActivity(),
-				"ShowcaseView & action items",
-				"Try touching action items to showcase them",
-				mOptions);
 
 		// SearchView configuration
 		final MenuItem searchMenuItem = menu.findItem(R.id.menu_search);
@@ -274,6 +263,15 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				return true;
 			}
 		});
+
+		// ShowcaseView configuration
+		ShowcaseView.insertShowcaseViewWithType(
+				ShowcaseView.ITEM_ACTION_ITEM,
+				R.id.menu_search,
+				getSherlockActivity(),
+				"Rechercher une UV",
+				null,
+				mOptions);
 	}
 
 	/**
@@ -305,12 +303,8 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		if (TextUtils.isEmpty(newText)) {
-			mListView.setFastScrollEnabled(true);
-		} else {
-			mListView.setFastScrollEnabled(false); // Workaround to avoid broken fastScroll
-			// when in search mode
-		}
+		mListView.setFastScrollEnabled(TextUtils.isEmpty(newText)); // Workaround to avoid broken fastScroll
+		// when in search mode
 		mQuery = newText;
 		mAdapter.getFilter().filter(newText);
 		return true;
