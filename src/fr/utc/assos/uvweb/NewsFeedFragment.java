@@ -11,6 +11,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
@@ -46,9 +47,13 @@ public class NewsFeedFragment extends SherlockFragment {
 		final ListView mListView = (ListView) rootView.findViewById(android.R.id.list);
 
 		final NewsFeedEntryAdapter adapter = new NewsFeedEntryAdapter(getSherlockActivity());
+
+		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(adapter);
+		swingBottomInAnimationAdapter.setListView(mListView);
+
 		adapter.updateNewsFeedEntries(UVwebContent.NEWS_ENTRIES);
 
-		mListView.setAdapter(adapter);
+		mListView.setAdapter(swingBottomInAnimationAdapter);
 
 		return rootView;
 	}

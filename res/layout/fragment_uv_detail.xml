@@ -10,7 +10,6 @@
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none"
         android:dividerHeight="16dp"
         android:divider="@android:color/transparent"
         android:paddingBottom="16dp"

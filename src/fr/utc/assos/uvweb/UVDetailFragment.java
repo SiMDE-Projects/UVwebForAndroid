@@ -15,6 +15,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
@@ -85,7 +86,10 @@ public class UVDetailFragment extends SherlockFragment {
 
 		mListView = (ListView) rootView.findViewById(android.R.id.list);
 
-		UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
+		final UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
+
+		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(adapter);
+		swingBottomInAnimationAdapter.setListView(mListView);
 		adapter.updateComments(UVwebContent.COMMENTS);
 
 		// Show the UV as text in a TextView.
@@ -108,7 +112,7 @@ public class UVDetailFragment extends SherlockFragment {
 			}
 		}
 
-		mListView.setAdapter(adapter);
+		mListView.setAdapter(swingBottomInAnimationAdapter);
 
 		return rootView;
 	}
