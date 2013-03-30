@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:padding="8dp">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/shadow">
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <TextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="amasciul"
@@ -21,9 +29,9 @@
                 android:layout_gravity="center_vertical"
                 android:drawableLeft="@drawable/ic_contact_picture"
                 android:drawablePadding="10dp"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
 
-        <RelativeLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
@@ -33,7 +41,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignBottom="@+id/userid">
 
-            <TextView
+                <TextView
                     android:id="@+id/date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -41,9 +49,9 @@
                     android:gravity="center_vertical|right"
                     android:textSize="16sp"
                     android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true" />
 
-            <TextView
+                <TextView
                     android:id="@+id/rate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -54,17 +62,19 @@
                     android:textStyle="bold"
                     android:layout_alignParentTop="true"
                     android:layout_alignWithParentIfMissing="true"
-                    android:layout_alignParentRight="true"/>
+                    android:layout_alignParentRight="true" />
+
+            </RelativeLayout>
 
         </RelativeLayout>
 
-    </RelativeLayout>
-
-    <TextView
+        <TextView
             android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/uvcommentexample"
-            android:textIsSelectable="true"/>
+            android:textIsSelectable="true" />
+
+    </LinearLayout>
 
 </LinearLayout>

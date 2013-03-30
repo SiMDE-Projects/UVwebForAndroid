@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.ThreadPreconditions;
@@ -20,8 +21,8 @@ import java.util.List;
  * It is used to show the actions that can occur in UVweb as a dynamic feed
  */
 public class NewsFeedEntryAdapter extends UVAdapter {
-	private List<UVwebContent.NewsFeedEntry> mNewsFeedEntries = Collections.emptyList();
 	private final String mDatePresentation;
+	private List<UVwebContent.NewsFeedEntry> mNewsFeedEntries = Collections.emptyList();
 
 	public NewsFeedEntryAdapter(Context context) {
 		super(context);
@@ -61,7 +62,6 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 				entry.getAuthor(), " " + entry.getAction())));
 		dateView.setText(mDatePresentation + " " + entry.getFormattedDate());
 		commentView.setText(entry.getComment());
-
 
 		return convertView;
 	}

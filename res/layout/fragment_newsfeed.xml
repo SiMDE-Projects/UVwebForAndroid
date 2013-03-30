@@ -1,21 +1,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/newsfeed_fragment_container"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".UVDetailFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/newsfeed_fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".UVDetailFragment">
 
     <ListView
-            android:id="@android:id/list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+        android:id="@android:id/list"
+        style="@style/List"
+        android:scrollbars="none"
+        android:dividerHeight="16dp"
+        android:divider="@android:color/transparent"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:clipToPadding="false"/>
 
     <ViewStub
-            android:id="@android:id/empty"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout="@layout/uv_detail_header"/>
+        android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout="@layout/uv_detail_header"/>
 
 </LinearLayout>
