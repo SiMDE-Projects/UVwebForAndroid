@@ -127,7 +127,8 @@ public class UVwebContent {
 
 		Collections.sort(UVS);
 
-		String commentString = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor " +
+		final String commentString = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
+				"sed do eiusmod tempor " +
 				"incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
 				"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in " +
 				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
@@ -135,10 +136,22 @@ public class UVwebContent {
 		final LocalDate localDate = new LocalDate(2009, 11, 5);
 		addComment(new UVComment("amasciul", localDate, commentString, 5));
 		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
-		addComment(new UVComment("amasciul", localDate, commentString, 5));
-		addComment(new UVComment("amasciul", localDate, commentString, 5));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
+		addComment(new UVComment("amasciul", localDate, commentString, 2));
+		addComment(new UVComment("amasciul", localDate, commentString, 7));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 6));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 1));
+		addComment(new UVComment("amasciul", localDate, commentString, 0));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 9));
+		addComment(new UVComment("amasciul", localDate, commentString, 2));
+		addComment(new UVComment("amasciul", localDate, commentString, 4));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 4));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 6));
+		addComment(new UVComment("amasciul", localDate, commentString, 7));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 6));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 1));
+		addComment(new UVComment("amasciul", localDate, commentString, 0));
+		addComment(new UVComment("tkeunebr", localDate, commentString, 9));
+		addComment(new UVComment("amasciul", localDate, commentString, 2));
 
 		String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
 				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
