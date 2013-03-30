@@ -17,6 +17,8 @@ public class UVwebContent {
 
 	public static final String NEWSFEED_ACTION_FORMAT = "<b>%1$s</b><font color='#000000'>%2$s</font>";
 
+	public static final String UV_SUCCESS_RATE_FORMAT = "%1$s<b>%2$s</b>";
+
 	/**
 	 * An array of UVs.
 	 */

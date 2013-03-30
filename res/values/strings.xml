@@ -33,6 +33,7 @@
         dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
         deserunt mollit anim id est laborum
     </string>
+    <string name="success_rate">Taux de réussite</string>
 
     <!-- Feedback messages -->
     <string name="network_error_message">Erreur réseau</string>

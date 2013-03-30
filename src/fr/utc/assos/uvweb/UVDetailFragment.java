@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -126,10 +128,24 @@ public class UVDetailFragment extends SherlockFragment {
 	}
 
 	private void setHeaderData(final View inflatedHeader) {
-		((TextView) inflatedHeader.findViewById(R.id.uvcode)).setText(Html.fromHtml(String.format(
+		((TextView) inflatedHeader.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
 				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
-		((TextView) inflatedHeader.findViewById(R.id.desc)).setText(mUV.getDescription());
-		((TextView) inflatedHeader.findViewById(R.id.rate)).setText(mUV.getFormattedRate());
+		((TextView) inflatedHeader.findViewById(R.id.uv_description)).setText(mUV.getDescription());
+		((TextView) inflatedHeader.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
+		final Context context = getSherlockActivity();
+		final LinearLayout successRatesContainer = (LinearLayout) inflatedHeader.findViewById(R.id.uv_success_rates);
+		final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT,
+				ViewGroup.LayoutParams.WRAP_CONTENT);
+		for (int i=0; i<3; i++) {
+			final TextView tv = new TextView(context);
+			tv.setLayoutParams(params);
+			tv.setTextSize(18); // TODO: fetch value from resources
+			tv.setText(Html.fromHtml(String.format(UVwebContent.UV_SUCCESS_RATE_FORMAT,
+					"P" + String.valueOf(12-i) + " ",
+					String.valueOf(70+i*3) + "%")));
+			successRatesContainer.addView(tv);
+		}
 	}
 
 	@Override
