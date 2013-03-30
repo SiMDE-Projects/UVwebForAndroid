@@ -158,6 +158,42 @@ public class UVwebContent {
 				"a publié un nouveau commentaire"));
 		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
 				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+				"a publié un nouveau commentaire"));
 	}
 
 	public static void addItem(UV item) {
