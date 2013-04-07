@@ -21,6 +21,7 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConfigHelper;
 import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
 
@@ -31,6 +32,9 @@ import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
  */
 public class UVDetailFragment extends SherlockFragment {
 	private static final String TAG = "UVDetailFragment";
+	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(
+			ViewGroup.LayoutParams.WRAP_CONTENT,
+			ViewGroup.LayoutParams.WRAP_CONTENT);
 
 	/**
 	 * The fragment argument representing the UV ID that this fragment
@@ -90,7 +94,8 @@ public class UVDetailFragment extends SherlockFragment {
 
 		final UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
 
-		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(adapter);
+		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
+				(adapter, AnimationUtils.CARDANIMATIONDELAYMILLIS, AnimationUtils.CARDANIMATIONDURATIONMILLIS);
 		swingBottomInAnimationAdapter.setListView(mListView);
 		adapter.updateComments(UVwebContent.COMMENTS);
 
@@ -134,12 +139,9 @@ public class UVDetailFragment extends SherlockFragment {
 		((TextView) inflatedHeader.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
 		final Context context = getSherlockActivity();
 		final LinearLayout successRatesContainer = (LinearLayout) inflatedHeader.findViewById(R.id.uv_success_rates);
-		final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-				ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
 		for (int i=0; i<3; i++) {
 			final TextView tv = new TextView(context);
-			tv.setLayoutParams(params);
+			tv.setLayoutParams(sLayoutParams);
 			tv.setTextSize(18); // TODO: fetch value from resources
 			tv.setText(Html.fromHtml(String.format(UVwebContent.UV_SUCCESS_RATE_FORMAT,
 					"P" + String.valueOf(12-i) + " ",

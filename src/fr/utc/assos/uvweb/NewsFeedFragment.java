@@ -16,6 +16,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
+import fr.utc.assos.uvweb.util.AnimationUtils;
 
 /**
  * A list fragment representing a list of {@link UVwebContent.NewsFeedEntry}s.
@@ -44,16 +45,17 @@ public class NewsFeedFragment extends SherlockFragment {
 		View rootView = inflater.inflate(R.layout.fragment_newsfeed,
 				container, false);
 
-		final ListView mListView = (ListView) rootView.findViewById(android.R.id.list);
+		final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
 
 		final NewsFeedEntryAdapter adapter = new NewsFeedEntryAdapter(getSherlockActivity());
 
-		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(adapter);
-		swingBottomInAnimationAdapter.setListView(mListView);
+		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
+				(adapter, AnimationUtils.CARDANIMATIONDELAYMILLIS, AnimationUtils.CARDANIMATIONDURATIONMILLIS);
+		swingBottomInAnimationAdapter.setListView(listView);
 
 		adapter.updateNewsFeedEntries(UVwebContent.NEWS_ENTRIES);
 
-		mListView.setAdapter(swingBottomInAnimationAdapter);
+		listView.setAdapter(swingBottomInAnimationAdapter);
 
 		return rootView;
 	}
