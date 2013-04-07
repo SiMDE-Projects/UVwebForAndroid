@@ -14,7 +14,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.github.espiandev.showcaseview.ShowcaseView;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ConfigHelper;
@@ -77,7 +76,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private boolean mTwoPane = false;
 	private boolean mIsLoadingUV = false;
 	private String mQuery;
-	private static final ShowcaseView.ConfigOptions mOptions = new ShowcaseView.ConfigOptions();
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -107,9 +105,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		// Fragment configuration
 		setHasOptionsMenu(true);
 		setRetainInstance(true);
-
-		// ShowcaseView options
-		mOptions.shotType = ShowcaseView.TYPE_ONE_SHOT;
 
 		// Restore the previously serialized activated item position.
 		if (savedInstanceState == null) {
@@ -227,6 +222,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			// we need to manually remove the items when changing orientation
 			menu.removeItem(R.id.menu_refresh);
 		}
+		//getSherlockActivity().supportInvalidateOptionsMenu();
 	}
 
 	@Override
@@ -263,15 +259,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 				return true;
 			}
 		});
-
-		// ShowcaseView configuration
-		ShowcaseView.insertShowcaseViewWithType(
-				ShowcaseView.ITEM_ACTION_ITEM,
-				R.id.menu_search,
-				getSherlockActivity(),
-				"Rechercher une UV",
-				null,
-				mOptions);
 	}
 
 	/**
