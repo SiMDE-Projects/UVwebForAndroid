@@ -95,7 +95,7 @@ public class UVDetailFragment extends SherlockFragment {
 		final UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
 
 		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
-				(adapter, AnimationUtils.CARDANIMATIONDELAYMILLIS, AnimationUtils.CARDANIMATIONDURATIONMILLIS);
+				(adapter, AnimationUtils.CARD_ANIMATION_DELAY_MILLIS, AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
 		swingBottomInAnimationAdapter.setListView(mListView);
 		adapter.updateComments(UVwebContent.COMMENTS);
 

@@ -50,7 +50,7 @@ public class NewsFeedFragment extends SherlockFragment {
 		final NewsFeedEntryAdapter adapter = new NewsFeedEntryAdapter(getSherlockActivity());
 
 		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
-				(adapter, AnimationUtils.CARDANIMATIONDELAYMILLIS, AnimationUtils.CARDANIMATIONDURATIONMILLIS);
+				(adapter, AnimationUtils.CARD_ANIMATION_DELAY_MILLIS, AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
 		swingBottomInAnimationAdapter.setListView(listView);
 
 		adapter.updateNewsFeedEntries(UVwebContent.NEWS_ENTRIES);
