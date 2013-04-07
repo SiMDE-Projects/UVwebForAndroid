@@ -122,9 +122,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
-		if (mTwoPane) {
-			setupTwoPaneUi();
-		}
+		setupTwoPaneUi();
 
 		return rootView;
 	}
@@ -183,28 +181,29 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		}
 	}
 
-	public void setIsTwoPane(boolean twoPane) {
+	public void setIsTwoPane(final boolean twoPane) {
 		mTwoPane = twoPane;
 	}
 
 	/**
 	 * Turns on activate-on-click mode. When this mode is on, list items will be
 	 * given the 'activated' state when touched.
-	 * Careful, this method should only be called in two-pane mode (i.e. tablet)
 	 */
 	private void setupTwoPaneUi() {
-		// In two-pane mode, list items should be given the
-		// 'activated' state when touched.
-		mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-		mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
-		if (mShowDefaultDetailFragment) {
-			mCallbacks.showDefaultDetailFragment();
-			mShowDefaultDetailFragment = false;
+		if (mTwoPane) {
+			// In two-pane mode, list items should be given the
+			// 'activated' state when touched.
+			mListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+			mListView.setVerticalScrollbarPosition(ListView.SCROLLBAR_POSITION_LEFT);
+			if (mShowDefaultDetailFragment) {
+				mCallbacks.showDefaultDetailFragment();
+				mShowDefaultDetailFragment = false;
+			}
+			//getSherlckActivity().getWindow().setBackgroundDrawable(null); // Reduce overdraw on tablets
 		}
-		//getSherlockActivity().getWindow().setBackgroundDrawable(null); // Reduce overdraw on tablets
 	}
 
-	private void setActivatedPosition(int position) {
+	private void setActivatedPosition(final int position) {
 		if (position == ListView.INVALID_POSITION) {
 			mListView.setItemChecked(mActivatedPosition, false);
 		} else {
