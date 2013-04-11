@@ -284,7 +284,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 */
 	@Override
 	public void onItemsFound(final List<UVwebContent.UV> results) {
-		if (mTwoPane && results.size() == 1) {
+		if (mTwoPane && results.size() == 1 && mActivatedPosition != 0) {
 			setActivatedPosition(0);
 			mListView.setItemChecked(0, true);
 			performClick(0);
