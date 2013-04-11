@@ -8,7 +8,7 @@
 
     <ListView
         android:id="@android:id/list"
-        style="@style/List"
+        style="@style/ListNewsfeed"
         android:scrollbars="none"
         android:dividerHeight="16dp"
         android:divider="@android:color/transparent"

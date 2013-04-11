@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
+
 /**
  * An adapter used all together with the {@link fr.utc.assos.uvweb.UVListFragment}'s ListView.
  * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder}
@@ -25,28 +27,12 @@ import java.util.List;
  * It implements both SectionIndexer and StickyListHeadersAdapter interfaces
  */
 public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyListHeadersAdapter, Filterable {
-	private static final String TAG = "UVListAdapter";
+	private static final String TAG = makeLogTag(UVListAdapter.class);
 	/**
 	 * Size of the French alphabet. We use it to instantiate our data structures and avoid memory
 	 * reallocation, since we can fairly surely assume we'll have a section for each letter
 	 */
 	private static final int ALPHABET_LENGTH = 26;
-	/**
-	 * Custom Filterable interface implementation
-	 */
-	private final UVFilter mFilter = new UVFilter();
-	/**
-	 * Set of data
-	 */
-	private List<UVwebContent.UV> mUVs = Collections.emptyList();
-	private List<UVwebContent.UV> mSavedUVs = Collections.emptyList();
-	/**
-	 * Data structures that help us keep track of a comprehensive list of sections and bind these sections
-	 * with the ListView's items' positions
-	 */
-	private SparseArray<Character> mSectionToPosition;
-	private List<Character> mComprehensiveSectionsList;
-
 	/**
 	 * A dummy implementation of the {@link SearchCallbacks} interface that does
 	 * nothing. Used only when this fragment is not attached to an activity.
@@ -60,8 +46,21 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		public void onNothingFound() {
 		}
 	};
-
-
+	/**
+	 * Custom Filterable interface implementation
+	 */
+	private final UVFilter mFilter = new UVFilter();
+	/**
+	 * Data structures that help us keep track of a comprehensive list of sections and bind these sections
+	 * with the ListView's items' positions
+	 */
+	private final SparseArray<Character> mSectionToPosition;
+	private final List<Character> mComprehensiveSectionsList;
+	/**
+	 * Set of data
+	 */
+	private List<UVwebContent.UV> mUVs = Collections.emptyList();
+	private List<UVwebContent.UV> mSavedUVs = Collections.emptyList();
 	private SearchCallbacks mSearchCallbacks = sDummySearchCallbacks;
 
 	public UVListAdapter(Context context) {
@@ -73,8 +72,6 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	public void setSearchCallbacks(SearchCallbacks callbacks) {
 		mSearchCallbacks = callbacks;
 	}
-
-
 
 	@Override
 	public int getCount() {
@@ -106,7 +103,6 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 			i++;
 		}
 
-		// create a list from the set to sort
 		Collections.sort(mComprehensiveSectionsList);
 		mUVs = UVs;
 		notifyDataSetChanged();
@@ -206,6 +202,17 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		return mFilter;
 	}
 
+	/**
+	 * A callback interface that each Fragment using this adapter
+	 * and using its Filterable interface should implement.
+	 * This mechanism allows the querier to be notified and to act accordingly.
+	 */
+	public interface SearchCallbacks {
+		public void onItemsFound(final List<UVwebContent.UV> results);
+
+		public void onNothingFound();
+	}
+
 	private final class UVFilter extends Filter {
 		private final FilterResults mFilterResults = new FilterResults();
 		private final List<UVwebContent.UV> mFoundedUVs = new ArrayList<UVwebContent.UV>();
@@ -241,21 +248,9 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 			updateUVs(results, true);
 			if (filterResults.count == 0) {
 				mSearchCallbacks.onNothingFound();
-			}
-			else {
+			} else {
 				mSearchCallbacks.onItemsFound(results);
 			}
 		}
-	}
-
-	/**
-	 * A callback interface that each Fragment using this adapter
-	 * and using its Filterable interface should implement.
-	 * This mechanism allows the querier to be notified and to act accordingly.
-	 */
-	public interface SearchCallbacks {
-		public void onItemsFound(final List<UVwebContent.UV> results);
-
-		public void onNothingFound();
 	}
 }

@@ -1,10 +1,8 @@
 package fr.utc.assos.uvweb;
 
 import android.app.Activity;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +14,11 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.ConfigHelper;
 
 import java.util.List;
+
+import static fr.utc.assos.uvweb.util.LogUtils.LOGD;
+import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
  * A list fragment representing a list of {@link UVwebContent.UV}s. This fragment also supports
@@ -30,7 +30,15 @@ import java.util.List;
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener,
 		UVListAdapter.SearchCallbacks, UVwebSearchView.OnQueryTextListener {
-	private static final String TAG = "UVListFragment";
+	/**
+	 * The serialization (saved instance state) Bundle key representing the
+	 * activated item position. Only used on tablets.
+	 */
+	public static final String STATE_ACTIVATED_POSITION = "activated_position";
+
+	public static final String STATE_SEARCH_QUERY = "search_query";
+
+	private static final String TAG = makeLogTag(UVListFragment.class);
 	/**
 	 * Special mUVDisplayed case where no UV is actually displayed.
 	 */
@@ -74,14 +82,29 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 */
 	private String mDisplayedUVName = NO_UV_DISPLAYED;
 	private boolean mTwoPane = false;
-	private boolean mIsLoadingUV = false;
-	private String mQuery;
+	private UVwebSearchView mSearchView;
+	private String mSearchQuery;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public UVListFragment() {
+	}
+
+	/**
+	 * Create a new instance of {@link UVListFragment} that will be initialized
+	 * with the given arguments.
+	 */
+	public static UVListFragment newInstance(final int activatedPosition, final String searchQuery) {
+		final UVListFragment f = new UVListFragment();
+		if (activatedPosition == ListView.INVALID_POSITION) {
+			f.setShowDefaultDetailFragment(true);
+		} else {
+			f.setActivatedPosition(activatedPosition);
+		}
+		f.setSearchQuery(searchQuery);
+		return f;
 	}
 
 	// Fragment Lifecycle management
@@ -104,17 +127,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 		// Fragment configuration
 		setHasOptionsMenu(true);
-		setRetainInstance(true);
-
-		// Restore the previously serialized activated item position.
-		if (savedInstanceState == null) {
-			mShowDefaultDetailFragment = true;
-		}
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_uv_list,
+		final View rootView = inflater.inflate(R.layout.fragment_uv_list,
 				container, false);
 
 		// ListView setup
@@ -122,29 +139,24 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
-		setupTwoPaneUi();
-
 		return rootView;
 	}
 
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 
 		// Adapter setup
 		mAdapter = new UVListAdapter(getSherlockActivity());
 		mAdapter.setSearchCallbacks(this);
 		mAdapter.updateUVs(UVwebContent.UVS);
 		mListView.setAdapter(mAdapter);
-	}
 
-	@Override
-	public void onDestroyView() {
-		// Resources cleanup
-		mListView = null;
-		mAdapter = null;
+		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_SEARCH_QUERY)) {
+			mSearchQuery = savedInstanceState.getString(STATE_SEARCH_QUERY);
+		}
 
-		super.onDestroyView();
+		setupTwoPaneUi();
 	}
 
 	@Override
@@ -166,15 +178,11 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	}
 
 	private void performClick(final int position) {
-		final UVwebContent.UV UV = mAdapter.getItem(position);
-		final String toBeDisplayed = UV.getName();
+		final String toBeDisplayed = mAdapter.getItem(position).getName();
 
-		if (!mTwoPane || ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
-				Configuration.ORIENTATION_PORTRAIT) || !TextUtils.equals(toBeDisplayed, mDisplayedUVName)) {
+		if (!mTwoPane || !TextUtils.equals(toBeDisplayed, mDisplayedUVName)) {
 			// If in tablet mode and the dislayed UV is not the same as the UV clicked, or in phone mode
 			// Lazy load the selected UV
-			mIsLoadingUV = true;
-
 			mCallbacks.onItemSelected(toBeDisplayed);
 			mDisplayedUVName = toBeDisplayed;
 			mActivatedPosition = position;
@@ -183,6 +191,26 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 	public void setIsTwoPane(final boolean twoPane) {
 		mTwoPane = twoPane;
+	}
+
+	public int getActivatedPosition() {
+		return mActivatedPosition;
+	}
+
+	public void setActivatedPosition(final int position) {
+		mActivatedPosition = position;
+	}
+
+	public void setShowDefaultDetailFragment(final boolean showDefaultDetailFragment) {
+		mShowDefaultDetailFragment = showDefaultDetailFragment;
+	}
+
+	public void setSearchQuery(final String searchQuery) {
+		mSearchQuery = searchQuery;
+	}
+
+	public CharSequence getSearchQuery() {
+		return mSearchQuery;
 	}
 
 	/**
@@ -198,47 +226,24 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			if (mShowDefaultDetailFragment) {
 				mCallbacks.showDefaultDetailFragment();
 				mShowDefaultDetailFragment = false;
+			} else {
+				if (mActivatedPosition != ListView.INVALID_POSITION) {
+					mListView.setItemChecked(mActivatedPosition, true);
+				}
 			}
-			//getSherlckActivity().getWindow().setBackgroundDrawable(null); // Reduce overdraw on tablets
+			//getSherlockActivity().getWindow().setBackgroundDrawable(null); // Reduce overdraw on tablets
 		}
-	}
-
-	private void setActivatedPosition(final int position) {
-		if (position == ListView.INVALID_POSITION) {
-			mListView.setItemChecked(mActivatedPosition, false);
-		} else {
-			mListView.setItemChecked(position, true);
-		}
-
-		mActivatedPosition = position;
-	}
-
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		if (ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
-				Configuration.ORIENTATION_PORTRAIT)) {
-			// Workaround: on a device like the Nexus 7 which has two different fragment configurations,
-			// we need to manually remove the items when changing orientation
-			menu.removeItem(R.id.menu_refresh);
-		}
-		//getSherlockActivity().supportInvalidateOptionsMenu();
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		Log.d(TAG, "onCreateOptionsMenu");
+		LOGD(TAG, "onCreateOptionsMenu");
 		inflater.inflate(R.menu.fragment_uv_list, menu);
 
 		// SearchView configuration
 		final MenuItem searchMenuItem = menu.findItem(R.id.menu_search);
-		final UVwebSearchView searchView = (UVwebSearchView) searchMenuItem.getActionView();
-		if (mQuery != null && !TextUtils.isEmpty(mQuery)) {
-			//searchView.onActionViewExpanded();
-			searchView.setQuery(mQuery, false);
-		}
-		searchView.setIsLoadingUV(mIsLoadingUV);
-		searchView.setOnQueryTextListener(this);
-		Log.d(TAG, "mQuery == " + mQuery);
+		mSearchView = (UVwebSearchView) searchMenuItem.getActionView();
+		mSearchView.setOnQueryTextListener(this);
 
 		// We can't call onCloseListener() since it's broken on ICS+
 		searchMenuItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
@@ -251,13 +256,27 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			public boolean onMenuItemActionCollapse(MenuItem item) {
 				mListView.setFastScrollEnabled(true);
 				mAdapter.getFilter().filter(null);
-				if (mIsLoadingUV) {
-					mIsLoadingUV = false;
-					searchView.setIsLoadingUV(mIsLoadingUV);
-				}
+				mSearchQuery = null;
 				return true;
 			}
 		});
+
+		if (mSearchQuery != null) {
+			mSearchView.setQuery(mSearchQuery, false);
+			searchMenuItem.expandActionView();
+			mSearchView.requestFocus();
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_search:
+				mSearchView.setIsLoadingUV(false);
+				return true;
+			default:
+				return false;
+		}
 	}
 
 	/**
@@ -266,9 +285,9 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	@Override
 	public void onItemsFound(final List<UVwebContent.UV> results) {
 		if (mTwoPane && results.size() == 1) {
+			setActivatedPosition(0);
+			mListView.setItemChecked(0, true);
 			performClick(0);
-		} else {
-			//setActivatedPosition();
 		}
 	}
 
@@ -289,11 +308,22 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 	@Override
 	public boolean onQueryTextChange(String newText) {
-		mListView.setFastScrollEnabled(TextUtils.isEmpty(newText)); // Workaround to avoid broken fastScroll
-		// when in search mode
-		mQuery = newText;
-		mAdapter.getFilter().filter(newText);
+		if (mListView != null) {
+			mListView.setFastScrollEnabled(TextUtils.isEmpty(newText)); // Workaround to avoid broken fastScroll
+			// when in search mode
+			mAdapter.getFilter().filter(newText);
+			mSearchQuery = newText;
+		}
 		return true;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		if (mSearchQuery != null && !mTwoPane) {
+			outState.putString(STATE_SEARCH_QUERY, mSearchQuery);
+		}
 	}
 
 	/**

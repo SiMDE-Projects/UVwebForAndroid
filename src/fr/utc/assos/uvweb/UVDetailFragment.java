@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb;
 
 import android.content.Context;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -22,8 +21,9 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.AnimationUtils;
-import fr.utc.assos.uvweb.util.ConfigHelper;
-import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
+import fr.utc.assos.uvweb.util.ConnectionUtils;
+
+import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
  * A fragment representing a single UV detail screen. This fragment is either
@@ -31,18 +31,21 @@ import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
 public class UVDetailFragment extends SherlockFragment {
-	private static final String TAG = "UVDetailFragment";
-	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(
-			ViewGroup.LayoutParams.WRAP_CONTENT,
-			ViewGroup.LayoutParams.WRAP_CONTENT);
-
 	/**
 	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
 	 */
 	public static final String ARG_UV_ID = "item_id";
-
+	/**
+	 * The fragment argument representing whether the layout is in twoPane mode or not.
+	 */
+	public static final String ARG_TWO_PANE = "two_pane";
+	private static final String TAG = makeLogTag(UVDetailFragment.class);
+	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(
+			ViewGroup.LayoutParams.WRAP_CONTENT,
+			ViewGroup.LayoutParams.WRAP_CONTENT);
 	private final Handler mHandler = new Handler();
+	private boolean mTwoPane = false;
 	/**
 	 * The UV this fragment is presenting.
 	 */
@@ -52,25 +55,12 @@ public class UVDetailFragment extends SherlockFragment {
 	 */
 	private ListView mListView;
 
-	/**
-	 * Mandatory empty constructor for the fragment manager to instantiate the
-	 * fragment (e.g. upon screen orientation changes).
-	 */
 	public UVDetailFragment() {
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (!ConfigHelper.hasSeveralFragmentConfigurations(getSherlockActivity(),
-				Configuration.ORIENTATION_LANDSCAPE)) {
-			// Workaround: we do not want to retain instance for a device like the Nexus 7,
-			// since in portrait mode, only the list is displayed.
-			// When switching from landscape to portrait on such a device, the framework will try to restore
-			// this fragment and fail if we setRetainInstance(true).
-			setRetainInstance(true);
-		}
 
 		final Bundle arguments = getArguments();
 		if (arguments.containsKey(ARG_UV_ID)) {
@@ -82,6 +72,12 @@ public class UVDetailFragment extends SherlockFragment {
 
 			// Fragment configuration
 			setHasOptionsMenu(true);
+			if (arguments.containsKey(ARG_TWO_PANE)) {
+				// Load the UV specified by the fragment
+				// arguments. In a real-world scenario, use a Loader
+				// to load content from a content provider.
+				mTwoPane = arguments.getBoolean(ARG_TWO_PANE);
+			}
 		}
 	}
 
@@ -93,10 +89,15 @@ public class UVDetailFragment extends SherlockFragment {
 		mListView = (ListView) rootView.findViewById(android.R.id.list);
 
 		final UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
+		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = null;
+		if (!mTwoPane) {
+			swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
+					adapter,
+					AnimationUtils.CARD_ANIMATION_DELAY_MILLIS,
+					AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
+			swingBottomInAnimationAdapter.setListView(mListView);
+		}
 
-		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
-				(adapter, AnimationUtils.CARD_ANIMATION_DELAY_MILLIS, AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
-		swingBottomInAnimationAdapter.setListView(mListView);
 		adapter.updateComments(UVwebContent.COMMENTS);
 
 		// Show the UV as text in a TextView.
@@ -119,17 +120,9 @@ public class UVDetailFragment extends SherlockFragment {
 			}
 		}
 
-		mListView.setAdapter(swingBottomInAnimationAdapter);
+		mListView.setAdapter(mTwoPane ? adapter : swingBottomInAnimationAdapter);
 
 		return rootView;
-	}
-
-	@Override
-	public void onDestroyView() {
-		// Resources cleanup
-		mListView = null;
-
-		super.onDestroyView();
 	}
 
 	private void setHeaderData(final View inflatedHeader) {
@@ -139,13 +132,13 @@ public class UVDetailFragment extends SherlockFragment {
 		((TextView) inflatedHeader.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
 		final Context context = getSherlockActivity();
 		final LinearLayout successRatesContainer = (LinearLayout) inflatedHeader.findViewById(R.id.uv_success_rates);
-		for (int i=0; i<3; i++) {
+		for (int i = 0; i < 3; i++) {
 			final TextView tv = new TextView(context);
 			tv.setLayoutParams(sLayoutParams);
 			tv.setTextSize(18); // TODO: fetch value from resources
 			tv.setText(Html.fromHtml(String.format(UVwebContent.UV_SUCCESS_RATE_FORMAT,
-					"P" + String.valueOf(12-i) + " ",
-					String.valueOf(70+i*3) + "%")));
+					"P" + String.valueOf(12 - i) + " ",
+					String.valueOf(70 + i * 3) + "%")));
 			successRatesContainer.addView(tv);
 		}
 	}
@@ -160,8 +153,8 @@ public class UVDetailFragment extends SherlockFragment {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
 				final SherlockFragmentActivity context = getSherlockActivity();
-				if (!ConnectionCheckerHelper.isOnline(context)) {
-					Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionCheckerHelper.NETWORK_ERROR_STYLE).show();
+				if (!ConnectionUtils.isOnline(context)) {
+					Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
 				} else {
 					final MenuItem refresh = item;
 					refresh.setActionView(R.layout.progressbar);

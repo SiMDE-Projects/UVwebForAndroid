@@ -22,7 +22,6 @@
         <item name="actionBarItemBackground">@drawable/selectable_background_uvweb</item>
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb</item>
         <item name="actionBarTabTextStyle">@style/ActionBar.TabText.UVweb</item>
-
         <item name="android:windowBackground">@color/abs__background_holo_light</item>
         <item name="actionBarWidgetTheme">@style/ActionBarWidget.UVweb</item>
     </style>
@@ -46,7 +45,6 @@
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_uvweb</item>
         <item name="backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
-        <item name="progressBarStyle">@style/ProgressBar.UVweb</item>
         <item name="displayOptions">homeAsUp|showHome|showTitle</item>
         <item name="navigationMode">tabMode</item>
     </style>
@@ -66,10 +64,6 @@
 
     <style name="ActionBar.TabText.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.TabText.Inverse">
         <item name="android:textSize">@dimen/tab_text_size</item>
-    </style>
-
-    <style name="ProgressBar.UVweb" parent="@style/Widget.Sherlock.Light.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
     </style>
 
     <style name="ListView.UVweb" parent="android:Widget.ListView">
@@ -98,6 +92,10 @@
     </style>
     <!-- Actual styles (phones) -->
     <style name="List" parent="@style/ListDefault">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+    </style>
+    <style name="ListNewsfeed" parent="@style/ListDefault">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
     </style>

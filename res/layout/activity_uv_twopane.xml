@@ -1,31 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="horizontal"
-              tools:context=".activities.UVListActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".activities.UVListActivity">
 
-    <!--
-    This layout is a two-pane layout for the UVs
-    master/detail flow. See res/values-large/refs.xml and
-    res/values-sw600dp/refs.xml for an example of layout aliases
-    that replace the single-pane version of the layout with
-    this two-pane version.
-
-    For more on layout aliases, see:
-    http://developer.android.com/training/multiscreen/screensizes.html#TaskUseAliasFilters
-    -->
-
-    <fr.utc.assos.uvweb.UVwebViewPager
+    <android.support.v4.view.ViewPager
             android:id="@+id/pager"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.25"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
 
     <FrameLayout
-            android:id="@+id/uv_detail_container"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="3"/>
+            android:id="@+id/uv_container"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"/>
 
-</LinearLayout>
+</FrameLayout>

@@ -15,14 +15,16 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.ConnectionCheckerHelper;
+import fr.utc.assos.uvweb.util.ConnectionUtils;
 import fr.utc.assos.uvweb.util.AnimationUtils;
+
+import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
  * A list fragment representing a list of {@link UVwebContent.NewsFeedEntry}s.
  */
 public class NewsFeedFragment extends SherlockFragment {
-	private static final String TAG = "NewsFeedFragment";
+	private static final String TAG = makeLogTag(NewsFeedFragment.class);
 	private final Handler mHandler = new Handler();
 
 	/**
@@ -36,7 +38,6 @@ public class NewsFeedFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setRetainInstance(true);
 		setHasOptionsMenu(true);
 	}
 
@@ -70,8 +71,8 @@ public class NewsFeedFragment extends SherlockFragment {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh:
 				final SherlockFragmentActivity context = getSherlockActivity();
-				if (!ConnectionCheckerHelper.isOnline(context)) {
-					Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionCheckerHelper.NETWORK_ERROR_STYLE).show();
+				if (!ConnectionUtils.isOnline(context)) {
+					Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
 				} else {
 					final MenuItem refresh = item;
 					refresh.setActionView(R.layout.progressbar);

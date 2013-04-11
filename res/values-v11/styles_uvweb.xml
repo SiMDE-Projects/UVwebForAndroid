@@ -43,7 +43,6 @@
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@drawable/ab_solid_uvweb</item>
         <item name="android:backgroundStacked">@drawable/ab_stacked_solid_uvweb</item>
-        <item name="android:progressBarStyle">@style/ProgressBar.UVweb</item>
         <item name="android:displayOptions">homeAsUp|showHome|showTitle</item>
         <item name="android:navigationMode">tabMode</item>
     </style>
@@ -55,10 +54,6 @@
 
     <style name="ActionBar.Solid.UVweb.NoLogo" parent="ActionBar.Solid.UVweb">
         <item name="android:displayOptions">showTitle|homeAsUp</item>
-    </style>
-
-    <style name="ProgressBar.UVweb" parent="@style/Widget.Sherlock.ProgressBar.Horizontal">
-        <item name="android:progressDrawable">@drawable/progress_horizontal_uvweb</item>
     </style>
 
 </resources>

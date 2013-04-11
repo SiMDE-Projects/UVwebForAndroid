@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.ThreadPreconditions;
