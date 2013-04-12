@@ -35,9 +35,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * activated item position. Only used on tablets.
 	 */
 	public static final String STATE_ACTIVATED_POSITION = "activated_position";
-
 	public static final String STATE_SEARCH_QUERY = "search_query";
-
 	private static final String TAG = makeLogTag(UVListFragment.class);
 	/**
 	 * Special mUVDisplayed case where no UV is actually displayed.
@@ -205,12 +203,12 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		mShowDefaultDetailFragment = showDefaultDetailFragment;
 	}
 
-	public void setSearchQuery(final String searchQuery) {
-		mSearchQuery = searchQuery;
+	public String getSearchQuery() {
+		return mSearchQuery;
 	}
 
-	public CharSequence getSearchQuery() {
-		return mSearchQuery;
+	public void setSearchQuery(final String searchQuery) {
+		mSearchQuery = searchQuery;
 	}
 
 	/**
@@ -254,8 +252,9 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 			@Override
 			public boolean onMenuItemActionCollapse(MenuItem item) {
+				mSearchView.setIsLoadingUV(false);
+				mSearchView.setQuery(null, false);
 				mListView.setFastScrollEnabled(true);
-				mAdapter.getFilter().filter(null);
 				mSearchQuery = null;
 				return true;
 			}

@@ -73,10 +73,10 @@ public class WrapperFragment extends SherlockFragment {
 			// Serialize and persist the activated item position.
 			outState.putInt(UVListFragment.STATE_ACTIVATED_POSITION, activatedPosition);
 		}
-		final CharSequence searchQuery = mUvListFragment.getSearchQuery();
+		final String searchQuery = mUvListFragment.getSearchQuery();
 		if (searchQuery != null) {
 			// Serialize and persist the search query.
-			outState.putString(UVListFragment.STATE_SEARCH_QUERY, searchQuery.toString());
+			outState.putString(UVListFragment.STATE_SEARCH_QUERY, searchQuery);
 		}
 	}
 }
