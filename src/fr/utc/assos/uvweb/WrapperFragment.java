@@ -1,26 +1,28 @@
 package fr.utc.assos.uvweb;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 08/04/13
- * Time: 17:59
- * To change this template use File | Settings | File Templates.
+ * A wrapper fragment containing a nested {@link UVListFragment}. It is used in two-pane mode only
+ * and ensures that the {@link UVListFragment} state is properly saved and restored.
  */
 public class WrapperFragment extends SherlockFragment {
 	private static final String TAG = makeLogTag(WrapperFragment.class);
+	private static final String UVLISTFRAGMENT_TAG = "UVListFragment_TAG";
 	private UVListFragment mUvListFragment;
 
 	public WrapperFragment() {
+	}
+
+	public static WrapperFragment newInstance() {
+		return new WrapperFragment();
 	}
 
 	@Override
@@ -41,26 +43,30 @@ public class WrapperFragment extends SherlockFragment {
 		super.onViewCreated(view, savedInstanceState);
 
 		// Restore the previously serialized activated item position and search query.
-		if (savedInstanceState != null) {
-			if (savedInstanceState.containsKey(UVListFragment.STATE_ACTIVATED_POSITION)) {
-				mUvListFragment = UVListFragment.newInstance(
-						savedInstanceState.getInt(UVListFragment.STATE_ACTIVATED_POSITION),
-						savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY));
-			} else {
-				mUvListFragment = UVListFragment.newInstance(
-						ListView.INVALID_POSITION,
-						savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY));
+		final Fragment f = getChildFragmentManager().findFragmentByTag(UVLISTFRAGMENT_TAG);
+		if (f != null) {
+			mUvListFragment = (UVListFragment) f;
+			if (savedInstanceState != null) {
+				if (savedInstanceState.containsKey(UVListFragment.STATE_DISPLAYED_UV)) {
+					mUvListFragment.setDisplayedUV(savedInstanceState.getString(UVListFragment.STATE_DISPLAYED_UV));
+				}
+				if (savedInstanceState.containsKey(UVListFragment.STATE_SEARCH_QUERY)) {
+					mUvListFragment.setSearchQuery(savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY));
+				}
 			}
+		} else if (savedInstanceState != null) {
+			UVListFragment.newInstance(
+					savedInstanceState.getString(UVListFragment.STATE_DISPLAYED_UV),
+					savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY),
+					true
+			);
+		} else {
+			mUvListFragment = UVListFragment.newInstance(true);
 		}
-		else {
-			mUvListFragment = UVListFragment.newInstance(ListView.INVALID_POSITION, null);
-		}
-
-		mUvListFragment.setIsTwoPane(true);
 
 		getChildFragmentManager()
 				.beginTransaction()
-				.replace(R.id.uv_list, mUvListFragment)
+				.replace(R.id.uv_list, mUvListFragment, UVLISTFRAGMENT_TAG)
 				.commit();
 	}
 
@@ -68,15 +74,18 @@ public class WrapperFragment extends SherlockFragment {
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		final int activatedPosition = mUvListFragment.getActivatedPosition();
-		if (activatedPosition != ListView.INVALID_POSITION) {
-			// Serialize and persist the activated item position.
-			outState.putInt(UVListFragment.STATE_ACTIVATED_POSITION, activatedPosition);
-		}
-		final String searchQuery = mUvListFragment.getSearchQuery();
-		if (searchQuery != null) {
-			// Serialize and persist the search query.
-			outState.putString(UVListFragment.STATE_SEARCH_QUERY, searchQuery);
-		}
+		// Serialize and persist the search query.
+		outState.putString(UVListFragment.STATE_SEARCH_QUERY, mUvListFragment.getSearchQuery());
+
+		// Serialize and persist the displayed UV.
+		outState.putString(UVListFragment.STATE_DISPLAYED_UV, mUvListFragment.getDisplayedUVName());
+	}
+
+	@Override
+	public void onDestroy() {
+		// Resources cleanup
+		mUvListFragment = null;
+
+		super.onDestroy();
 	}
 }

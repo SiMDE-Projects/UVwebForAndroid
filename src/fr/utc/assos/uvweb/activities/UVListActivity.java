@@ -129,15 +129,10 @@ public class UVListActivity extends UVwebMenuActivity implements
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
 			// fragment transaction, if the new item is not already displayed.
-			final Bundle arguments = new Bundle();
-			arguments.putString(UVDetailFragment.ARG_UV_ID, id);
-			arguments.putBoolean(UVDetailFragment.ARG_TWO_PANE, mTwoPane);
-			final UVDetailFragment fragment = new UVDetailFragment();
-			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
 							android.R.anim.fade_in, android.R.anim.fade_out)
-					.replace(R.id.uv_detail_container, fragment)
+					.replace(R.id.uv_detail_container, UVDetailFragment.newInstance(id, mTwoPane))
 					.commit();
 		} else {
 			final Intent detailIntent = new Intent(this, UVDetailActivity.class);
@@ -212,7 +207,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 					fragment = new NewsFeedFragment();
 					break;
 				default:
-					fragment = mTwoPane ? new WrapperFragment() : new UVListFragment();
+					fragment = mTwoPane ? WrapperFragment.newInstance() : UVListFragment.newInstance();
 					break;
 			}
 			return fragment;

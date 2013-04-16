@@ -7,6 +7,7 @@
     <!-- UV list styles -->
     <style name="List" parent="@style/ListDefault">
         <item name="android:divider">@null</item>
+        <item name="android:background">@drawable/list_background_twopane_uvweb</item>
     </style>
     <style name="ListNewsfeed" parent="@style/ListDefault">
         <item name="android:paddingLeft">16dp</item>

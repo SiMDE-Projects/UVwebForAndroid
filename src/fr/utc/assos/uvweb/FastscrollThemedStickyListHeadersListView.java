@@ -6,7 +6,7 @@ import android.view.ContextThemeWrapper;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 
 /**
- * A very simple custome ListView that inherits {@link StickyListHeadersListView}.
+ * A very simple custom ListView that inherits {@link StickyListHeadersListView}.
  * It adds the fastscroll workaround to fix wrong fastscroll color on devices running Android < 3.0.
  * See https://gist.github.com/DHuckaby/d6b1d9c8e7f9d70c39de for more information.
  */

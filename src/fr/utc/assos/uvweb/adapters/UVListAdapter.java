@@ -30,7 +30,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	private static final String TAG = makeLogTag(UVListAdapter.class);
 	/**
 	 * Size of the French alphabet. We use it to instantiate our data structures and avoid memory
-	 * reallocation, since we can fairly surely assume we'll have a section for each letter
+	 * reallocation, since we can fairly surely assume we'll have a section for each letter.
 	 */
 	private static final int ALPHABET_LENGTH = 26;
 	/**
@@ -87,7 +87,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		updateUVs(UVs, false);
 	}
 
-	protected void updateUVs(List<UVwebContent.UV> UVs, boolean dueToFilterOperation) {
+	protected void updateUVs(List<UVwebContent.UV> UVs, final boolean dueToFilterOperation) {
 		ThreadPreconditions.checkOnMainThread();
 
 		mSectionToPosition.clear();
@@ -215,30 +215,26 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 	private final class UVFilter extends Filter {
 		private final FilterResults mFilterResults = new FilterResults();
-		private final List<UVwebContent.UV> mFoundedUVs = new ArrayList<UVwebContent.UV>();
+		private final List<UVwebContent.UV> mFoundUVs = new ArrayList<UVwebContent.UV>();
 
 		@Override
 		protected FilterResults performFiltering(CharSequence charSequence) {
-			final FilterResults filterResults = mFilterResults;
-
 			if (charSequence == null || charSequence.length() == 0) {
-				filterResults.values = mSavedUVs;
-				filterResults.count = mSavedUVs.size();
-				return filterResults;
+				mFilterResults.values = mSavedUVs;
+				mFilterResults.count = mSavedUVs.size();
+				return mFilterResults;
 			}
 
-			mFoundedUVs.clear();
-			final List<UVwebContent.UV> foundedUVs = mFoundedUVs;
-
+			mFoundUVs.clear();
 			final String query = charSequence.toString().toUpperCase();
 			for (UVwebContent.UV UV : mSavedUVs) {
 				if (UV.getName().startsWith(query)) {
-					foundedUVs.add(UV);
+					mFoundUVs.add(UV);
 				}
 			}
-			filterResults.values = foundedUVs;
-			filterResults.count = foundedUVs.size();
-			return filterResults;
+			mFilterResults.values = mFoundUVs;
+			mFilterResults.count = mFoundUVs.size();
+			return mFilterResults;
 		}
 
 		@Override

@@ -58,6 +58,19 @@ public class UVDetailFragment extends SherlockFragment {
 	public UVDetailFragment() {
 	}
 
+	/**
+	 * Create a new instance of {@link UVListFragment} that will be initialized
+	 * with the given arguments.
+	 */
+	public static UVDetailFragment newInstance(final String id, final boolean twoPane) {
+		final Bundle arguments = new Bundle();
+		arguments.putString(ARG_UV_ID, id);
+		arguments.putBoolean(ARG_TWO_PANE, twoPane);
+		final UVDetailFragment f = new UVDetailFragment();
+		f.setArguments(arguments);
+		return f;
+	}
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
