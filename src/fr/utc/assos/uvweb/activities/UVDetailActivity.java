@@ -28,12 +28,10 @@ public class UVDetailActivity extends UVwebActivity {
 		if (savedInstanceState == null) {
 			// Create the detail fragment and add it to the activity
 			// using a fragment transaction.
-			Bundle arguments = new Bundle();
-			arguments.putString(UVDetailFragment.ARG_UV_ID, getIntent().getStringExtra(UVDetailFragment.ARG_UV_ID));
-			UVDetailFragment fragment = new UVDetailFragment();
-			fragment.setArguments(arguments);
 			getSupportFragmentManager().beginTransaction()
-					.add(R.id.uv_detail_container, fragment).commit();
+					.add(R.id.uv_detail_container,
+							UVDetailFragment.newInstance(getIntent().getStringExtra(UVDetailFragment.ARG_UV_ID), false))
+					.commit();
 		}
 	}
 

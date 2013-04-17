@@ -40,12 +40,11 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
-	private boolean mTwoPane = false;
+	private boolean mTwoPane;
 	/**
 	 * The {@link ViewPager} that will host the section contents.
 	 */
 	private ViewPager mViewPager;
-	private int mCurrentTab = 0;
 	private SharedPreferences mPrefs;
 
 	@Override
@@ -58,12 +57,10 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		if ((findViewById(R.id.uv_container)) != null) {
-			// The detail container view will be present only in the
-			// large-screen layouts (res/values-sw600dp). If this view is present, then the
-			// activity should be in two-pane mode.
-			mTwoPane = true;
-		}
+		mTwoPane = findViewById(R.id.uv_container) != null;
+		// The detail container view will be present only in the
+		// large-screen layouts (res/values-sw600dp). If this view is present, then the
+		// activity should be in two-pane mode.
 
 		// Set up the ViewPager with the sections adapter.
 		mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -92,8 +89,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 				.setTabListener(this));
 
 		// Restore saved tab position.
-		mCurrentTab = loadLastTabPreference();
-		actionBar.setSelectedNavigationItem(mCurrentTab);
+		actionBar.setSelectedNavigationItem(loadLastTabPreference());
 	}
 
 	@Override
@@ -132,7 +128,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 			getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
 							android.R.anim.fade_in, android.R.anim.fade_out)
-					.replace(R.id.uv_detail_container, UVDetailFragment.newInstance(id, mTwoPane))
+					.replace(R.id.uv_detail_container, UVDetailFragment.newInstance(id, true))
 					.commit();
 		} else {
 			final Intent detailIntent = new Intent(this, UVDetailActivity.class);
@@ -150,7 +146,6 @@ public class UVListActivity extends UVwebMenuActivity implements
 		} else {
 			mPrefs.edit().putInt(PERSISTENT_LAST_TAB, tab).commit();
 		}
-		mCurrentTab = tab;
 	}
 
 	private int loadLastTabPreference() {

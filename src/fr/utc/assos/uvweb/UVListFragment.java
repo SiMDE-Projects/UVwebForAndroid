@@ -199,14 +199,14 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		return mSearchQuery;
 	}
 
-	public String getDisplayedUVName() {
-		return mDisplayedUVName;
-	}
-
 	public void setSearchQuery(String searchQuery) {
 		if (!TextUtils.equals(searchQuery, mSearchQuery)) {
 			mSearchQuery = searchQuery;
 		}
+	}
+
+	public String getDisplayedUVName() {
+		return mDisplayedUVName;
 	}
 
 	public void setDisplayedUV(String uvName) {
@@ -278,7 +278,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 
 	@Override
 	public void onNothingFound() {
-		if (mTwoPane) {
+		if (mTwoPane && mDisplayedUVName != null) {
 			mCallbacks.showDefaultDetailFragment();
 		}
 		mDisplayedUVName = null;

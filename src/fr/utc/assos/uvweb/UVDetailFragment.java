@@ -45,7 +45,7 @@ public class UVDetailFragment extends SherlockFragment {
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
 	private final Handler mHandler = new Handler();
-	private boolean mTwoPane = false;
+	private boolean mTwoPane;
 	/**
 	 * The UV this fragment is presenting.
 	 */
@@ -96,7 +96,7 @@ public class UVDetailFragment extends SherlockFragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_uv_detail,
+		final View rootView = inflater.inflate(R.layout.fragment_uv_detail,
 				container, false);
 
 		mListView = (ListView) rootView.findViewById(android.R.id.list);

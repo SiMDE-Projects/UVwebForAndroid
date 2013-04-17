@@ -25,5 +25,4 @@ public abstract class UVwebActivity extends SherlockFragmentActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 }
