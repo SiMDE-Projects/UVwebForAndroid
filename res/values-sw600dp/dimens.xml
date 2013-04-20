@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- List internal padding. -->
+    <dimen name="list_internal_padding">32dip</dimen>
+    <dimen name="list_internal_padding_small">16dip</dimen>
+</resources>

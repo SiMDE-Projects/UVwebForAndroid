@@ -6,4 +6,7 @@
     <dimen name="uv_list_empty_right_padding">6dp</dimen>
     <!-- Sticky list headers' min height. -->
     <dimen name="list_section_divider_min_height">31dip</dimen>
+    <!-- List internal padding. -->
+    <dimen name="list_internal_padding">8dip</dimen>
+    <dimen name="list_internal_padding_small">8dip</dimen>
 </resources>

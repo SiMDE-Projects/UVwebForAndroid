@@ -6,8 +6,8 @@
         <item name="android:background">@drawable/list_background_twopane_uvweb</item>
     </style>
     <style name="ListNewsfeed" parent="@style/ListDefault">
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">@dimen/list_internal_padding</item>
+        <item name="android:paddingRight">@dimen/list_internal_padding</item>
     </style>
 
     <!-- UV item styles -->
@@ -40,9 +40,5 @@
         <item name="android:paddingLeft">24dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:background">@drawable/list_background_twopane_uvweb</item>
-    </style>
-
-    <!-- UV comment style -->
-    <style name="UvComment" parent="@style/UvCommentDefault">
     </style>
 </resources>

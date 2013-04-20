@@ -44,5 +44,6 @@
 
     <!-- UV comment style -->
     <style name="UvComment" parent="@style/UvCommentDefault">
+        <item name="android:padding">@dimen/list_internal_padding_small</item>
     </style>
 </resources>
