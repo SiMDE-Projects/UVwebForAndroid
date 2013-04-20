@@ -228,7 +228,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			if (mDisplayedUVName == null) {
 				mCallbacks.showDefaultDetailFragment();
 			}
-			//getSherlockActivity().getWindow().setBackgroundDrawable(null); // TODO: Reduce overdraw on tablets
+			getSherlockActivity().getWindow().setBackgroundDrawable(null); // TODO: Reduce overdraw on tablets
 		}
 	}
 
