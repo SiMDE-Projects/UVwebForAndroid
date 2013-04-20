@@ -1,6 +1,11 @@
 package fr.utc.assos.uvweb.data;
 
-import org.joda.time.LocalDate;
+import android.widget.Toast;
+import fr.utc.assos.uvweb.util.DateUtils;
+import org.joda.time.*;
+import org.joda.time.format.PeriodFormat;
+import org.joda.time.format.PeriodFormatter;
+import org.joda.time.format.PeriodFormatterBuilder;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -135,7 +140,8 @@ public class UVwebContent {
 				"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in " +
 				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
 				"proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
-		final LocalDate localDate = new LocalDate(2009, 11, 5);
+		final DateTime date = new DateTime(2013, 04, 20, 14, 20, 12);
+        final LocalDate localDate = new LocalDate(2013, 04, 20);
 		addComment(new UVComment("amasciul", localDate, commentString, 5));
 		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
 		addComment(new UVComment("amasciul", localDate, commentString, 2));
@@ -155,60 +161,46 @@ public class UVwebContent {
 		addComment(new UVComment("tkeunebr", localDate, commentString, 9));
 		addComment(new UVComment("amasciul", localDate, commentString, 2));
 
-		String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
+		final String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
 				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
 				"a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of" +
 				" us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now." +
 				" We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but" +
 				" it doesn't hold a candle to man.";
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 17, 49, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+        addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 9, 20, 12), newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 19, 14, 20, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 17, 11, 3, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 3, 14, 20, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 03, 26, 22, 20, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 01, 2, 14, 20, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2012, 11, 20, 14, 20, 12), newsFeedEntryString,
 				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", localDate, newsFeedEntryString,
-				"a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2012, 07, 20, 14, 20, 12), newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2011, 04, 20, 14, 20, 12), newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("amasciul", date, newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("amasciul", date, newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", date, newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", date, newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("amasciul", date, newsFeedEntryString,
+                "a publié un nouveau commentaire"));
+        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", date, newsFeedEntryString,
+                "a publié un nouveau commentaire"));
 	}
 
 	public static void addItem(UV item) {
@@ -357,13 +349,13 @@ public class UVwebContent {
 
 	public static class NewsFeedEntry {
 		private String mAuthor;
-		private LocalDate mDate;
+		private DateTime mDate;
 		private String mComment;
 		private String mAction;
 
-		public NewsFeedEntry(String author, LocalDate localDate, String comment, String action) {
+		public NewsFeedEntry(String author, DateTime date, String comment, String action) {
 			mAuthor = author;
-			mDate = localDate;
+			mDate = date;
 			mComment = comment;
 			mAction = action;
 		}
@@ -380,11 +372,11 @@ public class UVwebContent {
 			mAuthor = author;
 		}
 
-		public LocalDate getDate() {
+		public DateTime getDate() {
 			return mDate;
 		}
 
-		public void setDate(LocalDate date) {
+		public void setDate(DateTime date) {
 			mDate = date;
 		}
 
@@ -396,8 +388,8 @@ public class UVwebContent {
 			mComment = comment;
 		}
 
-		public String getFormattedDate() {
-			return mDate.toString();
-		}
+        public String getTimeDifference() {
+            return DateUtils.getFormattedDateDifference(mDate, new DateTime());
+        }
 	}
 }

@@ -59,7 +59,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				entry.getAuthor(), " " + entry.getAction())));
-		dateView.setText(mDatePresentation + " " + entry.getFormattedDate());
+		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
 		commentView.setText(entry.getComment());
 
 		return convertView;
