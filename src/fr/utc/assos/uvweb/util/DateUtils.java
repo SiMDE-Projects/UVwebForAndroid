@@ -6,11 +6,7 @@ import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
 /**
- * Created with IntelliJ IDEA.
- * User: Thomas
- * Date: 20/04/13
- * Time: 16:54
- * To change this template use File | Settings | File Templates.
+ * A helper class to manage Dates
  */
 public class DateUtils {
     private static final PeriodFormatter sYearFormatter = new PeriodFormatterBuilder()
@@ -43,7 +39,7 @@ public class DateUtils {
             .appendSeconds()
             .appendSuffix(" seconde", " secondes")
             .toFormatter();
-    private static final int sHourThreshold = 5;
+    private static final int HOUR_THRESHOLD = 5;
 
     public static String getFormattedDateDifference(DateTime d1, DateTime d2) {
         final Period period = new Period(d1, d2).normalizedStandard();
@@ -59,12 +55,10 @@ public class DateUtils {
         }
         final int hours = period.getHours();
         if (hours > 0) {
-            if (hours > 5) {
+            if (hours > HOUR_THRESHOLD) {
                 return sHourFormatter.print(period);
             }
-            else {
-                return sHourMinuteFormatter.print(period);
-            }
+            return sHourMinuteFormatter.print(period);
         }
         return sMinuteSecondFormatter.print(period);
     }
