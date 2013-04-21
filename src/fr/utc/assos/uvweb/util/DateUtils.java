@@ -2,6 +2,8 @@ package fr.utc.assos.uvweb.util;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.PeriodFormatter;
 import org.joda.time.format.PeriodFormatterBuilder;
 
@@ -32,6 +34,10 @@ public class DateUtils {
             .appendMinutes()
             .appendSuffix(" minute", " minutes")
             .toFormatter();
+    private static final PeriodFormatter sMinuteFormatter = new PeriodFormatterBuilder()
+            .appendMinutes()
+            .appendSuffix(" minute", " minutes")
+            .toFormatter();
     private static final PeriodFormatter sMinuteSecondFormatter = new PeriodFormatterBuilder()
             .appendMinutes()
             .appendSuffix(" minute", " minutes")
@@ -39,9 +45,11 @@ public class DateUtils {
             .appendSeconds()
             .appendSuffix(" seconde", " secondes")
             .toFormatter();
+    private static final DateTimeFormatter sDateFormatter = DateTimeFormat.forPattern("dd/MM/yy");
     private static final int HOUR_THRESHOLD = 5;
+    private static final int MINUTE_THRESHOLD = 3;
 
-    public static String getFormattedDateDifference(DateTime d1, DateTime d2) {
+    public static String getFormattedTimeDifference(DateTime d1, DateTime d2) {
         final Period period = new Period(d1, d2).normalizedStandard();
 
         if (period.getYears() > 0) {
@@ -60,6 +68,13 @@ public class DateUtils {
             }
             return sHourMinuteFormatter.print(period);
         }
+        if (period.getMinutes() > MINUTE_THRESHOLD) {
+            return sMinuteFormatter.print(period);
+        }
         return sMinuteSecondFormatter.print(period);
+    }
+
+    public static String getFormattedDate(DateTime d) {
+        return d.toString(sDateFormatter);
     }
 }

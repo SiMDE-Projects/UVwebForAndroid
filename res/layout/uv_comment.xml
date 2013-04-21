@@ -31,7 +31,7 @@
                 android:layout_toRightOf="@id/userid"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignBottom="@+id/userid">
+                android:layout_alignBottom="@id/userid">
 
                 <TextView
                     android:id="@+id/date"
@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="3 septembre 1985"
                     android:gravity="center_vertical|right"
-                    android:textSize="16sp"
+                    android:textSize="10sp"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentRight="true" />
 
@@ -48,13 +48,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="8/10"
-                    android:gravity="center_vertical|right"
+                    android:gravity="center_vertical|right|top"
                     android:textSize="24sp"
                     android:layout_above="@id/date"
                     android:textStyle="bold"
                     android:layout_alignParentTop="true"
                     android:layout_alignWithParentIfMissing="true"
                     android:layout_alignParentRight="true" />
+
+                <TextView
+                    android:id="@+id/semester"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="P12"
+                    android:textSize="16sp"
+                    android:paddingTop="16dp"
+                    android:layout_alignRight="@id/date"
+                    android:layout_centerVertical="true"/>
 
             </RelativeLayout>
 

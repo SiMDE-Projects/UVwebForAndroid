@@ -3,9 +3,7 @@ package fr.utc.assos.uvweb.data;
 import android.widget.Toast;
 import fr.utc.assos.uvweb.util.DateUtils;
 import org.joda.time.*;
-import org.joda.time.format.PeriodFormat;
-import org.joda.time.format.PeriodFormatter;
-import org.joda.time.format.PeriodFormatterBuilder;
+import org.joda.time.format.*;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -141,25 +139,24 @@ public class UVwebContent {
 				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
 				"proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
 		final DateTime date = new DateTime(2013, 04, 20, 14, 20, 12);
-        final LocalDate localDate = new LocalDate(2013, 04, 20);
-		addComment(new UVComment("amasciul", localDate, commentString, 5));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 5));
-		addComment(new UVComment("amasciul", localDate, commentString, 2));
-		addComment(new UVComment("amasciul", localDate, commentString, 7));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 6));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 1));
-		addComment(new UVComment("amasciul", localDate, commentString, 0));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 9));
-		addComment(new UVComment("amasciul", localDate, commentString, 2));
-		addComment(new UVComment("amasciul", localDate, commentString, 4));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 4));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 6));
-		addComment(new UVComment("amasciul", localDate, commentString, 7));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 6));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 1));
-		addComment(new UVComment("amasciul", localDate, commentString, 0));
-		addComment(new UVComment("tkeunebr", localDate, commentString, 9));
-		addComment(new UVComment("amasciul", localDate, commentString, 2));
+		addComment(new UVComment("amasciul", date, commentString, 5, "P13"));
+		addComment(new UVComment("tkeunebr", date, commentString, 5, "P13"));
+		addComment(new UVComment("amasciul", date, commentString, 2, "P13"));
+		addComment(new UVComment("amasciul", date, commentString, 7, "P13"));
+		addComment(new UVComment("tkeunebr", date, commentString, 6, "P13"));
+		addComment(new UVComment("tkeunebr", date, commentString, 1, "A12"));
+		addComment(new UVComment("amasciul", date, commentString, 0, "A12"));
+		addComment(new UVComment("tkeunebr", date, commentString, 9, "A12"));
+		addComment(new UVComment("amasciul", date, commentString, 2, "A12"));
+		addComment(new UVComment("amasciul", date, commentString, 4, "A12"));
+		addComment(new UVComment("tkeunebr", date, commentString, 4, "P12"));
+		addComment(new UVComment("tkeunebr", date, commentString, 6, "P12"));
+		addComment(new UVComment("amasciul", date, commentString, 7, "A11"));
+		addComment(new UVComment("tkeunebr", date, commentString, 6, "A09"));
+		addComment(new UVComment("tkeunebr", date, commentString, 1, "P09"));
+		addComment(new UVComment("amasciul", date, commentString, 0, "A08"));
+		addComment(new UVComment("tkeunebr", date, commentString, 9, "P08"));
+		addComment(new UVComment("amasciul", date, commentString, 2, "P08"));
 
 		final String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
 				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
@@ -295,15 +292,17 @@ public class UVwebContent {
 
 	public static class UVComment {
 		private String mAuthor;
-		private LocalDate mDate;
+		private DateTime mDate;
 		private String mComment;
 		private int mGlobalRate;
+        private String mSemester;
 
-		public UVComment(String author, LocalDate localDate, String comment, int globalRate) {
+		public UVComment(String author, DateTime date, String comment, int globalRate, String semester) {
 			mAuthor = author;
-			mDate = localDate;
+			mDate = date;
 			mComment = comment;
 			mGlobalRate = globalRate;
+            mSemester = semester;
 		}
 
 		public String getAuthor() {
@@ -314,11 +313,11 @@ public class UVwebContent {
 			mAuthor = author;
 		}
 
-		public LocalDate getDate() {
+		public DateTime getDate() {
 			return mDate;
 		}
 
-		public void setDate(LocalDate date) {
+		public void setDate(DateTime date) {
 			mDate = date;
 		}
 
@@ -338,12 +337,20 @@ public class UVwebContent {
 			mGlobalRate = globalRate;
 		}
 
+        public String getSemester() {
+            return mSemester;
+        }
+
+        public void setSemester(String semester) {
+            mSemester = semester;
+        }
+
 		public String getFormattedRate() {
 			return sDecimalFormat.format(mGlobalRate) + "/10";
 		}
 
 		public String getFormattedDate() {
-			return mDate.toString();
+            return DateUtils.getFormattedDate(mDate);
 		}
 	}
 
@@ -389,7 +396,7 @@ public class UVwebContent {
 		}
 
         public String getTimeDifference() {
-            return DateUtils.getFormattedDateDifference(mDate, new DateTime());
+            return DateUtils.getFormattedTimeDifference(mDate, new DateTime());
         }
 	}
 }

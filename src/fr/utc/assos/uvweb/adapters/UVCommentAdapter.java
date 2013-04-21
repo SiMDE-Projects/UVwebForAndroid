@@ -51,6 +51,7 @@ public class UVCommentAdapter extends UVAdapter {
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
 		final TextView rateView = UVwebHolder.get(convertView, R.id.rate);
 		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
+        final TextView semesterView = UVwebHolder.get(convertView, R.id.semester);
 		final TextView dateView = (TextView) convertView.findViewById(R.id.date);
 
 		final UVwebContent.UVComment comment = getItem(position);
@@ -58,6 +59,7 @@ public class UVCommentAdapter extends UVAdapter {
 		userIdView.setText(comment.getAuthor());
 		rateView.setText(comment.getFormattedRate());
 		commentView.setText(comment.getComment());
+        semesterView.setText(comment.getSemester());
 		dateView.setText(comment.getFormattedDate());
 
 		return convertView;
