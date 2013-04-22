@@ -14,7 +14,6 @@ import com.actionbarsherlock.app.ActionBar;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.*;
 
-import static fr.utc.assos.uvweb.util.LogUtils.LOGD;
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
@@ -107,11 +106,12 @@ public class UVListActivity extends UVwebMenuActivity implements
 	public void showDefaultDetailFragment() {
 		if (mTwoPane) {
 			// Default detail fragment management
-			final UVDetailDefaultFragment fragment = new UVDetailDefaultFragment();
-			getSupportFragmentManager().beginTransaction()
-					.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-					.replace(R.id.uv_detail_container, fragment)
-					.commit();
+			final FragmentManager fm = getSupportFragmentManager();
+			if (fm.findFragmentByTag(UVDetailDefaultFragment.DEFAULT_FRAGMENT_TAG) == null) {
+				fm.beginTransaction().replace(R.id.uv_detail_container,
+						new UVDetailDefaultFragment(),
+						UVDetailDefaultFragment.DEFAULT_FRAGMENT_TAG).commit();
+			}
 		}
 	}
 
@@ -182,7 +182,6 @@ public class UVListActivity extends UVwebMenuActivity implements
 	/**
 	 * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
 	 * one of the sections/tabs/pages.
-	 * It is used in phone-mode only (twoPane = false).
 	 */
 	private static class SectionsPagerAdapter extends FragmentPagerAdapter {
 		private final boolean mTwoPane;
@@ -194,7 +193,6 @@ public class UVListActivity extends UVwebMenuActivity implements
 
 		@Override
 		public Fragment getItem(int position) {
-			LOGD(TAG, "getItem, position === " + String.valueOf(position));
 			// getItem is called to instantiate the fragment for the given page.
 			Fragment fragment;
 			switch (position) {

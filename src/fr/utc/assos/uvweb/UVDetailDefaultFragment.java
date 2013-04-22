@@ -12,6 +12,7 @@ import com.actionbarsherlock.app.SherlockFragment;
  * used in tablet-mode only.
  */
 public class UVDetailDefaultFragment extends SherlockFragment {
+    public static final String DEFAULT_FRAGMENT_TAG = "UVDetailDefaultFragment_TAG";
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).

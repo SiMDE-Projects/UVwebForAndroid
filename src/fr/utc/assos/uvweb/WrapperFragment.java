@@ -54,20 +54,17 @@ public class WrapperFragment extends SherlockFragment {
 					mUvListFragment.setSearchQuery(savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY));
 				}
 			}
-		} else if (savedInstanceState != null) {
-			UVListFragment.newInstance(
+		} else {
+			mUvListFragment = savedInstanceState != null ? UVListFragment.newInstance(
 					savedInstanceState.getString(UVListFragment.STATE_DISPLAYED_UV),
 					savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY),
-					true
-			);
-		} else {
-			mUvListFragment = UVListFragment.newInstance(true);
-		}
+					true) : UVListFragment.newInstance(true);
 
-		getChildFragmentManager()
-				.beginTransaction()
-				.replace(R.id.uv_list, mUvListFragment, UVLISTFRAGMENT_TAG)
-				.commit();
+			getChildFragmentManager()
+					.beginTransaction()
+					.replace(R.id.uv_list, mUvListFragment, UVLISTFRAGMENT_TAG)
+					.commit();
+		}
 	}
 
 	@Override
