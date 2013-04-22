@@ -1,12 +1,13 @@
 package fr.utc.assos.uvweb.data;
 
-import android.widget.Toast;
 import fr.utc.assos.uvweb.util.DateUtils;
-import org.joda.time.*;
-import org.joda.time.format.*;
+import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Helper class for providing UV content for user interfaces
@@ -16,189 +17,29 @@ public class UVwebContent {
 	 * UV title format pattern, consistent accross the application.
 	 */
 	public static final String UV_TITLE_FORMAT = "<font color='#000000'>%1$s</font>%2$s";
-    public static final String UV_TITLE_FORMAT_LIGHT = "<font color='#ffffff'>%1$s</font>%2$s";
-
+	public static final String UV_TITLE_FORMAT_LIGHT = "<font color='#ffffff'>%1$s</font>%2$s";
 	public static final String NEWSFEED_ACTION_FORMAT = "<b>%1$s</b><font color='#000000'>%2$s</font>";
-
 	public static final String UV_SUCCESS_RATE_FORMAT = "%1$s<b>%2$s</b>";
-
-	/**
-	 * An array of UVs.
-	 */
-	public static List<UV> UVS = new ArrayList<UV>();
-
-	/**
-	 * A map of UVs, by ID.
-	 */
-	public static Map<String, UV> UV_MAP = new HashMap<String, UV>();
-
-	/**
-	 * An array of comments.
-	 */
-	public static ArrayList<UVComment> COMMENTS = new ArrayList<UVComment>();
-
-	/**
-	 * An array of news feed entries.
-	 */
-	public static ArrayList<NewsFeedEntry> NEWS_ENTRIES = new ArrayList<NewsFeedEntry>();
-
 	/**
 	 * Used to format grades.
 	 */
 	private static final DecimalFormat sDecimalFormat = new DecimalFormat("0");
-
-	static {
-		// Add sample items.
-		addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("CM11", "Chimie générale", 2.7, 56.89));
-		addItem(new UV("PS91", "Mécanique physique", 4.5, 56.89));
-		addItem(new UV("PS04", "Thermodynamique", 5.2, 56.89));
-		addItem(new UV("NF16", "Algorithmique et structures de données", 6.45, 56.89));
-		addItem(new UV("HE03", "Logique : histoire et formalisme", 7.97, 56.89));
-		addItem(new UV("MT91", "Fonctions d'une variable réelle 2", 8.34, 56.89));
-		addItem(new UV("IA01", "Intelligence artificielle : apprentissage, représentation", 8, 56.89));
-		addItem(new UV("MI01", "Structure d'un calculateur", 8, 56.89));
-		addItem(new UV("SY01", "Elements de probabilités", 8, 56.89));
-		addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
-		addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
-		addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
-		addItem(new UV("TN04", "Réalisation", 8, 100));
-		addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
-		addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
-		addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
-		addItem(new UV("NF17", "Conception de bases de données", 8, 100));
-		addItem(new UV("BL09", "Biophysique des systèmes biologiques", 8, 100));
-		addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
-		addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("CM11", "Chimie générale", 2.7, 56.89));
-		addItem(new UV("PS91", "Mécanique physique", 4.5, 56.89));
-		addItem(new UV("PS04", "Thermodynamique", 5.2, 56.89));
-		addItem(new UV("NF16", "Algorithmique et structures de données", 6.45, 56.89));
-		addItem(new UV("HE03", "Logique : histoire et formalisme", 7.97, 56.89));
-		addItem(new UV("MT91", "Fonctions d'une variable réelle 2", 8.34, 56.89));
-		addItem(new UV("IA01", "Intelligence artificielle : apprentissage, représentation", 8, 56.89));
-		addItem(new UV("MI01", "Structure d'un calculateur", 8, 56.89));
-		addItem(new UV("SY01", "Elements de probabilités", 8, 56.89));
-		addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
-		addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
-		addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
-		addItem(new UV("TN06", "Transmission des efforts en mécanique", 4, 67));
-		addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
-		addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
-		addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
-		addItem(new UV("NF17", "Conception de bases de données", 8, 100));
-		addItem(new UV("BL09", "Biophysique des systèmes biologiques", 8, 100));
-		addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
-		addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("CM11", "Chimie générale", 2.7, 56.89));
-		addItem(new UV("PS91", "Mécanique physique", 4.5, 56.89));
-		addItem(new UV("PS04", "Thermodynamique", 5.2, 56.89));
-		addItem(new UV("NF16", "Algorithmique et structures de données", 6.45, 56.89));
-		addItem(new UV("HE03", "Logique : histoire et formalisme", 7.97, 56.89));
-		addItem(new UV("MT91", "Fonctions d'une variable réelle 2", 8.34, 56.89));
-		addItem(new UV("IA01", "Intelligence artificielle : apprentissage, représentation", 8, 56.89));
-		addItem(new UV("MI01", "Structure d'un calculateur", 8, 56.89));
-		addItem(new UV("SY01", "Elements de probabilités", 8, 56.89));
-		addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
-		addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
-		addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
-		addItem(new UV("TN01", "Eléments de dessin technique", 6.7, 85));
-		addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
-		addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
-		addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
-		addItem(new UV("NF17", "Conception de bases de données", 8, 100));
-		addItem(new UV("BL09", "Biophysique des systèmes biologiques", 8, 100));
-		addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
-		addItem(new UV("MT23", "Algèbre linéaire", 8, 56.89));
-		addItem(new UV("CM11", "Chimie générale", 2.7, 56.89));
-		addItem(new UV("PS91", "Mécanique physique", 4.5, 56.89));
-		addItem(new UV("PS04", "Thermodynamique", 5.2, 56.89));
-		addItem(new UV("NF16", "Algorithmique et structures de données", 6.45, 56.89));
-		addItem(new UV("HE03", "Logique : histoire et formalisme", 7.97, 56.89));
-		addItem(new UV("MT91", "Fonctions d'une variable réelle 2", 8.34, 56.89));
-		addItem(new UV("IA01", "Intelligence artificielle : apprentissage, représentation", 8, 56.89));
-		addItem(new UV("MI01", "Structure d'un calculateur", 8, 56.89));
-		addItem(new UV("SY01", "Elements de probabilités", 8, 56.89));
-		addItem(new UV("LO21", "Programmation et conception orientées objet", 8, 56.89));
-		addItem(new UV("SI07", "Médias classiques et médias numériques", 8, 56.89));
-		addItem(new UV("SC22", "Sociologie cognitive, lien social et techniques", 8, 100));
-		addItem(new UV("TN03", "Fabrication mécanique", 4.2, 70));
-		addItem(new UV("AR03", "Art et technologies contemporaines", 8, 100));
-		addItem(new UV("CM12", "Chimie physique minérale", 8, 100));
-		addItem(new UV("BL01", "Sciences biologiques pour l'ingénieur", 8, 100));
-		addItem(new UV("NF17", "Conception de bases de données", 8, 100));
-		addItem(new UV("BL09", "Biophysique des systèmes biologiques", 8, 100));
-		addItem(new UV("MT12", "Techniques mathématiques de l'ingénieur", 8, 100));
-
-		Collections.sort(UVS);
-
-		final String commentString = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, " +
-				"sed do eiusmod tempor " +
-				"incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
-				"ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in " +
-				"voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non " +
-				"proident, sunt in culpa qui officia deserunt mollit anim id est laborum";
-		final DateTime date = new DateTime(2013, 04, 20, 14, 20, 12);
-		addComment(new UVComment("amasciul", date, commentString, 5, "P13"));
-		addComment(new UVComment("tkeunebr", date, commentString, 5, "P13"));
-		addComment(new UVComment("amasciul", date, commentString, 2, "P13"));
-		addComment(new UVComment("amasciul", date, commentString, 7, "P13"));
-		addComment(new UVComment("tkeunebr", date, commentString, 6, "P13"));
-		addComment(new UVComment("tkeunebr", date, commentString, 1, "A12"));
-		addComment(new UVComment("amasciul", date, commentString, 0, "A12"));
-		addComment(new UVComment("tkeunebr", date, commentString, 9, "A12"));
-		addComment(new UVComment("amasciul", date, commentString, 2, "A12"));
-		addComment(new UVComment("amasciul", date, commentString, 4, "A12"));
-		addComment(new UVComment("tkeunebr", date, commentString, 4, "P12"));
-		addComment(new UVComment("tkeunebr", date, commentString, 6, "P12"));
-		addComment(new UVComment("amasciul", date, commentString, 7, "A11"));
-		addComment(new UVComment("tkeunebr", date, commentString, 6, "A09"));
-		addComment(new UVComment("tkeunebr", date, commentString, 1, "P09"));
-		addComment(new UVComment("amasciul", date, commentString, 0, "A08"));
-		addComment(new UVComment("tkeunebr", date, commentString, 9, "P08"));
-		addComment(new UVComment("amasciul", date, commentString, 2, "P08"));
-
-		final String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
-				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
-				"a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of" +
-				" us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now." +
-				" We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but" +
-				" it doesn't hold a candle to man.";
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 17, 49, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 9, 20, 12), newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 19, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 17, 11, 3, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 3, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 03, 26, 22, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 01, 2, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2012, 11, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2012, 07, 20, 14, 20, 12), newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2011, 04, 20, 14, 20, 12), newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("amasciul", date, newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("amasciul", date, newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", date, newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", date, newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("amasciul", date, newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-        addNewsFeedEntry(new NewsFeedEntry("tkeunebr", date, newsFeedEntryString,
-                "a publié un nouveau commentaire"));
-	}
+	/**
+	 * An array of UVs.
+	 */
+	public static List<UV> UVS = new ArrayList<UV>();
+	/**
+	 * A map of UVs, by ID.
+	 */
+	public static Map<String, UV> UV_MAP = new HashMap<String, UV>();
+	/**
+	 * An array of comments.
+	 */
+	public static ArrayList<UVComment> COMMENTS = new ArrayList<UVComment>();
+	/**
+	 * An array of news feed entries.
+	 */
+	public static ArrayList<NewsFeedEntry> NEWS_ENTRIES = new ArrayList<NewsFeedEntry>();
 
 	public static void addItem(UV item) {
 		UVS.add(item);
@@ -211,6 +52,49 @@ public class UVwebContent {
 
 	public static void addNewsFeedEntry(NewsFeedEntry entry) {
 		NEWS_ENTRIES.add(entry);
+	}
+
+	static {
+		final String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
+				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
+				"a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of" +
+				" us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now." +
+				" We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but" +
+				" it doesn't hold a candle to man.";
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 17, 49, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 9, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 19, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 17, 11, 3, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 3, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 03, 26, 22, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 01, 2, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2012, 11, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2012, 07, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2011, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
+		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
+				"a publié un nouveau commentaire"));
 	}
 
 	/**
@@ -227,8 +111,6 @@ public class UVwebContent {
 			mDescription = description;
 			mRate = rate;
 			mSuccessRate = successRate;
-
-			//addItem(this);
 		}
 
 		@Override
@@ -295,14 +177,14 @@ public class UVwebContent {
 		private DateTime mDate;
 		private String mComment;
 		private int mGlobalRate;
-        private String mSemester;
+		private String mSemester;
 
 		public UVComment(String author, DateTime date, String comment, int globalRate, String semester) {
 			mAuthor = author;
 			mDate = date;
 			mComment = comment;
 			mGlobalRate = globalRate;
-            mSemester = semester;
+			mSemester = semester;
 		}
 
 		public UVComment(String author, String date, String comment, int globalRate, String semester) {
@@ -341,20 +223,20 @@ public class UVwebContent {
 			mGlobalRate = globalRate;
 		}
 
-        public String getSemester() {
-            return mSemester;
-        }
+		public String getSemester() {
+			return mSemester;
+		}
 
-        public void setSemester(String semester) {
-            mSemester = semester;
-        }
+		public void setSemester(String semester) {
+			mSemester = semester;
+		}
 
 		public String getFormattedRate() {
 			return sDecimalFormat.format(mGlobalRate) + "/10";
 		}
 
 		public String getFormattedDate() {
-            return DateUtils.getFormattedDate(mDate);
+			return DateUtils.getFormattedDate(mDate);
 		}
 	}
 
@@ -371,16 +253,20 @@ public class UVwebContent {
 			mAction = action;
 		}
 
+		public NewsFeedEntry(String author, String date, String comment, String action) {
+			this(author, DateUtils.getDateFromString(date), comment, action);
+		}
+
 		public String getAuthor() {
 			return mAuthor;
 		}
 
-		public String getAction() {
-			return mAction;
-		}
-
 		public void setAuthor(String author) {
 			mAuthor = author;
+		}
+
+		public String getAction() {
+			return mAction;
 		}
 
 		public DateTime getDate() {
@@ -399,8 +285,8 @@ public class UVwebContent {
 			mComment = comment;
 		}
 
-        public String getTimeDifference() {
-            return DateUtils.getFormattedTimeDifference(mDate, new DateTime());
-        }
+		public String getTimeDifference() {
+			return DateUtils.getFormattedTimeDifference(mDate, new DateTime());
+		}
 	}
 }
