@@ -77,12 +77,4 @@ public class WrapperFragment extends SherlockFragment {
 		// Serialize and persist the displayed UV.
 		outState.putString(UVListFragment.STATE_DISPLAYED_UV, mUvListFragment.getDisplayedUVName());
 	}
-
-	@Override
-	public void onDestroy() {
-		// Resources cleanup
-		mUvListFragment = null;
-
-		super.onDestroy();
-	}
 }
