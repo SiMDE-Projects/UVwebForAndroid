@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">UVweb</string>
-    <string name="no_uvs">Aucune UV trouvée.</string>
+    <string name="no_uvs">Aucune UV trouvée</string>
     <string name="search_uv_hint">Rechercher une UV</string>
     <string name="average_rating">Note moyenne</string>
 
@@ -13,7 +13,7 @@
     <!-- Menu -->
     <string name="search">Rechercher</string>
     <string name="refresh">Actualiser</string>
-    <string name="about">A propos</string>
+    <string name="about">À propos</string>
     <string name="licenses">Licences open source</string>
 
     <!-- NewsFeed -->
@@ -24,7 +24,7 @@
     <string name="go_to_uvweb">Aller sur UVweb</string>
     <string name="go_to_utc">Voir le site de l\'UTC</string>
     <string name="contact">Nous contacter</string>
-    <string name="intent_chooser_title">Contactez-nous !</string>
+    <string name="intent_chooser_title">Contactez-nous :)</string>
 
     <!-- DefaultDetailFragment -->
     <string name="welcome_uvweb">Bienvenue sur UVweb.</string>
@@ -40,6 +40,6 @@
     <string name="success_rate">Taux de réussite</string>
 
     <!-- Feedback messages -->
-    <string name="network_error_message">Erreur réseau</string>
+    <string name="network_error_message">Aucune connexion réseau. :-(</string>
 
 </resources>
