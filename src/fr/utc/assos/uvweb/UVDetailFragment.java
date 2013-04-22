@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -22,6 +23,14 @@ import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
+import fr.utc.assos.uvweb.util.HttpHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -54,6 +63,8 @@ public class UVDetailFragment extends SherlockFragment {
 	 * The ListView containing all comment items.
 	 */
 	private ListView mListView;
+
+	private UVCommentAdapter mAdapter;
 
 	public UVDetailFragment() {
 	}
@@ -91,6 +102,8 @@ public class UVDetailFragment extends SherlockFragment {
 				// to load content from a content provider.
 				mTwoPane = arguments.getBoolean(ARG_TWO_PANE);
 			}
+
+			new LoadUvCommentsTask().execute();
 		}
 	}
 
@@ -101,23 +114,20 @@ public class UVDetailFragment extends SherlockFragment {
 
 		mListView = (ListView) rootView.findViewById(android.R.id.list);
 
-		final UVCommentAdapter adapter = new UVCommentAdapter(getSherlockActivity());
+		mAdapter = new UVCommentAdapter(getSherlockActivity());
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = null;
 		if (!mTwoPane) {
 			swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
-					adapter,
+					mAdapter,
 					AnimationUtils.CARD_ANIMATION_DELAY_MILLIS,
 					AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
 			swingBottomInAnimationAdapter.setListView(mListView);
 		}
 
-		adapter.updateComments(UVwebContent.COMMENTS);
-
 		// Show the UV as text in a TextView.
 		if (mUV != null) {
-			View headerView = rootView.findViewById(android.R.id.empty);
-			if (adapter.isEmpty()) {
-				ViewStub headerViewStub = (ViewStub) headerView;
+			if (mAdapter.isEmpty()) {
+				final ViewStub headerViewStub = (ViewStub) rootView.findViewById(android.R.id.empty);
 				headerViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
 					@Override
 					public void onInflate(ViewStub stub, View inflated) {
@@ -126,14 +136,13 @@ public class UVDetailFragment extends SherlockFragment {
 					}
 				});
 				headerViewStub.inflate();
-			} else {
-				headerView = inflater.inflate(R.layout.uv_detail_header, null);
-				setHeaderData(headerView);
-				mListView.addHeaderView(headerView);
 			}
+			final View headerView = inflater.inflate(R.layout.uv_detail_header, null);
+			setHeaderData(headerView);
+			mListView.addHeaderView(headerView);
 		}
 
-		mListView.setAdapter(mTwoPane ? adapter : swingBottomInAnimationAdapter);
+		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
 
 		return rootView;
 	}
@@ -181,6 +190,40 @@ public class UVDetailFragment extends SherlockFragment {
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	private class LoadUvCommentsTask extends AsyncTask<Void, Void, List<UVwebContent.UVComment>> {
+		private static final String URL = "http://thomaskeunebroek.fr/uv_comments.json";
+
+		@Override
+		protected List<UVwebContent.UVComment> doInBackground(Void... params) {
+			final JSONArray uvCommentsArray = HttpHelper.loadJSON(URL);
+			final int nUvComments = uvCommentsArray.length();
+
+			final List<UVwebContent.UVComment> uvComments = new ArrayList<UVwebContent.UVComment>(nUvComments);
+
+			try {
+				for (int i = 0; i < nUvComments; i++) {
+					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
+					final UVwebContent.UVComment uvComment = new UVwebContent.UVComment(
+							uvCommentsInfo.getString("author"),
+							uvCommentsInfo.getString("date"),
+							uvCommentsInfo.getString("content"),
+							uvCommentsInfo.getInt("globalRate"),
+							uvCommentsInfo.getString("semester"));
+					uvComments.add(uvComment);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			return uvComments;
+		}
+
+		@Override
+		protected void onPostExecute(List<UVwebContent.UVComment> comments) {
+			mAdapter.updateComments(comments);
 		}
 	}
 }

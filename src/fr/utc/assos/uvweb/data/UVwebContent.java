@@ -305,6 +305,10 @@ public class UVwebContent {
             mSemester = semester;
 		}
 
+		public UVComment(String author, String date, String comment, int globalRate, String semester) {
+			this(author, DateUtils.getDateFromString(date), comment, globalRate, semester);
+		}
+
 		public String getAuthor() {
 			return mAuthor;
 		}

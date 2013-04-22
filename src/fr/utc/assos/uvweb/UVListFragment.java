@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb;
 
 import android.app.Activity;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -14,7 +15,13 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.HttpHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
@@ -141,6 +148,8 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_SEARCH_QUERY) && !mTwoPane) {
 			mSearchQuery = savedInstanceState.getString(STATE_SEARCH_QUERY);
 		}
+
+		new LoadUvsListTask().execute();
 	}
 
 	@Override
@@ -163,7 +172,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		// Adapter setup
 		mAdapter = new UVListAdapter(getSherlockActivity());
 		mAdapter.setSearchCallbacks(this);
-		mAdapter.updateUVs(UVwebContent.UVS);
+		//mAdapter.updateUVs(UVwebContent.UVS);
 		mListView.setAdapter(mAdapter);
 
 		setupTwoPaneUi();
@@ -348,5 +357,41 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		 * Callback to display the default DetailFragment.
 		 */
 		public void showDefaultDetailFragment();
+	}
+
+	private class LoadUvsListTask extends AsyncTask<Void, Void, List<UVwebContent.UV>> {
+		//static final String URL = "http://www.colourlovers.com/api/patterns/new?format=json&numResults=12";
+		private static final String URL = "http://thomaskeunebroek.fr/uvs.json";
+
+		@Override
+		protected List<UVwebContent.UV> doInBackground(Void... params) {
+			final JSONArray uvsArray = HttpHelper.loadJSON(URL);
+			final int nUvs = uvsArray.length();
+
+			final List<UVwebContent.UV> uvs = new ArrayList<UVwebContent.UV>(nUvs);
+
+			try {
+				for (int i = 0; i < nUvs; i++) {
+					final JSONObject uvsInfo = (JSONObject) uvsArray.get(i);
+					final UVwebContent.UV uv = new UVwebContent.UV(
+							uvsInfo.getString("name"),
+							uvsInfo.getString("description"),
+							uvsInfo.getDouble("rate"),
+							uvsInfo.getDouble("successRate"));
+					uvs.add(uv);
+					UVwebContent.addItem(uv);
+					Collections.sort(uvs);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			return uvs;
+		}
+
+		@Override
+		protected void onPostExecute(List<UVwebContent.UV> uvs) {
+			mAdapter.updateUVs(uvs);
+		}
 	}
 }
