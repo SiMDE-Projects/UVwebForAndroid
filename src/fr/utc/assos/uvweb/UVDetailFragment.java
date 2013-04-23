@@ -42,7 +42,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * contained in a {@link fr.utc.assos.uvweb.activities.UVListActivity} in two-pane mode (on tablets) or a
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
-public class UVDetailFragment extends SherlockFragment {
+public class UVDetailFragment extends UVwebFragment {
 	/**
 	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
@@ -177,14 +177,6 @@ public class UVDetailFragment extends SherlockFragment {
 					String.valueOf(70 + i * 3) + "%")));
 			successRatesContainer.addView(tv);
 		}
-	}
-
-	private void handleNetworkError() {
-		handleNetworkError(getSherlockActivity());
-	}
-
-	private void handleNetworkError(SherlockFragmentActivity context) {
-		Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
 	}
 
 	@Override

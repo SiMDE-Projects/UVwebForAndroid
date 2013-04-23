@@ -40,7 +40,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * <p/>
  * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
-public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener,
+public class UVListFragment extends UVwebFragment implements AdapterView.OnItemClickListener,
 		UVListAdapter.SearchCallbacks, UVwebSearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 	private static final String STATE_DISPLAYED_UV = "displayed_uv";
 	private static final String STATE_SEARCH_QUERY = "search_query";
@@ -206,14 +206,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			mCallbacks.onItemSelected(toBeDisplayed);
 			mDisplayedUVName = toBeDisplayed;
 		}
-	}
-
-	private void handleNetworkError() {
-		handleNetworkError(getSherlockActivity());
-	}
-
-	private void handleNetworkError(SherlockFragmentActivity context) {
-		Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
 	}
 
 	/**
