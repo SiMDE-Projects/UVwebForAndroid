@@ -18,6 +18,7 @@
 
     <!-- NewsFeed -->
     <string name="date_presentation">Il y a</string>
+    <string name="no_newsfeed_entry">Aucune activité récente</string>
 
     <!-- AboutActivity -->
     <string name="credits"><![CDATA[<b>Crédits</b><br>tkeunebr \u0026 amasciul]]></string>

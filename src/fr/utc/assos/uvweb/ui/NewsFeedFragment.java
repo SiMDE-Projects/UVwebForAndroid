@@ -149,8 +149,7 @@ public class NewsFeedFragment extends UVwebFragment {
 			if (newsfeedEntriesArray == null) return null;
 			final int nNewsfeedEntries = newsfeedEntriesArray.length();
 
-			final List<UVwebContent.NewsFeedEntry> newsfeedEntries = new ArrayList<UVwebContent.NewsFeedEntry>(
-					nNewsfeedEntries);
+			final List<UVwebContent.NewsFeedEntry> newsfeedEntries = new ArrayList<UVwebContent.NewsFeedEntry>(nNewsfeedEntries);
 
 			try {
 				for (int i = 0; i < nNewsfeedEntries; i++) {

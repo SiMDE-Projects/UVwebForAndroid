@@ -178,10 +178,13 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">23sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:text">@string/no_uvs</item>
     </style>
     <!-- Actual style -->
     <style name="EmptyList" parent="@style/EmptyListDefault">
+        <item name="android:text">@string/no_uvs</item>
+    </style>
+    <style name="NewsfeedEmptyList" parent="@style/EmptyListDefault">
+        <item name="android:text">@string/no_newsfeed_entry</item>
     </style>
 
     <!-- Sticky header style -->

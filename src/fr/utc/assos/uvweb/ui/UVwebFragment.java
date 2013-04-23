@@ -15,6 +15,7 @@ public abstract class UVwebFragment extends SherlockFragment {
 	}
 
 	protected void handleNetworkError(SherlockFragmentActivity context) {
+		Crouton.cancelAllCroutons();
 		Crouton.makeText(context,
 				context.getString(R.string.network_error_message),
 				ConnectionUtils.NETWORK_ERROR_STYLE).show();
