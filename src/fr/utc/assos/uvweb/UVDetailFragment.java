@@ -283,8 +283,9 @@ public class UVDetailFragment extends UVwebFragment {
 				}
 				if (ui.mRefreshMenuItem != null) {
 					ui.mRefreshMenuItem.setActionView(null);
+				} else {
+					ui.mProgressBar.setVisibility(View.GONE);
 				}
-				ui.mProgressBar.setVisibility(View.GONE);
 			}
 		}
 	}

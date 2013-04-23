@@ -185,7 +185,9 @@ public class NewsFeedFragment extends UVwebFragment {
 				if (ui.mRefreshMenuItem != null) {
 					ui.mRefreshMenuItem.setActionView(null);
 				}
-				ui.mProgressBar.setVisibility(View.GONE);
+				else {
+					ui.mProgressBar.setVisibility(View.GONE);
+				}
 			}
 		}
 	}
