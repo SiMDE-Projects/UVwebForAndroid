@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class UVwebContent {
 	/**
-	 * UV title format pattern, consistent accross the application.
+	 * UV title format pattern, consistent across the application.
 	 */
 	public static final String UV_TITLE_FORMAT = "<font color='#000000'>%1$s</font>%2$s";
 	public static final String UV_TITLE_FORMAT_LIGHT = "<font color='#ffffff'>%1$s</font>%2$s";
