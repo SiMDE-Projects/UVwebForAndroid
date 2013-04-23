@@ -6,9 +6,7 @@ import fr.utc.assos.uvweb.util.DateUtils;
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,82 +25,27 @@ public class UVwebContent {
 	 */
 	private static final DecimalFormat sDecimalFormat = new DecimalFormat("0");
 	/**
-	 * An array of UVs.
-	 */
-	public static List<UV> UVS = new ArrayList<UV>();
-	/**
 	 * A map of UVs, by ID.
 	 */
 	public static Map<String, UV> UV_MAP = new HashMap<String, UV>();
-	/**
-	 * An array of comments.
-	 */
-	public static ArrayList<UVComment> COMMENTS = new ArrayList<UVComment>();
-	/**
-	 * An array of news feed entries.
-	 */
-	public static ArrayList<NewsFeedEntry> NEWS_ENTRIES = new ArrayList<NewsFeedEntry>();
 
 	public static void addItem(UV item) {
-		UVS.add(item);
 		UV_MAP.put(item.getName(), item);
-	}
-
-	public static void addComment(UVComment comment) {
-		COMMENTS.add(comment);
-	}
-
-	public static void addNewsFeedEntry(NewsFeedEntry entry) {
-		NEWS_ENTRIES.add(entry);
-	}
-
-	static {
-		final String newsFeedEntryString = "You think water moves fast? You should see ice. It moves like it has a mind. " +
-				"Like it knows it killed the world once and got a taste for murder. After the avalanche, it took us " +
-				"a week to climb out. Now, I don't know exactly when we turned on each other, but I know that seven of" +
-				" us survived the slide... and only five made it out. Now we took an oath, that I'm breaking now." +
-				" We said we'd say it was the snow that killed the other two, but it wasn't. Nature is lethal but" +
-				" it doesn't hold a candle to man.";
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 17, 49, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 9, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 19, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 17, 11, 3, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 3, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 03, 26, 22, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 01, 2, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2012, 11, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2012, 07, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2011, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("amasciul", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
-		addNewsFeedEntry(new NewsFeedEntry("tkeunebr", new DateTime(2013, 04, 20, 14, 20, 12), newsFeedEntryString,
-				"a publié un nouveau commentaire"));
 	}
 
 	/**
 	 * A UV representing a piece of content.
 	 */
 	public static class UV implements Comparable<UV>, Parcelable {
+		public static final Parcelable.Creator<UV> CREATOR = new Parcelable.Creator<UV>() {
+			public UV createFromParcel(Parcel in) {
+				return new UV(in);
+			}
+
+			public UV[] newArray(int size) {
+				return new UV[size];
+			}
+		};
 		private String mName;
 		private String mDescription;
 		private double mRate;
@@ -192,19 +135,18 @@ public class UVwebContent {
 			parcel.writeDouble(mRate);
 			parcel.writeDouble(mSuccessRate);
 		}
-
-		public static final Parcelable.Creator<UV> CREATOR = new Parcelable.Creator<UV>() {
-			public UV createFromParcel(Parcel in) {
-				return new UV(in);
-			}
-
-			public UV[] newArray(int size) {
-				return new UV[size];
-			}
-		};
 	}
 
 	public static class UVComment implements Parcelable {
+		public static final Parcelable.Creator<UVComment> CREATOR = new Parcelable.Creator<UVComment>() {
+			public UVComment createFromParcel(Parcel in) {
+				return new UVComment(in);
+			}
+
+			public UVComment[] newArray(int size) {
+				return new UVComment[size];
+			}
+		};
 		private String mAuthor;
 		private DateTime mDate;
 		private String mComment;
@@ -223,6 +165,7 @@ public class UVwebContent {
 			this(author, DateUtils.getDateFromString(date), comment, globalRate, semester);
 		}
 
+
 		protected UVComment(Parcel in) {
 			mAuthor = in.readString();
 			mDate = DateUtils.getDateFromString(in.readString());
@@ -230,7 +173,6 @@ public class UVwebContent {
 			mGlobalRate = in.readInt();
 			mSemester = in.readString();
 		}
-
 
 		public String getAuthor() {
 			return mAuthor;
@@ -293,19 +235,18 @@ public class UVwebContent {
 			parcel.writeInt(mGlobalRate);
 			parcel.writeString(mSemester);
 		}
-
-		public static final Parcelable.Creator<UVComment> CREATOR = new Parcelable.Creator<UVComment>() {
-			public UVComment createFromParcel(Parcel in) {
-				return new UVComment(in);
-			}
-
-			public UVComment[] newArray(int size) {
-				return new UVComment[size];
-			}
-		};
 	}
 
 	public static class NewsFeedEntry implements Parcelable {
+		public static final Parcelable.Creator<NewsFeedEntry> CREATOR = new Parcelable.Creator<NewsFeedEntry>() {
+			public NewsFeedEntry createFromParcel(Parcel in) {
+				return new NewsFeedEntry(in);
+			}
+
+			public NewsFeedEntry[] newArray(int size) {
+				return new NewsFeedEntry[size];
+			}
+		};
 		private String mAuthor;
 		private DateTime mDate;
 		private String mComment;
@@ -373,15 +314,5 @@ public class UVwebContent {
 			parcel.writeString(mComment);
 			parcel.writeString(mAction);
 		}
-
-		public static final Parcelable.Creator<NewsFeedEntry> CREATOR = new Parcelable.Creator<NewsFeedEntry>() {
-			public NewsFeedEntry createFromParcel(Parcel in) {
-				return new NewsFeedEntry(in);
-			}
-
-			public NewsFeedEntry[] newArray(int size) {
-				return new NewsFeedEntry[size];
-			}
-		};
 	}
 }
