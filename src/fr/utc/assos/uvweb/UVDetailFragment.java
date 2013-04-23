@@ -145,7 +145,7 @@ public class UVDetailFragment extends SherlockFragment {
 				headerViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
 					@Override
 					public void onInflate(ViewStub stub, View inflated) {
-						mListView.setEmptyView(inflated);
+						mListView.setEmptyView(inflated); // TODO: handle empty view message
 						setHeaderData(inflated);
 					}
 				});
@@ -234,7 +234,10 @@ public class UVDetailFragment extends SherlockFragment {
 		protected void onPreExecute() {
 			final UVDetailFragment ui = mUiFragment.get();
 			if (ui != null) {
-				//f.mEmptyView.setVisibility(View.GONE);
+				final View emptyView = ui.mListView.getEmptyView();
+				if (emptyView != null && emptyView.getVisibility() == View.VISIBLE) {
+					emptyView.setVisibility(View.GONE);
+				}
 				if (ui.mRefreshMenuItem != null) {
 					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
 				}
@@ -282,7 +285,10 @@ public class UVDetailFragment extends SherlockFragment {
 				} else {
 					ui.mAdapter.updateComments(comments);
 				}
-				//f.mEmptyView.setVisibility(View.VISIBLE);
+				final View emptyView = ui.mListView.getEmptyView();
+				if (emptyView != null && emptyView.getVisibility() == View.GONE) {
+					emptyView.setVisibility(View.VISIBLE);
+				}
 				ui.mRefreshMenuItem.setActionView(null);
 				ui.mProgressBar.setVisibility(View.GONE);
 			}
