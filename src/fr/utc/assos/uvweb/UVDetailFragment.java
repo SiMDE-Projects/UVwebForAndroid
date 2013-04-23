@@ -49,6 +49,7 @@ public class UVDetailFragment extends UVwebFragment {
 	 */
 	public static final String ARG_TWO_PANE = "two_pane";
 	private static final String TAG = makeLogTag(UVDetailFragment.class);
+	private static final String STATE_COMMENT_LIST = "comment_list";
 	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -119,9 +120,9 @@ public class UVDetailFragment extends UVwebFragment {
 
 		// Show the UV as text in a TextView.
 		if (mUV != null) {
-			if (savedInstanceState != null && savedInstanceState.containsKey("comments")) {
+			if (savedInstanceState != null && savedInstanceState.containsKey(STATE_COMMENT_LIST)) {
 				final ArrayList<UVwebContent.UVComment> savedComments = savedInstanceState.getParcelableArrayList
-						("comments");
+						(STATE_COMMENT_LIST);
 				mAdapter.updateComments(savedComments);
 			} else {
 				final SherlockFragmentActivity context = getSherlockActivity();
@@ -200,7 +201,7 @@ public class UVDetailFragment extends UVwebFragment {
 		super.onSaveInstanceState(outState);
 
 		if (!mAdapter.isEmpty()) {
-			outState.putParcelableArrayList("comments", (ArrayList) mAdapter.getComments());
+			outState.putParcelableArrayList(STATE_COMMENT_LIST, (ArrayList) mAdapter.getComments());
 		}
 	}
 
