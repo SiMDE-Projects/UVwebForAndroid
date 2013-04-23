@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -35,6 +36,8 @@ public class NewsFeedFragment extends UVwebFragment {
 	private static final String STATE_NEWSFEED_ENTRIES = "newsfeed_entries";
 	private NewsFeedEntryAdapter mAdapter;
 	private MenuItem mRefreshMenuItem;
+	private ProgressBar mProgressBar;
+	private ListView mListView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,15 +58,18 @@ public class NewsFeedFragment extends UVwebFragment {
 		final View rootView = inflater.inflate(R.layout.fragment_newsfeed,
 				container, false);
 
-		final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
+		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+
+		mListView = (ListView) rootView.findViewById(android.R.id.list);
+		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
 		mAdapter = new NewsFeedEntryAdapter(getSherlockActivity());
 
 		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
 				(mAdapter, AnimationUtils.CARD_ANIMATION_DELAY_MILLIS, AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
-		swingBottomInAnimationAdapter.setListView(listView);
+		swingBottomInAnimationAdapter.setListView(mListView);
 
-		listView.setAdapter(swingBottomInAnimationAdapter);
+		mListView.setAdapter(swingBottomInAnimationAdapter);
 
 		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_NEWSFEED_ENTRIES)) {
 			final ArrayList<UVwebContent.NewsFeedEntry> savedNewsfeedEntries = savedInstanceState.getParcelableArrayList
@@ -128,14 +134,11 @@ public class NewsFeedFragment extends UVwebFragment {
 		protected void onPreExecute() {
 			final NewsFeedFragment ui = mUiFragment.get();
 			if (ui != null) {
-				/*final View emptyView = ui.mListView.getEmptyView();
-				if (emptyView != null && emptyView.getVisibility() == View.VISIBLE) {
-					emptyView.setVisibility(View.GONE);
-				}*/
+				ui.mListView.getEmptyView().setVisibility(View.GONE);
 				if (ui.mRefreshMenuItem != null) {
 					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
 				} else {
-					//ui.mProgressBar.setVisibility(View.VISIBLE);
+					ui.mProgressBar.setVisibility(View.VISIBLE);
 				}
 			}
 		}
@@ -178,12 +181,11 @@ public class NewsFeedFragment extends UVwebFragment {
 				} else {
 					ui.mAdapter.updateNewsFeedEntries(entries);
 				}
-				/*final View emptyView = ui.mListView.getEmptyView();
-				if (emptyView != null && emptyView.getVisibility() == View.GONE) {
-					emptyView.setVisibility(View.VISIBLE);
-				}*/
-				ui.mRefreshMenuItem.setActionView(null);
-				//ui.mProgressBar.setVisibility(View.GONE);
+				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
+				if (ui.mRefreshMenuItem != null) {
+					ui.mRefreshMenuItem.setActionView(null);
+				}
+				ui.mProgressBar.setVisibility(View.GONE);
 			}
 		}
 	}

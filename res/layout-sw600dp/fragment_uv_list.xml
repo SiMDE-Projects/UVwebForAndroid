@@ -18,11 +18,11 @@
         style="@style/EmptyList"
         android:visibility="gone"/>
 
-    <ViewStub
+    <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout="@layout/uv_list_empty" />
+        style="@style/EmptyList"/>
 
 </LinearLayout>

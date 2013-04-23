@@ -11,12 +11,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
@@ -84,7 +82,6 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	private UVwebSearchView mSearchView;
 	private String mSearchQuery;
 	private ProgressBar mProgressBar;
-	private View mEmptyView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -152,8 +149,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		// ListView setup
 		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
-		mEmptyView = rootView.findViewById(android.R.id.empty);
-		mListView.setEmptyView(mEmptyView);
+		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 
 		// Adapter setup
 		mAdapter = new UVListAdapter(getSherlockActivity());
@@ -359,7 +355,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		protected void onPreExecute() {
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
-				ui.mEmptyView.setVisibility(View.GONE);
+				ui.mListView.getEmptyView().setVisibility(View.GONE);
 				ui.mProgressBar.setVisibility(View.VISIBLE);
 			}
 		}
@@ -404,7 +400,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 				} else {
 					ui.mAdapter.updateUVs(uvs);
 				}
-				ui.mEmptyView.setVisibility(View.VISIBLE);
+				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
 				ui.mProgressBar.setVisibility(View.GONE);
 			}
 		}

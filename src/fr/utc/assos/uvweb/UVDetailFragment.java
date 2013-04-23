@@ -92,7 +92,6 @@ public class UVDetailFragment extends UVwebFragment {
 			// arguments. In a real-world scenario, use a Loader
 			// to load content from a content provider.
 			mUV = UVwebContent.UV_MAP.get(arguments.getString(ARG_UV_ID));
-			getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
 
 			// Fragment configuration
 			setHasOptionsMenu(true);
@@ -152,6 +151,15 @@ public class UVDetailFragment extends UVwebFragment {
 		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
 
 		return rootView;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		if (mUV != null && !mTwoPane) {
+			getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
+		}
 	}
 
 	private void setHeaderData(View inflatedHeader) {
@@ -273,7 +281,9 @@ public class UVDetailFragment extends UVwebFragment {
 				if (emptyView != null && emptyView.getVisibility() == View.GONE) {
 					emptyView.setVisibility(View.VISIBLE);
 				}
-				ui.mRefreshMenuItem.setActionView(null);
+				if (ui.mRefreshMenuItem != null) {
+					ui.mRefreshMenuItem.setActionView(null);
+				}
 				ui.mProgressBar.setVisibility(View.GONE);
 			}
 		}
