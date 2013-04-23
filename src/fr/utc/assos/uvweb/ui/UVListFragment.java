@@ -371,6 +371,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 			final List<UVwebContent.UV> uvs = new ArrayList<UVwebContent.UV>(nUvs);
 
+			UVwebContent.UV_MAP.clear();
+
 			try {
 				for (int i = 0; i < nUvs; i++) {
 					if (isCancelled()) break;
