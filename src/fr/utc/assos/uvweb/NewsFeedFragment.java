@@ -1,31 +1,40 @@
 package fr.utc.assos.uvweb;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.ConnectionUtils;
 import fr.utc.assos.uvweb.util.AnimationUtils;
+import fr.utc.assos.uvweb.util.ConnectionUtils;
+import fr.utc.assos.uvweb.util.HttpHelper;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
  * A list fragment representing a list of {@link UVwebContent.NewsFeedEntry}s.
  */
-public class NewsFeedFragment extends SherlockFragment {
+public class NewsFeedFragment extends UVwebFragment {
 	private static final String TAG = makeLogTag(NewsFeedFragment.class);
-	private static final Handler mHandler = new Handler();
+	private static final String STATE_NEWSFEED_ENTRIES = "newsfeed_entries";
+	private NewsFeedEntryAdapter mAdapter;
+	private MenuItem mRefreshMenuItem;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -48,15 +57,26 @@ public class NewsFeedFragment extends SherlockFragment {
 
 		final ListView listView = (ListView) rootView.findViewById(android.R.id.list);
 
-		final NewsFeedEntryAdapter adapter = new NewsFeedEntryAdapter(getSherlockActivity());
+		mAdapter = new NewsFeedEntryAdapter(getSherlockActivity());
 
 		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
-				(adapter, AnimationUtils.CARD_ANIMATION_DELAY_MILLIS, AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
+				(mAdapter, AnimationUtils.CARD_ANIMATION_DELAY_MILLIS, AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
 		swingBottomInAnimationAdapter.setListView(listView);
 
-		adapter.updateNewsFeedEntries(UVwebContent.NEWS_ENTRIES);
-
 		listView.setAdapter(swingBottomInAnimationAdapter);
+
+		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_NEWSFEED_ENTRIES)) {
+			final ArrayList<UVwebContent.NewsFeedEntry> savedNewsfeedEntries = savedInstanceState.getParcelableArrayList
+					(STATE_NEWSFEED_ENTRIES);
+			mAdapter.updateNewsFeedEntries(savedNewsfeedEntries);
+		} else {
+			final SherlockFragmentActivity context = getSherlockActivity();
+			if (!ConnectionUtils.isOnline(context)) {
+				handleNetworkError(context);
+			} else {
+				new LoadNewsfeedEntriesTask(this).execute();
+			}
+		}
 
 		return rootView;
 	}
@@ -64,6 +84,8 @@ public class NewsFeedFragment extends SherlockFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.fragment_newsfeed, menu);
+
+		mRefreshMenuItem = menu.findItem(R.id.menu_refresh);
 	}
 
 	@Override
@@ -72,20 +94,97 @@ public class NewsFeedFragment extends SherlockFragment {
 			case R.id.menu_refresh:
 				final SherlockFragmentActivity context = getSherlockActivity();
 				if (!ConnectionUtils.isOnline(context)) {
-					Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
+					handleNetworkError(context);
 				} else {
-					final MenuItem refresh = item;
-					refresh.setActionView(R.layout.progressbar);
-					mHandler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							refresh.setActionView(null);
-						}
-					}, 2000);
+					new LoadNewsfeedEntriesTask(this).execute();
 				}
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		if (!mAdapter.isEmpty()) {
+			outState.putParcelableArrayList(STATE_NEWSFEED_ENTRIES, (ArrayList) mAdapter.getNewsfeedEntries());
+		}
+	}
+
+	private static class LoadNewsfeedEntriesTask extends AsyncTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
+		private static final String URL = "http://thomaskeunebroek.fr/newsfeed.json";
+		private final WeakReference<NewsFeedFragment> mUiFragment;
+
+		public LoadNewsfeedEntriesTask(NewsFeedFragment uiFragment) {
+			super();
+
+			mUiFragment = new WeakReference<NewsFeedFragment>(uiFragment);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			final NewsFeedFragment ui = mUiFragment.get();
+			if (ui != null) {
+				/*final View emptyView = ui.mListView.getEmptyView();
+				if (emptyView != null && emptyView.getVisibility() == View.VISIBLE) {
+					emptyView.setVisibility(View.GONE);
+				}*/
+				if (ui.mRefreshMenuItem != null) {
+					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
+				} else {
+					//ui.mProgressBar.setVisibility(View.VISIBLE);
+				}
+			}
+		}
+
+		@Override
+		protected List<UVwebContent.NewsFeedEntry> doInBackground(Void... params) {
+			final JSONArray newsfeedEntriesArray = HttpHelper.loadJSON(URL);
+			if (newsfeedEntriesArray == null) return null;
+			final int nNewsfeedEntries = newsfeedEntriesArray.length();
+
+			final List<UVwebContent.NewsFeedEntry> newsfeedEntries = new ArrayList<UVwebContent.NewsFeedEntry>(
+					nNewsfeedEntries);
+
+			try {
+				for (int i = 0; i < nNewsfeedEntries; i++) {
+					if (isCancelled()) break;
+					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
+					final UVwebContent.NewsFeedEntry newsFeedEntry = new UVwebContent.NewsFeedEntry(
+							newsfeedEntryInfo.getString("author"),
+							newsfeedEntryInfo.getString("date"),
+							newsfeedEntryInfo.getString("content"),
+							newsfeedEntryInfo.getString("action"));
+					newsfeedEntries.add(newsFeedEntry);
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+
+			SystemClock.sleep(2000); // TODO: remove after testing
+
+			return newsfeedEntries;
+		}
+
+		@Override
+		protected void onPostExecute(List<UVwebContent.NewsFeedEntry> entries) {
+			final NewsFeedFragment ui = mUiFragment.get();
+			if (ui != null) {
+				if (entries == null) {
+					ui.handleNetworkError();
+				} else {
+					ui.mAdapter.updateNewsFeedEntries(entries);
+				}
+				/*final View emptyView = ui.mListView.getEmptyView();
+				if (emptyView != null && emptyView.getVisibility() == View.GONE) {
+					emptyView.setVisibility(View.VISIBLE);
+				}*/
+				ui.mRefreshMenuItem.setActionView(null);
+				//ui.mProgressBar.setVisibility(View.GONE);
+			}
 		}
 	}
 }

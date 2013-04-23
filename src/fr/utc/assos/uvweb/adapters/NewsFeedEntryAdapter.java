@@ -45,6 +45,10 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		notifyDataSetChanged();
 	}
 
+	public List<UVwebContent.NewsFeedEntry> getNewsfeedEntries() {
+		return mNewsFeedEntries;
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {

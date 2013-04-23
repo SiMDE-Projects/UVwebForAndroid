@@ -305,7 +305,7 @@ public class UVwebContent {
 		};
 	}
 
-	public static class NewsFeedEntry {
+	public static class NewsFeedEntry implements Parcelable {
 		private String mAuthor;
 		private DateTime mDate;
 		private String mComment;
@@ -320,6 +320,13 @@ public class UVwebContent {
 
 		public NewsFeedEntry(String author, String date, String comment, String action) {
 			this(author, DateUtils.getDateFromString(date), comment, action);
+		}
+
+		protected NewsFeedEntry(Parcel in) {
+			mAuthor = in.readString();
+			mDate = DateUtils.getDateFromString(in.readString());
+			mComment = in.readString();
+			mAction = in.readString();
 		}
 
 		public String getAuthor() {
@@ -353,5 +360,28 @@ public class UVwebContent {
 		public String getTimeDifference() {
 			return DateUtils.getFormattedTimeDifference(mDate, new DateTime());
 		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel parcel, int flags) {
+			parcel.writeString(mAuthor);
+			parcel.writeString(DateUtils.getFormattedDate(mDate));
+			parcel.writeString(mComment);
+			parcel.writeString(mAction);
+		}
+
+		public static final Parcelable.Creator<NewsFeedEntry> CREATOR = new Parcelable.Creator<NewsFeedEntry>() {
+			public NewsFeedEntry createFromParcel(Parcel in) {
+				return new NewsFeedEntry(in);
+			}
+
+			public NewsFeedEntry[] newArray(int size) {
+				return new NewsFeedEntry[size];
+			}
+		};
 	}
 }
