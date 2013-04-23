@@ -3,7 +3,6 @@ package fr.utc.assos.uvweb;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -14,13 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.AnimationUtils;
@@ -32,7 +29,6 @@ import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
@@ -56,7 +52,6 @@ public class UVDetailFragment extends UVwebFragment {
 	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
-	private static final Handler mHandler = new Handler();
 	private boolean mTwoPane;
 	/**
 	 * The UV this fragment is presenting.
@@ -66,11 +61,8 @@ public class UVDetailFragment extends UVwebFragment {
 	 * The ListView containing all comment items.
 	 */
 	private ListView mListView;
-
 	private UVCommentAdapter mAdapter;
-
 	private MenuItem mRefreshMenuItem;
-
 	private ProgressBar mProgressBar;
 
 	public UVDetailFragment() {
@@ -232,8 +224,7 @@ public class UVDetailFragment extends UVwebFragment {
 				}
 				if (ui.mRefreshMenuItem != null) {
 					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
-				}
-				else {
+				} else {
 					ui.mProgressBar.setVisibility(View.VISIBLE);
 				}
 			}
