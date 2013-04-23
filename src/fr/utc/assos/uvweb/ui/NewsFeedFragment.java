@@ -2,7 +2,6 @@ package fr.utc.assos.uvweb.ui;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -168,8 +167,6 @@ public class NewsFeedFragment extends UVwebFragment {
 				e.printStackTrace();
 			}
 
-			SystemClock.sleep(2000); // TODO: remove after testing
-
 			return newsfeedEntries;
 		}
 
@@ -185,8 +182,7 @@ public class NewsFeedFragment extends UVwebFragment {
 				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
 				if (ui.mRefreshMenuItem != null) {
 					ui.mRefreshMenuItem.setActionView(null);
-				}
-				else {
+				} else {
 					ui.mProgressBar.setVisibility(View.GONE);
 				}
 			}

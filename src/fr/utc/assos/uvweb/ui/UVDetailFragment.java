@@ -3,7 +3,6 @@ package fr.utc.assos.uvweb.ui;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -263,8 +262,6 @@ public class UVDetailFragment extends UVwebFragment {
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
-
-			SystemClock.sleep(2000); // TODO: remove after testing
 
 			return uvComments;
 		}

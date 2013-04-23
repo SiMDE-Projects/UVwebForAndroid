@@ -3,7 +3,6 @@ package fr.utc.assos.uvweb.ui;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,11 +15,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
-import fr.utc.assos.uvweb.ui.custom.UVwebListView;
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.ui.custom.UVwebListView;
+import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
 import fr.utc.assos.uvweb.util.HttpHelper;
 import org.json.JSONArray;
@@ -389,8 +388,6 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			} finally {
 				Collections.sort(uvs);
 			}
-
-			SystemClock.sleep(2000); // TODO: remove after testing
 
 			return uvs;
 		}
