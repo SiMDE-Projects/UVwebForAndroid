@@ -1,16 +1,18 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui.custom;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.actionbarsherlock.app.SherlockFragment;
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.ui.UVListFragment;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
- * A wrapper fragment containing a nested {@link UVListFragment}. It is used in two-pane mode only
- * and ensures that the {@link UVListFragment} state is properly saved and restored.
+ * A wrapper fragment containing a nested {@link fr.utc.assos.uvweb.ui.UVListFragment}. It is used in two-pane mode only
+ * and ensures that the {@link fr.utc.assos.uvweb.ui.UVListFragment} state is properly saved and restored.
  */
 public class WrapperFragment extends SherlockFragment {
 	private static final String TAG = makeLogTag(WrapperFragment.class);

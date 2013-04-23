@@ -10,9 +10,8 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.ThreadPreconditions;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.holders.UVwebHolder;
+import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,8 +20,8 @@ import java.util.List;
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
- * An adapter used all together with the {@link fr.utc.assos.uvweb.UVListFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder}
+ * An adapter used all together with the {@link fr.utc.assos.uvweb.ui.UVListFragment}'s ListView.
+ * It relies on a standard ViewHolder pattern implemented in the {@link UVwebHolder}
  * class and thus allows UVs recycling.
  * It implements both SectionIndexer and StickyListHeadersAdapter interfaces
  */
@@ -96,7 +95,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	}
 
 	protected void updateUVs(List<UVwebContent.UV> UVs, boolean dueToFilterOperation) {
-		ThreadPreconditions.checkOnMainThread();
+		ThreadPreconditionsUtils.checkOnMainThread();
 
 		mSectionToPosition.clear();
 		mComprehensiveSectionsList.clear();

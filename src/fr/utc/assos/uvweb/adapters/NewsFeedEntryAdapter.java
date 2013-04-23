@@ -6,16 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.ThreadPreconditions;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.holders.UVwebHolder;
+import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * An adapter used all together with the {@link fr.utc.assos.uvweb.NewsFeedFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder}
+ * An adapter used all together with the {@link fr.utc.assos.uvweb.ui.NewsFeedFragment}'s ListView.
+ * It relies on a standard ViewHolder pattern implemented in the {@link UVwebHolder}
  * class and thus allows UVs recycling.
  * It is used to show the actions that can occur in UVweb as a dynamic feed
  */
@@ -39,7 +38,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 	}
 
 	public void updateNewsFeedEntries(List<UVwebContent.NewsFeedEntry> newsFeedEntries) {
-		ThreadPreconditions.checkOnMainThread();
+		ThreadPreconditionsUtils.checkOnMainThread();
 
 		mNewsFeedEntries = newsFeedEntries;
 		notifyDataSetChanged();

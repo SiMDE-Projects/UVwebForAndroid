@@ -13,6 +13,11 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.*;
+import fr.utc.assos.uvweb.ui.NewsFeedFragment;
+import fr.utc.assos.uvweb.ui.UVDetailDefaultFragment;
+import fr.utc.assos.uvweb.ui.UVDetailFragment;
+import fr.utc.assos.uvweb.ui.UVListFragment;
+import fr.utc.assos.uvweb.ui.custom.WrapperFragment;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -25,10 +30,10 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * panes.
  * <p/>
  * The activity makes heavy use of fragments. The list of UVs is a
- * {@link fr.utc.assos.uvweb.UVListFragment} and the UV details (if present) is a
- * {@link fr.utc.assos.uvweb.UVDetailFragment}.
+ * {@link fr.utc.assos.uvweb.ui.UVListFragment} and the UV details (if present) is a
+ * {@link fr.utc.assos.uvweb.ui.UVDetailFragment}.
  * <p/>
- * This activity also implements the required {@link fr.utc.assos.uvweb.UVListFragment.Callbacks}
+ * This activity also implements the required {@link fr.utc.assos.uvweb.ui.UVListFragment.Callbacks}
  * interface to listen for UV selections.
  */
 public class UVListActivity extends UVwebMenuActivity implements

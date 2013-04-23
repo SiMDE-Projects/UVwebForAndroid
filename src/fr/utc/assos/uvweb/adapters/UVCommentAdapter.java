@@ -5,16 +5,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.ThreadPreconditions;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.holders.UVwebHolder;
+import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * An adapter used all together with the {@link fr.utc.assos.uvweb.UVDetailFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.holders.UVwebHolder}
+ * An adapter used all together with the {@link fr.utc.assos.uvweb.ui.UVDetailFragment}'s ListView.
+ * It relies on a standard ViewHolder pattern implemented in the {@link UVwebHolder}
  * class and thus allows UVs recycling.
  * It is used to show the users' comments of a given UV
  */
@@ -36,7 +35,7 @@ public class UVCommentAdapter extends UVAdapter {
 	}
 
 	public void updateComments(List<UVwebContent.UVComment> comments) {
-		ThreadPreconditions.checkOnMainThread();
+		ThreadPreconditionsUtils.checkOnMainThread();
 
 		mComments = comments;
 		notifyDataSetChanged();
@@ -55,7 +54,7 @@ public class UVCommentAdapter extends UVAdapter {
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
 		final TextView rateView = UVwebHolder.get(convertView, R.id.rate);
 		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
-        final TextView semesterView = UVwebHolder.get(convertView, R.id.semester);
+		final TextView semesterView = UVwebHolder.get(convertView, R.id.semester);
 		final TextView dateView = (TextView) convertView.findViewById(R.id.date);
 
 		final UVwebContent.UVComment comment = getItem(position);
@@ -63,7 +62,7 @@ public class UVCommentAdapter extends UVAdapter {
 		userIdView.setText(comment.getAuthor());
 		rateView.setText(comment.getFormattedRate());
 		commentView.setText(comment.getComment());
-        semesterView.setText(comment.getSemester());
+		semesterView.setText(comment.getSemester());
 		dateView.setText(comment.getFormattedDate());
 
 		return convertView;

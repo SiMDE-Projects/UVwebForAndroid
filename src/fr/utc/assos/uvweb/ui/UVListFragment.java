@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -15,6 +15,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.widget.SearchView;
+import fr.utc.assos.uvweb.ui.custom.UVwebListView;
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
@@ -39,7 +43,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
 public class UVListFragment extends UVwebFragment implements AdapterView.OnItemClickListener,
-		UVListAdapter.SearchCallbacks, UVwebSearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
+		UVListAdapter.SearchCallbacks, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
 	private static final String STATE_DISPLAYED_UV = "displayed_uv";
 	private static final String STATE_SEARCH_QUERY = "search_query";
 	private static final String STATE_UV_LIST = "uv_list";
@@ -69,7 +73,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	/**
 	 * The associated ListView object
 	 */
-	private FastscrollThemedStickyListHeadersListView mListView;
+	private UVwebListView mListView;
 	/**
 	 * The {@link fr.utc.assos.uvweb.adapters.UVAdapter} ListAdapter instance
 	 */
@@ -147,7 +151,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 
 		// ListView setup
-		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
+		mListView = (UVwebListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
 

@@ -1,8 +1,9 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
+import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
 
 /**

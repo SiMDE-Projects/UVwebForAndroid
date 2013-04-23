@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.holders;
+package fr.utc.assos.uvweb.adapters;
 
 import android.util.SparseArray;
 import android.view.View;

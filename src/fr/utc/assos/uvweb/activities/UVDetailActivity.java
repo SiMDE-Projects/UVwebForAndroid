@@ -3,7 +3,8 @@ package fr.utc.assos.uvweb.activities;
 import android.os.Bundle;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.UVDetailFragment;
+import fr.utc.assos.uvweb.ui.UVDetailFragment;
+
 
 /**
  * An activity representing a single UV detail screen. This activity is only
@@ -11,7 +12,7 @@ import fr.utc.assos.uvweb.UVDetailFragment;
  * side-by-side with a list of UVs in a {@link UVListActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing more than
- * a {@link fr.utc.assos.uvweb.UVDetailFragment}.
+ * a {@link fr.utc.assos.uvweb.ui.UVDetailFragment}.
  */
 public class UVDetailActivity extends UVwebActivity {
 

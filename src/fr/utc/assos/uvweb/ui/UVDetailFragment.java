@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
+import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.AnimationUtils;
@@ -70,7 +71,7 @@ public class UVDetailFragment extends UVwebFragment {
 	}
 
 	/**
-	 * Create a new instance of {@link UVListFragment} that will be initialized
+	 * Create a new instance of {@link fr.utc.assos.uvweb.ui.UVListFragment} that will be initialized
 	 * with the given arguments.
 	 */
 	public static UVDetailFragment newInstance(String id, boolean twoPane) {

@@ -1,8 +1,9 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import com.actionbarsherlock.widget.SearchView;
+import fr.utc.assos.uvweb.R;
 
 import static fr.utc.assos.uvweb.util.LogUtils.LOGD;
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <fr.utc.assos.uvweb.FastscrollThemedStickyListHeadersListView
+    <fr.utc.assos.uvweb.ui.custom.UVwebListView
         android:id="@android:id/list"
         android:clipToPadding="false"
         android:fastScrollEnabled="true"

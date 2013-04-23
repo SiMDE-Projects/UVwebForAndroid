@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
+import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.AnimationUtils;
