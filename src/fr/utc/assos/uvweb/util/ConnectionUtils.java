@@ -15,7 +15,7 @@ public class ConnectionUtils {
 			.setTextSize(16)
 			.build();
 
-	public static boolean isOnline(final Context context) {
+	public static boolean isOnline(Context context) {
 		final ConnectivityManager connMgr = (ConnectivityManager)
 				context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		final NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();

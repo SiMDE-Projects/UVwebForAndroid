@@ -9,14 +9,13 @@
         android:clipToPadding="false"
         android:fastScrollEnabled="true"
         android:fastScrollAlwaysVisible="true"
-        style="@style/List"/>
+        style="@style/List" />
 
     <ProgressBar
         android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="0dip"
-        android:layout_gravity="center"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/EmptyList"
         android:visibility="gone"/>
 
     <ViewStub
@@ -24,6 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout="@layout/uv_list_empty"/>
+        android:layout="@layout/uv_list_empty" />
 
 </LinearLayout>

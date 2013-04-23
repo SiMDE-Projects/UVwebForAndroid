@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,6 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  */
 public class WrapperFragment extends SherlockFragment {
 	private static final String TAG = makeLogTag(WrapperFragment.class);
-	private static final String UVLISTFRAGMENT_TAG = "UVListFragment_TAG";
-	private UVListFragment mUvListFragment;
 
 	public WrapperFragment() {
 	}
@@ -42,39 +39,11 @@ public class WrapperFragment extends SherlockFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		// Restore the previously serialized activated item position and search query.
-		final Fragment f = getChildFragmentManager().findFragmentByTag(UVLISTFRAGMENT_TAG);
-		if (f != null) {
-			mUvListFragment = (UVListFragment) f;
-			if (savedInstanceState != null) {
-				if (savedInstanceState.containsKey(UVListFragment.STATE_DISPLAYED_UV)) {
-					mUvListFragment.setDisplayedUV(savedInstanceState.getString(UVListFragment.STATE_DISPLAYED_UV));
-				}
-				if (savedInstanceState.containsKey(UVListFragment.STATE_SEARCH_QUERY)) {
-					mUvListFragment.setSearchQuery(savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY));
-				}
-			}
-		} else {
-			mUvListFragment = savedInstanceState != null ? UVListFragment.newInstance(
-					savedInstanceState.getString(UVListFragment.STATE_DISPLAYED_UV),
-					savedInstanceState.getString(UVListFragment.STATE_SEARCH_QUERY),
-					true) : UVListFragment.newInstance(true);
-
+		if (savedInstanceState == null) {
 			getChildFragmentManager()
 					.beginTransaction()
-					.replace(R.id.uv_list, mUvListFragment, UVLISTFRAGMENT_TAG)
+					.replace(R.id.uv_list, UVListFragment.newInstance(true))
 					.commit();
 		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		// Serialize and persist the search query.
-		outState.putString(UVListFragment.STATE_SEARCH_QUERY, mUvListFragment.getSearchQuery());
-
-		// Serialize and persist the displayed UV.
-		outState.putString(UVListFragment.STATE_DISPLAYED_UV, mUvListFragment.getDisplayedUVName());
 	}
 }

@@ -3,23 +3,29 @@ package fr.utc.assos.uvweb;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.ConnectionUtils;
 import fr.utc.assos.uvweb.util.HttpHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,12 +42,9 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  */
 public class UVListFragment extends SherlockFragment implements AdapterView.OnItemClickListener,
 		UVListAdapter.SearchCallbacks, UVwebSearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
-	/**
-	 * The serialization (saved instance state) Bundle key representing the
-	 * activated item position. Only used on tablets.
-	 */
-	public static final String STATE_DISPLAYED_UV = "displayed_uv";
-	public static final String STATE_SEARCH_QUERY = "search_query";
+	private static final String STATE_DISPLAYED_UV = "displayed_uv";
+	private static final String STATE_SEARCH_QUERY = "search_query";
+	private static final String STATE_UV_LIST = "uv_list";
 	/**
 	 * The fragment argument representing whether the layout is in twoPane mode or not.
 	 */
@@ -80,6 +83,8 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	private boolean mTwoPane;
 	private UVwebSearchView mSearchView;
 	private String mSearchQuery;
+	private ProgressBar mProgressBar;
+	private View mEmptyView;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -92,23 +97,12 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * Create a new instance of {@link UVListFragment} that will be initialized
 	 * with the given arguments.
 	 */
-	public static UVListFragment newInstance(final String displayedUVName,
-											 final String searchQuery, final boolean twoPane) {
+	public static UVListFragment newInstance(boolean twoPane) {
 		final Bundle arguments = new Bundle();
-		if (displayedUVName != null) {
-			arguments.putString(STATE_DISPLAYED_UV, displayedUVName);
-		}
-		if (searchQuery != null) {
-			arguments.putString(STATE_SEARCH_QUERY, searchQuery);
-		}
 		arguments.putBoolean(STATE_TWO_PANE, twoPane);
 		final UVListFragment f = new UVListFragment();
 		f.setArguments(arguments);
 		return f;
-	}
-
-	public static UVListFragment newInstance(final boolean twoPane) {
-		return newInstance(null, null, twoPane);
 	}
 
 	public static UVListFragment newInstance() {
@@ -136,20 +130,16 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		// Fragment configuration
 		setHasOptionsMenu(true);
 
-		final Bundle arguments = getArguments();
-		mTwoPane = arguments.getBoolean(STATE_TWO_PANE, false);
-		if (arguments.containsKey(STATE_SEARCH_QUERY)) {
-			mDisplayedUVName = arguments.getString(STATE_DISPLAYED_UV);
-		}
-		if (arguments.containsKey(STATE_SEARCH_QUERY)) {
-			mSearchQuery = arguments.getString(STATE_SEARCH_QUERY);
-		}
+		mTwoPane = getArguments().getBoolean(STATE_TWO_PANE, false);
 
-		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_SEARCH_QUERY) && !mTwoPane) {
-			mSearchQuery = savedInstanceState.getString(STATE_SEARCH_QUERY);
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(STATE_SEARCH_QUERY)) {
+				mSearchQuery = savedInstanceState.getString(STATE_SEARCH_QUERY);
+			}
+			if (savedInstanceState.containsKey(STATE_DISPLAYED_UV)) {
+				mDisplayedUVName = savedInstanceState.getString(STATE_DISPLAYED_UV);
+			}
 		}
-
-		new LoadUvsListTask().execute();
 	}
 
 	@Override
@@ -157,10 +147,30 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		final View rootView = inflater.inflate(R.layout.fragment_uv_list,
 				container, false);
 
+		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
+
 		// ListView setup
 		mListView = (FastscrollThemedStickyListHeadersListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
-		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+		mEmptyView = rootView.findViewById(android.R.id.empty);
+		mListView.setEmptyView(mEmptyView);
+
+		// Adapter setup
+		mAdapter = new UVListAdapter(getSherlockActivity());
+		mAdapter.setSearchCallbacks(this);
+		mListView.setAdapter(mAdapter);
+
+		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_UV_LIST)) {
+			final ArrayList<UVwebContent.UV> savedUvs = savedInstanceState.getParcelableArrayList(STATE_UV_LIST);
+			mAdapter.updateUVs(savedUvs);
+		} else {
+			final SherlockFragmentActivity context = getSherlockActivity();
+			if (!ConnectionUtils.isOnline(context)) {
+				handleNetworkError(context);
+			} else {
+				new LoadUvsListTask(this).execute();
+			}
+		}
 
 		return rootView;
 	}
@@ -168,12 +178,6 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		// Adapter setup
-		mAdapter = new UVListAdapter(getSherlockActivity());
-		mAdapter.setSearchCallbacks(this);
-		//mAdapter.updateUVs(UVwebContent.UVS);
-		mListView.setAdapter(mAdapter);
 
 		setupTwoPaneUi();
 	}
@@ -193,7 +197,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		performClick(position);
 	}
 
-	private void performClick(final int position) {
+	private void performClick(int position) {
 		final String toBeDisplayed = mAdapter.getItem(position).getName();
 
 		if (!mTwoPane || !TextUtils.equals(toBeDisplayed, mDisplayedUVName)) {
@@ -204,24 +208,12 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		}
 	}
 
-	public String getSearchQuery() {
-		return mSearchQuery;
+	private void handleNetworkError() {
+		handleNetworkError(getSherlockActivity());
 	}
 
-	public void setSearchQuery(String searchQuery) {
-		if (!TextUtils.equals(searchQuery, mSearchQuery)) {
-			mSearchQuery = searchQuery;
-		}
-	}
-
-	public String getDisplayedUVName() {
-		return mDisplayedUVName;
-	}
-
-	public void setDisplayedUV(String uvName) {
-		if (!TextUtils.equals(uvName, mDisplayedUVName)) {
-			mDisplayedUVName = uvName;
-		}
+	private void handleNetworkError(SherlockFragmentActivity context) {
+		Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
 	}
 
 	/**
@@ -237,7 +229,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 			if (mDisplayedUVName == null) {
 				mCallbacks.showDefaultDetailFragment();
 			}
-			getSherlockActivity().getWindow().setBackgroundDrawable(null); // TODO: Reduce overdraw on tablets
+			getSherlockActivity().getWindow().setBackgroundDrawable(null);
 		}
 	}
 
@@ -275,7 +267,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	 * {@link UVListAdapter} interface callbacks for search implementation
 	 */
 	@Override
-	public void onItemsFound(final List<UVwebContent.UV> results) {
+	public void onItemsFound(List<UVwebContent.UV> results) {
 		if (mTwoPane && results.size() == 1) {
 			final String toBeDisplayed = results.get(0).getName();
 			if (!TextUtils.equals(toBeDisplayed, mDisplayedUVName)) {
@@ -313,16 +305,18 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		if (!mTwoPane) {
-			if (mSearchQuery != null) {
-				outState.putString(STATE_SEARCH_QUERY, mSearchQuery);
-			}
-			if (mDisplayedUVName != null) {
-				outState.putString(STATE_DISPLAYED_UV, mDisplayedUVName);
-			}
+		if (mSearchQuery != null) {
+			outState.putString(STATE_SEARCH_QUERY, mSearchQuery);
+		}
+		if (mDisplayedUVName != null) {
+			outState.putString(STATE_DISPLAYED_UV, mDisplayedUVName);
+		}
+		if (mAdapter.hasUvs()) {
+			outState.putParcelableArrayList(STATE_UV_LIST, (ArrayList) mAdapter.getUVs());
 		}
 	}
 
@@ -351,7 +345,7 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(final String id);
+		public void onItemSelected(String id);
 
 		/**
 		 * Callback to display the default DetailFragment.
@@ -359,19 +353,36 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 		public void showDefaultDetailFragment();
 	}
 
-	private class LoadUvsListTask extends AsyncTask<Void, Void, List<UVwebContent.UV>> {
-		//static final String URL = "http://www.colourlovers.com/api/patterns/new?format=json&numResults=12";
+	private static class LoadUvsListTask extends AsyncTask<Void, Void, List<UVwebContent.UV>> {
 		private static final String URL = "http://thomaskeunebroek.fr/uvs.json";
+		private final WeakReference<UVListFragment> mUiFragment;
+
+		public LoadUvsListTask(UVListFragment uiFragment) {
+			super();
+
+			mUiFragment = new WeakReference<UVListFragment>(uiFragment);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			final UVListFragment ui = mUiFragment.get();
+			if (ui != null) {
+				ui.mEmptyView.setVisibility(View.GONE);
+				ui.mProgressBar.setVisibility(View.VISIBLE);
+			}
+		}
 
 		@Override
 		protected List<UVwebContent.UV> doInBackground(Void... params) {
 			final JSONArray uvsArray = HttpHelper.loadJSON(URL);
+			if (uvsArray == null) return null;
 			final int nUvs = uvsArray.length();
 
 			final List<UVwebContent.UV> uvs = new ArrayList<UVwebContent.UV>(nUvs);
 
 			try {
 				for (int i = 0; i < nUvs; i++) {
+					if (isCancelled()) break;
 					final JSONObject uvsInfo = (JSONObject) uvsArray.get(i);
 					final UVwebContent.UV uv = new UVwebContent.UV(
 							uvsInfo.getString("name"),
@@ -380,18 +391,30 @@ public class UVListFragment extends SherlockFragment implements AdapterView.OnIt
 							uvsInfo.getDouble("successRate"));
 					uvs.add(uv);
 					UVwebContent.addItem(uv);
-					Collections.sort(uvs);
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
+			} finally {
+				Collections.sort(uvs);
 			}
+
+			SystemClock.sleep(2000); // TODO: remove after testing
 
 			return uvs;
 		}
 
 		@Override
 		protected void onPostExecute(List<UVwebContent.UV> uvs) {
-			mAdapter.updateUVs(uvs);
+			final UVListFragment ui = mUiFragment.get();
+			if (ui != null) {
+				if (uvs == null) {
+					ui.handleNetworkError();
+				} else {
+					ui.mAdapter.updateUVs(uvs);
+				}
+				ui.mEmptyView.setVisibility(View.VISIBLE);
+				ui.mProgressBar.setVisibility(View.GONE);
+			}
 		}
 	}
 }

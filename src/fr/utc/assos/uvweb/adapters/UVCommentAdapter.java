@@ -42,6 +42,10 @@ public class UVCommentAdapter extends UVAdapter {
 		notifyDataSetChanged();
 	}
 
+	public List<UVwebContent.UVComment> getComments() {
+		return mComments;
+	}
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {

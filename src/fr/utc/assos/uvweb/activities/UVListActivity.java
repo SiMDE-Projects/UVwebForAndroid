@@ -120,7 +120,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 * UV with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(final String id) {
+	public void onItemSelected(String id) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -140,7 +140,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 	/**
 	 * Last selected tab save and restore management, using SharedPreferences
 	 */
-	private void saveLastTabPreference(final int tab) {
+	private void saveLastTabPreference(int tab) {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD) {
 			mPrefs.edit().putInt(PERSISTENT_LAST_TAB, tab).apply();
 		} else {
@@ -186,7 +186,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 	private static class SectionsPagerAdapter extends FragmentPagerAdapter {
 		private final boolean mTwoPane;
 
-		public SectionsPagerAdapter(FragmentManager fm, final boolean twoPane) {
+		public SectionsPagerAdapter(FragmentManager fm, boolean twoPane) {
 			super(fm);
 			mTwoPane = twoPane;
 		}

@@ -39,7 +39,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	 */
 	private static final SearchCallbacks sDummySearchCallbacks = new SearchCallbacks() {
 		@Override
-		public void onItemsFound(final List<UVwebContent.UV> results) {
+		public void onItemsFound(List<UVwebContent.UV> results) {
 		}
 
 		@Override
@@ -78,6 +78,10 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		return mUVs.size();
 	}
 
+	public boolean hasUvs() {
+		return mSavedUVs != null && mSavedUVs.size() > 0;
+	}
+
 	@Override
 	public UVwebContent.UV getItem(int position) {
 		return mUVs.get(position);
@@ -87,7 +91,11 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		updateUVs(UVs, false);
 	}
 
-	protected void updateUVs(List<UVwebContent.UV> UVs, final boolean dueToFilterOperation) {
+	public List<UVwebContent.UV> getUVs() {
+		return mSavedUVs;
+	}
+
+	protected void updateUVs(List<UVwebContent.UV> UVs, boolean dueToFilterOperation) {
 		ThreadPreconditions.checkOnMainThread();
 
 		mSectionToPosition.clear();
@@ -192,7 +200,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	 * @param position the position of a given item in the ListView
 	 * @return the name of the corresponding section
 	 */
-	private char getSectionName(final int position) {
+	private char getSectionName(int position) {
 		return mSectionToPosition.get(position);
 	}
 

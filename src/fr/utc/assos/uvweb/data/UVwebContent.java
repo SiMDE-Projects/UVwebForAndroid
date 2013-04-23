@@ -1,5 +1,7 @@
 package fr.utc.assos.uvweb.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import fr.utc.assos.uvweb.util.DateUtils;
 import org.joda.time.DateTime;
 
@@ -100,7 +102,7 @@ public class UVwebContent {
 	/**
 	 * A UV representing a piece of content.
 	 */
-	public static class UV implements Comparable<UV> {
+	public static class UV implements Comparable<UV>, Parcelable {
 		private String mName;
 		private String mDescription;
 		private double mRate;
@@ -111,6 +113,13 @@ public class UVwebContent {
 			mDescription = description;
 			mRate = rate;
 			mSuccessRate = successRate;
+		}
+
+		protected UV(Parcel in) {
+			mName = in.readString();
+			mDescription = in.readString();
+			mRate = in.readDouble();
+			mSuccessRate = in.readDouble();
 		}
 
 		@Override
@@ -170,9 +179,32 @@ public class UVwebContent {
 		public int compareTo(UV uv) {
 			return mName.compareTo(uv.getName());
 		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel parcel, int flags) {
+			parcel.writeString(mName);
+			parcel.writeString(mDescription);
+			parcel.writeDouble(mRate);
+			parcel.writeDouble(mSuccessRate);
+		}
+
+		public static final Parcelable.Creator<UV> CREATOR = new Parcelable.Creator<UV>() {
+			public UV createFromParcel(Parcel in) {
+				return new UV(in);
+			}
+
+			public UV[] newArray(int size) {
+				return new UV[size];
+			}
+		};
 	}
 
-	public static class UVComment {
+	public static class UVComment implements Parcelable {
 		private String mAuthor;
 		private DateTime mDate;
 		private String mComment;
@@ -190,6 +222,15 @@ public class UVwebContent {
 		public UVComment(String author, String date, String comment, int globalRate, String semester) {
 			this(author, DateUtils.getDateFromString(date), comment, globalRate, semester);
 		}
+
+		protected UVComment(Parcel in) {
+			mAuthor = in.readString();
+			mDate = DateUtils.getDateFromString(in.readString());
+			mComment = in.readString();
+			mGlobalRate = in.readInt();
+			mSemester = in.readString();
+		}
+
 
 		public String getAuthor() {
 			return mAuthor;
@@ -238,6 +279,30 @@ public class UVwebContent {
 		public String getFormattedDate() {
 			return DateUtils.getFormattedDate(mDate);
 		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel parcel, int flags) {
+			parcel.writeString(mAuthor);
+			parcel.writeString(DateUtils.getFormattedDate(mDate));
+			parcel.writeString(mComment);
+			parcel.writeInt(mGlobalRate);
+			parcel.writeString(mSemester);
+		}
+
+		public static final Parcelable.Creator<UVComment> CREATOR = new Parcelable.Creator<UVComment>() {
+			public UVComment createFromParcel(Parcel in) {
+				return new UVComment(in);
+			}
+
+			public UVComment[] newArray(int size) {
+				return new UVComment[size];
+			}
+		};
 	}
 
 	public static class NewsFeedEntry {

@@ -25,7 +25,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  */
 public class NewsFeedFragment extends SherlockFragment {
 	private static final String TAG = makeLogTag(NewsFeedFragment.class);
-	private final Handler mHandler = new Handler();
+	private static final Handler mHandler = new Handler();
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the

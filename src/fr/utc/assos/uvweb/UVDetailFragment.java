@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -28,6 +30,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -53,7 +56,7 @@ public class UVDetailFragment extends SherlockFragment {
 	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
-	private final Handler mHandler = new Handler();
+	private static final Handler mHandler = new Handler();
 	private boolean mTwoPane;
 	/**
 	 * The UV this fragment is presenting.
@@ -66,6 +69,10 @@ public class UVDetailFragment extends SherlockFragment {
 
 	private UVCommentAdapter mAdapter;
 
+	private MenuItem mRefreshMenuItem;
+
+	private ProgressBar mProgressBar;
+
 	public UVDetailFragment() {
 	}
 
@@ -73,7 +80,7 @@ public class UVDetailFragment extends SherlockFragment {
 	 * Create a new instance of {@link UVListFragment} that will be initialized
 	 * with the given arguments.
 	 */
-	public static UVDetailFragment newInstance(final String id, final boolean twoPane) {
+	public static UVDetailFragment newInstance(String id, boolean twoPane) {
 		final Bundle arguments = new Bundle();
 		arguments.putString(ARG_UV_ID, id);
 		arguments.putBoolean(ARG_TWO_PANE, twoPane);
@@ -96,14 +103,7 @@ public class UVDetailFragment extends SherlockFragment {
 
 			// Fragment configuration
 			setHasOptionsMenu(true);
-			if (arguments.containsKey(ARG_TWO_PANE)) {
-				// Load the UV specified by the fragment
-				// arguments. In a real-world scenario, use a Loader
-				// to load content from a content provider.
-				mTwoPane = arguments.getBoolean(ARG_TWO_PANE);
-			}
-
-			new LoadUvCommentsTask().execute();
+			mTwoPane = arguments.getBoolean(ARG_TWO_PANE, false);
 		}
 	}
 
@@ -112,6 +112,7 @@ public class UVDetailFragment extends SherlockFragment {
 		final View rootView = inflater.inflate(R.layout.fragment_uv_detail,
 				container, false);
 
+		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 		mListView = (ListView) rootView.findViewById(android.R.id.list);
 
 		mAdapter = new UVCommentAdapter(getSherlockActivity());
@@ -126,6 +127,19 @@ public class UVDetailFragment extends SherlockFragment {
 
 		// Show the UV as text in a TextView.
 		if (mUV != null) {
+			if (savedInstanceState != null && savedInstanceState.containsKey("comments")) {
+				final ArrayList<UVwebContent.UVComment> savedComments = savedInstanceState.getParcelableArrayList
+						("comments");
+				mAdapter.updateComments(savedComments);
+			} else {
+				final SherlockFragmentActivity context = getSherlockActivity();
+				if (!ConnectionUtils.isOnline(context)) {
+					handleNetworkError(context);
+				} else {
+					new LoadUvCommentsTask(this).execute();
+				}
+			}
+
 			if (mAdapter.isEmpty()) {
 				final ViewStub headerViewStub = (ViewStub) rootView.findViewById(android.R.id.empty);
 				headerViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
@@ -147,7 +161,7 @@ public class UVDetailFragment extends SherlockFragment {
 		return rootView;
 	}
 
-	private void setHeaderData(final View inflatedHeader) {
+	private void setHeaderData(View inflatedHeader) {
 		((TextView) inflatedHeader.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
 				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
 		((TextView) inflatedHeader.findViewById(R.id.uv_description)).setText(mUV.getDescription());
@@ -165,9 +179,19 @@ public class UVDetailFragment extends SherlockFragment {
 		}
 	}
 
+	private void handleNetworkError() {
+		handleNetworkError(getSherlockActivity());
+	}
+
+	private void handleNetworkError(SherlockFragmentActivity context) {
+		Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.fragment_uv_detail, menu);
+
+		mRefreshMenuItem = menu.findItem(R.id.menu_refresh);
 	}
 
 	@Override
@@ -176,16 +200,9 @@ public class UVDetailFragment extends SherlockFragment {
 			case R.id.menu_refresh:
 				final SherlockFragmentActivity context = getSherlockActivity();
 				if (!ConnectionUtils.isOnline(context)) {
-					Crouton.makeText(context, context.getString(R.string.network_error_message), ConnectionUtils.NETWORK_ERROR_STYLE).show();
+					handleNetworkError(context);
 				} else {
-					final MenuItem refresh = item;
-					refresh.setActionView(R.layout.progressbar);
-					mHandler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							refresh.setActionView(null);
-						}
-					}, 2000);
+					new LoadUvCommentsTask(this).execute();
 				}
 				return true;
 			default:
@@ -193,18 +210,51 @@ public class UVDetailFragment extends SherlockFragment {
 		}
 	}
 
-	private class LoadUvCommentsTask extends AsyncTask<Void, Void, List<UVwebContent.UVComment>> {
+	@Override
+	@SuppressWarnings("unchecked")
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		if (!mAdapter.isEmpty()) {
+			outState.putParcelableArrayList("comments", (ArrayList) mAdapter.getComments());
+		}
+	}
+
+	private static class LoadUvCommentsTask extends AsyncTask<Void, Void, List<UVwebContent.UVComment>> {
 		private static final String URL = "http://thomaskeunebroek.fr/uv_comments.json";
+		private final WeakReference<UVDetailFragment> mUiFragment;
+
+		public LoadUvCommentsTask(UVDetailFragment uiFragment) {
+			super();
+
+			mUiFragment = new WeakReference<UVDetailFragment>(uiFragment);
+		}
+
+		@Override
+		protected void onPreExecute() {
+			final UVDetailFragment ui = mUiFragment.get();
+			if (ui != null) {
+				//f.mEmptyView.setVisibility(View.GONE);
+				if (ui.mRefreshMenuItem != null) {
+					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
+				}
+				else {
+					ui.mProgressBar.setVisibility(View.VISIBLE);
+				}
+			}
+		}
 
 		@Override
 		protected List<UVwebContent.UVComment> doInBackground(Void... params) {
 			final JSONArray uvCommentsArray = HttpHelper.loadJSON(URL);
+			if (uvCommentsArray == null) return null;
 			final int nUvComments = uvCommentsArray.length();
 
 			final List<UVwebContent.UVComment> uvComments = new ArrayList<UVwebContent.UVComment>(nUvComments);
 
 			try {
 				for (int i = 0; i < nUvComments; i++) {
+					if (isCancelled()) break;
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
 					final UVwebContent.UVComment uvComment = new UVwebContent.UVComment(
 							uvCommentsInfo.getString("author"),
@@ -218,12 +268,24 @@ public class UVDetailFragment extends SherlockFragment {
 				e.printStackTrace();
 			}
 
+			SystemClock.sleep(2000); // TODO: remove after testing
+
 			return uvComments;
 		}
 
 		@Override
 		protected void onPostExecute(List<UVwebContent.UVComment> comments) {
-			mAdapter.updateComments(comments);
+			final UVDetailFragment ui = mUiFragment.get();
+			if (ui != null) {
+				if (comments == null) {
+					ui.handleNetworkError();
+				} else {
+					ui.mAdapter.updateComments(comments);
+				}
+				//f.mEmptyView.setVisibility(View.VISIBLE);
+				ui.mRefreshMenuItem.setActionView(null);
+				ui.mProgressBar.setVisibility(View.GONE);
+			}
 		}
 	}
 }

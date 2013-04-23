@@ -13,7 +13,7 @@ public class HttpHelper {
 		final StringBuilder sb = new StringBuilder();
 
 		try {
-			String line = null;
+			String line;
 
 			while ((line = reader.readLine()) != null) {
 				sb.append(line + "\n");
