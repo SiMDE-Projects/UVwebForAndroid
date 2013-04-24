@@ -379,7 +379,9 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
 				ui.mListView.getEmptyView().setVisibility(View.GONE);
-				ui.mProgressBar.setVisibility(View.VISIBLE);
+				if (mLoadFromNetwork) {
+					ui.mProgressBar.setVisibility(View.VISIBLE);
+				}
 			}
 		}
 
@@ -479,7 +481,9 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 					ui.mAdapter.updateUVs(uvs);
 				}
 				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
-				ui.mProgressBar.setVisibility(View.GONE);
+				if (mLoadFromNetwork) {
+					ui.mProgressBar.setVisibility(View.GONE);
+				}
 			}
 		}
 	}
