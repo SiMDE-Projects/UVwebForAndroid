@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.ui;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -26,11 +28,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.*;
 import java.lang.ref.WeakReference;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static fr.utc.assos.uvweb.util.LogUtils.LOGD;
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
@@ -57,7 +64,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	 */
 	private static final Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(final String id) {
+		public void onItemSelected(String id) {
 		}
 
 		@Override
@@ -270,10 +277,12 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 	@Override
 	public void onNothingFound() {
-		if (mTwoPane && mDisplayedUVName != null) {
-			mCallbacks.showDefaultDetailFragment();
+		if (mDisplayedUVName != null) {
+			if (mTwoPane) {
+				mCallbacks.showDefaultDetailFragment();
+			}
+			mDisplayedUVName = null;
 		}
-		mDisplayedUVName = null;
 	}
 
 	/**
@@ -347,11 +356,22 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	private static class LoadUvsListTask extends AsyncTask<Void, Void, List<UVwebContent.UV>> {
 		private static final String URL = "http://thomaskeunebroek.fr/uvs.json";
 		private final WeakReference<UVListFragment> mUiFragment;
+		private final File mCacheFile;
+		private boolean mLoadFromNetwork = false;
 
 		public LoadUvsListTask(UVListFragment uiFragment) {
 			super();
 
 			mUiFragment = new WeakReference<UVListFragment>(uiFragment);
+			mCacheFile = new File(uiFragment.getSherlockActivity().getExternalCacheDir(), "toto.json");
+			if (!mCacheFile.exists()) {
+				try {
+					mCacheFile.createNewFile();
+					mLoadFromNetwork = true;
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 		@Override
@@ -365,7 +385,40 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 		@Override
 		protected List<UVwebContent.UV> doInBackground(Void... params) {
-			final JSONArray uvsArray = HttpHelper.loadJSON(URL);
+			JSONArray uvsArray = null;
+			FileInputStream stream = null;
+			try {
+				stream = new FileInputStream(mCacheFile);
+				FileChannel fc = stream.getChannel();
+				MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+                /* Instead of using default, pass in a decoder. */
+				final String jString = Charset.defaultCharset().decode(bb).toString();
+				uvsArray = new JSONArray(jString);
+			} catch (FileNotFoundException e) {
+				mLoadFromNetwork = true;
+				e.printStackTrace();
+			} catch (JSONException e) {
+				mLoadFromNetwork = true;
+				e.printStackTrace();
+			} catch (IOException e) {
+				mLoadFromNetwork = true;
+				e.printStackTrace();
+			} finally {
+				if (stream != null) {
+					try {
+						stream.close();
+					} catch (IOException e) {
+						mLoadFromNetwork = true;
+						e.printStackTrace();
+					}
+				}
+			}
+
+			if (mLoadFromNetwork) {
+				uvsArray = HttpHelper.loadJSON(URL);
+				SystemClock.sleep(5000); // TODO: remove after testing
+			}
+
 			if (uvsArray == null) return null;
 			final int nUvs = uvsArray.length();
 
@@ -385,6 +438,26 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 					uvs.add(uv);
 					UVwebContent.addItem(uv);
 				}
+
+				if (mLoadFromNetwork) {
+					Writer w = null;
+					try {
+						w = new OutputStreamWriter(new FileOutputStream(mCacheFile));
+						w.write(uvsArray.toString());
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally {
+						if (w != null) {
+							try {
+								w.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+					}
+				}
 			} catch (JSONException e) {
 				e.printStackTrace();
 			} finally {
@@ -398,6 +471,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		protected void onPostExecute(List<UVwebContent.UV> uvs) {
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
+				Toast.makeText(ui.getSherlockActivity(), "mLoadFromNetwork == " + mLoadFromNetwork,
+						Toast.LENGTH_SHORT).show();
 				if (uvs == null) {
 					ui.handleNetworkError();
 				} else {

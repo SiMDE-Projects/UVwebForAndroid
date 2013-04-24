@@ -12,7 +12,7 @@ import fr.utc.assos.uvweb.R;
  * contained in a {@link fr.utc.assos.uvweb.activities.UVListActivity} and
  * used in tablet-mode only.
  */
-public class UVDetailDefaultFragment extends SherlockFragment {
+public class UVDetailDefaultFragment extends UVwebFragment {
     public static final String DEFAULT_FRAGMENT_TAG = "UVDetailDefaultFragment_TAG";
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
