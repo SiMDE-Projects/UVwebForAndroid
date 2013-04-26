@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.ui;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.text.TextUtils;
@@ -22,22 +23,20 @@ import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.ui.custom.UVwebListView;
 import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
+import fr.utc.assos.uvweb.util.CacheHelper;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
 import fr.utc.assos.uvweb.util.HttpHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static fr.utc.assos.uvweb.util.LogUtils.LOGD;
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
@@ -174,7 +173,11 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				new LoadUvsListTask(this).execute();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					new LoadUvsListTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					new LoadUvsListTask(this).execute();
+				}
 			}
 		}
 
@@ -367,15 +370,18 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			if (!mCacheFile.exists()) {
 				try {
 					mCacheFile.createNewFile();
-					mLoadFromNetwork = true;
 				} catch (IOException e) {
 					e.printStackTrace();
+				} finally {
+					mLoadFromNetwork = true;
 				}
 			}
 		}
 
 		@Override
 		protected void onPreExecute() {
+			super.onPreExecute();
+
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
 				ui.mListView.getEmptyView().setVisibility(View.GONE);
@@ -388,46 +394,35 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		@Override
 		protected List<UVwebContent.UV> doInBackground(Void... params) {
 			JSONArray uvsArray = null;
-			FileInputStream stream = null;
-			try {
-				stream = new FileInputStream(mCacheFile);
-				FileChannel fc = stream.getChannel();
-				MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
-                /* Instead of using default, pass in a decoder. */
-				final String jString = Charset.defaultCharset().decode(bb).toString();
-				uvsArray = new JSONArray(jString);
-			} catch (FileNotFoundException e) {
-				mLoadFromNetwork = true;
-				e.printStackTrace();
-			} catch (JSONException e) {
-				mLoadFromNetwork = true;
-				e.printStackTrace();
-			} catch (IOException e) {
-				mLoadFromNetwork = true;
-				e.printStackTrace();
-			} finally {
-				if (stream != null) {
-					try {
-						stream.close();
-					} catch (IOException e) {
-						mLoadFromNetwork = true;
-						e.printStackTrace();
-					}
+
+			if (!mLoadFromNetwork) {
+				try {
+					uvsArray = CacheHelper.loadJSON(mCacheFile);
+				} catch (JSONException e) {
+					handleCacheError(e);
+				} catch (IOException e) {
+					handleCacheError(e);
+				} finally {
+					/*if (stream != null) {
+						try {
+							stream.close();
+						} catch (IOException e) {
+						}
+					}*/
 				}
 			}
-
-			if (mLoadFromNetwork) {
+			if (mLoadFromNetwork || uvsArray == null || uvsArray.length() == 0) {
 				uvsArray = HttpHelper.loadJSON(URL);
-				SystemClock.sleep(5000); // TODO: remove after testing
+				SystemClock.sleep(2000); // TODO: remove after testing
 			}
 
-			if (uvsArray == null) return null;
+			if (uvsArray == null) {
+				return null;
+			}
+
 			final int nUvs = uvsArray.length();
-
 			final List<UVwebContent.UV> uvs = new ArrayList<UVwebContent.UV>(nUvs);
-
 			UVwebContent.UV_MAP.clear();
-
 			try {
 				for (int i = 0; i < nUvs; i++) {
 					if (isCancelled()) break;
@@ -436,41 +431,40 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 							uvsInfo.getString("name"),
 							uvsInfo.getString("description"),
 							uvsInfo.getDouble("rate"),
-							uvsInfo.getDouble("successRate"));
+							uvsInfo.getDouble("successRate")
+					);
 					uvs.add(uv);
 					UVwebContent.addItem(uv);
 				}
+			} catch (JSONException e) {
+				return null;
+			}
 
-				if (mLoadFromNetwork) {
-					Writer w = null;
+			if (mLoadFromNetwork) {
+				final String data = uvsArray.toString();
+				if (data != null) {
 					try {
-						w = new OutputStreamWriter(new FileOutputStream(mCacheFile));
-						w.write(uvsArray.toString());
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
+						CacheHelper.writeToCache(mCacheFile, data);
 					} catch (IOException e) {
-						e.printStackTrace();
 					} finally {
-						if (w != null) {
+						/*if (w != null) {
 							try {
 								w.close();
 							} catch (IOException e) {
-								e.printStackTrace();
 							}
-						}
+						}*/
 					}
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} finally {
-				Collections.sort(uvs);
 			}
 
+			Collections.sort(uvs);
 			return uvs;
 		}
 
 		@Override
 		protected void onPostExecute(List<UVwebContent.UV> uvs) {
+			super.onPostExecute(uvs);
+
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
 				Toast.makeText(ui.getSherlockActivity(), "mLoadFromNetwork == " + mLoadFromNetwork,
@@ -485,6 +479,17 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 					ui.mProgressBar.setVisibility(View.GONE);
 				}
 			}
+		}
+
+		private void handleCacheError(Exception e) {
+			mLoadFromNetwork = true;
+			if (e != null) {
+				e.printStackTrace();
+			}
+		}
+
+		private void handleCacheError() {
+			handleCacheError(null);
 		}
 	}
 }

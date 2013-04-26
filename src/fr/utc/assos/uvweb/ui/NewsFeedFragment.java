@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.ui;
 
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,7 +81,12 @@ public class NewsFeedFragment extends UVwebFragment {
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				new LoadNewsfeedEntriesTask(this).execute();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+					new LoadNewsfeedEntriesTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				}
+				else {
+					new LoadNewsfeedEntriesTask(this).execute();
+				}
 			}
 		}
 
