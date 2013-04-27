@@ -12,6 +12,7 @@ import fr.utc.assos.uvweb.util.ConnectionUtils;
  */
 public abstract class UVwebFragment extends SherlockFragment {
 	private static boolean mIsNetworkCroutonDisplayed = false;
+
 	protected void handleNetworkError() {
 		handleNetworkError(getSherlockActivity());
 	}
