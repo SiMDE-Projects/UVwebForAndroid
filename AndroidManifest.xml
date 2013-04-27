@@ -19,7 +19,7 @@
         android:allowBackup="true"
         android:hardwareAccelerated="true">
         <activity
-            android:name=".activities.UVListActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/Theme.UVweb.Logo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

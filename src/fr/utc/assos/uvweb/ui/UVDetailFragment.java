@@ -36,7 +36,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
  * A fragment representing a single UV detail screen. This fragment is either
- * contained in a {@link fr.utc.assos.uvweb.activities.UVListActivity} in two-pane mode (on tablets) or a
+ * contained in a {@link fr.utc.assos.uvweb.activities.MainActivity} in two-pane mode (on tablets) or a
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
 public class UVDetailFragment extends UVwebFragment {

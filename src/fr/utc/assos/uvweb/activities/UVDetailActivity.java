@@ -9,7 +9,7 @@ import fr.utc.assos.uvweb.ui.UVDetailFragment;
 /**
  * An activity representing a single UV detail screen. This activity is only
  * used on handset devices. On tablet-size devices, UV details are presented
- * side-by-side with a list of UVs in a {@link UVListActivity}.
+ * side-by-side with a list of UVs in a {@link MainActivity}.
  * <p/>
  * This activity is mostly just a 'shell' activity containing nothing more than
  * a {@link fr.utc.assos.uvweb.ui.UVDetailFragment}.

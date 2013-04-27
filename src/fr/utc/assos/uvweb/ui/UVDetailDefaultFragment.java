@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.actionbarsherlock.app.SherlockFragment;
 import fr.utc.assos.uvweb.R;
 
 /**
  * A fragment representing the default detail screen. This fragment is
- * contained in a {@link fr.utc.assos.uvweb.activities.UVListActivity} and
+ * contained in a {@link fr.utc.assos.uvweb.activities.MainActivity} and
  * used in tablet-mode only.
  */
 public class UVDetailDefaultFragment extends UVwebFragment {

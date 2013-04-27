@@ -35,9 +35,10 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * This activity also implements the required {@link fr.utc.assos.uvweb.ui.UVListFragment.Callbacks}
  * interface to listen for UV selections.
  */
-public class UVListActivity extends UVwebMenuActivity implements
+
+public class MainActivity extends UVwebMenuActivity implements
 		UVListFragment.Callbacks, ActionBar.TabListener {
-	private static final String TAG = makeLogTag(UVListActivity.class);
+	private static final String TAG = makeLogTag(MainActivity.class);
 	private static final String PERSISTENT_LAST_TAB = "UVwebLastTab";
 	/**
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
