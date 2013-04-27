@@ -216,7 +216,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	 * This mechanism allows the querier to be notified and to act accordingly.
 	 */
 	public interface SearchCallbacks {
-		public void onItemsFound(final List<UVwebContent.UV> results);
+		public void onItemsFound(List<UVwebContent.UV> results);
 
 		public void onNothingFound();
 	}
