@@ -22,6 +22,7 @@ public class UVwebContent {
 	 * Used to format grades.
 	 */
 	private static final DecimalFormat sDecimalFormat = new DecimalFormat("0");
+
 	/**
 	 * A UV representing a piece of content.
 	 */
@@ -109,7 +110,7 @@ public class UVwebContent {
 
 		@Override
 		public int compareTo(UV uv) {
-			return mName.compareTo(uv.getName());
+			return mName.compareTo(uv.mName);
 		}
 
 		@Override
@@ -126,7 +127,7 @@ public class UVwebContent {
 		}
 	}
 
-	public static class UVComment implements Parcelable {
+	public static class UVComment implements Comparable<UVComment>, Parcelable {
 		public static final Parcelable.Creator<UVComment> CREATOR = new Parcelable.Creator<UVComment>() {
 			public UVComment createFromParcel(Parcel in) {
 				return new UVComment(in);
@@ -224,9 +225,14 @@ public class UVwebContent {
 			parcel.writeInt(mGlobalRate);
 			parcel.writeString(mSemester);
 		}
+
+		@Override
+		public int compareTo(UVComment uvComment) {
+			return mDate.compareTo(uvComment.mDate);
+		}
 	}
 
-	public static class NewsFeedEntry implements Parcelable {
+	public static class NewsFeedEntry implements Comparable<NewsFeedEntry>, Parcelable {
 		public static final Parcelable.Creator<NewsFeedEntry> CREATOR = new Parcelable.Creator<NewsFeedEntry>() {
 			public NewsFeedEntry createFromParcel(Parcel in) {
 				return new NewsFeedEntry(in);
@@ -302,6 +308,11 @@ public class UVwebContent {
 			parcel.writeString(DateUtils.getFormattedDate(mDate));
 			parcel.writeString(mComment);
 			parcel.writeString(mAction);
+		}
+
+		@Override
+		public int compareTo(NewsFeedEntry newsFeedEntry) {
+			return mDate.compareTo(newsFeedEntry.mDate);
 		}
 	}
 }
