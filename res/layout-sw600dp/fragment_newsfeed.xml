@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical"
               android:background="@color/background_holo_light"
-              tools:context=".UVDetailFragment">
+              tools:context=".ui.UVDetailFragment">
 
     <ListView
         android:id="@android:id/list"
