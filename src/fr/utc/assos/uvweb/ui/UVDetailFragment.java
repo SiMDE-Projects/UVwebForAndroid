@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.ui;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,13 +74,17 @@ public class UVDetailFragment extends UVwebFragment {
 	 * Create a new instance of {@link fr.utc.assos.uvweb.ui.UVListFragment} that will be initialized
 	 * with the given arguments.
 	 */
-	public static UVDetailFragment newInstance(String id, boolean twoPane) {
+	public static UVDetailFragment newInstance(UVwebContent.UV uv, boolean twoPane) {
 		final Bundle arguments = new Bundle();
-		arguments.putString(ARG_UV_ID, id);
+		arguments.putParcelable(ARG_UV_ID, uv);
 		arguments.putBoolean(ARG_TWO_PANE, twoPane);
 		final UVDetailFragment f = new UVDetailFragment();
 		f.setArguments(arguments);
 		return f;
+	}
+
+	public static UVDetailFragment newInstance(Parcelable p, boolean twoPane) {
+		return newInstance((UVwebContent.UV) p, twoPane);
 	}
 
 	@Override
@@ -88,10 +93,8 @@ public class UVDetailFragment extends UVwebFragment {
 
 		final Bundle arguments = getArguments();
 		if (arguments.containsKey(ARG_UV_ID)) {
-			// Load the UV specified by the fragment
-			// arguments. In a real-world scenario, use a Loader
-			// to load content from a content provider.
-			mUV = UVwebContent.UV_MAP.get(arguments.getString(ARG_UV_ID));
+			// Load the UV specified by the fragment arguments.
+			mUV = arguments.getParcelable(ARG_UV_ID);
 
 			// Fragment configuration
 			setHasOptionsMenu(true);
@@ -117,7 +120,6 @@ public class UVDetailFragment extends UVwebFragment {
 			swingBottomInAnimationAdapter.setListView(mListView);
 		}
 
-		// Show the UV as text in a TextView.
 		if (mUV != null) {
 			if (savedInstanceState != null && savedInstanceState.containsKey(STATE_COMMENT_LIST)) {
 				final ArrayList<UVwebContent.UVComment> savedComments = savedInstanceState.getParcelableArrayList
@@ -146,9 +148,9 @@ public class UVDetailFragment extends UVwebFragment {
 			final View headerView = inflater.inflate(R.layout.uv_detail_header, null);
 			setHeaderData(headerView);
 			mListView.addHeaderView(headerView);
-		}
 
-		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
+			mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
+		}
 
 		return rootView;
 	}
@@ -249,15 +251,14 @@ public class UVDetailFragment extends UVwebFragment {
 
 			try {
 				for (int i = 0; i < nUvComments; i++) {
-					if (isCancelled()) break;
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
-					final UVwebContent.UVComment uvComment = new UVwebContent.UVComment(
+					uvComments.add(new UVwebContent.UVComment(
 							uvCommentsInfo.getString("author"),
 							uvCommentsInfo.getString("date"),
 							uvCommentsInfo.getString("content"),
 							uvCommentsInfo.getInt("globalRate"),
-							uvCommentsInfo.getString("semester"));
-					uvComments.add(uvComment);
+							uvCommentsInfo.getString("semester")
+					));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -279,9 +280,10 @@ public class UVDetailFragment extends UVwebFragment {
 				if (emptyView != null && emptyView.getVisibility() == View.GONE) {
 					emptyView.setVisibility(View.VISIBLE);
 				}
-				if (ui.mRefreshMenuItem != null) {
+				if (ui.mRefreshMenuItem != null && ui.mRefreshMenuItem.getActionView() != null) {
 					ui.mRefreshMenuItem.setActionView(null);
-				} else {
+				}
+				if (ui.mProgressBar.getVisibility() == View.VISIBLE) {
 					ui.mProgressBar.setVisibility(View.GONE);
 				}
 			}

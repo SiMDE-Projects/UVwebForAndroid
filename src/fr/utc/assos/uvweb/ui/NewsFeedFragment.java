@@ -83,8 +83,7 @@ public class NewsFeedFragment extends UVwebFragment {
 			} else {
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
 					new LoadNewsfeedEntriesTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				}
-				else {
+				} else {
 					new LoadNewsfeedEntriesTask(this).execute();
 				}
 			}
@@ -159,14 +158,13 @@ public class NewsFeedFragment extends UVwebFragment {
 
 			try {
 				for (int i = 0; i < nNewsfeedEntries; i++) {
-					if (isCancelled()) break;
 					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
-					final UVwebContent.NewsFeedEntry newsFeedEntry = new UVwebContent.NewsFeedEntry(
+					newsfeedEntries.add(new UVwebContent.NewsFeedEntry(
 							newsfeedEntryInfo.getString("author"),
 							newsfeedEntryInfo.getString("date"),
 							newsfeedEntryInfo.getString("content"),
-							newsfeedEntryInfo.getString("action"));
-					newsfeedEntries.add(newsFeedEntry);
+							newsfeedEntryInfo.getString("action")
+					));
 				}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -185,9 +183,10 @@ public class NewsFeedFragment extends UVwebFragment {
 					ui.mAdapter.updateNewsFeedEntries(entries);
 				}
 				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
-				if (ui.mRefreshMenuItem != null) {
+				if (ui.mRefreshMenuItem != null && ui.mRefreshMenuItem.getActionView() != null) {
 					ui.mRefreshMenuItem.setActionView(null);
-				} else {
+				}
+				if (ui.mProgressBar.getVisibility() == View.VISIBLE) {
 					ui.mProgressBar.setVisibility(View.GONE);
 				}
 			}

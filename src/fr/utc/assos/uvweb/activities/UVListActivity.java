@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.*;
+import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.ui.NewsFeedFragment;
 import fr.utc.assos.uvweb.ui.UVDetailDefaultFragment;
 import fr.utc.assos.uvweb.ui.UVDetailFragment;
@@ -125,7 +126,7 @@ public class UVListActivity extends UVwebMenuActivity implements
 	 * UV with the given ID was selected.
 	 */
 	@Override
-	public void onItemSelected(String id) {
+	public void onItemSelected(UVwebContent.UV uv) {
 		if (mTwoPane) {
 			// In two-pane mode, show the detail view in this activity by
 			// adding or replacing the detail fragment using a
@@ -133,11 +134,11 @@ public class UVListActivity extends UVwebMenuActivity implements
 			getSupportFragmentManager().beginTransaction()
 					.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out,
 							android.R.anim.fade_in, android.R.anim.fade_out)
-					.replace(R.id.uv_detail_container, UVDetailFragment.newInstance(id, true))
+					.replace(R.id.uv_detail_container, UVDetailFragment.newInstance(uv, true))
 					.commit();
 		} else {
 			final Intent detailIntent = new Intent(this, UVDetailActivity.class);
-			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, id);
+			detailIntent.putExtra(UVDetailFragment.ARG_UV_ID, uv);
 			startActivity(detailIntent);
 		}
 	}

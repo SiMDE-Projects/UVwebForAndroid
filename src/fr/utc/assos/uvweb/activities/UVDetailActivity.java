@@ -31,8 +31,10 @@ public class UVDetailActivity extends UVwebActivity {
 			// using a fragment transaction.
 			getSupportFragmentManager().beginTransaction()
 					.add(R.id.uv_detail_container,
-							UVDetailFragment.newInstance(getIntent().getStringExtra(UVDetailFragment.ARG_UV_ID), false))
+							UVDetailFragment.newInstance(getIntent().getParcelableExtra(UVDetailFragment.ARG_UV_ID),
+									false))
 					.commit();
+			// TODO: improve code here (UV => Intent => Parcelable => UV => Bundle => UV) ...
 		}
 	}
 

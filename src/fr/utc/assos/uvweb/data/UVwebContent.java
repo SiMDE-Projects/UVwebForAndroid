@@ -6,8 +6,6 @@ import fr.utc.assos.uvweb.util.DateUtils;
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Helper class for providing UV content for user interfaces
@@ -24,15 +22,6 @@ public class UVwebContent {
 	 * Used to format grades.
 	 */
 	private static final DecimalFormat sDecimalFormat = new DecimalFormat("0");
-	/**
-	 * A map of UVs, by ID.
-	 */
-	public static Map<String, UV> UV_MAP = new HashMap<String, UV>();
-
-	public static void addItem(UV item) {
-		UV_MAP.put(item.getName(), item);
-	}
-
 	/**
 	 * A UV representing a piece of content.
 	 */

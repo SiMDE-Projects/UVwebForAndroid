@@ -46,7 +46,6 @@ public class HttpHelper {
 					is.close();
 				}
 			} catch (IOException ioe) {
-				ioe.printStackTrace();
 			}
 
 			if (connection != null) {
@@ -74,7 +73,6 @@ public class HttpHelper {
 					is.close();
 				}
 			} catch (IOException ioe) {
-				ioe.printStackTrace();
 			}
 
 			if (connection != null) {

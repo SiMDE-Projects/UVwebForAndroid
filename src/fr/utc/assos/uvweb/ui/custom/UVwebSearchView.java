@@ -11,7 +11,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 /**
  * A very simple custom {@link SearchView} that allows to block some callbacks from being automatically called.
  * This is particularly useful on tablets (two-pane mode), as we don't want the SearchView to clear it's
- * content when we open an {@link UVDetailFragment}, which contains optionsMenu of its own.
+ * content when we open an {@link fr.utc.assos.uvweb.ui.UVDetailFragment}, which contains optionsMenu of its own.
  */
 public class UVwebSearchView extends SearchView {
 	private static final String TAG = makeLogTag(UVwebSearchView.class);

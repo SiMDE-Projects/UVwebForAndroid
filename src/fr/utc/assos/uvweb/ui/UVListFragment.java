@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +62,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	 */
 	private static final Callbacks sDummyCallbacks = new Callbacks() {
 		@Override
-		public void onItemSelected(String id) {
+		public void onItemSelected(UVwebContent.UV uv) {
 		}
 
 		@Override
@@ -207,13 +206,15 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	}
 
 	private void performClick(int position) {
-		final String toBeDisplayed = mAdapter.getItem(position).getName();
-
-		if (!mTwoPane || !TextUtils.equals(toBeDisplayed, mDisplayedUVName)) {
-			// If in tablet mode and the dislayed UV is not the same as the UV clicked, or in phone mode
-			// Lazy load the selected UV
-			mCallbacks.onItemSelected(toBeDisplayed);
-			mDisplayedUVName = toBeDisplayed;
+		final UVwebContent.UV toBeDisplayed = mAdapter.getItem(position);
+		if (toBeDisplayed != null) {
+			final String toBeDisplayedName = toBeDisplayed.getName();
+			if (!mTwoPane || !TextUtils.equals(toBeDisplayedName, mDisplayedUVName)) {
+				// If in tablet mode and the dislayed UV is not the same as the UV clicked, or in phone mode
+				// Lazy load the selected UV
+				mCallbacks.onItemSelected(toBeDisplayed);
+				mDisplayedUVName = toBeDisplayedName;
+			}
 		}
 	}
 
@@ -241,7 +242,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		// SearchView configuration
 		final MenuItem searchMenuItem = menu.findItem(R.id.menu_search);
 
-		// We can't call onCloseListener() since it's broken on ICS+
+		// We can't use onCloseListener() as it is broken on ICS+
 		searchMenuItem.setOnActionExpandListener(this);
 
 		mSearchView = (UVwebSearchView) searchMenuItem.getActionView();
@@ -282,7 +283,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	public void onNothingFound() {
 		if (mDisplayedUVName != null) {
 			if (mTwoPane) {
-				mCallbacks.showDefaultDetailFragment();
+				mCallbacks.showDefaultDetailFragment(); // TODO: prevent keyboard from being hidden here
 			}
 			mDisplayedUVName = null;
 		}
@@ -348,7 +349,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		/**
 		 * Callback for when an item has been selected.
 		 */
-		public void onItemSelected(String id);
+		public void onItemSelected(UVwebContent.UV uv);
 
 		/**
 		 * Callback to display the default DetailFragment.
@@ -369,7 +370,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			mCacheFile = new File(uiFragment.getSherlockActivity().getExternalCacheDir(), "toto.json");
 			if (!mCacheFile.exists()) {
 				try {
-					mCacheFile.createNewFile();
+					mCacheFile.createNewFile(); // TODO: FileInputStream & FileOutputStream can handle this
 				} catch (IOException e) {
 					e.printStackTrace();
 				} finally {
@@ -385,9 +386,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
 				ui.mListView.getEmptyView().setVisibility(View.GONE);
-				if (mLoadFromNetwork) {
-					ui.mProgressBar.setVisibility(View.VISIBLE);
-				}
+				ui.mProgressBar.setVisibility(View.VISIBLE);
 			}
 		}
 
@@ -402,18 +401,10 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 					handleCacheError(e);
 				} catch (IOException e) {
 					handleCacheError(e);
-				} finally {
-					/*if (stream != null) {
-						try {
-							stream.close();
-						} catch (IOException e) {
-						}
-					}*/
 				}
 			}
 			if (mLoadFromNetwork || uvsArray == null || uvsArray.length() == 0) {
 				uvsArray = HttpHelper.loadJSON(URL);
-				SystemClock.sleep(2000); // TODO: remove after testing
 			}
 
 			if (uvsArray == null) {
@@ -422,10 +413,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 			final int nUvs = uvsArray.length();
 			final List<UVwebContent.UV> uvs = new ArrayList<UVwebContent.UV>(nUvs);
-			UVwebContent.UV_MAP.clear();
 			try {
 				for (int i = 0; i < nUvs; i++) {
-					if (isCancelled()) break;
 					final JSONObject uvsInfo = (JSONObject) uvsArray.get(i);
 					final UVwebContent.UV uv = new UVwebContent.UV(
 							uvsInfo.getString("name"),
@@ -434,26 +423,16 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 							uvsInfo.getDouble("successRate")
 					);
 					uvs.add(uv);
-					UVwebContent.addItem(uv);
 				}
 			} catch (JSONException e) {
 				return null;
 			}
 
 			if (mLoadFromNetwork) {
-				final String data = uvsArray.toString();
-				if (data != null) {
-					try {
-						CacheHelper.writeToCache(mCacheFile, data);
-					} catch (IOException e) {
-					} finally {
-						/*if (w != null) {
-							try {
-								w.close();
-							} catch (IOException e) {
-							}
-						}*/
-					}
+				try {
+					CacheHelper.writeToCache(mCacheFile, uvsArray);
+				} catch (IOException e) {
+					mCacheFile.delete();
 				}
 			}
 
@@ -475,9 +454,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 					ui.mAdapter.updateUVs(uvs);
 				}
 				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
-				if (mLoadFromNetwork) {
-					ui.mProgressBar.setVisibility(View.GONE);
-				}
+				ui.mProgressBar.setVisibility(View.GONE);
 			}
 		}
 
