@@ -64,6 +64,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 	public UVListAdapter(Context context) {
 		super(context);
+
 		mComprehensiveSectionsList = new ArrayList<Character>(ALPHABET_LENGTH);
 		mSectionToPosition = new SparseArray<Character>(ALPHABET_LENGTH);
 	}
@@ -100,6 +101,8 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		mSectionToPosition.clear();
 		mComprehensiveSectionsList.clear();
 
+		Collections.sort(UVs);
+
 		int i = 0;
 		for (UVwebContent.UV UV : UVs) {
 			final char section = UV.getLetterCode().charAt(0);
@@ -110,7 +113,6 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 			i++;
 		}
 
-		Collections.sort(mComprehensiveSectionsList);
 		mUVs = UVs;
 		notifyDataSetChanged();
 

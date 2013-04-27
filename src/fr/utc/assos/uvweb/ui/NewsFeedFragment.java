@@ -137,6 +137,8 @@ public class NewsFeedFragment extends UVwebFragment {
 
 		@Override
 		protected void onPreExecute() {
+			super.onPreExecute();
+
 			final NewsFeedFragment ui = mUiFragment.get();
 			if (ui != null) {
 				ui.mListView.getEmptyView().setVisibility(View.GONE);
@@ -175,6 +177,8 @@ public class NewsFeedFragment extends UVwebFragment {
 
 		@Override
 		protected void onPostExecute(List<UVwebContent.NewsFeedEntry> entries) {
+			super.onPostExecute(entries);
+
 			final NewsFeedFragment ui = mUiFragment.get();
 			if (ui != null) {
 				if (entries == null) {

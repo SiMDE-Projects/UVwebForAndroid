@@ -12,7 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import com.actionbarsherlock.app.ActionBar;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
-import fr.utc.assos.uvweb.*;
+import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.ui.NewsFeedFragment;
 import fr.utc.assos.uvweb.ui.UVDetailDefaultFragment;
@@ -29,11 +29,9 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} representing UV details. On tablets, the activity
  * presents the list of UVs and UV details side-by-side using two vertical
  * panes.
- * <p/>
  * The activity makes heavy use of fragments. The list of UVs is a
  * {@link fr.utc.assos.uvweb.ui.UVListFragment} and the UV details (if present) is a
  * {@link fr.utc.assos.uvweb.ui.UVDetailFragment}.
- * <p/>
  * This activity also implements the required {@link fr.utc.assos.uvweb.ui.UVListFragment.Callbacks}
  * interface to listen for UV selections.
  */
@@ -200,16 +198,12 @@ public class UVListActivity extends UVwebMenuActivity implements
 		@Override
 		public Fragment getItem(int position) {
 			// getItem is called to instantiate the fragment for the given page.
-			Fragment fragment;
 			switch (position) {
 				case 0:
-					fragment = new NewsFeedFragment();
-					break;
+					return new NewsFeedFragment();
 				default:
-					fragment = mTwoPane ? WrapperFragment.newInstance() : UVListFragment.newInstance();
-					break;
+					return mTwoPane ? WrapperFragment.newInstance() : UVListFragment.newInstance();
 			}
-			return fragment;
 		}
 
 		@Override

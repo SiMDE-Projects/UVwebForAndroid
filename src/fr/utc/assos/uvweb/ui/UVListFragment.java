@@ -436,7 +436,6 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 				}
 			}
 
-			Collections.sort(uvs);
 			return uvs;
 		}
 
@@ -446,8 +445,6 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
-				Toast.makeText(ui.getSherlockActivity(), "mLoadFromNetwork == " + mLoadFromNetwork,
-						Toast.LENGTH_SHORT).show();
 				if (uvs == null) {
 					ui.handleNetworkError();
 				} else {
