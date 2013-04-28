@@ -7,19 +7,21 @@ import de.keyboardsurfer.android.widget.crouton.LifecycleCallback;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
  * Base Fragment that must be extended by any {@link SherlockFragment} that has a UI.
  */
 public abstract class UVwebFragment extends SherlockFragment {
-	private static boolean mIsNetworkCroutonDisplayed = false;
+	private static final AtomicBoolean sIsNetworkCroutonDisplayed = new AtomicBoolean(false);
 
 	protected void handleNetworkError() {
 		handleNetworkError(getSherlockActivity());
 	}
 
 	protected void handleNetworkError(SherlockFragmentActivity context) {
-		if (!mIsNetworkCroutonDisplayed) {
-			mIsNetworkCroutonDisplayed = true;
+		if (!sIsNetworkCroutonDisplayed.get()) {
+			sIsNetworkCroutonDisplayed.set(true); // TODO: debug state after rotation
 			final Crouton networkCrouton = Crouton.makeText(context,
 					context.getString(R.string.network_error_message),
 					ConnectionUtils.NETWORK_ERROR_STYLE);
@@ -31,7 +33,7 @@ public abstract class UVwebFragment extends SherlockFragment {
 
 				@Override
 				public void onRemoved() {
-					mIsNetworkCroutonDisplayed = false;
+					sIsNetworkCroutonDisplayed.set(false);
 				}
 			});
 

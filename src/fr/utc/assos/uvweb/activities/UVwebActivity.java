@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.activities;
 import android.os.Bundle;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
 
 /**
  * Base activity for the whole application. Implements basic up navigation
@@ -24,5 +25,12 @@ public abstract class UVwebActivity extends SherlockFragmentActivity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onDestroy() {
+		Crouton.cancelAllCroutons();
+
+		super.onDestroy();
 	}
 }

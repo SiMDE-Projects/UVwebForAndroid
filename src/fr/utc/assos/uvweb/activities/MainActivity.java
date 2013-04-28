@@ -96,13 +96,6 @@ public class MainActivity extends UVwebMenuActivity implements
 		actionBar.setSelectedNavigationItem(loadLastTabPreference());
 	}
 
-	@Override
-	public void onDestroy() {
-		Crouton.cancelAllCroutons();
-
-		super.onDestroy();
-	}
-
 	/**
 	 * Callback method from {@link UVListFragment.Callbacks} indicating that the
 	 * default DetailFragment must be displayed (no UV has been selected yet).

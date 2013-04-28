@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -33,7 +32,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
@@ -169,6 +167,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			mAdapter.updateUVs(savedUvs);
 		} else {
 			final SherlockFragmentActivity context = getSherlockActivity();
+			// TODO: debug. If cache exists, no need to have a connection. Right?
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {

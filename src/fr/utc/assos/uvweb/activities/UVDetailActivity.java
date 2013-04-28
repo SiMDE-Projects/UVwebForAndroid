@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb.activities;
 
 import android.os.Bundle;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.ui.UVDetailFragment;
 
@@ -36,12 +35,5 @@ public class UVDetailActivity extends UVwebActivity {
 					.commit();
 			// TODO: improve code here (UV => Intent => Parcelable => UV => Bundle => UV) ...
 		}
-	}
-
-	@Override
-	public void onDestroy() {
-		Crouton.cancelAllCroutons();
-
-		super.onDestroy();
 	}
 }

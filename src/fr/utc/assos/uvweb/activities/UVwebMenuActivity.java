@@ -3,7 +3,6 @@ package fr.utc.assos.uvweb.activities;
 import android.content.Intent;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
 import fr.utc.assos.uvweb.R;
 
 /**
@@ -28,12 +27,5 @@ public abstract class UVwebMenuActivity extends UVwebActivity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onDestroy() {
-		Crouton.cancelAllCroutons();
-
-		super.onDestroy();
 	}
 }
