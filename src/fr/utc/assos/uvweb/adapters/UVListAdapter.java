@@ -79,7 +79,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	}
 
 	public boolean hasUvs() {
-		return mSavedUVs != null && mSavedUVs.size() > 0;
+		return mSavedUVs != null && !mSavedUVs.isEmpty();
 	}
 
 	@Override
