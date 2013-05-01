@@ -184,15 +184,15 @@ public class UVDetailFragment extends UVwebFragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.fragment_uv_detail, menu);
+		super.onCreateOptionsMenu(menu, inflater);
 
-		mRefreshMenuItem = menu.findItem(R.id.menu_refresh);
+		inflater.inflate(R.menu.fragment_uv_detail, menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menu_refresh:
+			case R.id.menu_refresh_uvdetail:
 				final SherlockFragmentActivity context = getSherlockActivity();
 				if (!ConnectionUtils.isOnline(context)) {
 					handleNetworkError(context);

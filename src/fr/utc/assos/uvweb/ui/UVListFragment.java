@@ -236,6 +236,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+
 		inflater.inflate(R.menu.fragment_uv_list, menu);
 
 		// SearchView configuration
