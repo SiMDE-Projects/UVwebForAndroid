@@ -41,11 +41,9 @@ public class UVwebContent {
 		private double mRate;
 		private double mSuccessRate;
 
-		public UV(String name, String description, double rate, double successRate) {
+		public UV(String name, String description) {
 			mName = name;
 			mDescription = description;
-			mRate = rate;
-			mSuccessRate = successRate;
 		}
 
 		protected UV(Parcel in) {

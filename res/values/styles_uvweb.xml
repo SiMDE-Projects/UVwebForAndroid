@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<?xml version="1.0" encoding="utf-8"?><!-- File created by the Android Action Bar Style Generator
 
      Copyright (C) 2012 readyState Software Ltd
 
@@ -39,8 +38,7 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb.NoLogo</item>
     </style>
 
-    <style name="Theme.UVweb.Logo.Transparent" parent="@style/Theme.UVweb.Logo">
-    </style>
+    <style name="Theme.UVweb.Logo.Transparent" parent="@style/Theme.UVweb.Logo"></style>
 
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_uvweb</item>
@@ -81,7 +79,8 @@
     -->
     <style name="ListView.UVweb.fastScrollThemed" parent="@android:style/Widget.ListView">
         <item name="android:textColorPrimary">?android:textColorPrimaryInverse</item>
-        <item name="android:overScrollFooter">@null</item> <!-- Fix for Motorola devices -->
+        <item name="android:overScrollFooter">@null</item>
+        <!-- Fix for Motorola devices -->
     </style>
 
     <!-- UV list styles -->
@@ -95,6 +94,7 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
     </style>
+
     <style name="ListNewsfeed" parent="@style/ListDefault">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
@@ -105,7 +105,6 @@
     <style name="RootDefault">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:padding">8dp</item>
     </style>
 
     <style name="NameDefault">
@@ -130,7 +129,6 @@
         <item name="android:orientation">vertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_toRightOf">@id/uv_code_number</item>
         <item name="android:layout_centerVertical">true</item>
     </style>
 
@@ -138,36 +136,32 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">right</item>
-        <item name="android:textColor">@drawable/selectable_text_infos_list_bright_uvweb</item>
-    </style>
-
-    <style name="RateDefault">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:gravity">right</item>
         <item name="android:textColor">@drawable/selectable_text_infos_list_uvweb</item>
+        <item name="android:layout_toRightOf">@id/uv_code_number</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:ellipsize">end</item>
     </style>
 
     <!-- Actual styles (phones) -->
     <style name="Root" parent="@style/RootDefault">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
     </style>
 
     <style name="Name" parent="@style/NameDefault">
-        <item name="android:textSize">35sp</item>
+        <item name="android:textSize">38sp</item>
     </style>
 
-    <style name="Name.Letter" parent="@style/Name.LetterDefault">
-    </style>
+    <style name="Name.Letter" parent="@style/Name.LetterDefault"></style>
 
-    <style name="Name.Number" parent="@style/Name.NumberDefault">
-    </style>
+    <style name="Name.Number" parent="@style/Name.NumberDefault"></style>
 
     <style name="Description" parent="@style/DescriptionDefault">
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="Rate" parent="@style/RateDefault">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:layout_marginLeft">24dp</item>
     </style>
 
     <!-- Empty uv list style -->
@@ -183,14 +177,14 @@
     <style name="EmptyList" parent="@style/EmptyListDefault">
         <item name="android:text">@string/no_uvs</item>
     </style>
+
     <style name="NewsfeedEmptyList" parent="@style/EmptyListDefault">
         <item name="android:text">@string/no_newsfeed_entry</item>
     </style>
 
     <!-- Sticky header style -->
     <!-- Default style -->
-    <style name="StickyHeaderRootDefault">
-    </style>
+    <style name="StickyHeaderRootDefault"></style>
     <!-- Actual style -->
     <style name="StickyHeaderRoot" parent="@style/StickyHeaderRootDefault">
         <item name="android:background">@color/abs__background_holo_light</item>

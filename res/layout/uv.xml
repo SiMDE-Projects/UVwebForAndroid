@@ -1,26 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/Root">
+    style="@style/Root">
 
     <TextView
-            android:id="@+id/uv_code_letter"
-            style="@style/Name.Letter"/>
+        android:id="@+id/uv_code_letter"
+        style="@style/Name.Letter" />
 
     <TextView
-            android:id="@+id/uv_code_number"
-            style="@style/Name.Number"/>
+        android:id="@+id/uv_code_number"
+        style="@style/Name.Number" />
 
-    <LinearLayout
-            style="@style/RightPartDefault">
 
-        <TextView
-                android:id="@+id/rate"
-                style="@style/Rate"/>
-
-        <TextView
-                android:id="@+id/desc"
-                style="@style/Description"/>
-
-    </LinearLayout>
+    <TextView
+        android:id="@+id/desc"
+        style="@style/Description"
+        android:gravity="right"
+        android:layout_gravity="right|center_vertical" />
 
 </RelativeLayout>

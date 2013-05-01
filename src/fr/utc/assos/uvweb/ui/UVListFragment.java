@@ -357,7 +357,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	}
 
 	private static class LoadUvsListTask extends AsyncTask<Void, Void, List<UVwebContent.UV>> {
-		private static final String URL = "http://thomaskeunebroek.fr/uvs.json";
+		private static final String URL = "http://192.168.1.8/uvweb/web/app_dev.php/uv/app/list";
 		private final WeakReference<UVListFragment> mUiFragment;
 		private final File mCacheFile;
 		private boolean mLoadFromNetwork = false;
@@ -367,6 +367,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 			mUiFragment = new WeakReference<UVListFragment>(uiFragment);
 			mCacheFile = new File(uiFragment.getSherlockActivity().getExternalCacheDir(), "toto.json");
+			// TODO: cache timestamp
 			if (!mCacheFile.exists()) {
 				try {
 					mCacheFile.createNewFile(); // TODO: FileInputStream & FileOutputStream can handle this
@@ -416,10 +417,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 				for (int i = 0; i < nUvs; i++) {
 					final JSONObject uvsInfo = (JSONObject) uvsArray.get(i);
 					final UVwebContent.UV uv = new UVwebContent.UV(
-							uvsInfo.getString("name"),
-							uvsInfo.getString("description"),
-							uvsInfo.getDouble("rate"),
-							uvsInfo.getDouble("successRate")
+							uvsInfo.getString("name").trim(),
+							uvsInfo.getString("title").trim()
 					);
 					uvs.add(uv);
 				}

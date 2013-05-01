@@ -24,7 +24,7 @@
         android:id="@+id/uv_list"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.25"/>
+        android:layout_weight="1.35"/>
 
     <FrameLayout
         android:id="@+id/uv_detail_container"
