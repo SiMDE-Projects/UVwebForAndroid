@@ -246,7 +246,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 		mSearchView = (UVwebSearchView) searchMenuItem.getActionView();
 		mSearchView.setOnQueryTextListener(this);
-		if (mSearchQuery != null) {
+		if (mSearchQuery != null && !TextUtils.isEmpty(mSearchQuery)) {
 			mSearchView.setQuery(mSearchQuery, false);
 			searchMenuItem.expandActionView();
 			mSearchView.requestFocus();
@@ -312,7 +312,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 
-		if (mSearchQuery != null) {
+		if (mSearchQuery != null && !TextUtils.isEmpty(mSearchQuery)) {
 			outState.putString(STATE_SEARCH_QUERY, mSearchQuery);
 		}
 		if (mDisplayedUVName != null) {
