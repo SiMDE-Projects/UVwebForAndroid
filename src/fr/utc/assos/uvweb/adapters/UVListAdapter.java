@@ -193,7 +193,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 		// Set header text as first char in name
 		final TextView headerView = UVwebHolder.get(convertView, R.id.header_text);
-		headerView.setText(getSectionName(position));
+		headerView.setText(String.valueOf(getSectionName(position)));
 
 		return convertView;
 	}
