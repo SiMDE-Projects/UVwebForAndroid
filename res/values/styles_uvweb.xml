@@ -145,14 +145,14 @@
 
     <!-- Actual styles (phones) -->
     <style name="Root" parent="@style/RootDefault">
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
         <item name="android:paddingLeft">8dp</item>
         <item name="android:paddingRight">8dp</item>
     </style>
 
     <style name="Name" parent="@style/NameDefault">
-        <item name="android:textSize">38sp</item>
+        <item name="android:textSize">34sp</item>
     </style>
 
     <style name="Name.Letter" parent="@style/Name.LetterDefault"></style>
@@ -160,7 +160,7 @@
     <style name="Name.Number" parent="@style/Name.NumberDefault"></style>
 
     <style name="Description" parent="@style/DescriptionDefault">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:layout_marginLeft">24dp</item>
     </style>
 
