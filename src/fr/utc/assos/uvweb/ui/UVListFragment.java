@@ -167,7 +167,6 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			mAdapter.updateUVs(savedUvs);
 		} else {
 			final SherlockFragmentActivity context = getSherlockActivity();
-			// TODO: debug. If cache exists, no need to have a connection. Right?
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {

@@ -33,7 +33,6 @@ public class UVDetailActivity extends UVwebActivity {
 							UVDetailFragment.newInstance(getIntent().getParcelableExtra(UVDetailFragment.ARG_UV_ID),
 									false))
 					.commit();
-			// TODO: improve code here (UV => Intent => Parcelable => UV => Bundle => UV) ...
 		}
 	}
 }
