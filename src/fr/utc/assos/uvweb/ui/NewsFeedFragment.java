@@ -97,6 +97,8 @@ public class NewsFeedFragment extends UVwebFragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		inflater.inflate(R.menu.fragment_newsfeed, menu);
+
+		mRefreshMenuItem = menu.findItem(R.id.menu_refresh_newsfeed);
 	}
 
 	@Override

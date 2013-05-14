@@ -187,6 +187,8 @@ public class UVDetailFragment extends UVwebFragment {
 		super.onCreateOptionsMenu(menu, inflater);
 
 		inflater.inflate(R.menu.fragment_uv_detail, menu);
+
+		mRefreshMenuItem = menu.findItem(R.id.menu_refresh_uvdetail);
 	}
 
 	@Override
