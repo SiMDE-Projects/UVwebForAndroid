@@ -95,12 +95,8 @@ public class UVwebContent {
 		}
 
 		public String getNumberCode() {
-			try {
-				return mName.substring(2, 4);
-			} catch (StringIndexOutOfBoundsException e) {
-				return "";
-				// TODO: there must be a better way to handle this
-			}
+			final int size = mName.length();
+			return mName.substring(size - 2, size);
 		}
 
 		public String getFormattedSuccessRate() {
