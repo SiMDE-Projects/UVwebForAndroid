@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Base Fragment that must be extended by any {@link SherlockFragment} that has a UI.
  */
-public abstract class UVwebFragment extends SherlockFragment {
+public abstract class UVwebFragment extends SherlockFragment implements LifecycleCallback {
 	private static final AtomicBoolean sIsNetworkCroutonDisplayed = new AtomicBoolean(false);
 
 	protected void handleNetworkError() {
@@ -25,19 +25,24 @@ public abstract class UVwebFragment extends SherlockFragment {
 			final Crouton networkCrouton = Crouton.makeText(context,
 					context.getString(R.string.network_error_message),
 					ConnectionUtils.NETWORK_ERROR_STYLE);
-
-			networkCrouton.setLifecycleCallback(new LifecycleCallback() {
-				@Override
-				public void onDisplayed() {
-				}
-
-				@Override
-				public void onRemoved() {
-					sIsNetworkCroutonDisplayed.set(false);
-				}
-			});
-
+			networkCrouton.setLifecycleCallback(this);
 			networkCrouton.show();
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		Crouton.clearCroutonsForActivity(getSherlockActivity());
+
+		super.onDestroy();
+	}
+
+	@Override
+	public void onDisplayed() {
+	}
+
+	@Override
+	public void onRemoved() {
+		sIsNetworkCroutonDisplayed.set(false);
 	}
 }
