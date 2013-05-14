@@ -138,11 +138,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		final UVwebContent.UV UV = getItem(position);
 
 		code1View.setText(UV.getLetterCode());
-		try {
-			code2View.setText(UV.getNumberCode());
-		} catch (StringIndexOutOfBoundsException e) {
-			// TODO: there must be a better way to handle this
-		}
+		code2View.setText(UV.getNumberCode());
 		descView.setText(UV.getDescription());
 
 		final View separatorView = UVwebHolder.get(convertView, R.id.list_divider);
