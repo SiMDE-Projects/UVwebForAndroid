@@ -41,6 +41,6 @@
     <string name="success_rate">Taux de réussite</string>
 
     <!-- Feedback messages -->
-    <string name="network_error_message">Aucune connexion réseau. :-(</string>
+    <string name="network_error_message">Aucune connexion réseau</string>
 
 </resources>
