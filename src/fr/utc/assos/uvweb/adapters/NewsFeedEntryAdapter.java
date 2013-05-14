@@ -4,9 +4,12 @@ import android.content.Context;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.Collections;
@@ -20,10 +23,14 @@ import java.util.List;
  */
 public class NewsFeedEntryAdapter extends UVAdapter {
 	private final String mDatePresentation;
+	private final Context mContext;
+	private final int mAvatarPixelSize;
 	private List<UVwebContent.NewsFeedEntry> mNewsFeedEntries = Collections.emptyList();
 
 	public NewsFeedEntryAdapter(Context context) {
 		super(context);
+		mContext = context;
+		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size) + 50;
 		mDatePresentation = context.getString(R.string.date_presentation);
 	}
 
@@ -54,6 +61,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 			convertView = mLayoutInflater.inflate(R.layout.newsfeed_entry, null);
 		}
 
+		final ImageView userAvatarImageView = UVwebHolder.get(convertView, R.id.user_avatar);
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.user_id_action);
 		final TextView dateView = UVwebHolder.get(convertView, R.id.date);
 		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
@@ -63,6 +71,10 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				entry.getAuthor(), " " + entry.getAction())));
 		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
+		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + GravatarUtils.convertEmailToHash(entry.getAuthorEmail()) + "?size=" + String.valueOf(mAvatarPixelSize) + "&d=404")
+				.placeholder(R.drawable.ic_contact_picture)
+				.error(R.drawable.ic_contact_picture)
+				.into(userAvatarImageView);
 		commentView.setText(entry.getComment());
 
 		return convertView;

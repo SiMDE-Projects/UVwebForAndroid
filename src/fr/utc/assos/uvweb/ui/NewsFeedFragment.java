@@ -165,6 +165,7 @@ public class NewsFeedFragment extends UVwebFragment {
 					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
 					newsfeedEntries.add(new UVwebContent.NewsFeedEntry(
 							newsfeedEntryInfo.getString("author"),
+							newsfeedEntryInfo.getString("email"),
 							newsfeedEntryInfo.getString("date"),
 							newsfeedEntryInfo.getString("content"),
 							newsfeedEntryInfo.getString("action")

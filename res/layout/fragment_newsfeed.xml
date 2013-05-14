@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/newsfeed_fragment_container"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".ui.UVDetailFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/newsfeed_fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.UVDetailFragment">
 
     <ListView
         android:id="@android:id/list"
@@ -14,7 +14,7 @@
         android:divider="@android:color/transparent"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false" />
 
     <ProgressBar
         android:id="@+id/progress"
@@ -22,13 +22,13 @@
         android:layout_height="0dip"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
         android:id="@android:id/empty"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        style="@style/NewsfeedEmptyList"/>
+        style="@style/NewsfeedEmptyList" />
 
 </LinearLayout>
