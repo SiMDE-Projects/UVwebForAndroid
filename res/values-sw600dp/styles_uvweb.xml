@@ -3,12 +3,11 @@
     <!-- UV list styles -->
     <style name="List" parent="@style/ListDefault">
         <item name="android:divider">@null</item>
-        <item name="android:background">@drawable/list_background_twopane_uvweb</item>
     </style>
 
     <style name="ListNewsfeed" parent="@style/ListDefault">
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingLeft">@dimen/list_internal_padding</item>
+        <item name="android:paddingRight">@dimen/list_internal_padding</item>
     </style>
 
     <!-- UV item styles -->
@@ -30,7 +29,6 @@
     <!-- Empty uv list style -->
     <style name="EmptyList" parent="@style/EmptyListDefault">
         <item name="android:paddingRight">@dimen/uv_list_empty_right_padding</item>
-        <item name="android:background">@drawable/list_background_twopane_uvweb</item>
         <item name="android:text">@string/no_uvs</item>
     </style>
 

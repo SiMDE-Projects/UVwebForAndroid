@@ -16,6 +16,9 @@
     <string name="about">À propos</string>
     <string name="licenses">Licences open source</string>
 
+    <!-- UVListFragment -->
+    <string name="retry_btn_text">Réessayer</string>
+
     <!-- NewsFeed -->
     <string name="date_presentation">Il y a</string>
     <string name="no_newsfeed_entry">Aucune activité récente</string>

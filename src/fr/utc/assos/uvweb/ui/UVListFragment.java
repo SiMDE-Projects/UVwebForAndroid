@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
@@ -45,7 +46,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
 public class UVListFragment extends UVwebFragment implements AdapterView.OnItemClickListener,
-		UVListAdapter.SearchCallbacks, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
+		UVListAdapter.SearchCallbacks, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener {
 	private static final String STATE_DISPLAYED_UV = "displayed_uv";
 	private static final String STATE_SEARCH_QUERY = "search_query";
 	private static final String STATE_UV_LIST = "uv_list";
@@ -88,6 +89,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	private UVwebSearchView mSearchView;
 	private String mSearchQuery;
 	private ProgressBar mProgressBar;
+	private Button mRetryButton;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -156,6 +158,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		mListView = (UVwebListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+		mRetryButton = (Button) rootView.findViewById(R.id.btn_retry);
+		mRetryButton.setOnClickListener(this);
 
 		// Adapter setup
 		mAdapter = new UVListAdapter(getSherlockActivity());
@@ -341,6 +345,28 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		return true;
 	}
 
+	@Override
+	public void onClick(View view) {
+		final SherlockFragmentActivity context = getSherlockActivity();
+		if (!ConnectionUtils.isOnline(context)) {
+			handleNetworkError(context);
+		} else {
+			new LoadUvsListTask(this).execute();
+		}
+	}
+
+	@Override
+	protected void handleNetworkError(SherlockFragmentActivity context) {
+		super.handleNetworkError(context);
+
+		mRetryButton.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	protected void handleNetworkError() {
+		handleNetworkError(getSherlockActivity());
+	}
+
 	/**
 	 * A callback interface that all activities containing this fragment must
 	 * implement. This mechanism allows activities to be notified of item
@@ -388,6 +414,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
 				ui.mListView.getEmptyView().setVisibility(View.GONE);
+				ui.mRetryButton.setVisibility(View.GONE);
 				ui.mProgressBar.setVisibility(View.VISIBLE);
 			}
 		}
