@@ -193,6 +193,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	public void onDetach() {
 		// Reset the active callbacks interface to the dummy implementation.
 		mCallbacks = sDummyCallbacks;
+		mAdapter.resetSearchCallbacks();
 
 		super.onDetach();
 	}
@@ -262,7 +263,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 				mSearchView.setIsLoadingUV(false);
 				return true;
 			default:
-				return false;
+				return super.onOptionsItemSelected(item);
 		}
 	}
 

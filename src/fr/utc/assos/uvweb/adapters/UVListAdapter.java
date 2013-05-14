@@ -73,6 +73,10 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 		mSearchCallbacks = callbacks;
 	}
 
+	public void resetSearchCallbacks() {
+		mSearchCallbacks = sDummySearchCallbacks;
+	}
+
 	@Override
 	public int getCount() {
 		return mUVs.size();
@@ -189,7 +193,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 
 		// Set header text as first char in name
 		final TextView headerView = UVwebHolder.get(convertView, R.id.header_text);
-		headerView.setText((String.valueOf(getSectionName(position))));
+		headerView.setText(getSectionName(position));
 
 		return convertView;
 	}
