@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.Collections;
@@ -21,11 +22,14 @@ import java.util.List;
  */
 public class UVCommentAdapter extends UVAdapter {
 	private final Context mContext;
+	private final int mAvatarPixelSize;
 	private List<UVwebContent.UVComment> mComments = Collections.emptyList();
 
 	public UVCommentAdapter(Context context) {
 		super(context);
 		mContext = context;
+		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size)
+				+ GravatarUtils.IMAGE_QUALITY_MIN_THRESHOLD;
 	}
 
 	@Override
@@ -66,7 +70,7 @@ public class UVCommentAdapter extends UVAdapter {
 
 		final UVwebContent.User author = comment.getAuthor();
 		userIdView.setText(author.getName());
-		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + author.getGravatarHash() + "?size=" + String.valueOf(100) + "&d=404") // TODO: size
+		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + author.getGravatarHash() + "?size=" + String.valueOf(mAvatarPixelSize) + "&d=404")
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);

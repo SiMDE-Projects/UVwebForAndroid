@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class GravatarUtils {
+	public static final int IMAGE_QUALITY_MIN_THRESHOLD = 50;
+
 	public static String convertEmailToHash(String email) {
 		final MessageDigest messageDigest;
 		try {

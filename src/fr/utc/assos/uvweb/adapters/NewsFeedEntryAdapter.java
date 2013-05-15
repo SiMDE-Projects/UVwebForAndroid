@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.Collections;
@@ -29,7 +30,8 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 	public NewsFeedEntryAdapter(Context context) {
 		super(context);
 		mContext = context;
-		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size) + 50;
+		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size)
+				+ GravatarUtils.IMAGE_QUALITY_MIN_THRESHOLD;
 		mDatePresentation = context.getString(R.string.date_presentation);
 	}
 
