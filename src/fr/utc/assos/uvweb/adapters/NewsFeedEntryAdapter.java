@@ -30,8 +30,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 	public NewsFeedEntryAdapter(Context context) {
 		super(context);
 		mContext = context;
-		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size)
-				+ GravatarUtils.IMAGE_QUALITY_MIN_THRESHOLD;
+		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 		mDatePresentation = context.getString(R.string.date_presentation);
 	}
 
@@ -72,7 +71,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				owner.getName(), " " + entry.getAction())));
 		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
-		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + owner.getGravatarHash() + "?size=" + String.valueOf(mAvatarPixelSize) + "&d=404")
+		Picasso.with(mContext).load(GravatarUtils.computerUrlRequest(owner.getGravatarHash(), mAvatarPixelSize))
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);

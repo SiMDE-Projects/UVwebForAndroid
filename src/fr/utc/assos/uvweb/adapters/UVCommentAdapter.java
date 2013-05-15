@@ -28,8 +28,7 @@ public class UVCommentAdapter extends UVAdapter {
 	public UVCommentAdapter(Context context) {
 		super(context);
 		mContext = context;
-		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size)
-				+ GravatarUtils.IMAGE_QUALITY_MIN_THRESHOLD;
+		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 	}
 
 	@Override
@@ -70,7 +69,7 @@ public class UVCommentAdapter extends UVAdapter {
 
 		final UVwebContent.User author = comment.getAuthor();
 		userIdView.setText(author.getName());
-		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + author.getGravatarHash() + "?size=" + String.valueOf(mAvatarPixelSize) + "&d=404")
+		Picasso.with(mContext).load(GravatarUtils.computerUrlRequest(author.getGravatarHash(), mAvatarPixelSize))
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);
