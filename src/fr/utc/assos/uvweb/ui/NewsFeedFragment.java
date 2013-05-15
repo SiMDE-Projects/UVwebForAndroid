@@ -18,6 +18,7 @@ import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
+import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.HttpHelper;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -165,7 +166,7 @@ public class NewsFeedFragment extends UVwebFragment {
 					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
 					newsfeedEntries.add(new UVwebContent.NewsFeedEntry(
 							newsfeedEntryInfo.getString("author"),
-							newsfeedEntryInfo.getString("email"),
+							GravatarUtils.convertEmailToHash(newsfeedEntryInfo.getString("email")),
 							newsfeedEntryInfo.getString("date"),
 							newsfeedEntryInfo.getString("content"),
 							newsfeedEntryInfo.getString("action")

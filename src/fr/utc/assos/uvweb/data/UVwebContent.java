@@ -242,26 +242,26 @@ public class UVwebContent {
 			}
 		};
 		private String mAuthor;
-		private String mAuthorEmail;
+		private String mGravatarHash;
 		private DateTime mDate;
 		private String mComment;
 		private String mAction;
 
-		public NewsFeedEntry(String author, String authorEmail, DateTime date, String comment, String action) {
+		public NewsFeedEntry(String author, String gravatarHash, DateTime date, String comment, String action) {
 			mAuthor = author;
-			mAuthorEmail = authorEmail;
+			mGravatarHash = gravatarHash;
 			mDate = date;
 			mComment = comment;
 			mAction = action;
 		}
 
-		public NewsFeedEntry(String author, String authorEmail, String date, String comment, String action) {
-			this(author, authorEmail, DateUtils.getDateFromString(date), comment, action);
+		public NewsFeedEntry(String author, String gravatarHash, String date, String comment, String action) {
+			this(author, gravatarHash, DateUtils.getDateFromString(date), comment, action);
 		}
 
 		protected NewsFeedEntry(Parcel in) {
 			mAuthor = in.readString();
-			mAuthorEmail = in.readString();
+			mGravatarHash = in.readString();
 			mDate = DateUtils.getDateFromString(in.readString());
 			mComment = in.readString();
 			mAction = in.readString();
@@ -275,12 +275,12 @@ public class UVwebContent {
 			mAuthor = author;
 		}
 
-		public String getAuthorEmail() {
-			return mAuthorEmail;
+		public String getGravatarHash() {
+			return mGravatarHash;
 		}
 
-		public void setAuthorEmail(String authorEmail) {
-			mAuthorEmail = authorEmail;
+		public void setGravatarHash(String gravatarHash) {
+			mGravatarHash = gravatarHash;
 		}
 
 		public String getAction() {
@@ -315,7 +315,7 @@ public class UVwebContent {
 		@Override
 		public void writeToParcel(Parcel parcel, int flags) {
 			parcel.writeString(mAuthor);
-			parcel.writeString(mAuthorEmail);
+			parcel.writeString(mGravatarHash);
 			parcel.writeString(DateUtils.getFormattedDate(mDate));
 			parcel.writeString(mComment);
 			parcel.writeString(mAction);

@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.Collections;
@@ -71,7 +70,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				entry.getAuthor(), " " + entry.getAction())));
 		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
-		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + GravatarUtils.convertEmailToHash(entry.getAuthorEmail()) + "?size=" + String.valueOf(mAvatarPixelSize) + "&d=404")
+		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + entry.getGravatarHash() + "?size=" + String.valueOf(mAvatarPixelSize) + "&d=404")
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);

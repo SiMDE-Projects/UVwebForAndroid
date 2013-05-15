@@ -11,14 +11,14 @@ public class GravatarUtils {
 			messageDigest = MessageDigest.getInstance("MD5");
 			messageDigest.reset();
 			messageDigest.update(email.getBytes(Charset.forName("UTF8")));
-			final byte[] resultByte = messageDigest.digest();
-			StringBuffer sb = new StringBuffer();
-			for (int i = 0; i < resultByte.length; ++i) {
-				sb.append(Integer.toHexString((resultByte[i] & 0xFF) | 0x100).substring(1, 3));
+			final byte[] resultBytes = messageDigest.digest();
+			final StringBuilder sb = new StringBuilder();
+			for (byte resultByte : resultBytes) {
+				sb.append(Integer.toHexString((resultByte & 0xFF) | 0x100).substring(1, 3));
 			}
 			return sb.toString();
 		} catch (NoSuchAlgorithmException e) {
-			return "";
+			return email;
 		}
 	}
 }
