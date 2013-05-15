@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -385,7 +386,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	}
 
 	private static class LoadUvsListTask extends AsyncTask<Void, Void, List<UVwebContent.UV>> {
-		private static final String URL = "http://192.168.1.8/uvweb/web/app_dev.php/uv/app/list";
+		private static final String URL = "http://masciulli.fr/uvweb/uvlist.json";
 		private final WeakReference<UVListFragment> mUiFragment;
 		private final File mCacheFile;
 		private boolean mLoadFromNetwork = false;
@@ -393,8 +394,12 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		public LoadUvsListTask(UVListFragment uiFragment) {
 			super();
 
+			final String cachePath = Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) ||
+					!Environment.isExternalStorageRemovable() ? uiFragment.getSherlockActivity().getExternalCacheDir().getPath() :
+					uiFragment.getSherlockActivity().getCacheDir().getPath();
+
 			mUiFragment = new WeakReference<UVListFragment>(uiFragment);
-			mCacheFile = new File(uiFragment.getSherlockActivity().getExternalCacheDir(), "toto.json");
+			mCacheFile = new File(cachePath + File.separator + "toto.json");
 			// TODO: cache timestamp
 			if (!mCacheFile.exists()) {
 				try {
