@@ -3,7 +3,9 @@ package fr.utc.assos.uvweb.adapters;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import com.squareup.picasso.Picasso;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
@@ -18,10 +20,12 @@ import java.util.List;
  * It is used to show the users' comments of a given UV
  */
 public class UVCommentAdapter extends UVAdapter {
+	private final Context mContext;
 	private List<UVwebContent.UVComment> mComments = Collections.emptyList();
 
 	public UVCommentAdapter(Context context) {
 		super(context);
+		mContext = context;
 	}
 
 	@Override
@@ -52,6 +56,7 @@ public class UVCommentAdapter extends UVAdapter {
 		}
 
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
+		final ImageView userAvatarImageView = UVwebHolder.get(convertView, R.id.user_avatar);
 		final TextView rateView = UVwebHolder.get(convertView, R.id.rate);
 		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
 		final TextView semesterView = UVwebHolder.get(convertView, R.id.semester);
@@ -59,7 +64,12 @@ public class UVCommentAdapter extends UVAdapter {
 
 		final UVwebContent.UVComment comment = getItem(position);
 
-		userIdView.setText(comment.getAuthor());
+		final UVwebContent.User author = comment.getAuthor();
+		userIdView.setText(author.getName());
+		Picasso.with(mContext).load("http://www.gravatar.com/avatar/" + author.getGravatarHash() + "?size=" + String.valueOf(100) + "&d=404") // TODO: size
+				.placeholder(R.drawable.ic_contact_picture)
+				.error(R.drawable.ic_contact_picture)
+				.into(userAvatarImageView);
 		rateView.setText(comment.getFormattedRate());
 		commentView.setText(comment.getComment());
 		semesterView.setText(comment.getSemester());

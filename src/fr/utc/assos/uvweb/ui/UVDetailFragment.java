@@ -139,7 +139,7 @@ public class UVDetailFragment extends UVwebFragment {
 				headerViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
 					@Override
 					public void onInflate(ViewStub stub, View inflated) {
-						mListView.setEmptyView(inflated); // TODO: handle empty view message
+						mListView.setEmptyView(inflated); // TODO: handle empty view message when there are no comments to display
 						setHeaderData(inflated);
 					}
 				});
@@ -256,6 +256,7 @@ public class UVDetailFragment extends UVwebFragment {
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
 					uvComments.add(new UVwebContent.UVComment(
 							uvCommentsInfo.getString("author"),
+							uvCommentsInfo.getString("email"),
 							uvCommentsInfo.getString("date"),
 							uvCommentsInfo.getString("content"),
 							uvCommentsInfo.getInt("globalRate"),

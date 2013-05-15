@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 import fr.utc.assos.uvweb.util.DateUtils;
+import fr.utc.assos.uvweb.util.GravatarUtils;
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
@@ -136,38 +137,38 @@ public class UVwebContent {
 				return new UVComment[size];
 			}
 		};
-		private String mAuthor;
+		private User mAuthor;
 		private DateTime mDate;
 		private String mComment;
 		private int mGlobalRate;
 		private String mSemester;
 
-		public UVComment(String author, DateTime date, String comment, int globalRate, String semester) {
-			mAuthor = author;
+		public UVComment(String author, String email, DateTime date, String comment, int globalRate, String semester) {
+			mAuthor = new User(author, email);
 			mDate = date;
 			mComment = comment;
 			mGlobalRate = globalRate;
 			mSemester = semester;
 		}
 
-		public UVComment(String author, String date, String comment, int globalRate, String semester) {
-			this(author, DateUtils.getDateFromString(date), comment, globalRate, semester);
+		public UVComment(String author, String email, String date, String comment, int globalRate, String semester) {
+			this(author, email, DateUtils.getDateFromString(date), comment, globalRate, semester);
 		}
 
 
 		protected UVComment(Parcel in) {
-			mAuthor = in.readString();
+			mAuthor = in.readParcelable(User.class.getClassLoader());
 			mDate = DateUtils.getDateFromString(in.readString());
 			mComment = in.readString();
 			mGlobalRate = in.readInt();
 			mSemester = in.readString();
 		}
 
-		public String getAuthor() {
+		public User getAuthor() {
 			return mAuthor;
 		}
 
-		public void setAuthor(String author) {
+		public void setAuthor(User author) {
 			mAuthor = author;
 		}
 
@@ -218,7 +219,7 @@ public class UVwebContent {
 
 		@Override
 		public void writeToParcel(Parcel parcel, int flags) {
-			parcel.writeString(mAuthor);
+			parcel.writeParcelable(mAuthor, flags);
 			parcel.writeString(DateUtils.getFormattedDate(mDate));
 			parcel.writeString(mComment);
 			parcel.writeInt(mGlobalRate);
@@ -241,15 +242,13 @@ public class UVwebContent {
 				return new NewsFeedEntry[size];
 			}
 		};
-		private String mAuthor;
-		private String mGravatarHash;
+		private User mOwner;
 		private DateTime mDate;
 		private String mComment;
 		private String mAction;
 
-		public NewsFeedEntry(String author, String gravatarHash, DateTime date, String comment, String action) {
-			mAuthor = author;
-			mGravatarHash = gravatarHash;
+		public NewsFeedEntry(String author, String email, DateTime date, String comment, String action) {
+			mOwner = new User(author, email);
 			mDate = date;
 			mComment = comment;
 			mAction = action;
@@ -260,27 +259,18 @@ public class UVwebContent {
 		}
 
 		protected NewsFeedEntry(Parcel in) {
-			mAuthor = in.readString();
-			mGravatarHash = in.readString();
+			mOwner = in.readParcelable(User.class.getClassLoader());
 			mDate = DateUtils.getDateFromString(in.readString());
 			mComment = in.readString();
 			mAction = in.readString();
 		}
 
-		public String getAuthor() {
-			return mAuthor;
+		public User getOwner() {
+			return mOwner;
 		}
 
-		public void setAuthor(String author) {
-			mAuthor = author;
-		}
-
-		public String getGravatarHash() {
-			return mGravatarHash;
-		}
-
-		public void setGravatarHash(String gravatarHash) {
-			mGravatarHash = gravatarHash;
+		public void setOwner(User owner) {
+			mOwner = owner;
 		}
 
 		public String getAction() {
@@ -314,8 +304,7 @@ public class UVwebContent {
 
 		@Override
 		public void writeToParcel(Parcel parcel, int flags) {
-			parcel.writeString(mAuthor);
-			parcel.writeString(mGravatarHash);
+			parcel.writeParcelable(mOwner, flags);
 			parcel.writeString(DateUtils.getFormattedDate(mDate));
 			parcel.writeString(mComment);
 			parcel.writeString(mAction);
@@ -324,6 +313,57 @@ public class UVwebContent {
 		@Override
 		public int compareTo(NewsFeedEntry newsFeedEntry) {
 			return mDate.compareTo(newsFeedEntry.mDate);
+		}
+	}
+
+	public static class User implements Parcelable {
+		public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+			public User createFromParcel(Parcel in) {
+				return new User(in);
+			}
+
+			public User[] newArray(int size) {
+				return new User[size];
+			}
+		};
+		private final String mName;
+		private final String mEmail;
+		private final String mGravatarHash;
+
+		public User(String name, String email) {
+			mName = name;
+			mEmail = email;
+			mGravatarHash = GravatarUtils.convertEmailToHash(email);
+		}
+
+		protected User(Parcel in) {
+			mName = in.readString();
+			mEmail = in.readString();
+			mGravatarHash = in.readString();
+		}
+
+		public String getName() {
+			return mName;
+		}
+
+		public String getEmail() {
+			return mEmail;
+		}
+
+		public String getGravatarHash() {
+			return mGravatarHash;
+		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel parcel, int flags) {
+			parcel.writeString(mName);
+			parcel.writeString(mEmail);
+			parcel.writeString(mGravatarHash);
 		}
 	}
 }

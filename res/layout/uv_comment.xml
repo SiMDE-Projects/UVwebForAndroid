@@ -10,6 +10,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:id="@+id/user_avatar"
+                android:layout_width="@dimen/avatar_image_view_size"
+                android:layout_height="@dimen/avatar_image_view_size"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center_horizontal" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -19,15 +26,14 @@
                 android:textSize="20sp"
                 android:textColor="@color/main_color"
                 android:layout_gravity="center_vertical"
-                android:drawableLeft="@drawable/ic_contact_picture"
-                android:drawablePadding="10dp"
+                android:layout_toRightOf="@+id/user_avatar"
                 android:layout_centerVertical="true" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="6dip"
+                android:layout_marginRight="8dip"
                 android:layout_toRightOf="@id/userid"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentRight="true"
