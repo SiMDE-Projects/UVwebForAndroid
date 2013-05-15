@@ -1,85 +1,50 @@
 package fr.utc.assos.uvweb.util;
 
+import com.squareup.okhttp.OkHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class HttpHelper {
-	private static String convertStreamToString(InputStream is) {
+	private static final OkHttpClient sClient = new OkHttpClient();
+
+	private static String convertStreamToString(InputStream is) throws IOException {
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 		final StringBuilder sb = new StringBuilder();
-
-		try {
-			String line;
-
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line);
 		}
-
 		return sb.toString();
 	}
 
 	public static JSONArray loadJSON(String url) {
-		HttpURLConnection connection = null;
-		JSONArray json = null;
 		InputStream is = null;
+		final JSONArray json;
 
 		try {
-			connection = (HttpURLConnection) new URL(url).openConnection();
-			connection.setConnectTimeout(5000);
-
-			is = new BufferedInputStream(connection.getInputStream());
+			HttpURLConnection connection = sClient.open(new URL(url));
+			is = connection.getInputStream();
 			json = new JSONArray(convertStreamToString(is));
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			return null;
 		} catch (JSONException je) {
-			je.printStackTrace();
+			return null;
 		} finally {
 			try {
 				if (is != null) {
 					is.close();
 				}
 			} catch (IOException ioe) {
-			}
-
-			if (connection != null) {
-				connection.disconnect();
 			}
 		}
 
 		return json;
-	}
-
-	public static InputStream loadImage(String url) {
-		HttpURLConnection connection = null;
-		InputStream is = null;
-
-		try {
-			connection = (HttpURLConnection) new URL(url).openConnection();
-			connection.setConnectTimeout(15000);
-
-			is = new BufferedInputStream(connection.getInputStream());
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} finally {
-			try {
-				if (is != null) {
-					is.close();
-				}
-			} catch (IOException ioe) {
-			}
-
-			if (connection != null) {
-				connection.disconnect();
-			}
-		}
-
-		return is;
 	}
 }
