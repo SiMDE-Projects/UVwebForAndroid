@@ -2,65 +2,55 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout style="@style/UvComment">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/user_avatar"
                 android:layout_width="@dimen/avatar_image_view_size"
                 android:layout_height="@dimen/avatar_image_view_size"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="8dp"
                 android:layout_gravity="center_horizontal" />
 
             <TextView
+                android:id="@+id/userid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="amasciul"
-                android:id="@+id/userid"
                 android:textStyle="bold"
                 android:textSize="20sp"
-                android:textColor="@color/main_color"
-                android:layout_gravity="center_vertical"
-                android:layout_toRightOf="@+id/user_avatar"
-                android:layout_centerVertical="true" />
+                android:textColor="@color/main_color" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="8dip"
-                android:layout_toRightOf="@id/userid"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignBottom="@id/userid">
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/date"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3 septembre 1985"
-                    android:gravity="center_vertical|right"
-                    android:textSize="10sp"
-                    android:layout_alignParentBottom="true"
+                    android:gravity="right"
+                    android:textSize="@dimen/date_text_size"
                     android:layout_alignParentRight="true" />
 
                 <TextView
                     android:id="@+id/rate"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8/10"
                     android:gravity="center_vertical|right|top"
-                    android:textSize="18sp"
-                    android:layout_above="@id/date"
+                    android:textSize="20sp"
                     android:textStyle="bold"
-                    android:layout_alignParentTop="true"
                     android:layout_alignWithParentIfMissing="true"
-                    android:layout_alignParentRight="true" />
+                    android:layout_alignRight="@+id/date"
+                    android:layout_below="@+id/date" />
 
                 <TextView
                     android:id="@+id/semester"
@@ -69,19 +59,18 @@
                     android:text="P12"
                     android:textSize="16sp"
                     android:layout_alignRight="@+id/date"
-                    android:layout_above="@+id/date"
-                    android:paddingTop="8dp" />
+                    android:layout_below="@+id/rate" />
 
             </RelativeLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <TextView
             android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/uvcommentexample"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:textSize="14sp"
             android:textIsSelectable="true" />
 
