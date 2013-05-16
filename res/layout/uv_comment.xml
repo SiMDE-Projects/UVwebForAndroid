@@ -9,7 +9,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp">
 
             <ImageView
                 android:id="@+id/user_avatar"
@@ -72,7 +75,10 @@
             android:text="@string/uvcommentexample"
             android:layout_marginTop="16dp"
             android:textSize="14sp"
-            android:textIsSelectable="true" />
+            android:textIsSelectable="true"
+            android:paddingRight="8dp"
+            android:paddingLeft="8dp"
+            android:paddingBottom="8dp" />
 
     </LinearLayout>
 
