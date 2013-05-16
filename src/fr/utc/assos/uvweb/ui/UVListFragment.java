@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -13,19 +14,13 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
-import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.adapters.UVListAdapter;
-import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.ui.custom.UVwebListView;
-import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
-import fr.utc.assos.uvweb.util.CacheHelper;
-import fr.utc.assos.uvweb.util.ConnectionUtils;
-import fr.utc.assos.uvweb.util.HttpHelper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +30,15 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.adapters.UVListAdapter;
+import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.ui.custom.UVwebListView;
+import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
+import fr.utc.assos.uvweb.util.CacheHelper;
+import fr.utc.assos.uvweb.util.ConnectionUtils;
+import fr.utc.assos.uvweb.util.HttpHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -226,6 +230,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	 * Turns on activate-on-click mode. When this mode is on, list items will be
 	 * given the 'activated' state when touched.
 	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	private void setupTwoPaneUi() {
 		if (mTwoPane) {
 			// In two-pane mode, list items should be given the
@@ -274,6 +279,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	/**
 	 * {@link UVListAdapter} interface callbacks for search implementation
 	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 	@Override
 	public void onItemsFound(List<UVwebContent.UV> results) {
 		if (mTwoPane && results.size() == 1) {
@@ -394,21 +400,33 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		public LoadUvsListTask(UVListFragment uiFragment) {
 			super();
 
-			final String cachePath = Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) ||
-					!Environment.isExternalStorageRemovable() ? uiFragment.getSherlockActivity().getExternalCacheDir().getPath() :
-					uiFragment.getSherlockActivity().getCacheDir().getPath();
+
+			final String cachePath;
+			if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO ||
+					!Environment.isExternalStorageRemovable()) {
+				final File externalCacheDir = uiFragment.getSherlockActivity().getExternalCacheDir();
+				cachePath = externalCacheDir != null ? externalCacheDir.getPath() : null;
+			} else {
+				final File cacheDir = uiFragment.getSherlockActivity().getCacheDir();
+				cachePath = cacheDir != null ? cacheDir.getPath() : null;
+			}
 
 			mUiFragment = new WeakReference<UVListFragment>(uiFragment);
-			mCacheFile = new File(cachePath + File.separator + "toto.json");
-			// TODO: cache timestamp
-			if (!mCacheFile.exists()) {
-				try {
-					mCacheFile.createNewFile(); // TODO: FileInputStream & FileOutputStream can handle this
-				} catch (IOException e) {
-					e.printStackTrace();
-				} finally {
-					mLoadFromNetwork = true;
+			if (cachePath != null) {
+				mCacheFile = new File(cachePath + File.separator + "toto.json");
+				// TODO: cache timestamp
+				if (!mCacheFile.exists()) {
+					try {
+						mCacheFile.createNewFile(); // TODO: FileInputStream & FileOutputStream can handle this
+					} catch (IOException e) {
+						e.printStackTrace();
+					} finally {
+						mLoadFromNetwork = true;
+					}
 				}
+			} else {
+				mCacheFile = null;
+				mLoadFromNetwork = true;
 			}
 		}
 

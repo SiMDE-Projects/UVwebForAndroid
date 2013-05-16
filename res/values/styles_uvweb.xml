@@ -38,7 +38,7 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.UVweb.NoLogo</item>
     </style>
 
-    <style name="Theme.UVweb.Logo.Transparent" parent="@style/Theme.UVweb.Logo"></style>
+    <style name="Theme.UVweb.Logo.Transparent" parent="@style/Theme.UVweb.Logo" />
 
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
         <item name="background">@drawable/ab_solid_uvweb</item>
@@ -155,9 +155,9 @@
         <item name="android:textSize">34sp</item>
     </style>
 
-    <style name="Name.Letter" parent="@style/Name.LetterDefault"></style>
+    <style name="Name.Letter" parent="@style/Name.LetterDefault" />
 
-    <style name="Name.Number" parent="@style/Name.NumberDefault"></style>
+    <style name="Name.Number" parent="@style/Name.NumberDefault" />
 
     <style name="Description" parent="@style/DescriptionDefault">
         <item name="android:textSize">14sp</item>
@@ -184,7 +184,7 @@
 
     <!-- Sticky header style -->
     <!-- Default style -->
-    <style name="StickyHeaderRootDefault"></style>
+    <style name="StickyHeaderRootDefault" />
     <!-- Actual style -->
     <style name="StickyHeaderRoot" parent="@style/StickyHeaderRootDefault">
         <item name="android:background">@color/abs__background_holo_light</item>
@@ -217,7 +217,7 @@
     <style name="UvComment" parent="@style/UvCommentDefault">
         <item name="android:layout_marginLeft">16dp</item>
         <item name="android:layout_marginRight">16dp</item>
-        <item name="android:background">@drawable/card_item</item>
+        <item name="android:background">@drawable/background_card</item>
     </style>
 
 </resources>

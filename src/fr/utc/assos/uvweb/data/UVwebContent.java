@@ -2,11 +2,13 @@ package fr.utc.assos.uvweb.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import fr.utc.assos.uvweb.util.DateUtils;
-import fr.utc.assos.uvweb.util.GravatarUtils;
+
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
+
+import fr.utc.assos.uvweb.util.DateUtils;
+import fr.utc.assos.uvweb.util.GravatarUtils;
 
 /**
  * Helper class for providing UV content for user interfaces
@@ -275,6 +277,10 @@ public class UVwebContent {
 
 		public String getAction() {
 			return mAction;
+		}
+
+		public void setAction(String action) {
+			mAction = action;
 		}
 
 		public DateTime getDate() {

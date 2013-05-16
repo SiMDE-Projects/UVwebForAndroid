@@ -5,14 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
+import java.util.Collections;
+import java.util.List;
+
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * An adapter used all together with the {@link fr.utc.assos.uvweb.ui.UVDetailFragment}'s ListView.
@@ -63,7 +65,7 @@ public class UVCommentAdapter extends UVAdapter {
 		final TextView rateView = UVwebHolder.get(convertView, R.id.rate);
 		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
 		final TextView semesterView = UVwebHolder.get(convertView, R.id.semester);
-		final TextView dateView = (TextView) convertView.findViewById(R.id.date);
+		final TextView dateView = UVwebHolder.get(convertView, R.id.date);
 
 		final UVwebContent.UVComment comment = getItem(position);
 

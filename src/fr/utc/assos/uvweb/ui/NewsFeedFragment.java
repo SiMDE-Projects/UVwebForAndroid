@@ -8,17 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
-import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
-import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.AnimationUtils;
-import fr.utc.assos.uvweb.util.ConnectionUtils;
-import fr.utc.assos.uvweb.util.HttpHelper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,6 +22,13 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
+import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.AnimationUtils;
+import fr.utc.assos.uvweb.util.ConnectionUtils;
+import fr.utc.assos.uvweb.util.HttpHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 

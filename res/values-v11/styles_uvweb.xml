@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- File created by the Android Action Bar Style Generator
+<?xml version="1.0" encoding="utf-8"?><!-- File created by the Android Action Bar Style Generator
 
      Copyright (C) 2012 readyState Software Ltd
 
@@ -29,8 +28,7 @@
         <item name="android:listChoiceBackgroundIndicator">@drawable/list_selector_uvweb</item>
     </style>
 
-    <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default">
-    </style>
+    <style name="Theme.UVweb" parent="@style/Theme.UVweb_Default" />
 
     <style name="Theme.UVweb.Logo" parent="Theme.UVweb">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.UVweb.Logo</item>

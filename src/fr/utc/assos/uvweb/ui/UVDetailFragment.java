@@ -13,17 +13,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
-import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
-import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.AnimationUtils;
-import fr.utc.assos.uvweb.util.ConnectionUtils;
-import fr.utc.assos.uvweb.util.HttpHelper;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +27,13 @@ import org.json.JSONObject;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
+import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.AnimationUtils;
+import fr.utc.assos.uvweb.util.ConnectionUtils;
+import fr.utc.assos.uvweb.util.HttpHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -48,7 +51,7 @@ public class UVDetailFragment extends UVwebFragment {
 	/**
 	 * The fragment argument representing whether the layout is in twoPane mode or not.
 	 */
-	public static final String ARG_TWO_PANE = "two_pane";
+	private static final String ARG_TWO_PANE = "two_pane";
 	private static final String TAG = makeLogTag(UVDetailFragment.class);
 	private static final String STATE_COMMENT_LIST = "comment_list";
 	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(

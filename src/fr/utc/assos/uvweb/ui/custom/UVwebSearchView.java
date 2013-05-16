@@ -1,11 +1,13 @@
 package fr.utc.assos.uvweb.ui.custom;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.util.AttributeSet;
+
 import com.actionbarsherlock.widget.SearchView;
+
 import fr.utc.assos.uvweb.R;
 
-import static fr.utc.assos.uvweb.util.LogUtils.LOGD;
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
@@ -29,7 +31,6 @@ public class UVwebSearchView extends SearchView {
 
 	@Override
 	public void onActionViewExpanded() {
-		LOGD(TAG, "onActionViewExpanded called, mIsLoadingUV == " + String.valueOf(mIsLoadingUV));
 		if (mIsLoadingUV) {
 			setIconified(false);
 			clearFocus();
@@ -39,11 +40,13 @@ public class UVwebSearchView extends SearchView {
 	}
 
 	public void setIsLoadingUV(boolean isLoadingUV) {
-		LOGD(TAG, "setIsLoadingUV called, isLoadingUV = " + isLoadingUV);
 		mIsLoadingUV = isLoadingUV;
 	}
 
 	private void setupSearchView() {
-		setQueryHint(getResources().getString(R.string.search_uv_hint));
+		final Resources resources = getResources();
+		if (resources != null) {
+			setQueryHint(resources.getString(R.string.search_uv_hint));
+		}
 	}
 }
