@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +28,7 @@ import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
 import fr.utc.assos.uvweb.util.HttpHelper;
+import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -66,6 +66,7 @@ public class NewsFeedFragment extends UVwebFragment {
 
 		mListView = (ListView) rootView.findViewById(android.R.id.list);
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
+		// TODO: scale better on N10 using margin point (see IO @7h)
 
 		mAdapter = new NewsFeedEntryAdapter(getSherlockActivity());
 
@@ -84,11 +85,7 @@ public class NewsFeedFragment extends UVwebFragment {
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					new LoadNewsfeedEntriesTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					new LoadNewsfeedEntriesTask(this).execute();
-				}
+				ThreadedAsyncTaskHelper.execute(new LoadNewsfeedEntriesTask(this));
 			}
 		}
 

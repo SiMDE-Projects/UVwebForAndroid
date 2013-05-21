@@ -39,6 +39,7 @@ import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
 import fr.utc.assos.uvweb.util.CacheHelper;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
 import fr.utc.assos.uvweb.util.HttpHelper;
+import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -179,11 +180,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-					new LoadUvsListTask(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					new LoadUvsListTask(this).execute();
-				}
+				ThreadedAsyncTaskHelper.execute(new LoadUvsListTask(this));
 			}
 		}
 
@@ -400,7 +397,6 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		public LoadUvsListTask(UVListFragment uiFragment) {
 			super();
 
-
 			final String cachePath;
 			if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO ||
 					!Environment.isExternalStorageRemovable()) {
@@ -437,8 +433,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			final UVListFragment ui = mUiFragment.get();
 			if (ui != null) {
 				ui.mListView.getEmptyView().setVisibility(View.GONE);
-				ui.mRetryButton.setVisibility(View.GONE);
 				ui.mProgressBar.setVisibility(View.VISIBLE);
+				// TODO: debug progressBar Touchpad
 			}
 		}
 
