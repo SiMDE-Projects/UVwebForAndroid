@@ -16,11 +16,11 @@ public class GravatarUtils {
 			messageDigest.reset();
 			messageDigest.update(email.getBytes(Charset.forName("UTF8")));
 			final byte[] resultBytes = messageDigest.digest();
-			final StringBuilder sb = new StringBuilder();
+			sStringBuilder.setLength(0);
 			for (byte resultByte : resultBytes) {
-				sb.append(Integer.toHexString((resultByte & 0xFF) | 0x100).substring(1, 3));
+				sStringBuilder.append(Integer.toHexString((resultByte & 0xFF) | 0x100).substring(1, 3));
 			}
-			return sb.toString();
+			return sStringBuilder.toString();
 		} catch (NoSuchAlgorithmException e) {
 			return email;
 		}
