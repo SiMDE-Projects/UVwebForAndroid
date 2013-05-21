@@ -160,7 +160,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				if (!mUsesStickyHeader && !savedComments.isEmpty()) {
 					setHeaderData(mHeaderView);
 				}
-				// TODO: handle case where there are no comments on the server (no need to reload on rotate)
 				mAdapter.updateComments(savedComments);
 			} else if (savedInstanceState.containsKey(STATE_NO_COMMENT)) {
 				emptyView.findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
