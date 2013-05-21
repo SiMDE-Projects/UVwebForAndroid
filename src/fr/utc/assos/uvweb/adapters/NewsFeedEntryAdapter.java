@@ -14,7 +14,6 @@ import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 /**
@@ -26,13 +25,11 @@ import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 public class NewsFeedEntryAdapter extends UVAdapter {
 	private final String mDatePresentation;
 	private final Context mContext;
-	private final int mAvatarPixelSize;
 	private List<UVwebContent.NewsFeedEntry> mNewsFeedEntries = Collections.emptyList();
 
 	public NewsFeedEntryAdapter(Context context) {
 		super(context);
 		mContext = context;
-		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 		mDatePresentation = context.getString(R.string.date_presentation);
 	}
 
@@ -63,8 +60,8 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 			convertView = mLayoutInflater.inflate(R.layout.newsfeed_entry, null);
 		}
 
-		final ImageView userAvatarImageView = UVwebHolder.get(convertView, R.id.user_avatar);
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.user_id_action);
+		final ImageView userAvatarImageView = UVwebHolder.get(convertView, R.id.user_avatar);
 		final TextView dateView = UVwebHolder.get(convertView, R.id.date);
 		final TextView commentView = UVwebHolder.get(convertView, R.id.comment);
 
@@ -73,7 +70,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				owner.getName(), " " + entry.getAction())));
 		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
-		Picasso.with(mContext).load(GravatarUtils.computeUrlRequest(owner.getGravatarHash(), mAvatarPixelSize)) // TODO: computer GravatarUrlRequest in User?
+		Picasso.with(mContext).load(owner.getGravatarUrl())
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);

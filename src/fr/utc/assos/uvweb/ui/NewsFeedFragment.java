@@ -42,6 +42,7 @@ public class NewsFeedFragment extends UVwebFragment {
 	private MenuItem mRefreshMenuItem;
 	private ProgressBar mProgressBar;
 	private ListView mListView;
+	private int mAvatarPixelSize;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,6 +74,8 @@ public class NewsFeedFragment extends UVwebFragment {
 		final SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter
 				(mAdapter, AnimationUtils.CARD_ANIMATION_DELAY_MILLIS, AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
 		swingBottomInAnimationAdapter.setListView(mListView);
+
+		mAvatarPixelSize = getSherlockActivity().getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 
 		mListView.setAdapter(swingBottomInAnimationAdapter);
 
@@ -130,10 +133,12 @@ public class NewsFeedFragment extends UVwebFragment {
 	private static class LoadNewsfeedEntriesTask extends AsyncTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
 		private static final String URL = "http://thomaskeunebroek.fr/newsfeed.json";
 		private final WeakReference<NewsFeedFragment> mUiFragment;
+		private final int mAvatarPixelSize;
 
 		public LoadNewsfeedEntriesTask(NewsFeedFragment uiFragment) {
 			super();
 
+			mAvatarPixelSize = uiFragment.mAvatarPixelSize;
 			mUiFragment = new WeakReference<NewsFeedFragment>(uiFragment);
 		}
 
@@ -168,7 +173,8 @@ public class NewsFeedFragment extends UVwebFragment {
 							newsfeedEntryInfo.getString("email"),
 							newsfeedEntryInfo.getString("date"),
 							newsfeedEntryInfo.getString("content"),
-							newsfeedEntryInfo.getString("action")
+							newsfeedEntryInfo.getString("action"),
+							mAvatarPixelSize
 					));
 				}
 			} catch (JSONException e) {

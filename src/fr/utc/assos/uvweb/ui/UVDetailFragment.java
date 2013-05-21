@@ -74,6 +74,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private ProgressBar mProgressBar;
 	private boolean mUsesStickyHeader;
 	private View mHeaderView;
+	private int mAvatarSizeInPixel;
 
 	public UVDetailFragment() {
 	}
@@ -148,6 +149,10 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			mListView.addHeaderView(mHeaderView);
 		}
 
+		mAvatarSizeInPixel = getSherlockActivity().getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
+
+		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
+
 		if (savedInstanceState != null) {
 			if (savedInstanceState.containsKey(STATE_COMMENT_LIST)) {
 				final ArrayList<UVwebContent.UVComment> savedComments = savedInstanceState.getParcelableArrayList
@@ -168,8 +173,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				new LoadUvCommentsTask(this).execute();
 			}
 		}
-
-		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
 
 		return rootView;
 	}
@@ -264,11 +267,13 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private static class LoadUvCommentsTask extends AsyncTask<Void, Void, List<UVwebContent.UVComment>> {
 		private static final String URL = "http://thomaskeunebroek.fr/uv_comments.json";
 		private final WeakReference<UVDetailFragment> mUiFragment;
+		private final int mAvatarSizeInPixel;
 
 		public LoadUvCommentsTask(UVDetailFragment uiFragment) {
 			super();
 
 			mUiFragment = new WeakReference<UVDetailFragment>(uiFragment);
+			mAvatarSizeInPixel = uiFragment.mAvatarSizeInPixel;
 		}
 
 		@Override
@@ -300,7 +305,8 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 							uvCommentsInfo.getString("date"),
 							uvCommentsInfo.getString("content"),
 							uvCommentsInfo.getInt("globalRate"),
-							uvCommentsInfo.getString("semester")
+							uvCommentsInfo.getString("semester"),
+							mAvatarSizeInPixel
 					));
 				}
 			} catch (JSONException e) {

@@ -14,7 +14,6 @@ import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 /**
@@ -30,14 +29,12 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 		}
 	};
 	private final Context mContext;
-	private final int mAvatarPixelSize;
 	private List<UVwebContent.UVComment> mComments = Collections.emptyList();
 	private OnInflateStickyHeader mCallbacks = sDummyCallbacks;
 
 	public UVCommentAdapter(Context context) {
 		super(context);
 		mContext = context;
-		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 	}
 
 	public void setOnInflateStickyHeader(OnInflateStickyHeader callbacks) {
@@ -86,7 +83,7 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 
 		final UVwebContent.User author = comment.getAuthor();
 		userIdView.setText(author.getName());
-		Picasso.with(mContext).load(GravatarUtils.computeUrlRequest(author.getGravatarHash(), mAvatarPixelSize))
+		Picasso.with(mContext).load(author.getGravatarUrl())
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);
@@ -106,7 +103,6 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			// TODO: it's the same as the empty header view, cache it
 			convertView = mLayoutInflater.inflate(R.layout.uv_detail_header, null);
 			mCallbacks.onHeaderInflated(convertView);
 		}
