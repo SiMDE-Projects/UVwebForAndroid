@@ -141,7 +141,9 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		}
 
 		final View emptyView = rootView.findViewById(android.R.id.empty);
-		setEmptyViewData(emptyView);
+		((TextView) emptyView.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
+				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
+		((TextView) emptyView.findViewById(R.id.uv_description)).setText(mUV.getDescription());
 		mListView.setEmptyView(emptyView);
 
 		if (!mUsesStickyHeader) {
@@ -194,7 +196,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	}
 
 	private void setHeaderData(View headerView) {
-		// TODO: refact
 		((TextView) headerView.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
 				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
 		((TextView) headerView.findViewById(R.id.uv_description)).setText(mUV.getDescription());
@@ -212,12 +213,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			// TODO: fetch values from server
 			successRatesContainer.addView(tv);
 		}
-	}
-
-	private void setEmptyViewData(View emptyView) {
-		((TextView) emptyView.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
-				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
-		((TextView) emptyView.findViewById(R.id.uv_description)).setText(mUV.getDescription());
 	}
 
 	@Override
