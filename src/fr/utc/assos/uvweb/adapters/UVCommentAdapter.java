@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
@@ -22,15 +23,29 @@ import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
  * class and thus allows UVs recycling.
  * It is used to show the users' comments of a given UV
  */
-public class UVCommentAdapter extends UVAdapter {
+public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdapter {
+	private static final OnInflateStickyHeader sDummyCallbacks = new OnInflateStickyHeader() {
+		@Override
+		public void onHeaderInflated(View headerView) {
+		}
+	};
 	private final Context mContext;
 	private final int mAvatarPixelSize;
 	private List<UVwebContent.UVComment> mComments = Collections.emptyList();
+	private OnInflateStickyHeader mCallbacks = sDummyCallbacks;
 
 	public UVCommentAdapter(Context context) {
 		super(context);
 		mContext = context;
 		mAvatarPixelSize = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
+	}
+
+	public void setOnInflateStickyHeader(OnInflateStickyHeader callbacks) {
+		mCallbacks = callbacks;
+	}
+
+	public void resetCallbacks() {
+		mCallbacks = sDummyCallbacks;
 	}
 
 	@Override
@@ -71,7 +86,7 @@ public class UVCommentAdapter extends UVAdapter {
 
 		final UVwebContent.User author = comment.getAuthor();
 		userIdView.setText(author.getName());
-		Picasso.with(mContext).load(GravatarUtils.computerUrlRequest(author.getGravatarHash(), mAvatarPixelSize))
+		Picasso.with(mContext).load(GravatarUtils.computeUrlRequest(author.getGravatarHash(), mAvatarPixelSize))
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);
@@ -86,5 +101,25 @@ public class UVCommentAdapter extends UVAdapter {
 	@Override
 	public boolean isEnabled(int position) {
 		return false;
+	}
+
+	@Override
+	public View getHeaderView(int position, View convertView, ViewGroup parent) {
+		if (convertView == null) {
+			// TODO: it's the same as the empty header view, cache it
+			convertView = mLayoutInflater.inflate(R.layout.uv_detail_header, null);
+			mCallbacks.onHeaderInflated(convertView);
+		}
+
+		return convertView;
+	}
+
+	@Override
+	public long getHeaderId(int position) {
+		return 0;
+	}
+
+	public interface OnInflateStickyHeader {
+		public void onHeaderInflated(View headerView);
 	}
 }

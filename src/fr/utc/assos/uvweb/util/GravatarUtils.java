@@ -26,7 +26,7 @@ public class GravatarUtils {
 		}
 	}
 
-	public static String computerUrlRequest(String hash, final int requestedSize) {
+	public static String computeUrlRequest(String hash, final int requestedSize) {
 		sStringBuilder.setLength(0);
 		sStringBuilder.append(BASE_GRAVATAR_URL);
 		sStringBuilder.append(hash);

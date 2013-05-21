@@ -3,8 +3,6 @@
 <resources>
     <!-- Tabs' text size. -->
     <dimen name="tab_text_size">14sp</dimen>
-    <!-- Value of the list's empty view's right padding, to mind the border (tablet only). -->
-    <dimen name="uv_list_empty_right_padding">6dp</dimen>
     <!-- Sticky list headers' min height. -->
     <dimen name="list_section_divider_min_height">31dip</dimen>
     <!-- List internal padding. -->
@@ -14,4 +12,6 @@
     <dimen name="avatar_image_view_size">70dp</dimen>
     <!-- Date text size. -->
     <dimen name="date_text_size">8sp</dimen>
+    <!-- Semester success rate text size. -->
+    <dimen name="semester_success_rate_text_size">16sp</dimen>
 </resources>

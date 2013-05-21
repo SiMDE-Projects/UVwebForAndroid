@@ -6,14 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.squareup.picasso.Picasso;
+
+import java.util.Collections;
+import java.util.List;
+
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.GravatarUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
-
-import java.util.Collections;
-import java.util.List;
 
 /**
  * An adapter used all together with the {@link fr.utc.assos.uvweb.ui.NewsFeedFragment}'s ListView.
@@ -71,7 +73,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				owner.getName(), " " + entry.getAction())));
 		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
-		Picasso.with(mContext).load(GravatarUtils.computerUrlRequest(owner.getGravatarHash(), mAvatarPixelSize))
+		Picasso.with(mContext).load(GravatarUtils.computeUrlRequest(owner.getGravatarHash(), mAvatarPixelSize)) // TODO: computer GravatarUrlRequest in User?
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);

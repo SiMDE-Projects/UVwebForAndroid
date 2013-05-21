@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/empty"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/uv_detail_header_top_bar" />
+
+    <TextView
+        android:id="@+id/empty_text"
+        style="@style/EmptyListDefault"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/no_comments"
+        android:layout_marginTop="80dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:visibility="gone" />
+
+</LinearLayout>

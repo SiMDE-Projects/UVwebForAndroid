@@ -1,10 +1,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:id="@+id/uv_detail"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context="..ui.UVDetailFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/uv_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    tools:context=".ui.UVDetailFragment">
 
     <ListView
         android:id="@android:id/list"
@@ -13,22 +14,17 @@
         android:dividerHeight="16dp"
         android:divider="@android:color/transparent"
         android:paddingBottom="16dp"
-        android:clipToPadding="false"/>
+        android:clipToPadding="false"
+        android:scrollbarStyle="outsideOverlay" />
 
-    <ViewStub
-        android:id="@android:id/empty"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout="@layout/uv_detail_header"/>
+    <include layout="@layout/uv_detail_empty_view" />
 
     <ProgressBar
         android:id="@+id/progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:visibility="gone"/>
+        style="?android:attr/android:progressBarStyle"
+        android:layout_marginTop="80dp"
+        android:visibility="gone" />
 
 </LinearLayout>

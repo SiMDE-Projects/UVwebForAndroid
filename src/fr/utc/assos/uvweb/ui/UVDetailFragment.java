@@ -5,10 +5,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -18,6 +18,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 import org.json.JSONArray;
@@ -42,7 +43,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * contained in a {@link fr.utc.assos.uvweb.activities.MainActivity} in two-pane mode (on tablets) or a
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
-public class UVDetailFragment extends UVwebFragment {
+public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.OnInflateStickyHeader {
 	/**
 	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
@@ -54,10 +55,12 @@ public class UVDetailFragment extends UVwebFragment {
 	private static final String ARG_TWO_PANE = "two_pane";
 	private static final String TAG = makeLogTag(UVDetailFragment.class);
 	private static final String STATE_COMMENT_LIST = "comment_list";
-	private static final LinearLayout.LayoutParams sLayoutParams = new LinearLayout.LayoutParams(
+	private static final String STATE_NO_COMMENT = "no_comment";
+	private final LinearLayout.LayoutParams mSemesterLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
 	private boolean mTwoPane;
+	private boolean mHasNoComments;
 	/**
 	 * The UV this fragment is presenting.
 	 */
@@ -69,6 +72,8 @@ public class UVDetailFragment extends UVwebFragment {
 	private UVCommentAdapter mAdapter;
 	private MenuItem mRefreshMenuItem;
 	private ProgressBar mProgressBar;
+	private boolean mUsesStickyHeader;
+	private View mHeaderView;
 
 	public UVDetailFragment() {
 	}
@@ -103,6 +108,10 @@ public class UVDetailFragment extends UVwebFragment {
 			setHasOptionsMenu(true);
 			mTwoPane = arguments.getBoolean(ARG_TWO_PANE, false);
 		}
+
+		if (mUV == null) {
+			throw new IllegalStateException("Selected UV cannot be null");
+		}
 	}
 
 	@Override
@@ -111,49 +120,56 @@ public class UVDetailFragment extends UVwebFragment {
 				container, false);
 
 		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
-		mListView = (ListView) rootView.findViewById(android.R.id.list);
 
+		final SherlockFragmentActivity context = getSherlockActivity();
 		mAdapter = new UVCommentAdapter(getSherlockActivity());
+
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = null;
-		if (!mTwoPane) {
-			swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
-					mAdapter,
-					AnimationUtils.CARD_ANIMATION_DELAY_MILLIS,
-					AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
-			swingBottomInAnimationAdapter.setListView(mListView);
+		mListView = (ListView) rootView.findViewById(android.R.id.list);
+		if (mListView instanceof StickyListHeadersListView) {
+			mAdapter.setOnInflateStickyHeader(this);
+			mUsesStickyHeader = true;
+		} else {
+			if (!mTwoPane) {
+				swingBottomInAnimationAdapter = new SwingBottomInAnimationAdapter(
+						mAdapter,
+						AnimationUtils.CARD_ANIMATION_DELAY_MILLIS,
+						AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
+				swingBottomInAnimationAdapter.setListView(mListView);
+			}
 		}
 
-		if (mUV != null) {
-			if (savedInstanceState != null && savedInstanceState.containsKey(STATE_COMMENT_LIST)) {
+		final View emptyView = rootView.findViewById(android.R.id.empty);
+		setEmptyViewData(emptyView);
+		mListView.setEmptyView(emptyView);
+
+		if (!mUsesStickyHeader) {
+			mHeaderView = inflater.inflate(R.layout.uv_detail_header, null);
+			mListView.addHeaderView(mHeaderView);
+		}
+
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(STATE_COMMENT_LIST)) {
 				final ArrayList<UVwebContent.UVComment> savedComments = savedInstanceState.getParcelableArrayList
 						(STATE_COMMENT_LIST);
-				mAdapter.updateComments(savedComments);
-			} else {
-				final SherlockFragmentActivity context = getSherlockActivity();
-				if (!ConnectionUtils.isOnline(context)) {
-					handleNetworkError(context);
-				} else {
-					new LoadUvCommentsTask(this).execute();
+				if (!mUsesStickyHeader && !savedComments.isEmpty()) {
+					setHeaderData(mHeaderView);
 				}
+				// TODO: handle case where there are no comments on the server (no need to reload on rotate)
+				mAdapter.updateComments(savedComments);
+			} else if (savedInstanceState.containsKey(STATE_NO_COMMENT)) {
+				emptyView.findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
+				mHasNoComments = true;
 			}
-
-			if (mAdapter.isEmpty()) {
-				final ViewStub headerViewStub = (ViewStub) rootView.findViewById(android.R.id.empty);
-				headerViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
-					@Override
-					public void onInflate(ViewStub stub, View inflated) {
-						mListView.setEmptyView(inflated); // TODO: handle empty view message when there are no comments to display
-						setHeaderData(inflated);
-					}
-				});
-				headerViewStub.inflate();
+		} else {
+			if (!ConnectionUtils.isOnline(context)) {
+				handleNetworkError(context);
+			} else {
+				new LoadUvCommentsTask(this).execute();
 			}
-			final View headerView = inflater.inflate(R.layout.uv_detail_header, null);
-			setHeaderData(headerView);
-			mListView.addHeaderView(headerView);
-
-			mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
 		}
+
+		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
 
 		return rootView;
 	}
@@ -162,27 +178,44 @@ public class UVDetailFragment extends UVwebFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-		if (mUV != null && !mTwoPane) {
+		if (!mTwoPane) {
 			getSherlockActivity().getSupportActionBar().setTitle(mUV.toString());
 		}
 	}
 
-	private void setHeaderData(View inflatedHeader) {
-		((TextView) inflatedHeader.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
+	@Override
+	public void onDetach() {
+		// Reset the active callbacks interface to the dummy implementation.
+		mAdapter.resetCallbacks();
+
+		super.onDetach();
+	}
+
+	private void setHeaderData(View headerView) {
+		// TODO: refact
+		((TextView) headerView.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
 				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
-		((TextView) inflatedHeader.findViewById(R.id.uv_description)).setText(mUV.getDescription());
-		((TextView) inflatedHeader.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
+		((TextView) headerView.findViewById(R.id.uv_description)).setText(mUV.getDescription());
+		((TextView) headerView.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
 		final Context context = getSherlockActivity();
-		final LinearLayout successRatesContainer = (LinearLayout) inflatedHeader.findViewById(R.id.uv_success_rates);
+		final LinearLayout successRatesContainer = (LinearLayout) headerView.findViewById(R.id.uv_success_rates);
+		final float textSize = context.getResources().getDimension(R.dimen.semester_success_rate_text_size);
 		for (int i = 0; i < 3; i++) {
 			final TextView tv = new TextView(context);
-			tv.setLayoutParams(sLayoutParams);
-			tv.setTextSize(18); // TODO: fetch value from resources
+			tv.setLayoutParams(mSemesterLayoutParams);
+			tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 			tv.setText(Html.fromHtml(String.format(UVwebContent.UV_SUCCESS_RATE_FORMAT,
 					"P" + String.valueOf(12 - i) + " ",
 					String.valueOf(70 + i * 3) + "%")));
+			// TODO: fetch values from server
 			successRatesContainer.addView(tv);
 		}
+	}
+
+	private void setEmptyViewData(View emptyView) {
+		((TextView) emptyView.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
+				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
+		((TextView) emptyView.findViewById(R.id.uv_description)).setText(mUV.getDescription());
 	}
 
 	@Override
@@ -218,6 +251,14 @@ public class UVDetailFragment extends UVwebFragment {
 		if (!mAdapter.isEmpty()) {
 			outState.putParcelableArrayList(STATE_COMMENT_LIST, (ArrayList) mAdapter.getComments());
 		}
+		if (mHasNoComments) {
+			outState.putBoolean(STATE_NO_COMMENT, true);
+		}
+	}
+
+	@Override
+	public void onHeaderInflated(View headerView) {
+		setHeaderData(headerView);
 	}
 
 	private static class LoadUvCommentsTask extends AsyncTask<Void, Void, List<UVwebContent.UVComment>> {
@@ -234,10 +275,6 @@ public class UVDetailFragment extends UVwebFragment {
 		protected void onPreExecute() {
 			final UVDetailFragment ui = mUiFragment.get();
 			if (ui != null) {
-				final View emptyView = ui.mListView.getEmptyView();
-				if (emptyView != null && emptyView.getVisibility() == View.VISIBLE) {
-					emptyView.setVisibility(View.GONE);
-				}
 				if (ui.mRefreshMenuItem != null) {
 					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
 				} else {
@@ -280,11 +317,13 @@ public class UVDetailFragment extends UVwebFragment {
 				if (comments == null) {
 					ui.handleNetworkError();
 				} else {
+					if (comments.isEmpty()) {
+						ui.mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
+						ui.mHasNoComments = true;
+					} else if (!ui.mUsesStickyHeader) {
+						ui.setHeaderData(ui.mHeaderView);
+					}
 					ui.mAdapter.updateComments(comments);
-				}
-				final View emptyView = ui.mListView.getEmptyView();
-				if (emptyView != null && emptyView.getVisibility() == View.GONE) {
-					emptyView.setVisibility(View.VISIBLE);
 				}
 				if (ui.mRefreshMenuItem != null && ui.mRefreshMenuItem.getActionView() != null) {
 					ui.mRefreshMenuItem.setActionView(null);

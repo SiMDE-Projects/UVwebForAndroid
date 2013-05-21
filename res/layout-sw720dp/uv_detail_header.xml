@@ -12,10 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:baselineAligned="false"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp">
+        android:padding="16dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -28,13 +25,13 @@
                 android:layout_height="wrap_content"
                 android:text="@string/average_rating"
                 android:paddingBottom="8dp"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/uv_rate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="32sp"
+                android:textSize="48sp"
                 android:textStyle="bold"
                 android:gravity="left|top"
                 android:text="8,0/10" />
@@ -54,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/success_rate"
                 android:paddingBottom="8dp"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -62,9 +59,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/list_divider_holo_light" />
+        android:layout_height="8dp"
+        android:background="@drawable/test" />
 
 </LinearLayout>

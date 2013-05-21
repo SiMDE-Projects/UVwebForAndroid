@@ -42,6 +42,7 @@
         deserunt mollit anim id est laborum
     </string>
     <string name="success_rate">Taux de réussite</string>
+    <string name="no_comments">Aucun commentaire n\'a été posté pour le moment</string>
 
     <!-- Feedback messages -->
     <string name="network_error_message">Aucune connexion réseau</string>
