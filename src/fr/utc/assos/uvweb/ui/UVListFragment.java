@@ -338,6 +338,9 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	 */
 	@Override
 	public boolean onMenuItemActionExpand(MenuItem item) {
+		getSherlockActivity().getSupportActionBar().setIcon(R.drawable.uvweb_logo);
+		// Workaround to prevent SearchView from using the app_logo, which is green on a green ActionBar and thus
+		// bad looking
 		return true;
 	}
 
