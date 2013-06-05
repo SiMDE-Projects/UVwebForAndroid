@@ -8,7 +8,6 @@ import org.joda.time.DateTime;
 import java.text.DecimalFormat;
 
 import fr.utc.assos.uvweb.util.DateUtils;
-import fr.utc.assos.uvweb.util.GravatarUtils;
 
 /**
  * Helper class for providing UV content for user interfaces
@@ -145,16 +144,16 @@ public class UVwebContent {
 		private int mGlobalRate;
 		private String mSemester;
 
-		public UVComment(String author, String email, DateTime date, String comment, int globalRate, String semester, int avatarSizeInPixel) {
-			mAuthor = new User(author, email, avatarSizeInPixel);
+		public UVComment(String author, String email, DateTime date, String comment, int globalRate, String semester) {
+			mAuthor = new User(author, email);
 			mDate = date;
 			mComment = comment;
 			mGlobalRate = globalRate;
 			mSemester = semester;
 		}
 
-		public UVComment(String author, String email, String date, String comment, int globalRate, String semester, int avatarSizeInPixel) {
-			this(author, email, DateUtils.getDateFromString(date), comment, globalRate, semester, avatarSizeInPixel);
+		public UVComment(String author, String email, String date, String comment, int globalRate, String semester) {
+			this(author, email, DateUtils.getDateFromString(date), comment, globalRate, semester);
 		}
 
 
@@ -249,15 +248,15 @@ public class UVwebContent {
 		private String mComment;
 		private String mAction;
 
-		public NewsFeedEntry(String author, String email, DateTime date, String comment, String action, int avatarSizeInPixel) {
-			mOwner = new User(author, email, avatarSizeInPixel);
+		public NewsFeedEntry(String author, String email, DateTime date, String comment, String action) {
+			mOwner = new User(author, email);
 			mDate = date;
 			mComment = comment;
 			mAction = action;
 		}
 
-		public NewsFeedEntry(String author, String gravatarHash, String date, String comment, String action, int avatarSizeInPixel) {
-			this(author, gravatarHash, DateUtils.getDateFromString(date), comment, action, avatarSizeInPixel);
+		public NewsFeedEntry(String author, String gravatarHash, String date, String comment, String action) {
+			this(author, gravatarHash, DateUtils.getDateFromString(date), comment, action);
 		}
 
 		protected NewsFeedEntry(Parcel in) {
@@ -334,18 +333,15 @@ public class UVwebContent {
 		};
 		private final String mName;
 		private final String mEmail;
-		private Gravatar mGravatar;
 
-		public User(String name, String email, int gravatarSizeInPixel) {
+		public User(String name, String email) {
 			mName = name;
 			mEmail = email;
-			mGravatar = new Gravatar(GravatarUtils.convertEmailToHash(email), gravatarSizeInPixel);
 		}
 
 		protected User(Parcel in) {
 			mName = in.readString();
 			mEmail = in.readString();
-			mGravatar = in.readParcelable(Gravatar.class.getClassLoader());
 		}
 
 		public String getName() {
@@ -354,10 +350,6 @@ public class UVwebContent {
 
 		public String getEmail() {
 			return mEmail;
-		}
-
-		public String getGravatarUrl() {
-			return mGravatar.mUrl;
 		}
 
 		@Override
@@ -369,38 +361,6 @@ public class UVwebContent {
 		public void writeToParcel(Parcel parcel, int flags) {
 			parcel.writeString(mName);
 			parcel.writeString(mEmail);
-			parcel.writeParcelable(mGravatar, flags);
-		}
-
-		private static class Gravatar implements Parcelable {
-			public static final Parcelable.Creator<Gravatar> CREATOR = new Parcelable.Creator<Gravatar>() {
-				public Gravatar createFromParcel(Parcel in) {
-					return new Gravatar(in);
-				}
-
-				public Gravatar[] newArray(int size) {
-					return new Gravatar[size];
-				}
-			};
-			private final String mUrl;
-
-			private Gravatar(String gravatarHash, int sizeInPixel) {
-				mUrl = GravatarUtils.computeUrlRequest(gravatarHash, sizeInPixel);
-			}
-
-			private Gravatar(Parcel in) {
-				mUrl = in.readString();
-			}
-
-			@Override
-			public int describeContents() {
-				return 0;
-			}
-
-			@Override
-			public void writeToParcel(Parcel parcel, int flags) {
-				parcel.writeString(mUrl);
-			}
 		}
 	}
 }

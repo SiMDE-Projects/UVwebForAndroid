@@ -74,7 +74,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private ProgressBar mProgressBar;
 	private boolean mUsesStickyHeader;
 	private View mHeaderView;
-	private int mAvatarSizeInPixel;
 
 	public UVDetailFragment() {
 	}
@@ -150,8 +149,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			mHeaderView = inflater.inflate(R.layout.uv_detail_header, null);
 			mListView.addHeaderView(mHeaderView);
 		}
-
-		mAvatarSizeInPixel = getSherlockActivity().getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 
 		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
 
@@ -260,14 +257,14 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 
 	private static class LoadUvCommentsTask extends AsyncTask<Void, Void, List<UVwebContent.UVComment>> {
 		private static final String URL = "http://thomaskeunebroek.fr/uv_comments.json";
+		//private static String URL = "http://192.168.1.7/UVweb/web/app_dev.php/uv/app/";
 		private final WeakReference<UVDetailFragment> mUiFragment;
-		private final int mAvatarSizeInPixel;
 
 		public LoadUvCommentsTask(UVDetailFragment uiFragment) {
 			super();
 
 			mUiFragment = new WeakReference<UVDetailFragment>(uiFragment);
-			mAvatarSizeInPixel = uiFragment.mAvatarSizeInPixel;
+			//URL += uiFragment.mUV.getName();
 		}
 
 		@Override
@@ -292,15 +289,15 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 
 			try {
 				for (int i = 0; i < nUvComments; i++) {
+					// TODO: debug. If 1 UV not found, none are found after
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
 					uvComments.add(new UVwebContent.UVComment(
-							uvCommentsInfo.getString("author"),
-							uvCommentsInfo.getString("email"),
-							uvCommentsInfo.getString("date"),
-							uvCommentsInfo.getString("content"),
+							uvCommentsInfo.getString("authorName"),
+							i % 2 == 0 ? "thomas.keunebroek@gmail.com" : "alexandre.masciulli@gmail.com", // Fake data to display images
+							"21/03/2012",
+							uvCommentsInfo.getString("comment"),
 							uvCommentsInfo.getInt("globalRate"),
-							uvCommentsInfo.getString("semester"),
-							mAvatarSizeInPixel
+							uvCommentsInfo.getString("semester")
 					));
 				}
 			} catch (JSONException e) {
@@ -313,7 +310,8 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		@Override
 		protected void onPostExecute(List<UVwebContent.UVComment> comments) {
 			final UVDetailFragment ui = mUiFragment.get();
-			if (ui != null) {
+			if (ui != null && ui.getSherlockActivity() != null) {
+				// TODO: debug....
 				if (comments == null) {
 					ui.handleNetworkError();
 				} else {
@@ -321,6 +319,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 						ui.mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
 						ui.mHasNoComments = true;
 					} else if (!ui.mUsesStickyHeader) {
+						// TODO: use RetainedFragment to avoid crash on rotate
 						ui.setHeaderData(ui.mHeaderView);
 					}
 					ui.mAdapter.updateComments(comments);

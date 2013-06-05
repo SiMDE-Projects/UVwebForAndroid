@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso;
 import java.util.Collections;
 import java.util.List;
 
+import fr.tkeunebr.gravatar.Gravatar;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
@@ -29,12 +30,14 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 		}
 	};
 	private final Context mContext;
+	private final int mAvatarSizeInPixel;
 	private List<UVwebContent.UVComment> mComments = Collections.emptyList();
 	private OnInflateStickyHeader mCallbacks = sDummyCallbacks;
 
 	public UVCommentAdapter(Context context) {
 		super(context);
 		mContext = context;
+		mAvatarSizeInPixel = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 	}
 
 	public void setOnInflateStickyHeader(OnInflateStickyHeader callbacks) {
@@ -83,7 +86,8 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 
 		final UVwebContent.User author = comment.getAuthor();
 		userIdView.setText(author.getName());
-		Picasso.with(mContext).load(author.getGravatarUrl())
+		final String gravatarUrl = Gravatar.init().with(author.getEmail()).force404().size(mAvatarSizeInPixel).build();
+		Picasso.with(mContext).load(gravatarUrl)
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)
 				.into(userAvatarImageView);
