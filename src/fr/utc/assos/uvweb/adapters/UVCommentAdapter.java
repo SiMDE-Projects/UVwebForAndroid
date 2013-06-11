@@ -72,7 +72,7 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(R.layout.uv_comment, null);
+			convertView = mLayoutInflater.inflate(R.layout.uv_comment, parent, false);
 		}
 
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.userid);
@@ -107,7 +107,7 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(R.layout.uv_detail_header, null);
+			convertView = mLayoutInflater.inflate(R.layout.uv_detail_header, parent, false);
 			mCallbacks.onHeaderInflated(convertView);
 		}
 

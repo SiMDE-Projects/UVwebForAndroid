@@ -62,7 +62,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(R.layout.newsfeed_entry, null);
+			convertView = mLayoutInflater.inflate(R.layout.newsfeed_entry, parent, false);
 		}
 
 		final TextView userIdView = UVwebHolder.get(convertView, R.id.user_id_action);

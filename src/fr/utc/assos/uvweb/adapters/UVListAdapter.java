@@ -8,14 +8,16 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
-import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -128,7 +130,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(R.layout.uv, null);
+			convertView = mLayoutInflater.inflate(R.layout.uv, parent, false);
 		}
 
 		final TextView code1View = UVwebHolder.get(convertView, R.id.uv_code_letter);
@@ -184,7 +186,7 @@ public class UVListAdapter extends UVAdapter implements SectionIndexer, StickyLi
 	@Override
 	public View getHeaderView(int position, View convertView, ViewGroup parent) {
 		if (convertView == null) {
-			convertView = mLayoutInflater.inflate(R.layout.header_uv_list, null);
+			convertView = mLayoutInflater.inflate(R.layout.header_uv_list, parent, false);
 		}
 
 		// Set header text as first char in name
