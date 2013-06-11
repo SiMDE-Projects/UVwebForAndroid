@@ -6,7 +6,7 @@ import fr.utc.assos.uvweb.BuildConfig;
 /**
  * Helper methods that make logging more consistent throughout the app.
  */
-public class LogUtils {
+public final class LogUtils {
 	private static final String LOG_PREFIX = "UVweb";
 	private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
 	private static final int MAX_LOG_TAG_LENGTH = 23;

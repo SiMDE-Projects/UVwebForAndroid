@@ -3,7 +3,7 @@ package fr.utc.assos.uvweb.util;
 import android.os.AsyncTask;
 import android.os.Build;
 
-public class ThreadedAsyncTaskHelper {
+public final class ThreadedAsyncTaskHelper {
 	/**
 	 * Execute an {@link AsyncTask} on a thread pool.
 	 *

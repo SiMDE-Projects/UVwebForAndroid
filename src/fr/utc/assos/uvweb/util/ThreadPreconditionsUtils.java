@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.util;
 
 import android.os.Looper;
+
 import fr.utc.assos.uvweb.BuildConfig;
 
 /**
@@ -8,7 +9,7 @@ import fr.utc.assos.uvweb.BuildConfig;
  * otherwise it throws an exception.
  * {@link fr.utc.assos.uvweb.adapters.UVAdapter}.
  */
-public class ThreadPreconditionsUtils {
+public final class ThreadPreconditionsUtils {
 	public static void checkOnMainThread() {
 		if (BuildConfig.DEBUG) {
 			if (Thread.currentThread() != Looper.getMainLooper().getThread()) {

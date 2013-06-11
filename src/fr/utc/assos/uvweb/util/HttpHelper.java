@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.util;
 
 import com.squareup.okhttp.OkHttpClient;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -11,7 +12,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class HttpHelper {
+public final class HttpHelper {
 	private static final OkHttpClient sClient = new OkHttpClient();
 
 	private static String convertStreamToString(InputStream is) throws IOException {

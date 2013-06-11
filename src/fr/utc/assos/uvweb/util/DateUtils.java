@@ -10,7 +10,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 /**
  * A helper class to manage Dates
  */
-public class DateUtils {
+public final class DateUtils {
 	private static final PeriodFormatter sYearFormatter = new PeriodFormatterBuilder()
 			.appendYears()
 			.appendSuffix(" an", " ans")

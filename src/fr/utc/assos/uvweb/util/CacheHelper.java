@@ -8,7 +8,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 
-public class CacheHelper {
+public final class CacheHelper {
 	public static JSONArray loadJSON(File cacheFile) throws JSONException, IOException {
 		FileInputStream stream = null;
 		FileChannel fc = null;
