@@ -1,9 +1,9 @@
 package fr.utc.assos.uvweb.ui;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -21,20 +21,16 @@ import com.actionbarsherlock.view.MenuItem;
 import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.io.CommentsTaskFragment;
+import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
-import fr.utc.assos.uvweb.util.HttpHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -43,7 +39,8 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * contained in a {@link fr.utc.assos.uvweb.activities.MainActivity} in two-pane mode (on tablets) or a
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
-public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.OnInflateStickyHeader {
+public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.OnInflateStickyHeader,
+		BaseTaskFragment.Callbacks<List<UVwebContent.UVComment>> {
 	/**
 	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
@@ -56,11 +53,13 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private static final String TAG = makeLogTag(UVDetailFragment.class);
 	private static final String STATE_COMMENT_LIST = "comment_list";
 	private static final String STATE_NO_COMMENT = "no_comment";
+	private static final String STATE_NETWORK_ERROR = "network_error";
 	private final LinearLayout.LayoutParams mSemesterLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
 	private boolean mTwoPane;
 	private boolean mHasNoComments;
+	private boolean mNetworkError;
 	/**
 	 * The UV this fragment is presenting.
 	 */
@@ -122,7 +121,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 
 		final SherlockFragmentActivity context = getSherlockActivity();
-		mAdapter = new UVCommentAdapter(getSherlockActivity());
+		mAdapter = new UVCommentAdapter(context);
 
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = null;
 		mListView = (ListView) rootView.findViewById(android.R.id.list);
@@ -163,12 +162,52 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			} else if (savedInstanceState.containsKey(STATE_NO_COMMENT)) {
 				emptyView.findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
 				mHasNoComments = true;
+			} else {
+				// In this case, we have a configuration change
+				final CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) context
+						.getSupportFragmentManager().findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG);
+				commentsTaskFragment.setCallbacks(this);
+				commentsTaskFragment.setUvId(mUV.getName());
+				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
+					if (!ConnectionUtils.isOnline(context)) {
+						handleNetworkError(context);
+					} else {
+						// If we previously had a network error, we can try and reload the list
+						commentsTaskFragment.startNewTask();
+					}
+				} else {
+					// The task wasn't complete and is still running, we need to show the ProgressBar again
+					onPreExecute();
+				}
 			}
 		} else {
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				new LoadUvCommentsTask(this).execute();
+				final FragmentManager fm = context.getSupportFragmentManager();
+				CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) fm
+						.findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG);
+				if (commentsTaskFragment == null) {
+					// First time loading the comments
+					commentsTaskFragment = new CommentsTaskFragment();
+					commentsTaskFragment.setCallbacks(this);
+					commentsTaskFragment.setUvId(mUV.getName());
+					fm.beginTransaction().add(commentsTaskFragment, CommentsTaskFragment.COMMENTS_TASK_TAG).commit();
+				} else if (!commentsTaskFragment.isRunning()) {
+					commentsTaskFragment.setCallbacks(this);
+					commentsTaskFragment.setUvId(mUV.getName());
+					commentsTaskFragment.startNewTask();
+				} else {
+					// The background task is running, we update its params (callbacks, uv)
+					final String oldUvId = commentsTaskFragment.getCurrentUvId();
+					final String currentUvId = mUV.getName();
+					commentsTaskFragment.setCallbacks(this);
+					commentsTaskFragment.setUvId(currentUvId);
+					if (!currentUvId.equals(oldUvId)) {
+						// If the UV has changed, the Fragment has been replaced, we need to restart the task
+						commentsTaskFragment.startNewTask();
+					}
+				}
 			}
 		}
 
@@ -229,7 +268,11 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				if (!ConnectionUtils.isOnline(context)) {
 					handleNetworkError(context);
 				} else {
-					new LoadUvCommentsTask(this).execute();
+					final CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) getSherlockActivity().
+							getSupportFragmentManager().findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG);
+					if (!commentsTaskFragment.isRunning()) {
+						commentsTaskFragment.startNewTask();
+					}
 				}
 				return true;
 			default:
@@ -248,6 +291,9 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		if (mHasNoComments) {
 			outState.putBoolean(STATE_NO_COMMENT, true);
 		}
+		if (mNetworkError) {
+			outState.putBoolean(STATE_NETWORK_ERROR, true);
+		}
 	}
 
 	@Override
@@ -255,82 +301,38 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		setHeaderData(headerView);
 	}
 
-	private static class LoadUvCommentsTask extends AsyncTask<Void, Void, List<UVwebContent.UVComment>> {
-		private static final String URL = "http://thomaskeunebroek.fr/uv_comments.json";
-		//private static String URL = "http://192.168.1.7/UVweb/web/app_dev.php/uv/app/";
-		private final WeakReference<UVDetailFragment> mUiFragment;
-
-		public LoadUvCommentsTask(UVDetailFragment uiFragment) {
-			super();
-
-			mUiFragment = new WeakReference<UVDetailFragment>(uiFragment);
-			//URL += uiFragment.mUV.getName();
+	@Override
+	public void onPreExecute() {
+		if (mRefreshMenuItem != null) {
+			mRefreshMenuItem.setActionView(R.layout.progressbar);
+		} else {
+			mProgressBar.setVisibility(View.VISIBLE);
 		}
+	}
 
-		@Override
-		protected void onPreExecute() {
-			final UVDetailFragment ui = mUiFragment.get();
-			if (ui != null) {
-				if (ui.mRefreshMenuItem != null) {
-					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
-				} else {
-					ui.mProgressBar.setVisibility(View.VISIBLE);
-				}
+	@Override
+	public void onCancelled() {
+	}
+
+	@Override
+	public void onPostExecute(List<UVwebContent.UVComment> comments) {
+		if (comments == null) {
+			handleNetworkError();
+			mNetworkError = true;
+		} else {
+			if (comments.isEmpty()) {
+				mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
+				mHasNoComments = true;
+			} else if (!mUsesStickyHeader) {
+				setHeaderData(mHeaderView);
 			}
+			mAdapter.updateComments(comments);
 		}
-
-		@Override
-		protected List<UVwebContent.UVComment> doInBackground(Void... params) {
-			final JSONArray uvCommentsArray = HttpHelper.loadJSON(URL);
-			if (uvCommentsArray == null) return null;
-			final int nUvComments = uvCommentsArray.length();
-
-			final List<UVwebContent.UVComment> uvComments = new ArrayList<UVwebContent.UVComment>(nUvComments);
-
-			try {
-				for (int i = 0; i < nUvComments; i++) {
-					// TODO: debug. If 1 UV not found, none are found after
-					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
-					uvComments.add(new UVwebContent.UVComment(
-							uvCommentsInfo.getString("authorName"),
-							i % 2 == 0 ? "thomas.keunebroek@gmail.com" : "alexandre.masciulli@gmail.com", // Fake data to display images
-							"21/03/2012",
-							uvCommentsInfo.getString("comment"),
-							uvCommentsInfo.getInt("globalRate"),
-							uvCommentsInfo.getString("semester")
-					));
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-			return uvComments;
+		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
+			mRefreshMenuItem.setActionView(null);
 		}
-
-		@Override
-		protected void onPostExecute(List<UVwebContent.UVComment> comments) {
-			final UVDetailFragment ui = mUiFragment.get();
-			if (ui != null && ui.getSherlockActivity() != null) {
-				// TODO: debug....
-				if (comments == null) {
-					ui.handleNetworkError();
-				} else {
-					if (comments.isEmpty()) {
-						ui.mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
-						ui.mHasNoComments = true;
-					} else if (!ui.mUsesStickyHeader) {
-						// TODO: use RetainedFragment to avoid crash on rotate
-						ui.setHeaderData(ui.mHeaderView);
-					}
-					ui.mAdapter.updateComments(comments);
-				}
-				if (ui.mRefreshMenuItem != null && ui.mRefreshMenuItem.getActionView() != null) {
-					ui.mRefreshMenuItem.setActionView(null);
-				}
-				if (ui.mProgressBar.getVisibility() == View.VISIBLE) {
-					ui.mProgressBar.setVisibility(View.GONE);
-				}
-			}
+		if (mProgressBar.getVisibility() == View.VISIBLE) {
+			mProgressBar.setVisibility(View.GONE);
 		}
 	}
 }
