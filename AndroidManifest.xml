@@ -44,6 +44,7 @@
         </activity>
         <activity
             android:name=".activities.AboutActivity"
+            android:theme="@style/Theme.UVweb.NoLogo"
             android:label="@string/about"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
@@ -52,6 +53,7 @@
         </activity>
         <activity
             android:name=".activities.LicensesActivity"
+            android:theme="@style/Theme.UVweb.NoLogo"
             android:label="@string/licenses"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
