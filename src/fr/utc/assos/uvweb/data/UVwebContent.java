@@ -12,6 +12,7 @@ import fr.utc.assos.uvweb.util.DateUtils;
 /**
  * Helper class for providing UV content for user interfaces
  */
+// TODO: Split data into several files
 public class UVwebContent {
 	/**
 	 * UV title format pattern, consistent across the application.

@@ -14,12 +14,14 @@ import java.util.List;
 
 import fr.tkeunebr.gravatar.Gravatar;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.adapters.base.UVAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.ImageUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 /**
  * An adapter used all together with the {@link fr.utc.assos.uvweb.ui.UVDetailFragment}'s ListView.
- * It relies on a standard ViewHolder pattern implemented in the {@link UVwebHolder}
+ * It relies on a standard ViewHolder pattern implemented in the {@link fr.utc.assos.uvweb.adapters.UVwebHolder}
  * class and thus allows UVs recycling.
  * It is used to show the users' comments of a given UV
  */
@@ -30,14 +32,12 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 		}
 	};
 	private final Context mContext;
-	private final int mAvatarSizeInPixel;
 	private List<UVwebContent.UVComment> mComments = Collections.emptyList();
 	private OnInflateStickyHeader mCallbacks = sDummyCallbacks;
 
 	public UVCommentAdapter(Context context) {
 		super(context);
 		mContext = context;
-		mAvatarSizeInPixel = context.getResources().getDimensionPixelSize(R.dimen.avatar_image_view_size);
 	}
 
 	public void setOnInflateStickyHeader(OnInflateStickyHeader callbacks) {
@@ -86,7 +86,11 @@ public class UVCommentAdapter extends UVAdapter implements StickyListHeadersAdap
 
 		final UVwebContent.User author = comment.getAuthor();
 		userIdView.setText(author.getName());
-		final String gravatarUrl = Gravatar.init().with(author.getEmail()).force404().size(mAvatarSizeInPixel).build();
+		final String gravatarUrl = Gravatar.init()
+				.with(author.getEmail())
+				.force404()
+				.size(ImageUtils.computeAvatarPixelSize(mContext))
+				.build();
 		Picasso.with(mContext).load(gravatarUrl)
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)

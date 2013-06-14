@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb.adapters;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,9 @@ import java.util.List;
 
 import fr.tkeunebr.gravatar.Gravatar;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.adapters.base.UVAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.util.ImageUtils;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 
 /**
@@ -27,15 +28,12 @@ import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 public class NewsFeedEntryAdapter extends UVAdapter {
 	private final String mDatePresentation;
 	private final Context mContext;
-	private final int mAvatarSizeInPixel;
 	private List<UVwebContent.NewsFeedEntry> mNewsFeedEntries = Collections.emptyList();
 
 	public NewsFeedEntryAdapter(Context context) {
 		super(context);
 		mContext = context;
-		final Resources resources = context.getResources();
-		mAvatarSizeInPixel = resources.getDimensionPixelSize(R.dimen.avatar_image_view_size);
-		mDatePresentation = resources.getString(R.string.date_presentation);
+		mDatePresentation = context.getResources().getString(R.string.date_presentation);
 	}
 
 	@Override
@@ -75,7 +73,11 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				owner.getName(), " " + entry.getAction())));
 		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
-		final String gravatarUrl = Gravatar.init().with(owner.getEmail()).force404().size(mAvatarSizeInPixel).build();
+		final String gravatarUrl = Gravatar.init()
+				.with(owner.getEmail())
+				.force404()
+				.size(ImageUtils.computeAvatarPixelSize(mContext))
+				.build();
 		Picasso.with(mContext).load(gravatarUrl)
 				.placeholder(R.drawable.ic_contact_picture)
 				.error(R.drawable.ic_contact_picture)

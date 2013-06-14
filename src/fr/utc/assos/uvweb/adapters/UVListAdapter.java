@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.adapters.base.UVAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.util.ThreadPreconditionsUtils;
 

@@ -7,7 +7,7 @@ import fr.utc.assos.uvweb.BuildConfig;
 /**
  * This helper class ensures that the caller objects performs its operations in the main thread,
  * otherwise it throws an exception.
- * {@link fr.utc.assos.uvweb.adapters.UVAdapter}.
+ * {@link fr.utc.assos.uvweb.adapters.base.UVAdapter}.
  */
 public final class ThreadPreconditionsUtils {
 	public static void checkOnMainThread() {

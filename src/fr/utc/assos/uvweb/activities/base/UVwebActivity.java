@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.activities;
+package fr.utc.assos.uvweb.activities.base;
 
 import android.os.Bundle;
 import com.actionbarsherlock.app.SherlockFragmentActivity;

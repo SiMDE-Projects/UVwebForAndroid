@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.activities;
 
 import android.os.Bundle;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.activities.base.UVwebActivity;
 import fr.utc.assos.uvweb.ui.UVDetailFragment;
 
 

@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.adapters;
+package fr.utc.assos.uvweb.adapters.base;
 
 import android.content.Context;
 import android.view.LayoutInflater;

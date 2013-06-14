@@ -13,9 +13,23 @@ import com.actionbarsherlock.app.SherlockFragment;
  * using the {@code setCallCallbacks()} method.
  */
 public abstract class BaseTaskFragment extends SherlockFragment {
+	public static final int THREAD_DEFAULT = 0;
+	public static final int THREAD_POOL_EXECUTOR = 1;
+	private final int mThreadMode;
 	protected FragmentTask mTask;
 	private Callbacks mCallbacks;
 	private boolean mIsRunning;
+
+	public BaseTaskFragment() {
+		this(THREAD_DEFAULT);
+	}
+
+	public BaseTaskFragment(int threadMode) {
+		if (threadMode != THREAD_DEFAULT && threadMode != THREAD_POOL_EXECUTOR) {
+			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT or THREAD_POOL_EXECUTOR");
+		}
+		mThreadMode = threadMode;
+	}
 
 	/**
 	 * This method will only be called once when the retained
@@ -28,7 +42,11 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		// Retain this fragment across configuration changes.
 		setRetainInstance(true);
 
-		startNewTask();
+		if (mThreadMode == THREAD_DEFAULT) {
+			startNewTask();
+		} else if (mThreadMode == THREAD_POOL_EXECUTOR) {
+			startNewTaskOnThreadPoolExecutor();
+		}
 	}
 
 	/**
@@ -37,20 +55,30 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	 */
 	@Override
 	public void onDetach() {
-		super.onDetach();
-
 		mCallbacks = null;
+
+		super.onDetach();
 	}
 
 	protected abstract void start();
 
+	protected abstract void startOnThreadPoolExecutor();
+
 	// Public API
 	public void startNewTask() {
-		if (mTask != null && mIsRunning) {
+		if (mIsRunning && mTask != null) {
 			mTask.cancel(true);
 			mIsRunning = false;
 		}
 		start();
+	}
+
+	public void startNewTaskOnThreadPoolExecutor() {
+		if (mIsRunning && mTask != null) {
+			mTask.cancel(true);
+			mIsRunning = false;
+		}
+		startOnThreadPoolExecutor();
 	}
 
 	public void setCallbacks(Callbacks callbacks) {

@@ -1,7 +1,7 @@
 package fr.utc.assos.uvweb.ui;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,34 +14,32 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.io.NewsfeedTaskFragment;
+import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
+import fr.utc.assos.uvweb.ui.base.UVwebFragment;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
-import fr.utc.assos.uvweb.util.HttpHelper;
-import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
  * A list fragment representing a list of {@link UVwebContent.NewsFeedEntry}s.
  */
-public class NewsFeedFragment extends UVwebFragment {
+public class NewsFeedFragment extends UVwebFragment implements
+		NewsfeedTaskFragment.Callbacks<List<UVwebContent.NewsFeedEntry>> {
 	private static final String TAG = makeLogTag(NewsFeedFragment.class);
 	private static final String STATE_NEWSFEED_ENTRIES = "newsfeed_entries";
 	private NewsFeedEntryAdapter mAdapter;
 	private MenuItem mRefreshMenuItem;
 	private ProgressBar mProgressBar;
 	private ListView mListView;
+	private boolean mNetworkError;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -76,16 +74,50 @@ public class NewsFeedFragment extends UVwebFragment {
 
 		mListView.setAdapter(swingBottomInAnimationAdapter);
 
-		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_NEWSFEED_ENTRIES)) {
-			final ArrayList<UVwebContent.NewsFeedEntry> savedNewsfeedEntries = savedInstanceState.getParcelableArrayList
-					(STATE_NEWSFEED_ENTRIES);
-			mAdapter.updateNewsFeedEntries(savedNewsfeedEntries);
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(STATE_NEWSFEED_ENTRIES)) {
+				final ArrayList<UVwebContent.NewsFeedEntry> savedNewsfeedEntries = savedInstanceState
+						.getParcelableArrayList(STATE_NEWSFEED_ENTRIES);
+				mAdapter.updateNewsFeedEntries(savedNewsfeedEntries);
+			} else {
+				// In this case, we have a configuration change
+				final SherlockFragmentActivity context = getSherlockActivity();
+				final NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) context
+						.getSupportFragmentManager()
+						.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG);
+				newsfeedTaskFragment.setCallbacks(this);
+				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
+					if (!ConnectionUtils.isOnline(context)) {
+						handleNetworkError(context);
+					} else {
+						// If we previously had a network error, we can try and reload the list
+						newsfeedTaskFragment.startNewTaskOnThreadPoolExecutor();
+					}
+				} else {
+					// The task wasn't complete and is still running, we need to show the ProgressBar again
+					onPreExecute();
+				}
+			}
 		} else {
 			final SherlockFragmentActivity context = getSherlockActivity();
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				ThreadedAsyncTaskHelper.execute(new LoadNewsfeedEntriesTask(this));
+				final FragmentManager fm = context.getSupportFragmentManager();
+				NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) fm
+						.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG);
+				if (newsfeedTaskFragment == null) {
+					// First time loading the comments
+					newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR);
+					newsfeedTaskFragment.setCallbacks(this);
+					fm.beginTransaction().add(newsfeedTaskFragment, NewsfeedTaskFragment.NEWSFEED_TASK_TAG).commit();
+				} else if (!newsfeedTaskFragment.isRunning()) {
+					newsfeedTaskFragment.setCallbacks(this);
+					newsfeedTaskFragment.startNewTaskOnThreadPoolExecutor();
+				} else {
+					// The background task is running, we update its params (callbacks, uv)
+					newsfeedTaskFragment.setCallbacks(this);
+				}
 			}
 		}
 
@@ -109,7 +141,12 @@ public class NewsFeedFragment extends UVwebFragment {
 				if (!ConnectionUtils.isOnline(context)) {
 					handleNetworkError(context);
 				} else {
-					new LoadNewsfeedEntriesTask(this).execute();
+					final NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) context
+							.getSupportFragmentManager()
+							.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG); // TODO: debug (rotation + progressBar actionView)
+					if (!newsfeedTaskFragment.isRunning()) {
+						newsfeedTaskFragment.startNewTask();
+					}
 				}
 				return true;
 			default:
@@ -125,78 +162,39 @@ public class NewsFeedFragment extends UVwebFragment {
 		if (!mAdapter.isEmpty()) {
 			outState.putParcelableArrayList(STATE_NEWSFEED_ENTRIES, (ArrayList) mAdapter.getNewsfeedEntries());
 		}
+		if (mNetworkError) {
+			outState.putBoolean(STATE_NETWORK_ERROR, true);
+		}
 	}
 
-	private static class LoadNewsfeedEntriesTask extends AsyncTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
-		private static final String URL = "http://thomaskeunebroek.fr/newsfeed.json";
-		private final WeakReference<NewsFeedFragment> mUiFragment;
-
-		public LoadNewsfeedEntriesTask(NewsFeedFragment uiFragment) {
-			super();
-
-			mUiFragment = new WeakReference<NewsFeedFragment>(uiFragment);
+	@Override
+	public void onPreExecute() {
+		mListView.getEmptyView().setVisibility(View.GONE);
+		if (mRefreshMenuItem != null) {
+			mRefreshMenuItem.setActionView(R.layout.progressbar);
+		} else {
+			mProgressBar.setVisibility(View.VISIBLE);
 		}
+	}
 
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
+	@Override
+	public void onCancelled() {
+	}
 
-			final NewsFeedFragment ui = mUiFragment.get();
-			if (ui != null) {
-				ui.mListView.getEmptyView().setVisibility(View.GONE);
-				if (ui.mRefreshMenuItem != null) {
-					ui.mRefreshMenuItem.setActionView(R.layout.progressbar);
-				} else {
-					ui.mProgressBar.setVisibility(View.VISIBLE);
-				}
-			}
+	@Override
+	public void onPostExecute(List<UVwebContent.NewsFeedEntry> entries) {
+		if (entries == null) {
+			handleNetworkError();
+			mNetworkError = true;
+		} else {
+			mAdapter.updateNewsFeedEntries(entries);
 		}
-
-		@Override
-		protected List<UVwebContent.NewsFeedEntry> doInBackground(Void... params) {
-			final JSONArray newsfeedEntriesArray = HttpHelper.loadJSON(URL);
-			if (newsfeedEntriesArray == null) return null;
-			final int nNewsfeedEntries = newsfeedEntriesArray.length();
-
-			final List<UVwebContent.NewsFeedEntry> newsfeedEntries = new ArrayList<UVwebContent.NewsFeedEntry>(nNewsfeedEntries);
-
-			try {
-				for (int i = 0; i < nNewsfeedEntries; i++) {
-					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
-					newsfeedEntries.add(new UVwebContent.NewsFeedEntry(
-							newsfeedEntryInfo.getString("author"),
-							newsfeedEntryInfo.getString("email"),
-							newsfeedEntryInfo.getString("date"),
-							newsfeedEntryInfo.getString("content"),
-							newsfeedEntryInfo.getString("action")
-					));
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-
-			return newsfeedEntries;
+		mListView.getEmptyView().setVisibility(View.VISIBLE);
+		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
+			mRefreshMenuItem.setActionView(null);
 		}
-
-		@Override
-		protected void onPostExecute(List<UVwebContent.NewsFeedEntry> entries) {
-			super.onPostExecute(entries);
-
-			final NewsFeedFragment ui = mUiFragment.get();
-			if (ui != null) {
-				if (entries == null) {
-					ui.handleNetworkError();
-				} else {
-					ui.mAdapter.updateNewsFeedEntries(entries);
-				}
-				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
-				if (ui.mRefreshMenuItem != null && ui.mRefreshMenuItem.getActionView() != null) {
-					ui.mRefreshMenuItem.setActionView(null);
-				}
-				if (ui.mProgressBar.getVisibility() == View.VISIBLE) {
-					ui.mProgressBar.setVisibility(View.GONE);
-				}
-			}
+		if (mProgressBar.getVisibility() == View.VISIBLE) {
+			mProgressBar.setVisibility(View.GONE);
 		}
 	}
 }

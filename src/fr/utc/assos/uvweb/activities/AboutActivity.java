@@ -7,6 +7,7 @@ import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.activities.base.UVwebActivity;
 
 /**
  * A simple "About" activity. Here we are supposed to introduce ourselves as well as the project

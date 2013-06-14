@@ -29,6 +29,7 @@ import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.io.CommentsTaskFragment;
 import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
+import fr.utc.assos.uvweb.ui.base.UVwebFragment;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
 
@@ -53,7 +54,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private static final String TAG = makeLogTag(UVDetailFragment.class);
 	private static final String STATE_COMMENT_LIST = "comment_list";
 	private static final String STATE_NO_COMMENT = "no_comment";
-	private static final String STATE_NETWORK_ERROR = "network_error";
 	private final LinearLayout.LayoutParams mSemesterLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -268,8 +268,9 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				if (!ConnectionUtils.isOnline(context)) {
 					handleNetworkError(context);
 				} else {
-					final CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) getSherlockActivity().
-							getSupportFragmentManager().findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG);
+					final CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) context.
+							getSupportFragmentManager()
+							.findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG); // TODO: debug (rotation + progressBar actionView)
 					if (!commentsTaskFragment.isRunning()) {
 						commentsTaskFragment.startNewTask();
 					}

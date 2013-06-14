@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.ui.base.UVwebFragment;
 
 /**
  * A fragment representing the default detail screen. This fragment is

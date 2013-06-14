@@ -2,10 +2,9 @@ package fr.utc.assos.uvweb.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,25 +20,18 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.widget.SearchView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
+import fr.utc.assos.uvweb.io.UvListTaskFragment;
+import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
+import fr.utc.assos.uvweb.ui.base.UVwebFragment;
 import fr.utc.assos.uvweb.ui.custom.UVwebListView;
 import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
-import fr.utc.assos.uvweb.util.CacheHelper;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
-import fr.utc.assos.uvweb.util.HttpHelper;
-import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -52,7 +44,8 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * Activities containing this fragment MUST implement the {@link Callbacks} interface.
  */
 public class UVListFragment extends UVwebFragment implements AdapterView.OnItemClickListener,
-		UVListAdapter.SearchCallbacks, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener, View.OnClickListener {
+		UVListAdapter.SearchCallbacks, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener,
+		View.OnClickListener, UvListTaskFragment.Callbacks<List<UVwebContent.UV>> {
 	private static final String STATE_DISPLAYED_UV = "displayed_uv";
 	private static final String STATE_SEARCH_QUERY = "search_query";
 	private static final String STATE_UV_LIST = "uv_list";
@@ -74,6 +67,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		public void showDefaultDetailFragment() {
 		}
 	};
+	private boolean mNetworkError;
 	/**
 	 * The fragment's current callback object, which is notified of list item
 	 * clicks.
@@ -84,7 +78,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	 */
 	private UVwebListView mListView;
 	/**
-	 * The {@link fr.utc.assos.uvweb.adapters.UVAdapter} ListAdapter instance
+	 * The {@link fr.utc.assos.uvweb.adapters.base.UVAdapter} ListAdapter instance
 	 */
 	private UVListAdapter mAdapter;
 	/**
@@ -172,15 +166,49 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		mAdapter.setSearchCallbacks(this);
 		mListView.setAdapter(mAdapter);
 
-		if (savedInstanceState != null && savedInstanceState.containsKey(STATE_UV_LIST)) {
-			final ArrayList<UVwebContent.UV> savedUvs = savedInstanceState.getParcelableArrayList(STATE_UV_LIST);
-			mAdapter.updateUVs(savedUvs);
+		if (savedInstanceState != null) {
+			if (savedInstanceState.containsKey(STATE_UV_LIST)) {
+				final ArrayList<UVwebContent.UV> savedUvs = savedInstanceState.getParcelableArrayList(STATE_UV_LIST);
+				mAdapter.updateUVs(savedUvs);
+			} else {
+				// In this case, we have a configuration change
+				final SherlockFragmentActivity context = getSherlockActivity();
+				final UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) context
+						.getSupportFragmentManager()
+						.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG);
+				uvListTaskFragment.setCallbacks(this);
+				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
+					if (!ConnectionUtils.isOnline(context)) {
+						handleNetworkError(context);
+					} else {
+						// If we previously had a network error, we can try and reload the list
+						uvListTaskFragment.startNewTaskOnThreadPoolExecutor();
+					}
+				} else {
+					// The task wasn't complete and is still running, we need to show the ProgressBar again
+					onPreExecute();
+				}
+			}
 		} else {
 			final SherlockFragmentActivity context = getSherlockActivity();
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				ThreadedAsyncTaskHelper.execute(new LoadUvsListTask(this));
+				final FragmentManager fm = context.getSupportFragmentManager();
+				UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) fm
+						.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG);
+				if (uvListTaskFragment == null) {
+					// First time loading the comments
+					uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR);
+					uvListTaskFragment.setCallbacks(this);
+					fm.beginTransaction().add(uvListTaskFragment, UvListTaskFragment.UV_LIST_TASK_TAG).commit();
+				} else if (!uvListTaskFragment.isRunning()) {
+					uvListTaskFragment.setCallbacks(this);
+					uvListTaskFragment.startNewTaskOnThreadPoolExecutor();
+				} else {
+					// The background task is running, we update its params (callbacks, uv)
+					uvListTaskFragment.setCallbacks(this);
+				}
 			}
 		}
 
@@ -331,6 +359,9 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		if (mAdapter.hasUvs()) {
 			outState.putParcelableArrayList(STATE_UV_LIST, (ArrayList) mAdapter.getUVs());
 		}
+		if (mNetworkError) {
+			outState.putBoolean(STATE_NETWORK_ERROR, true);
+		}
 	}
 
 	/**
@@ -358,20 +389,48 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		if (!ConnectionUtils.isOnline(context)) {
 			handleNetworkError(context);
 		} else {
-			new LoadUvsListTask(this).execute();
+			final UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) context
+					.getSupportFragmentManager()
+					.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG); // TODO: debug (rotation)
+			if (!uvListTaskFragment.isRunning()) {
+				uvListTaskFragment.startNewTask();
+			}
 		}
 	}
 
 	@Override
-	protected void handleNetworkError(SherlockFragmentActivity context) {
+	protected void handleNetworkError(Activity context) {
 		super.handleNetworkError(context);
 
-		mRetryButton.setVisibility(View.VISIBLE);
+		mRetryButton.setVisibility(View.VISIBLE); // TODO: FIXME
 	}
 
 	@Override
 	protected void handleNetworkError() {
 		handleNetworkError(getSherlockActivity());
+	}
+
+	@Override
+	public void onPreExecute() {
+		mListView.getEmptyView().setVisibility(View.GONE);
+		mProgressBar.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onCancelled() {
+	}
+
+	@Override
+	public void onPostExecute(List<UVwebContent.UV> uvs) {
+		if (uvs == null) {
+			handleNetworkError();
+			mNetworkError = true;
+
+		} else {
+			mAdapter.updateUVs(uvs);
+		}
+		mListView.getEmptyView().setVisibility(View.VISIBLE);
+		mProgressBar.setVisibility(View.GONE);
 	}
 
 	/**
@@ -389,130 +448,5 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		 * Callback to display the default DetailFragment.
 		 */
 		public void showDefaultDetailFragment();
-	}
-
-	private static class LoadUvsListTask extends AsyncTask<Void, Void, List<UVwebContent.UV>> {
-		private static final String URL = "http://masciulli.fr/uvweb/uvlist.json";
-		private final WeakReference<UVListFragment> mUiFragment;
-		private final File mCacheFile;
-		private boolean mLoadFromNetwork = false;
-
-		public LoadUvsListTask(UVListFragment uiFragment) {
-			super();
-
-			final String cachePath;
-			if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || Build.VERSION.SDK_INT <= Build.VERSION_CODES.FROYO ||
-					!Environment.isExternalStorageRemovable()) {
-				final File externalCacheDir = uiFragment.getSherlockActivity().getExternalCacheDir();
-				cachePath = externalCacheDir != null ? externalCacheDir.getPath() : null;
-			} else {
-				final File cacheDir = uiFragment.getSherlockActivity().getCacheDir();
-				cachePath = cacheDir != null ? cacheDir.getPath() : null;
-			}
-
-			mUiFragment = new WeakReference<UVListFragment>(uiFragment);
-			if (cachePath != null) {
-				mCacheFile = new File(cachePath + File.separator + "toto.json");
-				// TODO: cache timestamp
-				if (!mCacheFile.exists()) {
-					try {
-						mCacheFile.createNewFile(); // TODO: FileInputStream & FileOutputStream can handle this
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						mLoadFromNetwork = true;
-					}
-				}
-			} else {
-				mCacheFile = null;
-				mLoadFromNetwork = true;
-			}
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-
-			final UVListFragment ui = mUiFragment.get();
-			if (ui != null) {
-				ui.mListView.getEmptyView().setVisibility(View.GONE);
-				ui.mProgressBar.setVisibility(View.VISIBLE);
-				// TODO: debug progressBar Touchpad
-			}
-		}
-
-		@Override
-		protected List<UVwebContent.UV> doInBackground(Void... params) {
-			JSONArray uvsArray = null;
-
-			if (!mLoadFromNetwork) {
-				try {
-					uvsArray = CacheHelper.loadJSON(mCacheFile);
-				} catch (JSONException e) {
-					handleCacheError(e);
-				} catch (IOException e) {
-					handleCacheError(e);
-				}
-			}
-			if (mLoadFromNetwork || uvsArray == null || uvsArray.length() == 0) {
-				uvsArray = HttpHelper.loadJSON(URL);
-			}
-
-			if (uvsArray == null) {
-				return null;
-			}
-
-			final int nUvs = uvsArray.length();
-			final List<UVwebContent.UV> uvs = new ArrayList<UVwebContent.UV>(nUvs);
-			try {
-				for (int i = 0; i < nUvs; i++) {
-					final JSONObject uvsInfo = (JSONObject) uvsArray.get(i);
-					final UVwebContent.UV uv = new UVwebContent.UV(
-							uvsInfo.getString("name").trim(),
-							uvsInfo.getString("title").trim()
-					);
-					uvs.add(uv);
-				}
-			} catch (JSONException e) {
-				return null;
-			}
-
-			if (mLoadFromNetwork) {
-				try {
-					CacheHelper.writeToCache(mCacheFile, uvsArray);
-				} catch (IOException e) {
-					mCacheFile.delete();
-				}
-			}
-
-			return uvs;
-		}
-
-		@Override
-		protected void onPostExecute(List<UVwebContent.UV> uvs) {
-			super.onPostExecute(uvs);
-
-			final UVListFragment ui = mUiFragment.get();
-			if (ui != null) {
-				if (uvs == null) {
-					ui.handleNetworkError();
-				} else {
-					ui.mAdapter.updateUVs(uvs);
-				}
-				ui.mListView.getEmptyView().setVisibility(View.VISIBLE);
-				ui.mProgressBar.setVisibility(View.GONE);
-			}
-		}
-
-		private void handleCacheError(Exception e) {
-			mLoadFromNetwork = true;
-			if (e != null) {
-				e.printStackTrace();
-			}
-		}
-
-		private void handleCacheError() {
-			handleCacheError(null);
-		}
 	}
 }

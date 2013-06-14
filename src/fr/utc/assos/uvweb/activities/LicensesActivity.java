@@ -5,6 +5,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import com.actionbarsherlock.view.Window;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.activities.base.UVwebActivity;
 
 /**
  * An simple "Licenses" activity, whose aim it to present the open source projects

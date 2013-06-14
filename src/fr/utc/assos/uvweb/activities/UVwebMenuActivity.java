@@ -4,6 +4,7 @@ import android.content.Intent;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.activities.base.UVwebActivity;
 
 /**
  * Base activity implementing simple menu items, that are consistent through the whole application
