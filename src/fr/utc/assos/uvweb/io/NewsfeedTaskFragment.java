@@ -19,7 +19,7 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  * A UI-less fragment that loads the uv list.
  */
 public class NewsfeedTaskFragment extends BaseTaskFragment {
-	public static final String NEWSFEED_TASK_TAG = "NewsfeedTaskFragment_TAG";
+	private static final String NEWSFEED_TASK_TAG = "NewsfeedTaskFragment_TAG";
 
 	// Public API
 	public static NewsfeedTaskFragment get(FragmentManager fm, Callbacks cb) {

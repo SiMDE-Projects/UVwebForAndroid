@@ -177,8 +177,12 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 						commentsTaskFragment.startNewTask();
 					}
 				} else {
-					// The task wasn't complete and is still running, we need to show the ProgressBar again
-					onPreExecute();
+					if (!commentsTaskFragment.isRunning()) {
+						commentsTaskFragment.startNewTask();
+					} else {
+						// The task wasn't complete and is still running, we need to show the ProgressBar again
+						onPreExecute();
+					}
 				}
 			}
 		} else {

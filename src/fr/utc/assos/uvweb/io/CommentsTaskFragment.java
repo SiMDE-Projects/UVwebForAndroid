@@ -20,7 +20,7 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  * A UI-less fragment that loads the comments of the corresponding {@code mUvId}.
  */
 public class CommentsTaskFragment extends BaseTaskFragment {
-	public static final String COMMENTS_TASK_TAG = "CommentsTaskFragment_TAG";
+	private static final String COMMENTS_TASK_TAG = "CommentsTaskFragment_TAG";
 	private String mUvId;
 
 	// Public API

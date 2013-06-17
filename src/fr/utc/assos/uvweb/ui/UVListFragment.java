@@ -152,8 +152,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			return null;
 		}
 
-		final View rootView = inflater.inflate(R.layout.fragment_uv_list,
-				container, false);
+		final View rootView = inflater.inflate(R.layout.fragment_uv_list, container, false);
 
 		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 
@@ -189,7 +188,12 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
-						onPreExecute();
+						if (!uvListTaskFragment.isRunning()) {
+							uvListTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+						} else {
+							// The task wasn't complete and is still running, we need to show the ProgressBar again
+							onPreExecute();
+						}
 					}
 				}
 			}
@@ -392,7 +396,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	protected void handleNetworkError(Activity context) {
 		super.handleNetworkError(context);
 
-		mRetryButton.setVisibility(View.VISIBLE); // TODO: FIXME
+		mRetryButton.setVisibility(View.VISIBLE); // TODO: FIXME (shouldn't appear on search)
 	}
 
 	@Override

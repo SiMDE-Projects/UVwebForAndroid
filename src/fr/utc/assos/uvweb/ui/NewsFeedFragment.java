@@ -97,8 +97,12 @@ public class NewsFeedFragment extends UVwebFragment implements
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
-						// The task wasn't complete and is still running, we need to show the ProgressBar again
-						onPreExecute();
+						if (!newsfeedTaskFragment.isRunning()) {
+							newsfeedTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);						}
+						else {
+							// The task wasn't complete and is still running, we need to show the ProgressBar again
+							onPreExecute();
+						}
 					}
 				}
 			}

@@ -20,7 +20,7 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  * A UI-less fragment that loads the uv list.
  */
 public class UvListTaskFragment extends BaseTaskFragment {
-	public static final String UV_LIST_TASK_TAG = "UvListTaskFragment_TAG";
+	private static final String UV_LIST_TASK_TAG = "UvListTaskFragment_TAG";
 
 	// Public API
 	public static UvListTaskFragment get(FragmentManager fm, Callbacks cb) {
