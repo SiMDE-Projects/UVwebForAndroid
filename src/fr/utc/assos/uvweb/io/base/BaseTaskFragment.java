@@ -18,21 +18,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 public abstract class BaseTaskFragment extends SherlockFragment {
 	public static final int THREAD_DEFAULT_POLICY = 0;
 	public static final int THREAD_POOL_EXECUTOR_POLICY = 1;
-	private final int mThreadMode;
 	protected FragmentTask mTask;
 	private Callbacks mCallbacks;
 	private boolean mIsRunning;
 
 	public BaseTaskFragment() {
-		this(THREAD_DEFAULT_POLICY);
-	}
-
-	public BaseTaskFragment(final int threadMode) {
-		if (threadMode != THREAD_DEFAULT_POLICY && threadMode != THREAD_POOL_EXECUTOR_POLICY) {
-			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT_POLICY" +
-					"or THREAD_POOL_EXECUTOR_POLICY");
-		}
-		mThreadMode = threadMode;
 	}
 
 	/**
@@ -45,12 +35,6 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 
 		// Retain this fragment across configuration changes.
 		setRetainInstance(true);
-
-		if (mThreadMode == THREAD_DEFAULT_POLICY) {
-			startNewTask();
-		} else if (mThreadMode == THREAD_POOL_EXECUTOR_POLICY) {
-			startNewTaskOnThreadPoolExecutor();
-		}
 	}
 
 	@Override
@@ -75,17 +59,21 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 
 	// Public API
 	public void startNewTask() {
-		if (mTask != null) {
-			mTask.cancel(true);
-		}
-		start();
+		startNewTask(THREAD_DEFAULT_POLICY);
 	}
 
-	public void startNewTaskOnThreadPoolExecutor() {
+	public void startNewTask(final int threadMode) {
 		if (mTask != null) {
 			mTask.cancel(true);
 		}
-		startOnThreadPoolExecutor();
+		if (threadMode == THREAD_DEFAULT_POLICY) {
+			start();
+		} else if (threadMode == THREAD_POOL_EXECUTOR_POLICY) {
+			startOnThreadPoolExecutor();
+		} else {
+			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT_POLICY" +
+					"or THREAD_POOL_EXECUTOR_POLICY");
+		}
 	}
 
 	public void setCallbacks(Callbacks callbacks) {

@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -177,37 +176,19 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			} else {
 				// In this case, we have a configuration change
 				final SherlockFragmentActivity context = getSherlockActivity();
-				UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) context
-						.getSupportFragmentManager()
-						.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG);
+				final UvListTaskFragment uvListTaskFragment =
+						UvListTaskFragment.get(context.getSupportFragmentManager(), this);
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
-						if (uvListTaskFragment == null) {
-							// First time loading the comments
-							uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-							context.getSupportFragmentManager()
-									.beginTransaction()
-									.add(uvListTaskFragment, UvListTaskFragment.UV_LIST_TASK_TAG).commit();
-						}
-						uvListTaskFragment.setCallbacks(this);
 						// If we previously had a network error, we can try and reload the list
-						uvListTaskFragment.startNewTaskOnThreadPoolExecutor();
+						uvListTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
 					}
 				} else {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
-						if (uvListTaskFragment == null) {
-							// First time loading the comments
-							uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-							context.getSupportFragmentManager()
-									.beginTransaction()
-									.add(uvListTaskFragment, UvListTaskFragment.UV_LIST_TASK_TAG).commit();
-						}
-						// The task wasn't complete and is still running, we need to show the ProgressBar again
-						uvListTaskFragment.setCallbacks(this);
 						onPreExecute();
 					}
 				}
@@ -217,21 +198,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				final FragmentManager fm = context.getSupportFragmentManager();
-				UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) fm
-						.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG);
-				if (uvListTaskFragment == null) {
-					// First time loading the comments
-					uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-					uvListTaskFragment.setCallbacks(this);
-					fm.beginTransaction().add(uvListTaskFragment, UvListTaskFragment.UV_LIST_TASK_TAG).commit();
-				} else if (!uvListTaskFragment.isRunning()) {
-					uvListTaskFragment.setCallbacks(this);
-					uvListTaskFragment.startNewTaskOnThreadPoolExecutor();
-				} else {
-					// The background task is running, we update its params (callbacks, uv)
-					uvListTaskFragment.setCallbacks(this);
-				}
+				UvListTaskFragment.get(context.getSupportFragmentManager(), this)
+						.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
 			}
 		}
 

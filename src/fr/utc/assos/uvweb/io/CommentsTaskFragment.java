@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.io;
 
+import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 
 import org.json.JSONArray;
@@ -21,14 +22,6 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 public class CommentsTaskFragment extends BaseTaskFragment {
 	public static final String COMMENTS_TASK_TAG = "CommentsTaskFragment_TAG";
 	private String mUvId;
-
-	public CommentsTaskFragment() {
-		super();
-	}
-
-	public CommentsTaskFragment(int threadMode) {
-		super(threadMode);
-	}
 
 	// Public API
 	public static CommentsTaskFragment get(FragmentManager fm, Callbacks cb, String uvId) {
@@ -90,7 +83,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			//SystemClock.sleep(4000);
+			SystemClock.sleep(4000);
 
 			return uvComments;
 		}

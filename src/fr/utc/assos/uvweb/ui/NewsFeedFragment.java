@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,8 +60,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 			return null;
 		}
 
-		final View rootView = inflater.inflate(R.layout.fragment_newsfeed,
-				container, false);
+		final View rootView = inflater.inflate(R.layout.fragment_newsfeed, container, false);
 
 		mProgressBar = (ProgressBar) rootView.findViewById(R.id.progress);
 
@@ -86,39 +84,20 @@ public class NewsFeedFragment extends UVwebFragment implements
 			} else {
 				// In this case, we have a configuration change
 				final SherlockFragmentActivity context = getSherlockActivity();
-				NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) context
-						.getSupportFragmentManager()
-						.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG);
+				final NewsfeedTaskFragment newsfeedTaskFragment =
+						NewsfeedTaskFragment.get(context.getSupportFragmentManager(), this);
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
-						if (newsfeedTaskFragment == null) {
-							// First time loading the comments
-							newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-							context.getSupportFragmentManager()
-									.beginTransaction()
-									.add(newsfeedTaskFragment, NewsfeedTaskFragment.NEWSFEED_TASK_TAG)
-									.commit();
-						}
-						newsfeedTaskFragment.setCallbacks(this);
 						// If we previously had a network error, we can try and reload the list
-						newsfeedTaskFragment.startNewTaskOnThreadPoolExecutor();
+						newsfeedTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
 					}
 				} else {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
 						// The task wasn't complete and is still running, we need to show the ProgressBar again
-						if (newsfeedTaskFragment == null) {
-							// First time loading the comments
-							newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-							context.getSupportFragmentManager()
-									.beginTransaction()
-									.add(newsfeedTaskFragment, NewsfeedTaskFragment.NEWSFEED_TASK_TAG)
-									.commit();
-						}
-						newsfeedTaskFragment.setCallbacks(this);
 						onPreExecute();
 					}
 				}
@@ -128,21 +107,8 @@ public class NewsFeedFragment extends UVwebFragment implements
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				final FragmentManager fm = context.getSupportFragmentManager();
-				NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) fm
-						.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG);
-				if (newsfeedTaskFragment == null) {
-					// First time loading the comments
-					newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-					newsfeedTaskFragment.setCallbacks(this);
-					fm.beginTransaction().add(newsfeedTaskFragment, NewsfeedTaskFragment.NEWSFEED_TASK_TAG).commit();
-				} else if (!newsfeedTaskFragment.isRunning()) {
-					newsfeedTaskFragment.setCallbacks(this);
-					newsfeedTaskFragment.startNewTaskOnThreadPoolExecutor();
-				} else {
-					// The background task is running, we update its params (callbacks, uv)
-					newsfeedTaskFragment.setCallbacks(this);
-				}
+				NewsfeedTaskFragment.get(context.getSupportFragmentManager(), this)
+						.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
 			}
 		}
 

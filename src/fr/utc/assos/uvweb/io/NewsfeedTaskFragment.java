@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.io;
 
+import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 
 import org.json.JSONArray;
@@ -19,14 +20,6 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  */
 public class NewsfeedTaskFragment extends BaseTaskFragment {
 	public static final String NEWSFEED_TASK_TAG = "NewsfeedTaskFragment_TAG";
-
-	public NewsfeedTaskFragment() {
-		super();
-	}
-
-	public NewsfeedTaskFragment(int threadMode) {
-		super(threadMode);
-	}
 
 	// Public API
 	public static NewsfeedTaskFragment get(FragmentManager fm, Callbacks cb) {
@@ -78,7 +71,7 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 				e.printStackTrace();
 			}
 
-			//SystemClock.sleep(4000);
+			SystemClock.sleep(4000);
 
 			return newsfeedEntries;
 		}

@@ -3,7 +3,6 @@ package fr.utc.assos.uvweb.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.FragmentManager;
 import android.text.Html;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -168,41 +167,17 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				mHasNoComments = true;
 			} else {
 				// In this case, we have a configuration change
-				CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) context
-						.getSupportFragmentManager().findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG);
+				final CommentsTaskFragment commentsTaskFragment =
+						CommentsTaskFragment.get(context.getSupportFragmentManager(), this, mUV.getName());
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
-						if (commentsTaskFragment == null) {
-							// First time loading the comments
-							commentsTaskFragment = new CommentsTaskFragment();
-							commentsTaskFragment.setCallbacks(this);
-							commentsTaskFragment.setUvId(mUV.getName());
-							context.getSupportFragmentManager()
-									.beginTransaction()
-									.add(commentsTaskFragment, CommentsTaskFragment.COMMENTS_TASK_TAG)
-									.commit();
-						}
-						commentsTaskFragment.setCallbacks(this);
-						commentsTaskFragment.setUvId(mUV.getName());
 						// If we previously had a network error, we can try and reload the list
 						commentsTaskFragment.startNewTask();
 					}
 				} else {
 					// The task wasn't complete and is still running, we need to show the ProgressBar again
-					if (commentsTaskFragment == null) {
-						// First time loading the comments
-						commentsTaskFragment = new CommentsTaskFragment();
-						commentsTaskFragment.setCallbacks(this);
-						commentsTaskFragment.setUvId(mUV.getName());
-						context.getSupportFragmentManager()
-								.beginTransaction()
-								.add(commentsTaskFragment, CommentsTaskFragment.COMMENTS_TASK_TAG)
-								.commit();
-					}
-					commentsTaskFragment.setCallbacks(this);
-					commentsTaskFragment.setUvId(mUV.getName());
 					onPreExecute();
 				}
 			}
@@ -210,30 +185,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			if (!ConnectionUtils.isOnline(context)) {
 				handleNetworkError(context);
 			} else {
-				final FragmentManager fm = context.getSupportFragmentManager();
-				CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) fm
-						.findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG);
-				if (commentsTaskFragment == null) {
-					// First time loading the comments
-					commentsTaskFragment = new CommentsTaskFragment();
-					commentsTaskFragment.setCallbacks(this);
-					commentsTaskFragment.setUvId(mUV.getName());
-					fm.beginTransaction().add(commentsTaskFragment, CommentsTaskFragment.COMMENTS_TASK_TAG).commit();
-				} else if (!commentsTaskFragment.isRunning()) {
-					commentsTaskFragment.setCallbacks(this);
-					commentsTaskFragment.setUvId(mUV.getName());
-					commentsTaskFragment.startNewTask();
-				} else {
-					// The background task is running, we update its params (callbacks, uv)
-					final String oldUvId = commentsTaskFragment.getCurrentUvId();
-					final String currentUvId = mUV.getName();
-					commentsTaskFragment.setCallbacks(this);
-					commentsTaskFragment.setUvId(currentUvId);
-					if (!currentUvId.equals(oldUvId)) {
-						// If the UV has changed, the Fragment has been replaced, we need to restart the task
-						commentsTaskFragment.startNewTask();
-					}
-				}
+				CommentsTaskFragment.get(context.getSupportFragmentManager(), this, mUV.getName()).startNewTask();
 			}
 		}
 

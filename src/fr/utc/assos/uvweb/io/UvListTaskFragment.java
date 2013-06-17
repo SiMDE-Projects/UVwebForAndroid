@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.io;
 
+import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 
 import org.json.JSONArray;
@@ -20,14 +21,6 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  */
 public class UvListTaskFragment extends BaseTaskFragment {
 	public static final String UV_LIST_TASK_TAG = "UvListTaskFragment_TAG";
-
-	public UvListTaskFragment() {
-		super();
-	}
-
-	public UvListTaskFragment(int threadMode) {
-		super(threadMode);
-	}
 
 	// Public API
 	public static UvListTaskFragment get(FragmentManager fm, Callbacks cb) {
@@ -76,7 +69,7 @@ public class UvListTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			//SystemClock.sleep(4000);
+			SystemClock.sleep(4000);
 
 			return uvs;
 		}
