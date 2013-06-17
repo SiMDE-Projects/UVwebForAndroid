@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import fr.utc.assos.uvweb.data.UVwebContent;
@@ -51,8 +50,7 @@ public class UvListTaskFragment extends BaseTaskFragment {
 		@Override
 		protected List<UVwebContent.UV> doInBackground(Void... params) {
 			final JSONArray uvsArray = HttpHelper.loadJSON(API_URL);
-			if (isCancelled()) return Collections.emptyList(); // TODO: improve
-			if (uvsArray == null) return null;
+			if (uvsArray == null || isCancelled()) return null;
 
 			final int nUvs = uvsArray.length();
 			final List<UVwebContent.UV> uvs = new ArrayList<UVwebContent.UV>(nUvs);

@@ -50,13 +50,13 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 		@Override
 		protected List<UVwebContent.NewsFeedEntry> doInBackground(Void... params) {
 			final JSONArray newsfeedEntriesArray = HttpHelper.loadJSON(API_URL);
-			if (newsfeedEntriesArray == null) return null; // TODO: improve
+			if (newsfeedEntriesArray == null || isCancelled()) return null;
 			final int nNewsfeedEntries = newsfeedEntriesArray.length();
 
 			final List<UVwebContent.NewsFeedEntry> newsfeedEntries = new ArrayList<UVwebContent.NewsFeedEntry>(nNewsfeedEntries);
 
 			try {
-				for (int i = 0; i < nNewsfeedEntries; i++) {
+				for (int i = 0; !isCancelled() && i < nNewsfeedEntries; i++) {
 					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
 					newsfeedEntries.add(new UVwebContent.NewsFeedEntry(
 							newsfeedEntryInfo.getString("author"),

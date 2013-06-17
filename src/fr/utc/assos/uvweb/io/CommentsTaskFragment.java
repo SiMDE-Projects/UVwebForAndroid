@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import fr.utc.assos.uvweb.data.UVwebContent;
@@ -61,8 +60,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 		@Override
 		protected List<UVwebContent.UVComment> doInBackground(String... params) {
 			final JSONArray uvCommentsArray = HttpHelper.loadJSON(API_URL + params[0]);
-			if (isCancelled()) return Collections.emptyList(); // TODO: improve
-			if (uvCommentsArray == null) return null;
+			if (uvCommentsArray == null || isCancelled()) return null;
 			final int nUvComments = uvCommentsArray.length();
 
 			final List<UVwebContent.UVComment> uvComments = new ArrayList<UVwebContent.UVComment>(nUvComments);
@@ -71,9 +69,9 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 				for (int i = 0; !isCancelled() && i < nUvComments; i++) {
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
 					String email; // Fake data to display images
-					if ((i+1) % 4 == 0) {
+					if ((i + 1) % 4 == 0) {
 						email = "thomas.keunebroek@gmail.com";
-					} else if ((i+1) % 3 == 0) {
+					} else if ((i + 1) % 3 == 0) {
 						email = "alexandre.masciulli@gmail.com";
 					} else {
 						email = "coucou@coucou.coucou";
