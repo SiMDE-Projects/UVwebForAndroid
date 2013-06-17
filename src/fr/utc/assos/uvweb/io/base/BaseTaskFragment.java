@@ -2,6 +2,9 @@ package fr.utc.assos.uvweb.io.base;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -24,7 +27,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		this(THREAD_DEFAULT);
 	}
 
-	public BaseTaskFragment(int threadMode) {
+	public BaseTaskFragment(final int threadMode) {
 		if (threadMode != THREAD_DEFAULT && threadMode != THREAD_POOL_EXECUTOR) {
 			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT or THREAD_POOL_EXECUTOR");
 		}
@@ -47,6 +50,11 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		} else if (mThreadMode == THREAD_POOL_EXECUTOR) {
 			startNewTaskOnThreadPoolExecutor();
 		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		return null;
 	}
 
 	/**

@@ -115,6 +115,10 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		if (container == null) {
+			return null;
+		}
+
 		final View rootView = inflater.inflate(R.layout.fragment_uv_detail,
 				container, false);
 
