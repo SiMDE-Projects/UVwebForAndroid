@@ -16,20 +16,21 @@ import com.actionbarsherlock.app.SherlockFragment;
  * using the {@code setCallCallbacks()} method.
  */
 public abstract class BaseTaskFragment extends SherlockFragment {
-	public static final int THREAD_DEFAULT = 0;
-	public static final int THREAD_POOL_EXECUTOR = 1;
+	public static final int THREAD_DEFAULT_POLICY = 0;
+	public static final int THREAD_POOL_EXECUTOR_POLICY = 1;
 	private final int mThreadMode;
 	protected FragmentTask mTask;
 	private Callbacks mCallbacks;
 	private boolean mIsRunning;
 
 	public BaseTaskFragment() {
-		this(THREAD_DEFAULT);
+		this(THREAD_DEFAULT_POLICY);
 	}
 
 	public BaseTaskFragment(final int threadMode) {
-		if (threadMode != THREAD_DEFAULT && threadMode != THREAD_POOL_EXECUTOR) {
-			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT or THREAD_POOL_EXECUTOR");
+		if (threadMode != THREAD_DEFAULT_POLICY && threadMode != THREAD_POOL_EXECUTOR_POLICY) {
+			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT_POLICY" +
+					"or THREAD_POOL_EXECUTOR_POLICY");
 		}
 		mThreadMode = threadMode;
 	}
@@ -45,9 +46,9 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		// Retain this fragment across configuration changes.
 		setRetainInstance(true);
 
-		if (mThreadMode == THREAD_DEFAULT) {
+		if (mThreadMode == THREAD_DEFAULT_POLICY) {
 			startNewTask();
-		} else if (mThreadMode == THREAD_POOL_EXECUTOR) {
+		} else if (mThreadMode == THREAD_POOL_EXECUTOR_POLICY) {
 			startNewTaskOnThreadPoolExecutor();
 		}
 	}
@@ -74,17 +75,15 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 
 	// Public API
 	public void startNewTask() {
-		if (mIsRunning && mTask != null) {
+		if (mTask != null) {
 			mTask.cancel(true);
-			mIsRunning = false;
 		}
 		start();
 	}
 
 	public void startNewTaskOnThreadPoolExecutor() {
-		if (mIsRunning && mTask != null) {
+		if (mTask != null) {
 			mTask.cancel(true);
-			mIsRunning = false;
 		}
 		startOnThreadPoolExecutor();
 	}
@@ -108,14 +107,15 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	public abstract class FragmentTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
 		@Override
 		protected void onPreExecute() {
-			mIsRunning = true;
 			if (mCallbacks != null) {
 				mCallbacks.onPreExecute();
 			}
+			mIsRunning = true;
 		}
 
 		@Override
 		protected void onCancelled() {
+			mIsRunning = false;
 			if (mCallbacks != null) {
 				mCallbacks.onCancelled();
 			}
@@ -124,10 +124,10 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		@Override
 		@SuppressWarnings("unchecked")
 		protected void onPostExecute(Result result) {
+			mIsRunning = false;
 			if (mCallbacks != null) {
 				mCallbacks.onPostExecute(result);
 			}
-			mIsRunning = false;
 		}
 	}
 }

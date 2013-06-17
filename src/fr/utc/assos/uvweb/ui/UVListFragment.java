@@ -177,20 +177,39 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			} else {
 				// In this case, we have a configuration change
 				final SherlockFragmentActivity context = getSherlockActivity();
-				final UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) context
+				UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) context
 						.getSupportFragmentManager()
 						.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG);
-				uvListTaskFragment.setCallbacks(this);
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
+						if (uvListTaskFragment == null) {
+							// First time loading the comments
+							uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+							context.getSupportFragmentManager()
+									.beginTransaction()
+									.add(uvListTaskFragment, UvListTaskFragment.UV_LIST_TASK_TAG).commit();
+						}
+						uvListTaskFragment.setCallbacks(this);
 						// If we previously had a network error, we can try and reload the list
 						uvListTaskFragment.startNewTaskOnThreadPoolExecutor();
 					}
 				} else {
-					// The task wasn't complete and is still running, we need to show the ProgressBar again
-					onPreExecute();
+					if (!ConnectionUtils.isOnline(context)) {
+						handleNetworkError(context);
+					} else {
+						if (uvListTaskFragment == null) {
+							// First time loading the comments
+							uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+							context.getSupportFragmentManager()
+									.beginTransaction()
+									.add(uvListTaskFragment, UvListTaskFragment.UV_LIST_TASK_TAG).commit();
+						}
+						// The task wasn't complete and is still running, we need to show the ProgressBar again
+						uvListTaskFragment.setCallbacks(this);
+						onPreExecute();
+					}
 				}
 			}
 		} else {
@@ -203,7 +222,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 						.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG);
 				if (uvListTaskFragment == null) {
 					// First time loading the comments
-					uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR);
+					uvListTaskFragment = new UvListTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
 					uvListTaskFragment.setCallbacks(this);
 					fm.beginTransaction().add(uvListTaskFragment, UvListTaskFragment.UV_LIST_TASK_TAG).commit();
 				} else if (!uvListTaskFragment.isRunning()) {
@@ -393,9 +412,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		if (!ConnectionUtils.isOnline(context)) {
 			handleNetworkError(context);
 		} else {
-			final UvListTaskFragment uvListTaskFragment = (UvListTaskFragment) context
-					.getSupportFragmentManager()
-					.findFragmentByTag(UvListTaskFragment.UV_LIST_TASK_TAG); // TODO: debug (rotation)
+			final UvListTaskFragment uvListTaskFragment =
+					UvListTaskFragment.get(context.getSupportFragmentManager(), this);
 			if (!uvListTaskFragment.isRunning()) {
 				uvListTaskFragment.startNewTask();
 			}
@@ -429,7 +447,6 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		if (uvs == null) {
 			handleNetworkError();
 			mNetworkError = true;
-
 		} else {
 			mAdapter.updateUVs(uvs);
 		}

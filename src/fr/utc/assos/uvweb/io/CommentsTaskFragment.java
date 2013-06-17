@@ -1,5 +1,7 @@
 package fr.utc.assos.uvweb.io;
 
+import android.support.v4.app.FragmentManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,6 +30,27 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 		super(threadMode);
 	}
 
+	// Public API
+	public static CommentsTaskFragment get(FragmentManager fm, Callbacks cb, String uvId) {
+		CommentsTaskFragment commentsTaskFragment =
+				(CommentsTaskFragment) fm.findFragmentByTag(COMMENTS_TASK_TAG);
+		if (commentsTaskFragment == null) {
+			commentsTaskFragment = new CommentsTaskFragment();
+			fm.beginTransaction().add(commentsTaskFragment, COMMENTS_TASK_TAG).commit();
+		}
+		commentsTaskFragment.setCallbacks(cb);
+		commentsTaskFragment.setUvId(uvId);
+		return commentsTaskFragment;
+	}
+
+	public String getCurrentUvId() {
+		return mUvId;
+	}
+
+	public void setUvId(String uvId) {
+		mUvId = uvId;
+	}
+
 	@Override
 	protected void start() {
 		mTask = new LoadUvCommentsTask();
@@ -38,15 +61,6 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 	protected void startOnThreadPoolExecutor() {
 		mTask = new LoadUvCommentsTask();
 		ThreadedAsyncTaskHelper.execute((LoadUvCommentsTask) mTask, mUvId);
-	}
-
-	// Public API
-	public String getCurrentUvId() {
-		return mUvId;
-	}
-
-	public void setUvId(String uvId) {
-		mUvId = uvId;
 	}
 
 	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {

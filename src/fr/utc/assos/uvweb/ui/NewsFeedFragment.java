@@ -86,20 +86,41 @@ public class NewsFeedFragment extends UVwebFragment implements
 			} else {
 				// In this case, we have a configuration change
 				final SherlockFragmentActivity context = getSherlockActivity();
-				final NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) context
+				NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) context
 						.getSupportFragmentManager()
 						.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG);
-				newsfeedTaskFragment.setCallbacks(this);
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
+						if (newsfeedTaskFragment == null) {
+							// First time loading the comments
+							newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+							context.getSupportFragmentManager()
+									.beginTransaction()
+									.add(newsfeedTaskFragment, NewsfeedTaskFragment.NEWSFEED_TASK_TAG)
+									.commit();
+						}
+						newsfeedTaskFragment.setCallbacks(this);
 						// If we previously had a network error, we can try and reload the list
 						newsfeedTaskFragment.startNewTaskOnThreadPoolExecutor();
 					}
 				} else {
-					// The task wasn't complete and is still running, we need to show the ProgressBar again
-					onPreExecute();
+					if (!ConnectionUtils.isOnline(context)) {
+						handleNetworkError(context);
+					} else {
+						// The task wasn't complete and is still running, we need to show the ProgressBar again
+						if (newsfeedTaskFragment == null) {
+							// First time loading the comments
+							newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+							context.getSupportFragmentManager()
+									.beginTransaction()
+									.add(newsfeedTaskFragment, NewsfeedTaskFragment.NEWSFEED_TASK_TAG)
+									.commit();
+						}
+						newsfeedTaskFragment.setCallbacks(this);
+						onPreExecute();
+					}
 				}
 			}
 		} else {
@@ -112,7 +133,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 						.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG);
 				if (newsfeedTaskFragment == null) {
 					// First time loading the comments
-					newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR);
+					newsfeedTaskFragment = new NewsfeedTaskFragment(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
 					newsfeedTaskFragment.setCallbacks(this);
 					fm.beginTransaction().add(newsfeedTaskFragment, NewsfeedTaskFragment.NEWSFEED_TASK_TAG).commit();
 				} else if (!newsfeedTaskFragment.isRunning()) {
@@ -145,9 +166,8 @@ public class NewsFeedFragment extends UVwebFragment implements
 				if (!ConnectionUtils.isOnline(context)) {
 					handleNetworkError(context);
 				} else {
-					final NewsfeedTaskFragment newsfeedTaskFragment = (NewsfeedTaskFragment) context
-							.getSupportFragmentManager()
-							.findFragmentByTag(NewsfeedTaskFragment.NEWSFEED_TASK_TAG); // TODO: debug (rotation + progressBar actionView)
+					final NewsfeedTaskFragment newsfeedTaskFragment =
+							NewsfeedTaskFragment.get(context.getSupportFragmentManager(), this);
 					if (!newsfeedTaskFragment.isRunning()) {
 						newsfeedTaskFragment.startNewTask();
 					}

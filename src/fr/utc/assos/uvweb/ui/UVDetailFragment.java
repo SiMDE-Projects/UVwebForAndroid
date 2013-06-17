@@ -168,19 +168,41 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				mHasNoComments = true;
 			} else {
 				// In this case, we have a configuration change
-				final CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) context
+				CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) context
 						.getSupportFragmentManager().findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG);
-				commentsTaskFragment.setCallbacks(this);
-				commentsTaskFragment.setUvId(mUV.getName());
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
 					if (!ConnectionUtils.isOnline(context)) {
 						handleNetworkError(context);
 					} else {
+						if (commentsTaskFragment == null) {
+							// First time loading the comments
+							commentsTaskFragment = new CommentsTaskFragment();
+							commentsTaskFragment.setCallbacks(this);
+							commentsTaskFragment.setUvId(mUV.getName());
+							context.getSupportFragmentManager()
+									.beginTransaction()
+									.add(commentsTaskFragment, CommentsTaskFragment.COMMENTS_TASK_TAG)
+									.commit();
+						}
+						commentsTaskFragment.setCallbacks(this);
+						commentsTaskFragment.setUvId(mUV.getName());
 						// If we previously had a network error, we can try and reload the list
 						commentsTaskFragment.startNewTask();
 					}
 				} else {
 					// The task wasn't complete and is still running, we need to show the ProgressBar again
+					if (commentsTaskFragment == null) {
+						// First time loading the comments
+						commentsTaskFragment = new CommentsTaskFragment();
+						commentsTaskFragment.setCallbacks(this);
+						commentsTaskFragment.setUvId(mUV.getName());
+						context.getSupportFragmentManager()
+								.beginTransaction()
+								.add(commentsTaskFragment, CommentsTaskFragment.COMMENTS_TASK_TAG)
+								.commit();
+					}
+					commentsTaskFragment.setCallbacks(this);
+					commentsTaskFragment.setUvId(mUV.getName());
 					onPreExecute();
 				}
 			}
@@ -273,9 +295,8 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				if (!ConnectionUtils.isOnline(context)) {
 					handleNetworkError(context);
 				} else {
-					final CommentsTaskFragment commentsTaskFragment = (CommentsTaskFragment) context.
-							getSupportFragmentManager()
-							.findFragmentByTag(CommentsTaskFragment.COMMENTS_TASK_TAG); // TODO: debug (rotation + progressBar actionView)
+					final CommentsTaskFragment commentsTaskFragment =
+							CommentsTaskFragment.get(context.getSupportFragmentManager(), this, mUV.getName());
 					if (!commentsTaskFragment.isRunning()) {
 						commentsTaskFragment.startNewTask();
 					}

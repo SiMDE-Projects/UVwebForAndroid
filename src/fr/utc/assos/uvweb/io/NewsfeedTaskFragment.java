@@ -1,5 +1,7 @@
 package fr.utc.assos.uvweb.io;
 
+import android.support.v4.app.FragmentManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +26,18 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 
 	public NewsfeedTaskFragment(int threadMode) {
 		super(threadMode);
+	}
+
+	// Public API
+	public static NewsfeedTaskFragment get(FragmentManager fm, Callbacks cb) {
+		NewsfeedTaskFragment newsfeedTaskFragment =
+				(NewsfeedTaskFragment) fm.findFragmentByTag(NEWSFEED_TASK_TAG);
+		if (newsfeedTaskFragment == null) {
+			newsfeedTaskFragment = new NewsfeedTaskFragment();
+			fm.beginTransaction().add(newsfeedTaskFragment, NEWSFEED_TASK_TAG).commit();
+		}
+		newsfeedTaskFragment.setCallbacks(cb);
+		return newsfeedTaskFragment;
 	}
 
 	@Override

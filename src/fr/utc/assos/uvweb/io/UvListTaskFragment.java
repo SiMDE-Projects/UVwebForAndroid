@@ -1,5 +1,7 @@
 package fr.utc.assos.uvweb.io;
 
+import android.support.v4.app.FragmentManager;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +27,18 @@ public class UvListTaskFragment extends BaseTaskFragment {
 
 	public UvListTaskFragment(int threadMode) {
 		super(threadMode);
+	}
+
+	// Public API
+	public static UvListTaskFragment get(FragmentManager fm, Callbacks cb) {
+		UvListTaskFragment uvListTaskFragment =
+				(UvListTaskFragment) fm.findFragmentByTag(UV_LIST_TASK_TAG);
+		if (uvListTaskFragment == null) {
+			uvListTaskFragment = new UvListTaskFragment();
+			fm.beginTransaction().add(uvListTaskFragment, UV_LIST_TASK_TAG).commit();
+		}
+		uvListTaskFragment.setCallbacks(cb);
+		return uvListTaskFragment;
 	}
 
 	@Override
