@@ -36,7 +36,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 		return commentsTaskFragment;
 	}
 
-	public String getCurrentUvId() {
+	public String getUvId() {
 		return mUvId;
 	}
 
@@ -71,9 +71,17 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 			try {
 				for (int i = 0; !isCancelled() && i < nUvComments; i++) {
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
+					String email; // Fake data to display images
+					if ((i+1) % 4 == 0) {
+						email = "thomas.keunebroek@gmail.com";
+					} else if ((i+1) % 3 == 0) {
+						email = "alexandre.masciulli@gmail.com";
+					} else {
+						email = "coucou@coucou.coucou";
+					}
 					uvComments.add(new UVwebContent.UVComment(
 							uvCommentsInfo.getString("authorName"),
-							i % 2 == 0 ? "thomas.keunebroek@gmail.com" : "alexandre.masciulli@gmail.com", // Fake data to display images
+							email,
 							"21/03/2012",
 							uvCommentsInfo.getString("comment"),
 							uvCommentsInfo.getInt("globalRate"),
