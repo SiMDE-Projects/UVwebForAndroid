@@ -242,6 +242,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		((TextView) headerView.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
 		final Context context = getSherlockActivity();
 		final LinearLayout successRatesContainer = (LinearLayout) headerView.findViewById(R.id.uv_success_rates);
+		successRatesContainer.removeAllViews();
 		final float textSize = context.getResources().getDimension(R.dimen.semester_success_rate_text_size);
 		for (int i = 0; i < 3; i++) {
 			final TextView tv = new TextView(context);

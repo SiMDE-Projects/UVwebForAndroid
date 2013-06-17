@@ -50,7 +50,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {
-		private static final String API_URL = "http://192.168.1.7/Uvweb/web/app_dev.php/uv/app/";
+		private static final String API_URL = "http://192.168.1.5/Uvweb/web/app_dev.php/uv/app/";
 
 		@Override
 		protected List<UVwebContent.UVComment> doInBackground(String... params) {
