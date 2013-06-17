@@ -1,6 +1,5 @@
 package fr.utc.assos.uvweb.io;
 
-import android.os.SystemClock;
 import android.support.v4.app.FragmentManager;
 
 import org.json.JSONArray;
@@ -91,7 +90,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			SystemClock.sleep(4000);
+			//SystemClock.sleep(4000);
 
 			return uvComments;
 		}
