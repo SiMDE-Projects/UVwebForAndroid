@@ -45,7 +45,8 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadNewsfeedTask extends FragmentTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
-		private static final String API_URL = "http://thomaskeunebroek.fr/newsfeed.json";
+		//private static final String API_URL = "http://thomaskeunebroek.fr/newsfeed.json";
+		private static final String API_URL =  "http://192.168.1.5/UVweb/web/app_dev.php/app/newsfeed";
 
 		@Override
 		protected List<UVwebContent.NewsFeedEntry> doInBackground(Void... params) {
@@ -58,12 +59,23 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 			try {
 				for (int i = 0; !isCancelled() && i < nNewsfeedEntries; i++) {
 					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
+					String email; // Fake data to display images
+					if ((i + 1) % 4 == 0) {
+						email = "thomas.keunebroek@gmail.com";
+					} else if ((i + 1) % 3 == 0) {
+						email = "alexandre.masciulli@gmail.com";
+					} else {
+						email = "coucou@coucou.coucou";
+					}
 					newsfeedEntries.add(new UVwebContent.NewsFeedEntry(
-							newsfeedEntryInfo.getString("author"),
-							newsfeedEntryInfo.getString("email"),
-							newsfeedEntryInfo.getString("date"),
-							newsfeedEntryInfo.getString("content"),
-							newsfeedEntryInfo.getString("action")
+							newsfeedEntryInfo.getString("authorName"),
+							//newsfeedEntryInfo.getString("email"),
+							email,
+							//newsfeedEntryInfo.getString("date"),
+							"21/03/2012",
+							newsfeedEntryInfo.getString("comment"),
+							//newsfeedEntryInfo.getString("action")
+							" a posté un commentaire"
 					));
 				}
 			} catch (JSONException ignored) {
