@@ -55,11 +55,11 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {
-		private static final String API_URL = "http://192.168.1.5/Uvweb/web/app_dev.php/uv/app/";
+		private static final String URL = API_ENDPOINT;
 
 		@Override
 		protected List<UVwebContent.UVComment> doInBackground(String... params) {
-			final JSONArray uvCommentsArray = HttpHelper.loadJSON(API_URL + params[0]);
+			final JSONArray uvCommentsArray = HttpHelper.loadJSON(URL + params[0]);
 			if (uvCommentsArray == null || isCancelled()) return null;
 			final int nUvComments = uvCommentsArray.length();
 

@@ -45,12 +45,11 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadNewsfeedTask extends FragmentTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
-		//private static final String API_URL = "http://thomaskeunebroek.fr/newsfeed.json";
-		private static final String API_URL =  "http://192.168.1.5/UVweb/web/app_dev.php/app/newsfeed";
+		private static final String URL = API_ENDPOINT + "newsfeed";
 
 		@Override
 		protected List<UVwebContent.NewsFeedEntry> doInBackground(Void... params) {
-			final JSONArray newsfeedEntriesArray = HttpHelper.loadJSON(API_URL);
+			final JSONArray newsfeedEntriesArray = HttpHelper.loadJSON(URL);
 			if (newsfeedEntriesArray == null || isCancelled()) return null;
 			final int nNewsfeedEntries = newsfeedEntriesArray.length();
 

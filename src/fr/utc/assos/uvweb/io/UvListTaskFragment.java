@@ -45,11 +45,11 @@ public class UvListTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadUvListTask extends FragmentTask<Void, Void, List<UVwebContent.UV>> {
-		private static final String API_URL = "http://masciulli.fr/uvweb/uvlist.json";
+		private static final String URL = API_ENDPOINT + "list";
 
 		@Override
 		protected List<UVwebContent.UV> doInBackground(Void... params) {
-			final JSONArray uvsArray = HttpHelper.loadJSON(API_URL);
+			final JSONArray uvsArray = HttpHelper.loadJSON(URL);
 			if (uvsArray == null || isCancelled()) return null;
 
 			final int nUvs = uvsArray.length();

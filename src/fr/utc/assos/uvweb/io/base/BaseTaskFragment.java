@@ -93,6 +93,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	}
 
 	public abstract class FragmentTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
+		protected static final String API_ENDPOINT = "http://192.168.1.6/Uvweb/web/app_dev.php/uv/app/";
 		@Override
 		protected void onPreExecute() {
 			if (mCallbacks != null) {
