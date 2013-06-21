@@ -10,7 +10,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+
 import com.actionbarsherlock.app.ActionBar;
+
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.ui.NewsFeedFragment;
@@ -60,7 +62,7 @@ public class MainActivity extends UVwebMenuActivity implements
 
 		mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		mTwoPane = findViewById(R.id.uv_container) != null;
+		mTwoPane = getResources().getBoolean(R.bool.two_pane);
 		// The detail container view will be present only in the
 		// large-screen layouts (res/values-sw600dp). If this view is present, then the
 		// activity should be in two-pane mode.
