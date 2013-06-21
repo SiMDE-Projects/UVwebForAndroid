@@ -82,7 +82,9 @@ public class MainActivity extends UVwebMenuActivity implements
 
 		// Create the adapter that will return a fragment for each of the two
 		// primary sections of the app.
-		mViewPager.setAdapter(new SectionsPagerAdapter(getSupportFragmentManager(), mTwoPane));
+		final SectionsPagerAdapter pagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mTwoPane);
+		mViewPager.setOffscreenPageLimit(pagerAdapter.getCount());
+		mViewPager.setAdapter(pagerAdapter);
 
 		// We add our tabs
 		actionBar.addTab(actionBar.newTab()
@@ -183,6 +185,7 @@ public class MainActivity extends UVwebMenuActivity implements
 	 * one of the sections/tabs/pages.
 	 */
 	private static class SectionsPagerAdapter extends FragmentPagerAdapter {
+		private static final int PAGE_COUNT = 2;
 		private final boolean mTwoPane;
 
 		public SectionsPagerAdapter(FragmentManager fm, boolean twoPane) {
@@ -203,7 +206,7 @@ public class MainActivity extends UVwebMenuActivity implements
 
 		@Override
 		public int getCount() {
-			return 2;
+			return PAGE_COUNT;
 		}
 	}
 }

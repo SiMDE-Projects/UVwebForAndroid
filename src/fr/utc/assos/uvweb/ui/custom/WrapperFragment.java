@@ -1,10 +1,15 @@
 package fr.utc.assos.uvweb.ui.custom;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.ui.UVListFragment;
 
@@ -28,7 +33,7 @@ public class WrapperFragment extends SherlockFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//setHasOptionsMenu(true); // Workaround for https://code.google.com/p/android/issues/detail?id=45722
+		setHasOptionsMenu(true); // Workaround for https://code.google.com/p/android/issues/detail?id=45722
 	}
 
 	@Override
@@ -46,6 +51,17 @@ public class WrapperFragment extends SherlockFragment {
 					.beginTransaction()
 					.replace(R.id.uv_list, UVListFragment.newInstance(true))
 					.commit();
+		}
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+
+		final Fragment uvListFragment = getChildFragmentManager().findFragmentById(R.id.uv_list);
+		if (uvListFragment != null) {
+			((UVListFragment) uvListFragment).onCreateOptionsMenu(menu, inflater);
+			// Workaround due to ABS not calling onCreateOptionsMenu for nested fragments
 		}
 	}
 }

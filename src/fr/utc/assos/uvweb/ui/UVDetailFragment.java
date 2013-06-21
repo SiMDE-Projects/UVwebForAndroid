@@ -294,28 +294,25 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	}
 
 	@Override
-	public void onCancelled() {
-	}
-
-	@Override
 	public void onPostExecute(List<UVwebContent.UVComment> comments) {
-		if (comments == null) {
-			handleNetworkError();
-			mNetworkError = true;
-		} else {
-			if (comments.isEmpty()) {
-				mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
-				mHasNoComments = true;
-			} else if (!mUsesStickyHeader) {
-				setHeaderData(mHeaderView);
-			}
-			mAdapter.updateComments(comments);
+		if (comments.isEmpty()) {
+			mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
+			mHasNoComments = true;
+		} else if (!mUsesStickyHeader) {
+			setHeaderData(mHeaderView);
 		}
+		mAdapter.updateComments(comments);
 		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
 			mRefreshMenuItem.setActionView(null);
 		}
 		if (mProgressBar.getVisibility() == View.VISIBLE) {
 			mProgressBar.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void onError() {
+		mNetworkError = true;
+		handleNetworkError();
 	}
 }

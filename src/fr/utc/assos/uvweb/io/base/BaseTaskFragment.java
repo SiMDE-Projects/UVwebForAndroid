@@ -87,13 +87,14 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	public interface Callbacks<Result> {
 		void onPreExecute();
 
-		void onCancelled();
-
 		void onPostExecute(Result result);
+
+		void onError();
 	}
 
 	public abstract class FragmentTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
 		protected static final String API_ENDPOINT = "http://192.168.1.6/Uvweb/web/app_dev.php/uv/app/";
+
 		@Override
 		protected void onPreExecute() {
 			if (mCallbacks != null) {
@@ -105,9 +106,6 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		@Override
 		protected void onCancelled() {
 			mIsRunning = false;
-			if (mCallbacks != null) {
-				mCallbacks.onCancelled();
-			}
 		}
 
 		@Override
@@ -115,7 +113,11 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		protected void onPostExecute(Result result) {
 			mIsRunning = false;
 			if (mCallbacks != null) {
-				mCallbacks.onPostExecute(result);
+				if (result == null) {
+					mCallbacks.onError();
+				} else {
+					mCallbacks.onPostExecute(result);
+				}
 			}
 		}
 	}

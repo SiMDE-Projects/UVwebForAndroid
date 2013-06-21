@@ -98,8 +98,8 @@ public class NewsFeedFragment extends UVwebFragment implements
 						handleNetworkError(context);
 					} else {
 						if (!newsfeedTaskFragment.isRunning()) {
-							newsfeedTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);						}
-						else {
+							newsfeedTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+						} else {
 							// The task wasn't complete and is still running, we need to show the ProgressBar again
 							onPreExecute();
 						}
@@ -117,6 +117,16 @@ public class NewsFeedFragment extends UVwebFragment implements
 		}
 
 		return rootView;
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		super.onPrepareOptionsMenu(menu);
+
+		final MenuItem refreshItem = menu.findItem(R.id.menu_refresh_uvdetail);
+		if (refreshItem != null) {
+			refreshItem.setVisible(false);
+		}
 	}
 
 	@Override
@@ -172,17 +182,8 @@ public class NewsFeedFragment extends UVwebFragment implements
 	}
 
 	@Override
-	public void onCancelled() {
-	}
-
-	@Override
 	public void onPostExecute(List<UVwebContent.NewsFeedEntry> entries) {
-		if (entries == null) {
-			handleNetworkError();
-			mNetworkError = true;
-		} else {
-			mAdapter.updateNewsFeedEntries(entries);
-		}
+		mAdapter.updateNewsFeedEntries(entries);
 		mListView.getEmptyView().setVisibility(View.VISIBLE);
 		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
 			mRefreshMenuItem.setActionView(null);
@@ -190,5 +191,11 @@ public class NewsFeedFragment extends UVwebFragment implements
 		if (mProgressBar.getVisibility() == View.VISIBLE) {
 			mProgressBar.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public void onError() {
+		mNetworkError = true;
+		handleNetworkError();
 	}
 }

@@ -8,8 +8,8 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
@@ -44,7 +44,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  */
 public class UVListFragment extends UVwebFragment implements AdapterView.OnItemClickListener,
 		UVListAdapter.SearchCallbacks, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener,
-		View.OnClickListener, UvListTaskFragment.Callbacks<List<UVwebContent.UV>> {
+		UvListTaskFragment.Callbacks<List<UVwebContent.UV>> {
 	private static final String STATE_DISPLAYED_UV = "displayed_uv";
 	private static final String STATE_SEARCH_QUERY = "search_query";
 	private static final String STATE_UV_LIST = "uv_list";
@@ -88,7 +88,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	private UVwebSearchView mSearchView;
 	private String mSearchQuery;
 	private ProgressBar mProgressBar;
-	private Button mRetryButton;
+	private ViewStub mRetryViewStub;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -159,9 +159,20 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		// ListView setup
 		mListView = (UVwebListView) rootView.findViewById(android.R.id.list);
 		mListView.setOnItemClickListener(this);
+		mRetryViewStub = (ViewStub) rootView.findViewById(R.id.empty_retry);
+		mRetryViewStub.setOnInflateListener(new ViewStub.OnInflateListener() {
+			@Override
+			public void onInflate(ViewStub viewStub, View view) {
+				view.findViewById(R.id.btn_retry).setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View view) {
+						retryLoadingUvs();
+					}
+				});
+				mRetryViewStub = null;
+			}
+		});
 		mListView.setEmptyView(rootView.findViewById(android.R.id.empty));
-		mRetryButton = (Button) rootView.findViewById(R.id.btn_retry);
-		mRetryButton.setOnClickListener(this);
 
 		// Adapter setup
 		mAdapter = new UVListAdapter(getSherlockActivity());
@@ -378,8 +389,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		return true;
 	}
 
-	@Override
-	public void onClick(View view) {
+	public void retryLoadingUvs() {
 		final SherlockFragmentActivity context = getSherlockActivity();
 		if (!ConnectionUtils.isOnline(context)) {
 			handleNetworkError(context);
@@ -396,7 +406,10 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	protected void handleNetworkError(Activity context) {
 		super.handleNetworkError(context);
 
-		mRetryButton.setVisibility(View.VISIBLE); // TODO: FIXME (shouldn't appear on search)
+		mListView.getEmptyView().setVisibility(View.GONE);
+		if (mRetryViewStub != null) {
+			mRetryViewStub.inflate();
+		}
 	}
 
 	@Override
@@ -411,19 +424,16 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	}
 
 	@Override
-	public void onCancelled() {
+	public void onPostExecute(List<UVwebContent.UV> uvs) {
+		mAdapter.updateUVs(uvs);
+		mListView.getEmptyView().setVisibility(View.VISIBLE);
+		mProgressBar.setVisibility(View.GONE);
 	}
 
 	@Override
-	public void onPostExecute(List<UVwebContent.UV> uvs) {
-		if (uvs == null) {
-			handleNetworkError();
-			mNetworkError = true;
-		} else {
-			mAdapter.updateUVs(uvs);
-		}
-		mListView.getEmptyView().setVisibility(View.VISIBLE);
-		mProgressBar.setVisibility(View.GONE);
+	public void onError() {
+		mNetworkError = true;
+		handleNetworkError();
 	}
 
 	/**
