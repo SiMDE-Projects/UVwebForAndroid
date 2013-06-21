@@ -123,6 +123,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 	public void onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
 
+		// Fix duplicate menu items when using nested Fragments along with ViewPager
 		final MenuItem refreshItem = menu.findItem(R.id.menu_refresh_uvdetail);
 		if (refreshItem != null) {
 			refreshItem.setVisible(false);
