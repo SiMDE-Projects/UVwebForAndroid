@@ -24,6 +24,9 @@ local.properties
 .settings/
 *.iml
 
+# Android Studio
+out/
+
 # Windows file system files
 *.db
 
