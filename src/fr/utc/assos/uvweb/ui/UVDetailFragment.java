@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -72,6 +73,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private ProgressBar mProgressBar;
 	private boolean mUsesStickyHeader;
 	private View mHeaderView;
+	private CommentsTaskFragment mTaskFragment;
 
 	public UVDetailFragment() {
 	}
@@ -94,6 +96,14 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	}
 
 	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		mTaskFragment = BaseTaskFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
+				CommentsTaskFragment.class, this);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -101,14 +111,14 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		if (arguments.containsKey(ARG_UV_ID)) {
 			// Load the UV specified by the fragment arguments.
 			mUV = arguments.getParcelable(ARG_UV_ID);
+			if (mUV == null) {
+				throw new IllegalStateException("Selected UV cannot be null");
+			}
+			mTaskFragment.setUvId(mUV.getName());
 
 			// Fragment configuration
 			setHasOptionsMenu(true);
 			mTwoPane = arguments.getBoolean(ARG_TWO_PANE, false);
-		}
-
-		if (mUV == null) {
-			throw new IllegalStateException("Selected UV cannot be null");
 		}
 	}
 
@@ -158,7 +168,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			if (savedInstanceState.containsKey(STATE_COMMENT_LIST)) {
 				final ArrayList<UVwebContent.UVComment> savedComments = savedInstanceState.getParcelableArrayList
 						(STATE_COMMENT_LIST);
-				if (!mUsesStickyHeader && !savedComments.isEmpty()) {
+				if (!mUsesStickyHeader && savedComments != null && !savedComments.isEmpty()) {
 					setHeaderData(mHeaderView);
 				}
 				mAdapter.updateComments(savedComments);
@@ -167,30 +177,16 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 				mHasNoComments = true;
 			} else {
 				// In this case, we have a configuration change
-				final CommentsTaskFragment commentsTaskFragment =
-						CommentsTaskFragment.get(context.getSupportFragmentManager(), this, mUV.getName());
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
-					if (!ConnectionUtils.isOnline(context)) {
-						handleNetworkError(context);
-					} else {
-						// If we previously had a network error, we can try and reload the list
-						commentsTaskFragment.startNewTask();
-					}
+					loadUvComments();
 				} else {
-					if (!commentsTaskFragment.isRunning()) {
-						commentsTaskFragment.startNewTask();
-					} else {
-						// The task wasn't complete and is still running, we need to show the ProgressBar again
-						onPreExecute();
-					}
+					// The task wasn't complete and is still running, we need to show the ProgressBar again
+					onPreExecute();
 				}
 			}
 		} else {
-			if (!ConnectionUtils.isOnline(context)) {
-				handleNetworkError(context);
-			} else {
-				CommentsTaskFragment.get(context.getSupportFragmentManager(), this, mUV.getName()).startNewTask();
-			}
+			// First launch
+			loadUvComments();
 		}
 
 		return rootView;
@@ -211,6 +207,42 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		mAdapter.resetCallbacks();
 
 		super.onDetach();
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+
+		inflater.inflate(R.menu.fragment_uv_detail, menu);
+
+		mRefreshMenuItem = menu.findItem(R.id.menu_refresh_uvdetail);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_refresh_uvdetail:
+				loadUvComments();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
+		}
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+
+		if (!mAdapter.isEmpty()) {
+			outState.putParcelableArrayList(STATE_COMMENT_LIST, (ArrayList) mAdapter.getComments());
+		}
+		if (mHasNoComments) {
+			outState.putBoolean(STATE_NO_COMMENT, true);
+		}
+		if (mNetworkError) {
+			outState.putBoolean(STATE_NETWORK_ERROR, true);
+		}
 	}
 
 	private void setHeaderData(View headerView) {
@@ -234,48 +266,14 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		}
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-
-		inflater.inflate(R.menu.fragment_uv_detail, menu);
-
-		mRefreshMenuItem = menu.findItem(R.id.menu_refresh_uvdetail);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menu_refresh_uvdetail:
-				final SherlockFragmentActivity context = getSherlockActivity();
-				if (!ConnectionUtils.isOnline(context)) {
-					handleNetworkError(context);
-				} else {
-					final CommentsTaskFragment commentsTaskFragment =
-							CommentsTaskFragment.get(context.getSupportFragmentManager(), this, mUV.getName());
-					if (!commentsTaskFragment.isRunning()) {
-						commentsTaskFragment.startNewTask();
-					}
-				}
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
-		}
-	}
-
-	@Override
-	@SuppressWarnings("unchecked")
-	public void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-
-		if (!mAdapter.isEmpty()) {
-			outState.putParcelableArrayList(STATE_COMMENT_LIST, (ArrayList) mAdapter.getComments());
-		}
-		if (mHasNoComments) {
-			outState.putBoolean(STATE_NO_COMMENT, true);
-		}
-		if (mNetworkError) {
-			outState.putBoolean(STATE_NETWORK_ERROR, true);
+	private void loadUvComments() {
+		final SherlockFragmentActivity context = getSherlockActivity();
+		if (!ConnectionUtils.isOnline(context)) {
+			handleNetworkError(context);
+		} else {
+			if (!mTaskFragment.isRunning()) {
+				mTaskFragment.startNewTask();
+			}
 		}
 	}
 

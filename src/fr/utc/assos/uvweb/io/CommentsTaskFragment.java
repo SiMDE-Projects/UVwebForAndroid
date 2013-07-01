@@ -1,6 +1,6 @@
 package fr.utc.assos.uvweb.io;
 
-import android.support.v4.app.FragmentManager;
+import android.os.SystemClock;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,22 +18,9 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  * A UI-less fragment that loads the comments of the corresponding {@code mUvId}.
  */
 public class CommentsTaskFragment extends BaseTaskFragment {
-	private static final String COMMENTS_TASK_TAG = "CommentsTaskFragment_TAG";
 	private String mUvId;
 
 	// Public API
-	public static CommentsTaskFragment get(FragmentManager fm, Callbacks cb, String uvId) {
-		CommentsTaskFragment commentsTaskFragment =
-				(CommentsTaskFragment) fm.findFragmentByTag(COMMENTS_TASK_TAG);
-		if (commentsTaskFragment == null) {
-			commentsTaskFragment = new CommentsTaskFragment();
-			fm.beginTransaction().add(commentsTaskFragment, COMMENTS_TASK_TAG).commit();
-		}
-		commentsTaskFragment.setCallbacks(cb);
-		commentsTaskFragment.setUvId(uvId);
-		return commentsTaskFragment;
-	}
-
 	public String getUvId() {
 		return mUvId;
 	}
@@ -88,7 +75,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			//SystemClock.sleep(4000);
+			SystemClock.sleep(4000);
 
 			return uvComments;
 		}

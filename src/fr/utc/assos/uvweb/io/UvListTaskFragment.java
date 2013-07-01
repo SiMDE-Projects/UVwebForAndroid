@@ -1,6 +1,6 @@
 package fr.utc.assos.uvweb.io;
 
-import android.support.v4.app.FragmentManager;
+import android.os.SystemClock;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,20 +18,6 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  * A UI-less fragment that loads the uv list.
  */
 public class UvListTaskFragment extends BaseTaskFragment {
-	private static final String UV_LIST_TASK_TAG = "UvListTaskFragment_TAG";
-
-	// Public API
-	public static UvListTaskFragment get(FragmentManager fm, Callbacks cb) {
-		UvListTaskFragment uvListTaskFragment =
-				(UvListTaskFragment) fm.findFragmentByTag(UV_LIST_TASK_TAG);
-		if (uvListTaskFragment == null) {
-			uvListTaskFragment = new UvListTaskFragment();
-			fm.beginTransaction().add(uvListTaskFragment, UV_LIST_TASK_TAG).commit();
-		}
-		uvListTaskFragment.setCallbacks(cb);
-		return uvListTaskFragment;
-	}
-
 	@Override
 	protected void start() {
 		mTask = new LoadUvListTask();
@@ -66,7 +52,7 @@ public class UvListTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			//SystemClock.sleep(4000);
+			SystemClock.sleep(4000);
 
 			return uvs;
 		}

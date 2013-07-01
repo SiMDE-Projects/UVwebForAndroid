@@ -1,6 +1,6 @@
 package fr.utc.assos.uvweb.io;
 
-import android.support.v4.app.FragmentManager;
+import android.os.SystemClock;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,20 +18,6 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
  * A UI-less fragment that loads the uv list.
  */
 public class NewsfeedTaskFragment extends BaseTaskFragment {
-	private static final String NEWSFEED_TASK_TAG = "NewsfeedTaskFragment_TAG";
-
-	// Public API
-	public static NewsfeedTaskFragment get(FragmentManager fm, Callbacks cb) {
-		NewsfeedTaskFragment newsfeedTaskFragment =
-				(NewsfeedTaskFragment) fm.findFragmentByTag(NEWSFEED_TASK_TAG);
-		if (newsfeedTaskFragment == null) {
-			newsfeedTaskFragment = new NewsfeedTaskFragment();
-			fm.beginTransaction().add(newsfeedTaskFragment, NEWSFEED_TASK_TAG).commit();
-		}
-		newsfeedTaskFragment.setCallbacks(cb);
-		return newsfeedTaskFragment;
-	}
-
 	@Override
 	protected void start() {
 		mTask = new LoadNewsfeedTask();
@@ -80,7 +66,7 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			//SystemClock.sleep(4000);
+			SystemClock.sleep(4000);
 
 			return newsfeedEntries;
 		}

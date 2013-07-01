@@ -89,6 +89,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	private String mSearchQuery;
 	private ProgressBar mProgressBar;
 	private ViewStub mRetryViewStub;
+	private UvListTaskFragment mTaskFragment;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
@@ -125,6 +126,9 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		}
 
 		mCallbacks = (Callbacks) activity;
+
+		mTaskFragment = BaseTaskFragment.get(getSherlockActivity().getSupportFragmentManager(),
+				UvListTaskFragment.class, this);
 	}
 
 	@Override
@@ -166,7 +170,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 				view.findViewById(R.id.btn_retry).setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						retryLoadingUvs();
+						loadUvList();
 					}
 				});
 				mRetryViewStub = null;
@@ -185,37 +189,15 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 				mAdapter.updateUVs(savedUvs);
 			} else {
 				// In this case, we have a configuration change
-				final SherlockFragmentActivity context = getSherlockActivity();
-				final UvListTaskFragment uvListTaskFragment =
-						UvListTaskFragment.get(context.getSupportFragmentManager(), this);
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
-					if (!ConnectionUtils.isOnline(context)) {
-						handleNetworkError(context);
-					} else {
-						// If we previously had a network error, we can try and reload the list
-						uvListTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-					}
+					loadUvList();
 				} else {
-					if (!ConnectionUtils.isOnline(context)) {
-						handleNetworkError(context);
-					} else {
-						if (!uvListTaskFragment.isRunning()) {
-							uvListTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-						} else {
-							// The task wasn't complete and is still running, we need to show the ProgressBar again
-							onPreExecute();
-						}
-					}
+					// The task wasn't complete and is still running, we need to show the ProgressBar again
+					onPreExecute();
 				}
 			}
 		} else {
-			final SherlockFragmentActivity context = getSherlockActivity();
-			if (!ConnectionUtils.isOnline(context)) {
-				handleNetworkError(context);
-			} else {
-				UvListTaskFragment.get(context.getSupportFragmentManager(), this)
-						.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-			}
+			loadUvList();
 		}
 
 		return rootView;
@@ -253,6 +235,17 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 				// Lazy load the selected UV
 				mCallbacks.onItemSelected(toBeDisplayed);
 				mDisplayedUVName = toBeDisplayedName;
+			}
+		}
+	}
+
+	private void loadUvList() {
+		final SherlockFragmentActivity context = getSherlockActivity();
+		if (!ConnectionUtils.isOnline(context)) {
+			handleNetworkError(context);
+		} else {
+			if (!mTaskFragment.isRunning()) {
+				mTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
 			}
 		}
 	}
@@ -389,24 +382,12 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		return true;
 	}
 
-	public void retryLoadingUvs() {
-		final SherlockFragmentActivity context = getSherlockActivity();
-		if (!ConnectionUtils.isOnline(context)) {
-			handleNetworkError(context);
-		} else {
-			final UvListTaskFragment uvListTaskFragment =
-					UvListTaskFragment.get(context.getSupportFragmentManager(), this);
-			if (!uvListTaskFragment.isRunning()) {
-				uvListTaskFragment.startNewTask();
-			}
-		}
-	}
-
 	@Override
 	protected void handleNetworkError(Activity context) {
 		super.handleNetworkError(context);
 
 		mListView.getEmptyView().setVisibility(View.GONE);
+		mProgressBar.setVisibility(View.GONE);
 		if (mRetryViewStub != null) {
 			mRetryViewStub.inflate();
 		}

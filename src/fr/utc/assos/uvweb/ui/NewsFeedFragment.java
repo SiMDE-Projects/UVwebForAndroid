@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,12 +40,21 @@ public class NewsFeedFragment extends UVwebFragment implements
 	private ProgressBar mProgressBar;
 	private ListView mListView;
 	private boolean mNetworkError;
+	private NewsfeedTaskFragment mTaskFragment;
 
 	/**
 	 * Mandatory empty constructor for the fragment manager to instantiate the
 	 * fragment (e.g. upon screen orientation changes).
 	 */
 	public NewsFeedFragment() {
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		mTaskFragment = BaseTaskFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
+				NewsfeedTaskFragment.class, this);
 	}
 
 	@Override
@@ -83,37 +93,17 @@ public class NewsFeedFragment extends UVwebFragment implements
 				mAdapter.updateNewsFeedEntries(savedNewsfeedEntries);
 			} else {
 				// In this case, we have a configuration change
-				final SherlockFragmentActivity context = getSherlockActivity();
-				final NewsfeedTaskFragment newsfeedTaskFragment =
-						NewsfeedTaskFragment.get(context.getSupportFragmentManager(), this);
 				if (savedInstanceState.containsKey(STATE_NETWORK_ERROR)) {
-					if (!ConnectionUtils.isOnline(context)) {
-						handleNetworkError(context);
-					} else {
-						// If we previously had a network error, we can try and reload the list
-						newsfeedTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-					}
+					// If we previously had a network error, we can try and reload the list
+					loadNewsfeedEntries();
 				} else {
-					if (!ConnectionUtils.isOnline(context)) {
-						handleNetworkError(context);
-					} else {
-						if (!newsfeedTaskFragment.isRunning()) {
-							newsfeedTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-						} else {
-							// The task wasn't complete and is still running, we need to show the ProgressBar again
-							onPreExecute();
-						}
-					}
+					// The task wasn't complete and is still running, we need to show the ProgressBar again
+					onPreExecute();
 				}
 			}
 		} else {
-			final SherlockFragmentActivity context = getSherlockActivity();
-			if (!ConnectionUtils.isOnline(context)) {
-				handleNetworkError(context);
-			} else {
-				NewsfeedTaskFragment.get(context.getSupportFragmentManager(), this)
-						.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
-			}
+			// First launch
+			loadNewsfeedEntries();
 		}
 
 		return rootView;
@@ -125,7 +115,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 
 		// Fix duplicate menu items when using nested Fragments along with ViewPager
 		final MenuItem refreshItem = menu.findItem(R.id.menu_refresh_uvdetail);
-		if (refreshItem != null) {
+		if (refreshItem != null && refreshItem.isVisible()) {
 			refreshItem.setVisible(false);
 		}
 	}
@@ -143,16 +133,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menu_refresh_newsfeed:
-				final SherlockFragmentActivity context = getSherlockActivity();
-				if (!ConnectionUtils.isOnline(context)) {
-					handleNetworkError(context);
-				} else {
-					final NewsfeedTaskFragment newsfeedTaskFragment =
-							NewsfeedTaskFragment.get(context.getSupportFragmentManager(), this);
-					if (!newsfeedTaskFragment.isRunning()) {
-						newsfeedTaskFragment.startNewTask();
-					}
-				}
+				loadNewsfeedEntries();
 				return true;
 			default:
 				return super.onOptionsItemSelected(item);
@@ -172,6 +153,27 @@ public class NewsFeedFragment extends UVwebFragment implements
 		}
 	}
 
+	private void loadNewsfeedEntries() {
+		final SherlockFragmentActivity context = getSherlockActivity();
+		if (!ConnectionUtils.isOnline(context)) {
+			handleNetworkError(context);
+		} else {
+			if (!mTaskFragment.isRunning()) {
+				mTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+			}
+		}
+	}
+
+	private void resetUi() {
+		mListView.getEmptyView().setVisibility(View.VISIBLE);
+		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
+			mRefreshMenuItem.setActionView(null);
+		}
+		if (mProgressBar.getVisibility() == View.VISIBLE) {
+			mProgressBar.setVisibility(View.GONE);
+		}
+	}
+
 	@Override
 	public void onPreExecute() {
 		mListView.getEmptyView().setVisibility(View.GONE);
@@ -184,19 +186,14 @@ public class NewsFeedFragment extends UVwebFragment implements
 
 	@Override
 	public void onPostExecute(List<UVwebContent.NewsFeedEntry> entries) {
+		resetUi();
 		mAdapter.updateNewsFeedEntries(entries);
-		mListView.getEmptyView().setVisibility(View.VISIBLE);
-		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
-			mRefreshMenuItem.setActionView(null);
-		}
-		if (mProgressBar.getVisibility() == View.VISIBLE) {
-			mProgressBar.setVisibility(View.GONE);
-		}
 	}
 
 	@Override
 	public void onError() {
 		mNetworkError = true;
+		resetUi();
 		handleNetworkError();
 	}
 }

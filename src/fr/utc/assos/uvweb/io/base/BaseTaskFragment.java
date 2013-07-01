@@ -1,7 +1,9 @@
 package fr.utc.assos.uvweb.io.base;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,55 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	public BaseTaskFragment() {
 	}
 
+	// Public API
+	public static <T extends BaseTaskFragment> T get(FragmentManager fm, Class<T> clazz, Callbacks callbacks) {
+		final String tag = clazz.getSimpleName();
+		T instance = clazz.cast(fm.findFragmentByTag(tag));
+		if (instance == null) {
+			try {
+				instance = clazz.newInstance();
+				fm.beginTransaction().add(instance, tag).commit();
+			} catch (java.lang.InstantiationException e) {
+				throw new IllegalArgumentException("Class must be instantiable");
+			} catch (IllegalAccessException e) {
+				throw new IllegalArgumentException("Class must be accessible");
+			}
+		}
+		instance.setCallbacks(callbacks);
+		return instance;
+	}
+
+	public void startNewTask() {
+		startNewTask(THREAD_DEFAULT_POLICY);
+	}
+
+	public void startNewTask(final int threadMode) {
+		if (mTask != null) {
+			mTask.cancel(true);
+		}
+		if (threadMode == THREAD_DEFAULT_POLICY) {
+			start();
+		} else if (threadMode == THREAD_POOL_EXECUTOR_POLICY) {
+			startOnThreadPoolExecutor();
+		} else {
+			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT_POLICY" +
+					"or THREAD_POOL_EXECUTOR_POLICY");
+		}
+	}
+
+	public boolean isRunning() {
+		return mIsRunning;
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+
+		if (activity instanceof Callbacks) {
+			mCallbacks = (Callbacks) activity;
+		}
+	}
+
 	/**
 	 * This method will only be called once when the retained
 	 * Fragment is first created.
@@ -35,6 +86,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 
 		// Retain this fragment across configuration changes.
 		setRetainInstance(true);
+		setUserVisibleHint(false);
 	}
 
 	@Override
@@ -57,31 +109,13 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 
 	protected abstract void startOnThreadPoolExecutor();
 
-	// Public API
-	public void startNewTask() {
-		startNewTask(THREAD_DEFAULT_POLICY);
-	}
-
-	public void startNewTask(final int threadMode) {
-		if (mTask != null) {
-			mTask.cancel(true);
+	protected void setCallbacks(Callbacks callbacks) {
+		if (callbacks == null) {
+			if (mTask != null) {
+				mTask.cancel(true);
+			}
 		}
-		if (threadMode == THREAD_DEFAULT_POLICY) {
-			start();
-		} else if (threadMode == THREAD_POOL_EXECUTOR_POLICY) {
-			startOnThreadPoolExecutor();
-		} else {
-			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT_POLICY" +
-					"or THREAD_POOL_EXECUTOR_POLICY");
-		}
-	}
-
-	public void setCallbacks(Callbacks callbacks) {
 		mCallbacks = callbacks;
-	}
-
-	public boolean isRunning() {
-		return mIsRunning;
 	}
 
 	public interface Callbacks<Result> {
@@ -93,7 +127,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	}
 
 	public abstract class FragmentTask<Params, Progress, Result> extends AsyncTask<Params, Progress, Result> {
-		protected static final String API_ENDPOINT = "http://192.168.1.6/Uvweb/web/app_dev.php/uv/app/";
+		protected static final String API_ENDPOINT = "http://192.168.0.15/Uvweb/web/app_dev.php/uv/app/";
 
 		@Override
 		protected void onPreExecute() {
@@ -101,11 +135,6 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 				mCallbacks.onPreExecute();
 			}
 			mIsRunning = true;
-		}
-
-		@Override
-		protected void onCancelled() {
-			mIsRunning = false;
 		}
 
 		@Override
@@ -119,6 +148,12 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 					mCallbacks.onPostExecute(result);
 				}
 			}
+		}
+
+		@Override
+		protected void onCancelled() {
+			mCallbacks = null;
+			mIsRunning = false;
 		}
 	}
 }
