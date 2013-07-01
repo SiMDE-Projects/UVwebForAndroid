@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
+
 /**
  * A base UI-less fragment to easily manage async queries while being tight
  * to the corresponding Activity or Fragment lifecycle.
@@ -21,6 +23,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 public abstract class BaseTaskFragment extends SherlockFragment {
 	public static final int THREAD_DEFAULT_POLICY = 0;
 	public static final int THREAD_POOL_EXECUTOR_POLICY = 1;
+	private static final String TAG = makeLogTag(BaseTaskFragment.class);
 	protected FragmentTask mTask;
 	private Callbacks mCallbacks;
 	private boolean mIsRunning;
@@ -31,7 +34,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	// Public API
 	public static <T extends BaseTaskFragment> T get(FragmentManager fm, Class<T> clazz) {
 		final String tag = clazz.getSimpleName();
-		T instance = clazz.cast(fm.findFragmentByTag(tag));
+		Fragment instance = fm.findFragmentByTag(tag);
 		if (instance == null) {
 			try {
 				instance = clazz.newInstance();
@@ -42,7 +45,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 				throw new IllegalArgumentException("Class must be accessible");
 			}
 		}
-		return instance;
+		return clazz.cast(instance);
 	}
 
 	public void startNewTask() {
@@ -79,7 +82,12 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		super.onAttach(activity);
 
 		if (activity instanceof Callbacks) {
-			mCallbacks = (Callbacks) activity;
+			setCallbacks((Callbacks) activity);
+		} else {
+			final Fragment target = getTargetFragment();
+			if (target instanceof Callbacks) {
+				setCallbacks((Callbacks) target);
+			}
 		}
 	}
 
@@ -99,16 +107,6 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return null;
-	}
-
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-
-		final Fragment target = getTargetFragment();
-		if (target instanceof Callbacks) {
-			setCallbacks((Callbacks) target);
-		}
 	}
 
 	/**

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -114,7 +115,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			if (mUV == null) {
 				throw new IllegalStateException("Selected UV cannot be null");
 			}
-			mTaskFragment.setUvId(mUV.getName());
 
 			// Fragment configuration
 			setHasOptionsMenu(true);
@@ -276,7 +276,11 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			handleNetworkError(context);
 		} else {
 			if (!mTaskFragment.isRunning()) {
-				mTaskFragment.startNewTask();
+				final String uvId = mUV.getName();
+				if (!TextUtils.equals(uvId, mTaskFragment.getUvId())) {
+					mTaskFragment.setUvId(mUV.getName());
+					mTaskFragment.startNewTask();
+				}
 			}
 		}
 	}
