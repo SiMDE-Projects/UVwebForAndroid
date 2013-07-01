@@ -52,7 +52,13 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	public void startNewTask(final int threadMode) {
 		if (mTask != null) {
 			mTask.cancel(true);
+			mTask = null;
 		}
+		final Fragment target = getTargetFragment();
+		if (!(target instanceof Callbacks)) {
+			throw new IllegalStateException("Target fragment must implement Callbacks");
+		}
+		setCallbacks((Callbacks) target);
 		if (threadMode == THREAD_DEFAULT_POLICY) {
 			start();
 		} else if (threadMode == THREAD_POOL_EXECUTOR_POLICY) {
@@ -96,14 +102,13 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
-		final Fragment f = getTargetFragment();
-		if (!(f instanceof Callbacks)) {
-			throw new IllegalStateException("Target fragment must implement Callbacks");
+		final Fragment target = getTargetFragment();
+		if (target instanceof Callbacks) {
+			setCallbacks((Callbacks) target);
 		}
-		setCallbacks((Callbacks) f);
 	}
 
 	/**
@@ -122,10 +127,9 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	protected abstract void startOnThreadPoolExecutor();
 
 	protected void setCallbacks(Callbacks callbacks) {
-		if (callbacks == null) {
-			if (mTask != null) {
-				mTask.cancel(true);
-			}
+		if (mTask != null && callbacks == null) {
+			mTask.cancel(true);
+			mTask = null;
 		}
 		mCallbacks = callbacks;
 	}
