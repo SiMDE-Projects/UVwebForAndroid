@@ -128,7 +128,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 		mCallbacks = (Callbacks) activity;
 
 		mTaskFragment = BaseTaskFragment.get(getSherlockActivity().getSupportFragmentManager(),
-				UvListTaskFragment.class, this);
+				UvListTaskFragment.class);
 	}
 
 	@Override
@@ -147,6 +147,8 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			if (savedInstanceState.containsKey(STATE_DISPLAYED_UV)) {
 				mDisplayedUVName = savedInstanceState.getString(STATE_DISPLAYED_UV);
 			}
+		} else {
+			mTaskFragment.setTargetFragment(this, 0);
 		}
 	}
 

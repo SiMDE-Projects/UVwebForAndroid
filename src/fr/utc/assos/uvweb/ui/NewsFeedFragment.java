@@ -54,7 +54,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 		super.onAttach(activity);
 
 		mTaskFragment = BaseTaskFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
-				NewsfeedTaskFragment.class, this);
+				NewsfeedTaskFragment.class);
 	}
 
 	@Override
@@ -62,6 +62,10 @@ public class NewsFeedFragment extends UVwebFragment implements
 		super.onCreate(savedInstanceState);
 
 		setHasOptionsMenu(true);
+
+		if (savedInstanceState == null) {
+			mTaskFragment.setTargetFragment(this, 0);
+		}
 	}
 
 	@Override

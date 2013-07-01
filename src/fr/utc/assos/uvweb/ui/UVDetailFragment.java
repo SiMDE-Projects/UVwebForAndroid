@@ -100,7 +100,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		super.onAttach(activity);
 
 		mTaskFragment = BaseTaskFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
-				CommentsTaskFragment.class, this);
+				CommentsTaskFragment.class);
 	}
 
 	@Override
@@ -119,6 +119,10 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			// Fragment configuration
 			setHasOptionsMenu(true);
 			mTwoPane = arguments.getBoolean(ARG_TWO_PANE, false);
+		}
+
+		if (savedInstanceState == null) {
+			mTaskFragment.setTargetFragment(this, 0);
 		}
 	}
 

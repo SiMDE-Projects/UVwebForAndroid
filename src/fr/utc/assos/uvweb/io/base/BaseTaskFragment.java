@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.io.base;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	}
 
 	// Public API
-	public static <T extends BaseTaskFragment> T get(FragmentManager fm, Class<T> clazz, Callbacks callbacks) {
+	public static <T extends BaseTaskFragment> T get(FragmentManager fm, Class<T> clazz) {
 		final String tag = clazz.getSimpleName();
 		T instance = clazz.cast(fm.findFragmentByTag(tag));
 		if (instance == null) {
@@ -41,7 +42,6 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 				throw new IllegalArgumentException("Class must be accessible");
 			}
 		}
-		instance.setCallbacks(callbacks);
 		return instance;
 	}
 
@@ -67,6 +67,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		return mIsRunning;
 	}
 
+	// Lifecycle
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -92,6 +93,17 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return null;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		final Fragment f = getTargetFragment();
+		if (!(f instanceof Callbacks)) {
+			throw new IllegalStateException("Target fragment must implement Callbacks");
+		}
+		setCallbacks((Callbacks) f);
 	}
 
 	/**
