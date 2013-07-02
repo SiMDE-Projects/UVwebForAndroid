@@ -1,7 +1,5 @@
 package fr.utc.assos.uvweb.io;
 
-import android.os.SystemClock;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,22 +10,17 @@ import java.util.List;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.util.HttpHelper;
-import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 
 /**
  * A UI-less fragment that loads the uv list.
  */
 public class NewsfeedTaskFragment extends BaseTaskFragment {
-	@Override
-	protected void start() {
-		mTask = new LoadNewsfeedTask();
-		((LoadNewsfeedTask) mTask).execute();
+	public NewsfeedTaskFragment() {
 	}
 
 	@Override
-	protected void startOnThreadPoolExecutor() {
-		mTask = new LoadNewsfeedTask();
-		ThreadedAsyncTaskHelper.execute((LoadNewsfeedTask) mTask);
+	protected void execute() {
+		new LoadNewsfeedTask().exec();
 	}
 
 	private final class LoadNewsfeedTask extends FragmentTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
@@ -66,7 +59,7 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			SystemClock.sleep(4000);
+			//SystemClock.sleep(4000);
 
 			return newsfeedEntries;
 		}

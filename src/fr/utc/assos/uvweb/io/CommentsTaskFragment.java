@@ -1,7 +1,5 @@
 package fr.utc.assos.uvweb.io;
 
-import android.os.SystemClock;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,13 +10,15 @@ import java.util.List;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.util.HttpHelper;
-import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 
 /**
  * A UI-less fragment that loads the comments of the corresponding {@code mUvId}.
  */
 public class CommentsTaskFragment extends BaseTaskFragment {
 	private String mUvId;
+
+	public CommentsTaskFragment() {
+	}
 
 	// Public API
 	public String getUvId() {
@@ -30,15 +30,8 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 	}
 
 	@Override
-	protected void start() {
-		mTask = new LoadUvCommentsTask();
-		((LoadUvCommentsTask) mTask).execute(mUvId);
-	}
-
-	@Override
-	protected void startOnThreadPoolExecutor() {
-		mTask = new LoadUvCommentsTask();
-		ThreadedAsyncTaskHelper.execute((LoadUvCommentsTask) mTask, mUvId);
+	protected void execute() {
+		new LoadUvCommentsTask().exec(mUvId);
 	}
 
 	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {
@@ -75,7 +68,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 			} catch (JSONException ignored) {
 			}
 
-			SystemClock.sleep(4000);
+			//SystemClock.sleep(4000);
 
 			return uvComments;
 		}

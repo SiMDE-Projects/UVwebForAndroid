@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.app.SherlockFragment;
+import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
@@ -20,13 +20,14 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * change (like a rotation), the {@link Callbacks} reference needs to be updated
  * using the {@code setCallCallbacks()} method.
  */
-public abstract class BaseTaskFragment extends SherlockFragment {
+public abstract class BaseTaskFragment extends Fragment {
 	public static final int THREAD_DEFAULT_POLICY = 0;
 	public static final int THREAD_POOL_EXECUTOR_POLICY = 1;
 	private static final String TAG = makeLogTag(BaseTaskFragment.class);
 	protected FragmentTask mTask;
 	private Callbacks mCallbacks;
 	private boolean mIsRunning;
+	private int mThreadMode;
 
 	public BaseTaskFragment() {
 	}
@@ -62,14 +63,8 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 			throw new IllegalStateException("Target fragment must implement Callbacks");
 		}
 		setCallbacks((Callbacks) target);
-		if (threadMode == THREAD_DEFAULT_POLICY) {
-			start();
-		} else if (threadMode == THREAD_POOL_EXECUTOR_POLICY) {
-			startOnThreadPoolExecutor();
-		} else {
-			throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT_POLICY" +
-					"or THREAD_POOL_EXECUTOR_POLICY");
-		}
+		mThreadMode = threadMode;
+		execute();
 	}
 
 	public boolean isRunning() {
@@ -120,9 +115,7 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		super.onDetach();
 	}
 
-	protected abstract void start();
-
-	protected abstract void startOnThreadPoolExecutor();
+	protected abstract void execute();
 
 	protected void setCallbacks(Callbacks callbacks) {
 		if (mTask != null && callbacks == null) {
@@ -168,6 +161,19 @@ public abstract class BaseTaskFragment extends SherlockFragment {
 		protected void onCancelled() {
 			mCallbacks = null;
 			mIsRunning = false;
+		}
+
+		public FragmentTask<Params, Progress, Result> exec(Params... params) {
+			mTask = this;
+			if (mThreadMode == THREAD_DEFAULT_POLICY) {
+				execute(params);
+			} else if (mThreadMode == THREAD_POOL_EXECUTOR_POLICY) {
+				ThreadedAsyncTaskHelper.execute(this, params);
+			} else {
+				throw new IllegalArgumentException("threadMode must be either THREAD_DEFAULT_POLICY" +
+						"or THREAD_POOL_EXECUTOR_POLICY");
+			}
+			return this;
 		}
 	}
 }
