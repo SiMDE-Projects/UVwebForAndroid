@@ -14,11 +14,8 @@ import fr.utc.assos.uvweb.util.ThreadedAsyncTaskHelper;
 import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
 
 /**
- * A base UI-less fragment to easily manage async queries while being tight
+ * A base UI-less fragment to easily manage async queries while being closely tight
  * to the corresponding Activity or Fragment lifecycle.
- * If the attached Activity or Fragment gets destroyed by a configuration
- * change (like a rotation), the {@link Callbacks} reference needs to be updated
- * using the {@code setCallCallbacks()} method.
  */
 public abstract class BaseTaskFragment extends Fragment {
 	public static final int THREAD_DEFAULT_POLICY = 0;
@@ -113,6 +110,16 @@ public abstract class BaseTaskFragment extends Fragment {
 		mCallbacks = null;
 
 		super.onDetach();
+	}
+
+	@Override
+	public void onDestroy() {
+		if (mTask != null) {
+			mTask.cancel(true);
+			mTask = null;
+		}
+
+		super.onDestroy();
 	}
 
 	protected abstract void execute();
