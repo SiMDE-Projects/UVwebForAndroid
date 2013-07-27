@@ -151,7 +151,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 						mAdapter,
 						AnimationUtils.CARD_ANIMATION_DELAY_MILLIS,
 						AnimationUtils.CARD_ANIMATION_DURATION_MILLIS);
-				swingBottomInAnimationAdapter.setListView(mListView);
+				swingBottomInAnimationAdapter.setAbsListView(mListView);
 			}
 		}
 
