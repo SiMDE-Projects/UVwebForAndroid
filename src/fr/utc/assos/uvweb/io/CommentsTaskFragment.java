@@ -7,14 +7,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tkeunebr.androidlazyasync.acl.AsyncFragment;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.util.HttpHelper;
 
 /**
  * A UI-less fragment that loads the comments of the corresponding {@code mUvId}.
  */
-public class CommentsTaskFragment extends BaseTaskFragment {
+public class CommentsTaskFragment extends AsyncFragment {
 	private String mUvId;
 
 	public CommentsTaskFragment() {
@@ -35,7 +35,7 @@ public class CommentsTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {
-		private static final String URL = API_ENDPOINT;
+		private static final String URL = "http://192.168.0.15/Uvweb/web/app_dev.php/uv/app/";
 
 		@Override
 		protected List<UVwebContent.UVComment> doInBackground(String... params) {

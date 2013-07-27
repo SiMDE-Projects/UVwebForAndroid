@@ -7,14 +7,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tkeunebr.androidlazyasync.acl.AsyncFragment;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.util.HttpHelper;
 
 /**
  * A UI-less fragment that loads the uv list.
  */
-public class NewsfeedTaskFragment extends BaseTaskFragment {
+public class NewsfeedTaskFragment extends AsyncFragment {
 	public NewsfeedTaskFragment() {
 	}
 
@@ -24,7 +24,7 @@ public class NewsfeedTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadNewsfeedTask extends FragmentTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
-		private static final String URL = API_ENDPOINT + "newsfeed";
+		private static final String URL = "http://192.168.0.15/Uvweb/web/app_dev.php/uv/app/" + "newsfeed";
 
 		@Override
 		protected List<UVwebContent.NewsFeedEntry> doInBackground(Void... params) {

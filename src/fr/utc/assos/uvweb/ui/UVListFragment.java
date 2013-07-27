@@ -22,11 +22,11 @@ import com.actionbarsherlock.widget.SearchView;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tkeunebr.androidlazyasync.acl.AsyncFragment;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.UVListAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.io.UvListTaskFragment;
-import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.ui.base.UVwebFragment;
 import fr.utc.assos.uvweb.ui.custom.UVwebListView;
 import fr.utc.assos.uvweb.ui.custom.UVwebSearchView;
@@ -44,7 +44,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  */
 public class UVListFragment extends UVwebFragment implements AdapterView.OnItemClickListener,
 		UVListAdapter.SearchCallbacks, SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener,
-		UvListTaskFragment.Callbacks<List<UVwebContent.UV>> {
+		AsyncFragment.AsyncCallbacks<List<UVwebContent.UV>, Void> {
 	private static final String STATE_DISPLAYED_UV = "displayed_uv";
 	private static final String STATE_SEARCH_QUERY = "search_query";
 	private static final String STATE_UV_LIST = "uv_list";
@@ -127,7 +127,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 
 		mCallbacks = (Callbacks) activity;
 
-		mTaskFragment = BaseTaskFragment.get(getSherlockActivity().getSupportFragmentManager(),
+		mTaskFragment = AsyncFragment.get(getSherlockActivity().getSupportFragmentManager(),
 				UvListTaskFragment.class);
 	}
 
@@ -246,7 +246,7 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 			handleNetworkError(context);
 		} else {
 			if (!mTaskFragment.isRunning()) {
-				mTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+				mTaskFragment.startNewTask(AsyncFragment.THREAD_POOL_EXECUTOR_POLICY);
 			}
 		}
 	}
@@ -403,6 +403,10 @@ public class UVListFragment extends UVwebFragment implements AdapterView.OnItemC
 	public void onPreExecute() {
 		mListView.getEmptyView().setVisibility(View.GONE);
 		mProgressBar.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void onProgressUpdate(Void... values) {
 	}
 
 	@Override

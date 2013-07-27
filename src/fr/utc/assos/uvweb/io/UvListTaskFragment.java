@@ -7,14 +7,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tkeunebr.androidlazyasync.acl.AsyncFragment;
 import fr.utc.assos.uvweb.data.UVwebContent;
-import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.util.HttpHelper;
 
 /**
  * A UI-less fragment that loads the uv list.
  */
-public class UvListTaskFragment extends BaseTaskFragment {
+public class UvListTaskFragment extends AsyncFragment {
 	public UvListTaskFragment() {
 	}
 
@@ -24,7 +24,7 @@ public class UvListTaskFragment extends BaseTaskFragment {
 	}
 
 	private final class LoadUvListTask extends FragmentTask<Void, Void, List<UVwebContent.UV>> {
-		private static final String URL = API_ENDPOINT + "list";
+		private static final String URL = "http://192.168.0.15/Uvweb/web/app_dev.php/uv/app/" + "list";
 
 		@Override
 		protected List<UVwebContent.UV> doInBackground(Void... params) {

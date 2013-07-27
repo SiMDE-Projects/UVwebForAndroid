@@ -25,11 +25,11 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tkeunebr.androidlazyasync.acl.AsyncFragment;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.UVCommentAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.io.CommentsTaskFragment;
-import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.ui.base.UVwebFragment;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
@@ -42,7 +42,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
 public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.OnInflateStickyHeader,
-		BaseTaskFragment.Callbacks<List<UVwebContent.UVComment>> {
+		AsyncFragment.AsyncCallbacks<List<UVwebContent.UVComment>, Void> {
 	/**
 	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
@@ -100,7 +100,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
-		mTaskFragment = BaseTaskFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
+		mTaskFragment = AsyncFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
 				CommentsTaskFragment.class);
 	}
 
@@ -297,6 +297,10 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		} else {
 			mProgressBar.setVisibility(View.VISIBLE);
 		}
+	}
+
+	@Override
+	public void onProgressUpdate(Void... values) {
 	}
 
 	@Override

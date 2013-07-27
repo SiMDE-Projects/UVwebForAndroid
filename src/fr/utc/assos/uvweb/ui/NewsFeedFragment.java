@@ -17,11 +17,11 @@ import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnim
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.tkeunebr.androidlazyasync.acl.AsyncFragment;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.adapters.NewsFeedEntryAdapter;
 import fr.utc.assos.uvweb.data.UVwebContent;
 import fr.utc.assos.uvweb.io.NewsfeedTaskFragment;
-import fr.utc.assos.uvweb.io.base.BaseTaskFragment;
 import fr.utc.assos.uvweb.ui.base.UVwebFragment;
 import fr.utc.assos.uvweb.util.AnimationUtils;
 import fr.utc.assos.uvweb.util.ConnectionUtils;
@@ -32,7 +32,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * A list fragment representing a list of {@link UVwebContent.NewsFeedEntry}s.
  */
 public class NewsFeedFragment extends UVwebFragment implements
-		NewsfeedTaskFragment.Callbacks<List<UVwebContent.NewsFeedEntry>> {
+		NewsfeedTaskFragment.AsyncCallbacks<List<UVwebContent.NewsFeedEntry>, Void> {
 	private static final String TAG = makeLogTag(NewsFeedFragment.class);
 	private static final String STATE_NEWSFEED_ENTRIES = "newsfeed_entries";
 	private NewsFeedEntryAdapter mAdapter;
@@ -53,7 +53,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 
-		mTaskFragment = BaseTaskFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
+		mTaskFragment = AsyncFragment.get(((SherlockFragmentActivity) activity).getSupportFragmentManager(),
 				NewsfeedTaskFragment.class);
 	}
 
@@ -163,7 +163,7 @@ public class NewsFeedFragment extends UVwebFragment implements
 			handleNetworkError(context);
 		} else {
 			if (!mTaskFragment.isRunning()) {
-				mTaskFragment.startNewTask(BaseTaskFragment.THREAD_POOL_EXECUTOR_POLICY);
+				mTaskFragment.startNewTask(AsyncFragment.THREAD_POOL_EXECUTOR_POLICY);
 			}
 		}
 	}
@@ -186,6 +186,10 @@ public class NewsFeedFragment extends UVwebFragment implements
 		} else {
 			mProgressBar.setVisibility(View.VISIBLE);
 		}
+	}
+
+	@Override
+	public void onProgressUpdate(Void... values) {
 	}
 
 	@Override
