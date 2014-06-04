@@ -35,11 +35,11 @@ public class CommentsTaskFragment extends AsyncFragment {
 	}
 
 	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {
-		private static final String URL = "http://192.168.0.15/Uvweb/web/app_dev.php/uv/app/";
+		private static final String URL = "http://s370803768.onlinehome.fr/uvweb/uvdetail.json";
 
 		@Override
 		protected List<UVwebContent.UVComment> doInBackground(String... params) {
-			final JSONArray uvCommentsArray = HttpHelper.loadJSON(URL + params[0]);
+			final JSONArray uvCommentsArray = HttpHelper.loadJSON(URL);
 			if (uvCommentsArray == null || isCancelled()) return null;
 			final int nUvComments = uvCommentsArray.length();
 

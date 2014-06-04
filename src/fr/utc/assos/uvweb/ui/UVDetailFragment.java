@@ -19,7 +19,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import com.haarman.listviewanimations.swinginadapters.prepared.SwingBottomInAnimationAdapter;
 
 import java.util.ArrayList;
@@ -59,6 +59,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
 	private boolean mTwoPane;
+    private boolean mLargeTablet;
 	private boolean mHasNoComments;
 	private boolean mNetworkError;
 	/**
@@ -119,6 +120,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			// Fragment configuration
 			setHasOptionsMenu(true);
 			mTwoPane = arguments.getBoolean(ARG_TWO_PANE, false);
+            mLargeTablet = getResources().getBoolean(R.bool.large_tablet);
 		}
 
 		if (savedInstanceState == null) {
@@ -142,8 +144,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 
 		SwingBottomInAnimationAdapter swingBottomInAnimationAdapter = null;
 		mListView = (ListView) rootView.findViewById(android.R.id.list);
-		if (mListView instanceof StickyListHeadersListView) {
-			mAdapter.setOnInflateStickyHeader(this);
+		if (mLargeTablet) {
 			mUsesStickyHeader = true;
 		} else {
 			if (!mTwoPane) {
@@ -164,7 +165,9 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		if (!mUsesStickyHeader) {
 			mHeaderView = inflater.inflate(R.layout.uv_detail_header, null);
 			mListView.addHeaderView(mHeaderView);
-		}
+		} else {
+            mHeaderView = rootView.findViewById(R.id.header);
+        }
 
 		mListView.setAdapter(mTwoPane ? mAdapter : swingBottomInAnimationAdapter);
 
@@ -172,7 +175,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			if (savedInstanceState.containsKey(STATE_COMMENT_LIST)) {
 				final ArrayList<UVwebContent.UVComment> savedComments = savedInstanceState.getParcelableArrayList
 						(STATE_COMMENT_LIST);
-				if (!mUsesStickyHeader && savedComments != null && !savedComments.isEmpty()) {
+				if (savedComments != null && !savedComments.isEmpty()) {
 					setHeaderData(mHeaderView);
 				}
 				mAdapter.updateComments(savedComments);
@@ -308,7 +311,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		if (comments.isEmpty()) {
 			mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
 			mHasNoComments = true;
-		} else if (!mUsesStickyHeader) {
+		} else {
 			setHeaderData(mHeaderView);
 		}
 		mAdapter.updateComments(comments);

@@ -24,7 +24,7 @@ public class UvListTaskFragment extends AsyncFragment {
 	}
 
 	private final class LoadUvListTask extends FragmentTask<Void, Void, List<UVwebContent.UV>> {
-		private static final String URL = "http://192.168.0.15/Uvweb/web/app_dev.php/uv/app/" + "list";
+		private static final String URL = "http://s370803768.onlinehome.fr/uvweb/uvlist.json";
 
 		@Override
 		protected List<UVwebContent.UV> doInBackground(Void... params) {

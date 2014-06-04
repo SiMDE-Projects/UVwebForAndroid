@@ -9,7 +9,7 @@ import android.widget.Filterable;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersAdapter;
+import se.emilsjolander.stickylistheaders.StickyListHeadersAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;

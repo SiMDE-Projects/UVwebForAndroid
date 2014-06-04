@@ -8,7 +8,9 @@
     android:gravity="center_horizontal"
     tools:context=".ui.UVDetailFragment">
 
-    <com.emilsjolander.components.stickylistheaders.StickyListHeadersListView
+    <include layout="@layout/uv_detail_header" />
+
+    <ListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

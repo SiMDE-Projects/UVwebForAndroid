@@ -3,7 +3,7 @@ package fr.utc.assos.uvweb.ui.custom;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
-import com.emilsjolander.components.stickylistheaders.StickyListHeadersListView;
+import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
 import fr.utc.assos.uvweb.R;
 
 /**
