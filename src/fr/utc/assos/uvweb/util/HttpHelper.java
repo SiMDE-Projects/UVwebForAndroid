@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.util;
 
 import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.OkUrlFactory;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -30,7 +31,7 @@ public final class HttpHelper {
 		final JSONArray json;
 
 		try {
-			HttpURLConnection connection = sClient.open(new URL(url));
+			HttpURLConnection connection = new OkUrlFactory(sClient).open(new URL(url));
 			is = connection.getInputStream();
 			json = new JSONArray(convertStreamToString(is));
 		} catch (IOException ioe) {
