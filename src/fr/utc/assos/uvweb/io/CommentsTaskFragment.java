@@ -1,5 +1,7 @@
 package fr.utc.assos.uvweb.io;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +17,8 @@ import fr.utc.assos.uvweb.util.HttpHelper;
  * A UI-less fragment that loads the comments of the corresponding {@code mUvId}.
  */
 public class CommentsTaskFragment extends AsyncFragment {
-	private String mUvId;
+    private static final String TAG = "CommentsTaskFragment";
+    private String mUvId;
 
 	public CommentsTaskFragment() {
 	}
@@ -35,29 +38,26 @@ public class CommentsTaskFragment extends AsyncFragment {
 	}
 
 	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {
-		private static final String URL = "http://s370803768.onlinehome.fr/uvweb/uvdetail.json";
+		private static final String URL = "https://assos.utc.fr/uvweb/uv/app/details/";
 
 		@Override
 		protected List<UVwebContent.UVComment> doInBackground(String... params) {
-			final JSONArray uvCommentsArray = HttpHelper.loadJSON(URL);
-			if (uvCommentsArray == null || isCancelled()) return null;
-			final int nUvComments = uvCommentsArray.length();
+			final String uvCommentsString = HttpHelper.loadJSONString(URL + params[0]);
+			if (uvCommentsString == null || isCancelled()) return null;
 
-			final List<UVwebContent.UVComment> uvComments = new ArrayList<UVwebContent.UVComment>(nUvComments);
+			final List<UVwebContent.UVComment> uvComments = new ArrayList<UVwebContent.UVComment>();
 
 			try {
-				for (int i = 0; !isCancelled() && i < nUvComments; i++) {
+                JSONObject root = new JSONObject(uvCommentsString);
+                JSONObject details = root.getJSONObject("details");
+                JSONArray uvCommentsArray = details.getJSONArray("comments");
+
+
+				for (int i = 0; !isCancelled() && i < uvCommentsArray.length(); i++) {
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
-					String email; // Fake data to display images
-					if ((i + 1) % 4 == 0) {
-						email = "thomas.keunebroek@gmail.com";
-					} else if ((i + 1) % 3 == 0) {
-						email = "alexandre.masciulli@gmail.com";
-					} else {
-						email = "coucou@coucou.coucou";
-					}
+					String email = "coucou@coucou.com"; // Fake data to display images
 					uvComments.add(new UVwebContent.UVComment(
-							uvCommentsInfo.getString("authorName"),
+							uvCommentsInfo.getString("identity"),
 							email,
 							"21/03/2012",
 							uvCommentsInfo.getString("comment"),
@@ -66,9 +66,8 @@ public class CommentsTaskFragment extends AsyncFragment {
 					));
 				}
 			} catch (JSONException ignored) {
+                Log.e(TAG, ignored.toString());
 			}
-
-			//SystemClock.sleep(4000);
 
 			return uvComments;
 		}
