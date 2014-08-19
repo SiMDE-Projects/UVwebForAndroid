@@ -27,6 +27,8 @@ public final class HttpHelper {
 	}
 
 	public static JSONArray loadJSON(String url) {
+        //TODO: call loadJSONString instead
+
 		InputStream is = null;
 		final JSONArray json;
 
@@ -49,4 +51,28 @@ public final class HttpHelper {
 
 		return json;
 	}
+
+    public static String loadJSONString(String url) {
+        //TODO: rename into loadJSON once other version is deleted
+
+        InputStream is = null;
+        final String json;
+
+        try {
+            HttpURLConnection connection = new OkUrlFactory(sClient).open(new URL(url));
+            is = connection.getInputStream();
+            json = convertStreamToString(is);
+        } catch (IOException ioe) {
+            return null;
+        } finally {
+            try {
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException ioe) {
+            }
+        }
+
+        return json;
+    }
 }
