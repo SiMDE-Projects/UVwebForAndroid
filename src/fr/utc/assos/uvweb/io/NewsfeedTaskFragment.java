@@ -1,5 +1,7 @@
 package fr.utc.assos.uvweb.io;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +17,9 @@ import fr.utc.assos.uvweb.util.HttpHelper;
  * A UI-less fragment that loads the uv list.
  */
 public class NewsfeedTaskFragment extends AsyncFragment {
-	public NewsfeedTaskFragment() {
+    private static final String TAG = "NewsfeedTaskFragment";
+
+    public NewsfeedTaskFragment() {
 	}
 
 	@Override
@@ -24,29 +28,28 @@ public class NewsfeedTaskFragment extends AsyncFragment {
 	}
 
 	private final class LoadNewsfeedTask extends FragmentTask<Void, Void, List<UVwebContent.NewsFeedEntry>> {
-		private static final String URL = "http://192.168.0.15/Uvweb/web/app_dev.php/uv/app/" + "newsfeed";
+		private static final String URL = "http://assos.utc.fr/uvweb/app/recentactivity";
 
 		@Override
 		protected List<UVwebContent.NewsFeedEntry> doInBackground(Void... params) {
-			final JSONArray newsfeedEntriesArray = HttpHelper.loadJSON(URL);
-			if (newsfeedEntriesArray == null || isCancelled()) return null;
-			final int nNewsfeedEntries = newsfeedEntriesArray.length();
+			final String newsfeedEntriesString = HttpHelper.loadJSONString(URL);
+			if (newsfeedEntriesString == null || isCancelled()) return null;
 
-			final List<UVwebContent.NewsFeedEntry> newsfeedEntries = new ArrayList<UVwebContent.NewsFeedEntry>(nNewsfeedEntries);
+			final List<UVwebContent.NewsFeedEntry> newsfeedEntries = new ArrayList<UVwebContent.NewsFeedEntry>();
 
 			try {
-				for (int i = 0; !isCancelled() && i < nNewsfeedEntries; i++) {
+
+                JSONObject root = new JSONObject(newsfeedEntriesString);
+                JSONArray newsfeedEntriesArray = root.getJSONArray("comments");
+
+				for (int i = 0; !isCancelled() && i < newsfeedEntriesArray.length(); i++) {
 					final JSONObject newsfeedEntryInfo = (JSONObject) newsfeedEntriesArray.get(i);
-					String email; // Fake data to display images
-					if ((i + 1) % 4 == 0) {
-						email = "thomas.keunebroek@gmail.com";
-					} else if ((i + 1) % 3 == 0) {
-						email = "alexandre.masciulli@gmail.com";
-					} else {
-						email = "coucou@coucou.coucou";
-					}
+
+                    // Fake data to display images
+                    String email = "coucou@coucou.coucou";
+
 					newsfeedEntries.add(new UVwebContent.NewsFeedEntry(
-							newsfeedEntryInfo.getString("authorName"),
+							newsfeedEntryInfo.getString("identity"),
 							//newsfeedEntryInfo.getString("email"),
 							email,
 							//newsfeedEntryInfo.getString("date"),
@@ -57,9 +60,8 @@ public class NewsfeedTaskFragment extends AsyncFragment {
 					));
 				}
 			} catch (JSONException ignored) {
+                Log.e(TAG, ignored.toString());
 			}
-
-			//SystemClock.sleep(4000);
 
 			return newsfeedEntries;
 		}
