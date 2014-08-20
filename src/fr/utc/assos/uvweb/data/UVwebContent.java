@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import org.joda.time.DateTime;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import fr.utc.assos.uvweb.util.DateUtils;
 
@@ -128,6 +129,78 @@ public class UVwebContent {
 			parcel.writeDouble(mSuccessRate);
 		}
 	}
+
+    public static class UVDetailData {
+        private List<UVComment> mComments;
+        private float mAverageRate;
+        private List<UVPoll> mPolls;
+
+        public UVDetailData(List<UVComment> comments, float averageRate, List<UVPoll> polls) {
+            mComments = comments;
+            mAverageRate = averageRate;
+            mPolls = polls;
+        }
+
+        public List<UVComment> getComments() {
+            return mComments;
+        }
+
+        public void setComments(List<UVComment> comments) {
+            mComments = comments;
+        }
+
+        public float getAverageRate() {
+            return mAverageRate;
+        }
+
+        public void setAverageRate(float averageRate) {
+            mAverageRate = averageRate;
+        }
+
+        public List<UVPoll> getPolls() {
+            return mPolls;
+        }
+
+        public void setPolls(List<UVPoll> polls) {
+            mPolls = polls;
+        }
+    }
+
+    public static class UVPoll {
+        private float mSuccessRate;
+        private int mYear;
+        private String mSeason;
+
+        public UVPoll(float successRate, int year, String season) {
+            mSuccessRate = successRate;
+            mYear = year;
+            mSeason = season;
+        }
+
+        public float getSuccessRate() {
+            return mSuccessRate;
+        }
+
+        public void setSuccessRate(float successRate) {
+            mSuccessRate = successRate;
+        }
+
+        public int getYear() {
+            return mYear;
+        }
+
+        public void setYear(int year) {
+            mYear = year;
+        }
+
+        public String getSeason() {
+            return mSeason;
+        }
+
+        public void setSeason(String season) {
+            mSeason = season;
+        }
+    }
 
 	public static class UVComment implements Comparable<UVComment>, Parcelable {
 		public static final Parcelable.Creator<UVComment> CREATOR = new Parcelable.Creator<UVComment>() {

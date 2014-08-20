@@ -41,7 +41,7 @@ import static fr.utc.assos.uvweb.util.LogUtils.makeLogTag;
  * {@link fr.utc.assos.uvweb.activities.UVDetailActivity} on handsets.
  */
 public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.OnInflateStickyHeader,
-		AsyncFragment.AsyncCallbacks<List<UVwebContent.UVComment>, Void> {
+		AsyncFragment.AsyncCallbacks<UVwebContent.UVDetailData, Void> {
 	/**
 	 * The fragment argument representing the UV ID that this fragment
 	 * represents.
@@ -306,14 +306,14 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	}
 
 	@Override
-	public void onPostExecute(List<UVwebContent.UVComment> comments) {
-		if (comments.isEmpty()) {
+	public void onPostExecute(UVwebContent.UVDetailData data) {
+		if (data.getComments().isEmpty()) {
 			mListView.getEmptyView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
 			mHasNoComments = true;
 		} else {
 			setHeaderData(mHeaderView);
 		}
-		mAdapter.updateComments(comments);
+		mAdapter.updateComments(data.getComments());
 		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
 			mRefreshMenuItem.setActionView(null);
 		}

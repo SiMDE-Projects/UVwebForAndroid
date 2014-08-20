@@ -37,22 +37,25 @@ public class CommentsTaskFragment extends AsyncFragment {
 		new LoadUvCommentsTask().exec(mUvId);
 	}
 
-	private final class LoadUvCommentsTask extends FragmentTask<String, Void, List<UVwebContent.UVComment>> {
+	private final class LoadUvCommentsTask extends FragmentTask<String, Void, UVwebContent.UVDetailData> {
 		private static final String URL = "https://assos.utc.fr/uvweb/uv/app/details/";
 
 		@Override
-		protected List<UVwebContent.UVComment> doInBackground(String... params) {
+		protected UVwebContent.UVDetailData doInBackground(String... params) {
 			final String uvCommentsString = HttpHelper.loadJSONString(URL + params[0]);
 			if (uvCommentsString == null || isCancelled()) return null;
 
 			final List<UVwebContent.UVComment> uvComments = new ArrayList<UVwebContent.UVComment>();
+            final List<UVwebContent.UVPoll> uvPolls = new ArrayList<UVwebContent.UVPoll>();
+            float averageRate = 0;
 
 			try {
                 JSONObject root = new JSONObject(uvCommentsString);
                 JSONObject details = root.getJSONObject("details");
+
+                averageRate = (float) details.getDouble("averageRate");
+
                 JSONArray uvCommentsArray = details.getJSONArray("comments");
-
-
 				for (int i = 0; !isCancelled() && i < uvCommentsArray.length(); i++) {
 					final JSONObject uvCommentsInfo = (JSONObject) uvCommentsArray.get(i);
 					String email = "coucou@coucou.com"; // Fake data to display images
@@ -65,11 +68,26 @@ public class CommentsTaskFragment extends AsyncFragment {
 							uvCommentsInfo.getString("semester")
 					));
 				}
+
+                JSONArray uvPollsArray = details.getJSONArray("polls");
+                for (int i = 0; !isCancelled() && i < uvPollsArray.length(); i++) {
+                    final JSONObject uvPollInfo = (JSONObject) uvPollsArray.get(i);
+                    uvPolls.add(new UVwebContent.UVPoll(
+                            (float) uvPollInfo.getDouble("successRate"),
+                            uvPollInfo.getInt("year"),
+                            uvPollInfo.getString("season")
+                    ));
+                }
+
 			} catch (JSONException ignored) {
                 Log.e(TAG, ignored.toString());
 			}
 
-			return uvComments;
+			return new UVwebContent.UVDetailData(
+                    uvComments,
+                    averageRate,
+                    uvPolls
+            );
 		}
 	}
 }
