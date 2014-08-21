@@ -56,7 +56,8 @@ public class NewsfeedTaskFragment extends AsyncFragment {
 							"21/03/2012",
 							newsfeedEntryInfo.getString("comment"),
 							//newsfeedEntryInfo.getString("action")
-							" a posté un commentaire"
+							" a posté un commentaire sur %s",
+                            newsfeedEntryInfo.getString("name")
 					));
 				}
 			} catch (JSONException ignored) {

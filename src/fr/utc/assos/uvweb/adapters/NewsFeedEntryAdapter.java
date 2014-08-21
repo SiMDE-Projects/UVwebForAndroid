@@ -71,7 +71,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		final UVwebContent.NewsFeedEntry entry = getItem(position);
 		final UVwebContent.User owner = entry.getOwner();
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
-				owner.getName(), " " + entry.getAction())));
+				owner.getName(), " " + String.format(entry.getAction(), entry.getUvName()))));
 		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
 		final String gravatarUrl = Gravatar.init()
 				.with(owner.getEmail())

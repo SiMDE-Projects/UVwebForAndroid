@@ -322,16 +322,18 @@ public class UVwebContent {
 		private DateTime mDate;
 		private String mComment;
 		private String mAction;
+        private String mUvName;
 
-		public NewsFeedEntry(String author, String email, DateTime date, String comment, String action) {
+		public NewsFeedEntry(String author, String email, DateTime date, String comment, String action, String uvName) {
 			mOwner = new User(author, email);
 			mDate = date;
 			mComment = comment;
 			mAction = action;
+            mUvName = uvName;
 		}
 
-		public NewsFeedEntry(String author, String gravatarHash, String date, String comment, String action) {
-			this(author, gravatarHash, DateUtils.getDateFromString(date), comment, action);
+		public NewsFeedEntry(String author, String gravatarHash, String date, String comment, String action, String uvName) {
+			this(author, gravatarHash, DateUtils.getDateFromString(date), comment, action, uvName);
 		}
 
 		protected NewsFeedEntry(Parcel in) {
@@ -339,6 +341,7 @@ public class UVwebContent {
 			mDate = DateUtils.getDateFromString(in.readString());
 			mComment = in.readString();
 			mAction = in.readString();
+            mUvName = in.readString();
 		}
 
 		public User getOwner() {
@@ -373,6 +376,14 @@ public class UVwebContent {
 			mComment = comment;
 		}
 
+        public String getUvName() {
+            return mUvName;
+        }
+
+        public void setUvName(String uvName) {
+            mUvName = uvName;
+        }
+
 		public String getTimeDifference() {
 			return DateUtils.getFormattedTimeDifference(mDate, new DateTime());
 		}
@@ -388,6 +399,7 @@ public class UVwebContent {
 			parcel.writeString(DateUtils.getFormattedDate(mDate));
 			parcel.writeString(mComment);
 			parcel.writeString(mAction);
+            parcel.writeString(mUvName);
 		}
 
 		@Override
