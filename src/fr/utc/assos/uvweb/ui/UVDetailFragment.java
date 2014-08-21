@@ -65,6 +65,10 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	 * The UV this fragment is presenting.
 	 */
 	private UVwebContent.UV mUV;
+    /**
+     * The data associated with this UV (comments, polls, ...)
+     */
+    private UVwebContent.UVDetailData mUVDetailData;
 	/**
 	 * The ListView containing all comment items.
 	 */
@@ -76,7 +80,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private View mHeaderView;
 	private CommentsTaskFragment mTaskFragment;
 
-	public UVDetailFragment() {
+    public UVDetailFragment() {
 	}
 
 	/**
@@ -255,21 +259,27 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		((TextView) headerView.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
 				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
 		((TextView) headerView.findViewById(R.id.uv_description)).setText(mUV.getDescription());
-		((TextView) headerView.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
+
 		final Context context = getSherlockActivity();
 		final LinearLayout successRatesContainer = (LinearLayout) headerView.findViewById(R.id.uv_success_rates);
 		successRatesContainer.removeAllViews();
+
+        if (mUVDetailData == null) return;
 		final float textSize = context.getResources().getDimension(R.dimen.semester_success_rate_text_size);
+        List<UVwebContent.UVPoll> polls = mUVDetailData.getPolls();
 		for (int i = 0; i < 3; i++) {
+            if (i >= polls.size()) break;
+            UVwebContent.UVPoll poll = polls.get(i);
 			final TextView tv = new TextView(context);
 			tv.setLayoutParams(mSemesterLayoutParams);
 			tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
 			tv.setText(Html.fromHtml(String.format(UVwebContent.UV_SUCCESS_RATE_FORMAT,
-					"P" + String.valueOf(12 - i) + " ",
-					String.valueOf(70 + i * 3) + "%")));
-			// TODO: fetch values from server
+					String.valueOf(Character.toUpperCase(poll.getSeason().charAt(0))) + String.valueOf(poll.getYear() - 2000) + " ",
+					 poll.getSuccessRate()+ "%")));
 			successRatesContainer.addView(tv);
 		}
+
+        ((TextView) headerView.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
 	}
 
 	private void loadUvComments() {
@@ -314,6 +324,11 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			setHeaderData(mHeaderView);
 		}
 		mAdapter.updateComments(data.getComments());
+        mUVDetailData = data;
+        if (mUV != null) mUV.setRate(data.getAverageRate());
+        setHeaderData(mHeaderView);
+
+
 		if (mRefreshMenuItem != null && mRefreshMenuItem.getActionView() != null) {
 			mRefreshMenuItem.setActionView(null);
 		}

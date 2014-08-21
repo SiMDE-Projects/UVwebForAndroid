@@ -25,7 +25,7 @@ public class UVwebContent {
 	/**
 	 * Used to format grades.
 	 */
-	private static final DecimalFormat sDecimalFormat = new DecimalFormat("0");
+	private static final DecimalFormat sDecimalFormat = new DecimalFormat("###,###.##");
 
 	/**
 	 * A UV representing a piece of content.
