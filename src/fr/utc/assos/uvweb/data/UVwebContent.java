@@ -169,7 +169,18 @@ public class UVwebContent {
         }
     }
 
-    public static class UVPoll {
+    public static class UVPoll implements Parcelable {
+
+        public static final Parcelable.Creator<UVPoll> CREATOR = new Parcelable.Creator<UVPoll>() {
+            public UVPoll createFromParcel(Parcel in) {
+                return new UVPoll(in);
+            }
+
+            public UVPoll[] newArray(int size) {
+                return new UVPoll[size];
+            }
+        };
+
         private float mSuccessRate;
         private int mYear;
         private String mSeason;
@@ -178,6 +189,12 @@ public class UVwebContent {
             mSuccessRate = successRate;
             mYear = year;
             mSeason = season;
+        }
+
+        protected UVPoll(Parcel in) {
+            mSuccessRate = in.readFloat();
+            mYear = in.readInt();
+            mSeason = in.readString();
         }
 
         public float getSuccessRate() {
@@ -202,6 +219,18 @@ public class UVwebContent {
 
         public void setSeason(String season) {
             mSeason = season;
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel parcel, int i) {
+            parcel.writeFloat(mSuccessRate);
+            parcel.writeInt(mYear);
+            parcel.writeString(mSeason);
         }
     }
 

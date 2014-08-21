@@ -55,6 +55,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private static final String STATE_COMMENT_LIST = "comment_list";
 	private static final String STATE_NO_COMMENT = "no_comment";
     private static final String STATE_UV = "uv";
+    private static final String STATE_POLL_LIST = "poll_list";
     private final LinearLayout.LayoutParams mSemesterLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -67,9 +68,9 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	 */
 	private UVwebContent.UV mUV;
     /**
-     * The data associated with this UV (comments, polls, ...)
+     * The polls associated with this UV (comments, polls, ...)
      */
-    private UVwebContent.UVDetailData mUVDetailData;
+    private List<UVwebContent.UVPoll> mPolls;
 	/**
 	 * The ListView containing all comment items.
 	 */
@@ -116,8 +117,14 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		final Bundle arguments = getArguments();
 		if (arguments.containsKey(ARG_UV_ID)) {
 			// Load the UV specified by the fragment arguments.
-			if (savedInstanceState != null && savedInstanceState.containsKey(STATE_UV)) {
-                mUV = savedInstanceState.getParcelable(STATE_UV);
+			if (savedInstanceState != null) {
+                if (savedInstanceState.containsKey(STATE_UV)) {
+                    mUV = savedInstanceState.getParcelable(STATE_UV);
+                }
+                if (savedInstanceState.containsKey(STATE_POLL_LIST)) {
+                    mPolls = savedInstanceState.getParcelableArrayList(STATE_POLL_LIST);
+                }
+
             } else {
                 mUV = arguments.getParcelable(ARG_UV_ID);
             }
@@ -255,6 +262,9 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
         if (mUV != null) {
             outState.putParcelable(STATE_UV, mUV);
         }
+        if (mPolls != null) {
+            outState.putParcelableArrayList(STATE_POLL_LIST, (ArrayList) mPolls);
+        }
 		if (mHasNoComments) {
 			outState.putBoolean(STATE_NO_COMMENT, true);
 		}
@@ -274,12 +284,11 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		final LinearLayout successRatesContainer = (LinearLayout) headerView.findViewById(R.id.uv_success_rates);
 		successRatesContainer.removeAllViews();
 
-        if (mUVDetailData == null) return;
+        if (mPolls == null) return;
 		final float textSize = context.getResources().getDimension(R.dimen.semester_success_rate_text_size);
-        List<UVwebContent.UVPoll> polls = mUVDetailData.getPolls();
 		for (int i = 0; i < 3; i++) {
-            if (i >= polls.size()) break;
-            UVwebContent.UVPoll poll = polls.get(i);
+            if (i >= mPolls.size()) break;
+            UVwebContent.UVPoll poll = mPolls.get(i);
 			final TextView tv = new TextView(context);
 			tv.setLayoutParams(mSemesterLayoutParams);
 			tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
@@ -332,7 +341,7 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 			setHeaderData(mHeaderView);
 		}
 		mAdapter.updateComments(data.getComments());
-        mUVDetailData = data;
+        mPolls = data.getPolls();
         if (mUV != null) mUV.setRate(data.getAverageRate());
         setHeaderData(mHeaderView);
 
