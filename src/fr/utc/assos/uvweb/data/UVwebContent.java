@@ -100,6 +100,7 @@ public class UVwebContent {
 
 		public String getNumberCode() {
 			final int size = mName.length();
+            if (size <= 2) return "";
 			return mName.substring(size - 2, size);
 		}
 
