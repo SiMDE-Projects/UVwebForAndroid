@@ -54,7 +54,8 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 	private static final String TAG = makeLogTag(UVDetailFragment.class);
 	private static final String STATE_COMMENT_LIST = "comment_list";
 	private static final String STATE_NO_COMMENT = "no_comment";
-	private final LinearLayout.LayoutParams mSemesterLayoutParams = new LinearLayout.LayoutParams(
+    private static final String STATE_UV = "uv";
+    private final LinearLayout.LayoutParams mSemesterLayoutParams = new LinearLayout.LayoutParams(
 			ViewGroup.LayoutParams.WRAP_CONTENT,
 			ViewGroup.LayoutParams.WRAP_CONTENT);
 	private boolean mTwoPane;
@@ -115,7 +116,11 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		final Bundle arguments = getArguments();
 		if (arguments.containsKey(ARG_UV_ID)) {
 			// Load the UV specified by the fragment arguments.
-			mUV = arguments.getParcelable(ARG_UV_ID);
+			if (savedInstanceState != null && savedInstanceState.containsKey(STATE_UV)) {
+                mUV = savedInstanceState.getParcelable(STATE_UV);
+            } else {
+                mUV = arguments.getParcelable(ARG_UV_ID);
+            }
 			if (mUV == null) {
 				throw new IllegalStateException("Selected UV cannot be null");
 			}
@@ -247,6 +252,9 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 		if (!mAdapter.isEmpty()) {
 			outState.putParcelableArrayList(STATE_COMMENT_LIST, (ArrayList) mAdapter.getComments());
 		}
+        if (mUV != null) {
+            outState.putParcelable(STATE_UV, mUV);
+        }
 		if (mHasNoComments) {
 			outState.putBoolean(STATE_NO_COMMENT, true);
 		}
@@ -257,8 +265,10 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 
 	private void setHeaderData(View headerView) {
 		((TextView) headerView.findViewById(R.id.uv_code)).setText(Html.fromHtml(String.format(
-				UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
+                UVwebContent.UV_TITLE_FORMAT_LIGHT, mUV.getLetterCode(), mUV.getNumberCode())));
 		((TextView) headerView.findViewById(R.id.uv_description)).setText(mUV.getDescription());
+
+        ((TextView) headerView.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
 
 		final Context context = getSherlockActivity();
 		final LinearLayout successRatesContainer = (LinearLayout) headerView.findViewById(R.id.uv_success_rates);
@@ -278,8 +288,6 @@ public class UVDetailFragment extends UVwebFragment implements UVCommentAdapter.
 					 poll.getSuccessRate()+ "%")));
 			successRatesContainer.addView(tv);
 		}
-
-        ((TextView) headerView.findViewById(R.id.uv_rate)).setText(mUV.getFormattedRate());
 	}
 
 	private void loadUvComments() {

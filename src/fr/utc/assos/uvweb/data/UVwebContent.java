@@ -55,6 +55,7 @@ public class UVwebContent {
 			mDescription = in.readString();
 			mRate = in.readDouble();
 			mSuccessRate = in.readDouble();
+            mRate = in.readDouble();
 		}
 
 		@Override
@@ -128,6 +129,7 @@ public class UVwebContent {
 			parcel.writeString(mDescription);
 			parcel.writeDouble(mRate);
 			parcel.writeDouble(mSuccessRate);
+            parcel.writeDouble(mRate);
 		}
 	}
 
