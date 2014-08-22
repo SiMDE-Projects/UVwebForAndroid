@@ -32,10 +32,15 @@
 
     <style name="Theme.UVweb.Logo" parent="Theme.UVweb">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.UVweb.Logo</item>
+        <item name="android:actionBarTabStyle">@style/ActionBarTabs</item>
     </style>
 
     <style name="Theme.UVweb.NoLogo" parent="Theme.UVweb">
         <item name="android:actionBarStyle">@style/ActionBar.Solid.UVweb.NoLogo</item>
+    </style>
+
+    <style name="ActionBarTabs" parent="android:Widget.Holo.ActionBar.TabView">
+        <item name="android:background">@drawable/uvweb_tab_indicator_holo</item>
     </style>
 
     <style name="ActionBar.Solid.UVweb" parent="@style/Widget.Sherlock.Light.ActionBar.Solid.Inverse">
