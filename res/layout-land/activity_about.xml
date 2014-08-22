@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/logo_about" />
 
             <ImageView
                 android:layout_width="match_parent"
@@ -60,9 +60,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
+                android:background="@drawable/uvweb_btn_default_holo_light"
                 android:text="@string/go_to_uvweb"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:onClick="openUVwebSite" />
 
             <Button
@@ -72,8 +72,8 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:text="@string/go_to_utc"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:background="@drawable/uvweb_btn_default_holo_light"
+                android:textSize="22sp"
                 android:onClick="openUTCwebSite" />
 
             <Button
@@ -83,8 +83,8 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center"
                 android:text="@string/contact"
-                android:textStyle="bold"
-                android:textSize="20sp"
+                android:background="@drawable/uvweb_btn_default_holo_light"
+                android:textSize="22sp"
                 android:onClick="contactUs" />
 
         </LinearLayout>
