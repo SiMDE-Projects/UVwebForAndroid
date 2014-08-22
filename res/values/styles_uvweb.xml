@@ -80,6 +80,7 @@
     <style name="ListView.UVweb.fastScrollThemed" parent="@android:style/Widget.ListView">
         <item name="android:textColorPrimary">?android:textColorPrimaryInverse</item>
         <item name="android:overScrollFooter">@null</item>
+        <item name="android:fastScrollThumbDrawable">@drawable/uvweb_fastscroll_thumb_holo</item>
         <!-- Fix for Motorola devices -->
     </style>
 
