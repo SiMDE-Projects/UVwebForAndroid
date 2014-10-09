@@ -335,7 +335,7 @@ public class UVwebContent {
 
 		@Override
 		public int compareTo(UVComment uvComment) {
-			return mDate.compareTo(uvComment.mDate);
+			return -mDate.compareTo(uvComment.mDate);
 		}
 	}
 

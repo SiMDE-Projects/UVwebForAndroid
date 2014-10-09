@@ -7,6 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import fr.tkeunebr.androidlazyasync.acl.AsyncFragment;
@@ -62,12 +64,13 @@ public class CommentsTaskFragment extends AsyncFragment {
 					uvComments.add(new UVwebContent.UVComment(
 							uvCommentsInfo.getString("identity"),
 							email,
-							"21/03/2012",
+							uvCommentsInfo.getString("date"),
 							uvCommentsInfo.getString("comment"),
 							uvCommentsInfo.getInt("globalRate"),
 							uvCommentsInfo.getString("semester")
 					));
 				}
+                Collections.sort(uvComments);
 
                 JSONArray uvPollsArray = details.getJSONArray("polls");
                 for (int i = 0; !isCancelled() && i < uvPollsArray.length(); i++) {
