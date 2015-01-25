@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -72,7 +74,7 @@ public class NewsFeedEntryAdapter extends UVAdapter {
 		final UVwebContent.User owner = entry.getOwner();
 		userIdView.setText(Html.fromHtml(String.format(UVwebContent.NEWSFEED_ACTION_FORMAT,
 				owner.getName(), " " + String.format(entry.getAction(), entry.getUvName()))));
-		dateView.setText(mDatePresentation + " " + entry.getTimeDifference());
+		dateView.setText(entry.getDate().toString("dd/MM/yy"));
 		final String gravatarUrl = Gravatar.init()
 				.with(owner.getEmail())
 				.force404()
