@@ -29,9 +29,9 @@ public class MainActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case FRAGMENT_POSITION_NEWSFEED:
-                    return new Fragment();
+                    return new NewsFeedFragment();
                 case FRAGMENT_POSITION_UVLIST:
-                    return new Fragment();
+                    return new UvListFragment();
                 default:
                     throw new IllegalArgumentException();
             }
