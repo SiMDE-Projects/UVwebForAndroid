@@ -24,6 +24,7 @@ public class UvListFragment extends Fragment {
         for (int i = 0; i < 100; i++) {
             UvListItem uv = new UvListItem();
             uv.name = "UV" + i;
+            uv.title = "This is a title for UV" + i;
             uvs.add(uv);
         }
         adapter.setUvs(uvs);

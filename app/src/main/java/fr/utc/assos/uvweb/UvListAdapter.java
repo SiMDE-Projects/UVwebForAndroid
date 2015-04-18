@@ -24,6 +24,7 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         UvListItem uv = uvs.get(position);
         viewHolder.nameView.setText(uv.name);
+        viewHolder.titleView.setText(uv.title);
     }
 
     @Override
@@ -38,10 +39,12 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameView;
+        private final TextView titleView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nameView = (TextView) itemView.findViewById(R.id.name);
+            titleView = (TextView) itemView.findViewById(R.id.title);
         }
     }
 }
