@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">UVweb</string>
+    <string name="loading_error">Erreur de chargement</string>
 </resources>

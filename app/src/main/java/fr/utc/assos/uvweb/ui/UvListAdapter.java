@@ -26,8 +26,8 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
         UvListItem uv = uvs.get(position);
-        viewHolder.nameView.setText(uv.name);
-        viewHolder.titleView.setText(uv.title);
+        viewHolder.nameView.setText(uv.getName());
+        viewHolder.titleView.setText(uv.getTitle());
     }
 
     @Override
