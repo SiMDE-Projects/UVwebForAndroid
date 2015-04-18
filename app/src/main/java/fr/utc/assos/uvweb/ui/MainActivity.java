@@ -8,8 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.ui.NewsFeedFragment;
-import fr.utc.assos.uvweb.ui.UvListFragment;
 
 public class MainActivity extends ActionBarActivity {
     private static final int FRAGMENT_COUNT = 2;
@@ -33,7 +31,7 @@ public class MainActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case FRAGMENT_POSITION_NEWSFEED:
-                    return new NewsFeedFragment();
+                    return new NewsfeedFragment();
                 case FRAGMENT_POSITION_UVLIST:
                     return new UvListFragment();
                 default:
