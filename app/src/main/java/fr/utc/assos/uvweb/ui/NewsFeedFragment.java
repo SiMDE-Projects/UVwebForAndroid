@@ -1,10 +1,12 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import fr.utc.assos.uvweb.R;
 
 public class NewsFeedFragment extends Fragment {
     @Override

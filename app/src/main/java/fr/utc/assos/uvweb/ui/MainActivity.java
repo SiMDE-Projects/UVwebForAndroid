@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.ui.NewsFeedFragment;
+import fr.utc.assos.uvweb.ui.UvListFragment;
 
 public class MainActivity extends ActionBarActivity {
     private static final int FRAGMENT_COUNT = 2;

@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb;
+package fr.utc.assos.uvweb.ui;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.model.UvListItem;
 
 
 public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder> {
