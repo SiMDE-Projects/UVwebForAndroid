@@ -22,7 +22,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class NewsfeedFragment extends Fragment implements Callback<Newsfeed> {
+public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, NewsfeedAdapter.ItemClickListener {
     private static final String TAG = NewsfeedFragment.class.getSimpleName();
     private static final String STATE_NEWSFEED_ITEMS = "state_newsfeed_items";
 
@@ -35,7 +35,7 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed> {
 
         RecyclerView recycler = (RecyclerView) root.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new NewsfeedAdapter();
+        adapter = new NewsfeedAdapter(this);
         recycler.setAdapter(adapter);
 
         return root;
@@ -75,5 +75,10 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed> {
     public void failure(RetrofitError error) {
         Log.e(TAG, "Failed loading newsfeed", error);
         Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(NewsfeedItem item) {
+        //TODO open comment detail
     }
 }

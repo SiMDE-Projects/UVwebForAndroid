@@ -16,6 +16,11 @@ import fr.utc.assos.uvweb.model.NewsfeedItem;
 public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHolder> {
 
     private List<NewsfeedItem> items = new ArrayList<>();
+    private ItemClickListener itemClickListener;
+
+    public NewsfeedAdapter(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -25,12 +30,18 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        NewsfeedItem item = items.get(position);
+        final NewsfeedItem item = items.get(position);
         Context context = holder.itemView.getContext();
         holder.authorView.setText(context.getString(R.string.newsfeed_author, item.getAuthor(), item.getGlobalRate()));
         holder.dateView.setText(item.getDate());
         holder.uvNameView.setText(item.getUvName());
         holder.commentView.setText(item.getComment());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onClick(item);
+            }
+        });
     }
 
     @Override
@@ -57,5 +68,9 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
             commentView = (TextView) itemView.findViewById(R.id.comment);
             dateView = (TextView) itemView.findViewById(R.id.date);
         }
+    }
+
+    public interface ItemClickListener {
+        void onClick(NewsfeedItem item);
     }
 }
