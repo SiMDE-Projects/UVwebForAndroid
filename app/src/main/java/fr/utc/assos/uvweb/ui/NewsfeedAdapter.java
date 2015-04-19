@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,8 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         NewsfeedItem item = items.get(position);
-        holder.authorView.setText(item.getAuthor());
+        Context context = holder.itemView.getContext();
+        holder.authorView.setText(context.getString(R.string.newsfeed_author_date, item.getAuthor(), item.getDate()));
         holder.uvNameView.setText(item.getUvName());
         holder.commentView.setText(item.getComment());
     }
