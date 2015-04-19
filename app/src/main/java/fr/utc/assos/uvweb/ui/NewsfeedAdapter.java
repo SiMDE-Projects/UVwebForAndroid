@@ -25,7 +25,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         NewsfeedItem item = items.get(position);
-        holder.identity.setText(item.getIdentity());
+        holder.identity.setText(item.getAuthor());
     }
 
     @Override
