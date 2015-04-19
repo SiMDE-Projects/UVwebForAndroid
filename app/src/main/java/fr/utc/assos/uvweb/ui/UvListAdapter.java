@@ -16,6 +16,11 @@ import fr.utc.assos.uvweb.model.UvListItem;
 public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder> {
 
     private List<UvListItem> uvs = new ArrayList<>();
+    private ItemClickListener itemClickListener;
+
+    public UvListAdapter(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int position) {
@@ -25,9 +30,15 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        UvListItem uv = uvs.get(position);
+        final UvListItem uv = uvs.get(position);
         viewHolder.nameView.setText(uv.getName());
         viewHolder.titleView.setText(uv.getTitle());
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                itemClickListener.onClick(uv);
+            }
+        });
     }
 
     @Override
@@ -49,5 +60,9 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
             nameView = (TextView) itemView.findViewById(R.id.name);
             titleView = (TextView) itemView.findViewById(R.id.title);
         }
+    }
+
+    public interface ItemClickListener {
+        void onClick(UvListItem uv);
     }
 }

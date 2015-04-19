@@ -21,7 +21,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UvListFragment extends Fragment implements Callback<List<UvListItem>> {
+public class UvListFragment extends Fragment implements Callback<List<UvListItem>>,UvListAdapter.ItemClickListener {
     private static final String TAG = UvListFragment.class.getSimpleName();
     private static final String STATE_UVS = "uvs";
     private UvListAdapter adapter;
@@ -33,7 +33,7 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
         RecyclerView recycler = (RecyclerView) root.findViewById(R.id.recycler);
 
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new UvListAdapter();
+        adapter = new UvListAdapter(this);
         recycler.setAdapter(adapter);
 
         return root;
@@ -72,5 +72,10 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     public void failure(RetrofitError error) {
         Log.e(TAG, "Failed loading UV list", error);
         Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(UvListItem uv) {
+        //TODO open UV detail
     }
 }
