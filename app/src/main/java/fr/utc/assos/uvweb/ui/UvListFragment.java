@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -76,6 +77,8 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
 
     @Override
     public void onClick(UvListItem uv) {
-        //TODO open UV detail
+        Intent intent = new Intent(getActivity(), UvActivity.class);
+        intent.putExtra(UvActivity.ARG_UV, uv);
+        startActivity(intent);
     }
 }
