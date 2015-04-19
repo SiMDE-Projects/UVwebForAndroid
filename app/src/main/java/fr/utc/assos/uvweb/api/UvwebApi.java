@@ -8,7 +8,7 @@ import retrofit.Callback;
 import retrofit.http.GET;
 
 public interface UvwebApi {
-    @GET("/uv/app/all")
+    @GET("/uv/app/all/name/false")
     void getUvs(Callback<List<UvListItem>> callback);
 
     @GET("/app/recentactivity")

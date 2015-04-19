@@ -9,7 +9,7 @@ import retrofit.RestAdapter;
 
 public class UvwebProvider {
     private static RestAdapter restAdapter = new RestAdapter.Builder()
-            .setEndpoint("http://s370803768.onlinehome.fr/uvweb")
+            .setEndpoint("https://assos.utc.fr/uvweb")
             .build();
     private static UvwebApi uvwebApi = restAdapter.create(UvwebApi.class);
 
