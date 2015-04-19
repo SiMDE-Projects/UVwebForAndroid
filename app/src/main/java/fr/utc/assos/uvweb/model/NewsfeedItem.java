@@ -8,7 +8,7 @@ public class NewsfeedItem {
     private String date;
     @SerializedName("name")
     private String uvName;
-    private String globalRate;
+    private int globalRate;
     private String comment;
 
     public String getAuthor() {
@@ -23,7 +23,7 @@ public class NewsfeedItem {
         return uvName;
     }
 
-    public String getGlobalRate() {
+    public int getGlobalRate() {
         return globalRate;
     }
 

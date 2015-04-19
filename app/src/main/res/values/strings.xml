@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">UVweb</string>
     <string name="loading_error">Erreur de chargement</string>
-    <string name="newsfeed_author_date">%1$s, le %2$s</string>
+    <string name="newsfeed_author">%1$s a attribué la note de %2$d/10</string>
 </resources>
