@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.ui;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.utc.assos.uvweb.R;
@@ -21,7 +23,9 @@ import retrofit.client.Response;
 
 public class UvListFragment extends Fragment implements Callback<List<UvListItem>> {
     private static final String TAG = UvListFragment.class.getSimpleName();
+    private static final String STATE_UVS = "uvs";
     private UvListAdapter adapter;
+    private List<UvListItem> uvs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -36,13 +40,31 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        UvwebProvider.getUvs(this);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState == null) {
+            UvwebProvider.getUvs(this);
+        } else {
+            uvs = savedInstanceState.getParcelableArrayList(STATE_UVS);
+            updateViews();
+        }
     }
 
     @Override
     public void success(List<UvListItem> uvs, Response response) {
+        this.uvs = uvs;
+        updateViews();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (uvs != null) {
+            outState.putParcelableArrayList(STATE_UVS, new ArrayList<Parcelable>(uvs));
+        }
+    }
+
+    private void updateViews() {
         adapter.setUvs(uvs);
     }
 
