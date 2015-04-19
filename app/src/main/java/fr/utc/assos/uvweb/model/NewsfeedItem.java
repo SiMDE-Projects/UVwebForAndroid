@@ -9,6 +9,7 @@ public class NewsfeedItem {
     @SerializedName("name")
     private String uvName;
     private String globalRate;
+    private String comment;
 
     public String getAuthor() {
         return author;
@@ -24,5 +25,9 @@ public class NewsfeedItem {
 
     public String getGlobalRate() {
         return globalRate;
+    }
+
+    public String getComment() {
+        return comment;
     }
 }

@@ -25,7 +25,9 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         NewsfeedItem item = items.get(position);
-        holder.identity.setText(item.getAuthor());
+        holder.authorView.setText(item.getAuthor());
+        holder.uvNameView.setText(item.getUvName());
+        holder.commentView.setText(item.getComment());
     }
 
     @Override
@@ -40,11 +42,15 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView identity;
+        private final TextView authorView;
+        private final TextView uvNameView;
+        private final TextView commentView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            identity = (TextView) itemView.findViewById(R.id.identity);
+            authorView = (TextView) itemView.findViewById(R.id.author);
+            uvNameView = (TextView) itemView.findViewById(R.id.uvname);
+            commentView = (TextView) itemView.findViewById(R.id.comment);
         }
     }
 }
