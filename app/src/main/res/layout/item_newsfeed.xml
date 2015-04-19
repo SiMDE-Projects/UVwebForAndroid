@@ -35,6 +35,8 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="10"
+            android:ellipsize="end"
             android:orientation="vertical"
             android:textColor="@color/gray_darker"
             android:textSize="14sp"
