@@ -4,7 +4,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+
+import java.util.Locale;
 
 import fr.utc.assos.uvweb.R;
 
@@ -17,7 +20,15 @@ public class MainActivity extends ToolbarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
-        pager.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
+        SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
+
+        PagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(adapter);
+
+        slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.white));
+        slidingTabLayout.setDividerColors(getResources().getColor(android.R.color.transparent));
+        slidingTabLayout.setCustomTabViewTextColor(getResources().getColor(R.color.white));
+        slidingTabLayout.setViewPager(pager);
     }
 
     @Override
@@ -45,6 +56,18 @@ public class MainActivity extends ToolbarActivity {
         @Override
         public int getCount() {
             return FRAGMENT_COUNT;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Locale locale = Locale.getDefault();
+            switch (position) {
+                case FRAGMENT_POSITION_NEWSFEED:
+                    return getString(R.string.title_newsfeed).toUpperCase(locale);
+                case FRAGMENT_POSITION_UVLIST:
+                    return getString(R.string.title_uv_list).toUpperCase(locale);
+            }
+            return null;
         }
     }
 }

@@ -2,4 +2,6 @@
     <string name="app_name">UVweb</string>
     <string name="loading_error">Erreur de chargement</string>
     <string name="newsfeed_author">%1$s a attribué la note de %2$d/10</string>
+    <string name="title_newsfeed">Activité</string>
+    <string name="title_uv_list">Liste des UVs</string>
 </resources>
