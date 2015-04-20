@@ -7,19 +7,22 @@ import android.view.MenuItem;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.model.UvListItem;
 
-public class UvActivity extends ActionBarActivity {
+public class UvActivity extends ToolbarActivity {
     public static final String ARG_UV = "arg_uv";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_uv);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         UvListItem uv = getIntent().getParcelableExtra(ARG_UV);
         setTitle(uv.getName());
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_uv;
     }
 
     @Override

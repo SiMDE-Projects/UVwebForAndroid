@@ -5,11 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 
 import fr.utc.assos.uvweb.R;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ToolbarActivity {
     private static final int FRAGMENT_COUNT = 2;
     private static final int FRAGMENT_POSITION_NEWSFEED = 0;
     private static final int FRAGMENT_POSITION_UVLIST = 1;
@@ -17,9 +16,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(new HomeFragmentPagerAdapter(getSupportFragmentManager()));
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
     }
 
     private class HomeFragmentPagerAdapter extends FragmentStatePagerAdapter {
