@@ -15,9 +15,7 @@ public class UvActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        UvListItem uv = getIntent().getParcelableExtra(ARG_UV);
-        setTitle(uv.getName());
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     @Override
