@@ -65,6 +65,12 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
         notifyDataSetChanged();
     }
 
+    public void clearFilter() {
+        filteredUvs.clear();
+        filteredUvs.addAll(uvs);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameView;
         private final TextView titleView;

@@ -100,6 +100,12 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     }
 
     @Override
+    public void onDestroyOptionsMenu() {
+        super.onDestroyOptionsMenu();
+        adapter.clearFilter();
+    }
+
+    @Override
     public boolean onQueryTextSubmit(String s) {
         // no-op
         return false;
