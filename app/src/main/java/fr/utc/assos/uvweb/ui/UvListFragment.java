@@ -107,7 +107,7 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
 
     @Override
     public boolean onQueryTextChange(String s) {
-        Log.d(TAG, "Search for " + s);
+        adapter.filter(s);
         return false;
     }
 }

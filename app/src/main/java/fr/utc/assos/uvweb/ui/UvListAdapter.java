@@ -16,6 +16,8 @@ import fr.utc.assos.uvweb.model.UvListItem;
 public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder> {
 
     private List<UvListItem> uvs = new ArrayList<>();
+    private List<UvListItem> filteredUvs = new ArrayList<>();
+
     private ItemClickListener itemClickListener;
 
     public UvListAdapter(ItemClickListener itemClickListener) {
@@ -30,7 +32,7 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, int position) {
-        final UvListItem uv = uvs.get(position);
+        final UvListItem uv = filteredUvs.get(position);
         viewHolder.nameView.setText(uv.getName());
         viewHolder.titleView.setText(uv.getTitle());
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -43,11 +45,23 @@ public class UvListAdapter extends RecyclerView.Adapter<UvListAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return uvs.size();
+        return filteredUvs.size();
     }
 
     public void setUvs(List<UvListItem> uvs) {
         this.uvs = uvs;
+        filteredUvs.clear();
+        filteredUvs.addAll(uvs);
+        notifyDataSetChanged();
+    }
+
+    public void filter(String search) {
+        filteredUvs.clear();
+        for (UvListItem uv : uvs) {
+            if (uv.getName().toLowerCase().startsWith(search)) {
+                filteredUvs.add(uv);
+            }
+        }
         notifyDataSetChanged();
     }
 
