@@ -6,8 +6,12 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -22,14 +26,27 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UvListFragment extends Fragment implements Callback<List<UvListItem>>,UvListAdapter.ItemClickListener {
+public class UvListFragment extends Fragment implements Callback<List<UvListItem>>,UvListAdapter.ItemClickListener, SearchView.OnQueryTextListener {
     private static final String TAG = UvListFragment.class.getSimpleName();
     private static final String STATE_UVS = "uvs";
     private UvListAdapter adapter;
     private List<UvListItem> uvs;
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+
+        inflater.inflate(R.menu.menu_uv_list, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.action_search_uv);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         View root = inflater.inflate(R.layout.fragment_uvlist, container, false);
         RecyclerView recycler = (RecyclerView) root.findViewById(R.id.recycler);
 
@@ -80,5 +97,17 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
         Intent intent = new Intent(getActivity(), UvActivity.class);
         intent.putExtra(UvActivity.ARG_UV, uv);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        // no-op
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        Log.d(TAG, "Search for " + s);
+        return false;
     }
 }
