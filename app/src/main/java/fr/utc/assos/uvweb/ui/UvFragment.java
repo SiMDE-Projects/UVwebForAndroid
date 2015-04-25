@@ -4,15 +4,24 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.api.UvwebProvider;
+import fr.utc.assos.uvweb.model.UvDetail;
 import fr.utc.assos.uvweb.model.UvListItem;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
-public class UvFragment extends Fragment {
+public class UvFragment extends Fragment implements Callback<UvDetail> {
+
+    private static final String TAG = UvFragment.class.getSimpleName();
 
     private static final String ARG_UV = "arg_uv";
 
@@ -49,5 +58,23 @@ public class UvFragment extends Fragment {
         titleView.setText(uv.getTitle());
 
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        UvwebProvider.getUvDetail(uv.getName(), this);
+    }
+
+    @Override
+    public void success(UvDetail uvDetail, Response response) {
+        Log.d(TAG, "success");
+    }
+
+    @Override
+    public void failure(RetrofitError error) {
+        Log.e(TAG, error.getMessage(), error);
+        Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.api;
 import java.util.List;
 
 import fr.utc.assos.uvweb.model.Newsfeed;
+import fr.utc.assos.uvweb.model.UvDetail;
 import fr.utc.assos.uvweb.model.UvListItem;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -19,5 +20,9 @@ public class UvwebProvider {
 
     public static void getNewsfeed(Callback<Newsfeed> callback) {
         uvwebApi.getNewsfeed(callback);
+    }
+
+    public static void getUvDetail(String name, Callback<UvDetail> callback) {
+        uvwebApi.getUvDetail(name, callback);
     }
 }
