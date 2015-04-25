@@ -1,7 +1,6 @@
 package fr.utc.assos.uvweb.ui;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.MenuItem;
 
 import fr.utc.assos.uvweb.R;
@@ -16,6 +15,12 @@ public class UvActivity extends ToolbarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
+        UvListItem uv = getIntent().getParcelableExtra(ARG_UV);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_uv_container, UvFragment.newInstance(uv))
+                .commit();
     }
 
     @Override

@@ -6,11 +6,9 @@
 
     <include layout="@layout/toolbar" />
 
-    <fragment
-        android:id="@+id/fragment_uv"
-        android:name="fr.utc.assos.uvweb.ui.UvFragment"
+    <FrameLayout
+        android:id="@+id/fragment_uv_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-    </fragment>
 </LinearLayout>
