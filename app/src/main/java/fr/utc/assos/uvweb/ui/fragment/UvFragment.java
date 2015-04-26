@@ -15,6 +15,7 @@ import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.UvDetail;
 import fr.utc.assos.uvweb.model.UvListItem;
+import fr.utc.assos.uvweb.ui.adapter.CommentAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -29,6 +30,8 @@ public class UvFragment extends Fragment implements Callback<UvDetail> {
 
     private TextView nameView;
     private TextView titleView;
+
+    private CommentAdapter adapter;
 
     public static UvFragment newInstance(UvListItem uv) {
         UvFragment fragment = new UvFragment();
@@ -50,6 +53,8 @@ public class UvFragment extends Fragment implements Callback<UvDetail> {
 
         RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new CommentAdapter();
+        recycler.setAdapter(adapter);
 
         nameView = (TextView) rootView.findViewById(R.id.name);
         titleView = (TextView) rootView.findViewById(R.id.title);
@@ -69,7 +74,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail> {
 
     @Override
     public void success(UvDetail uvDetail, Response response) {
-        Log.d(TAG, "success");
+        adapter.setComments(uvDetail.getDetail().getComments());
     }
 
     @Override
