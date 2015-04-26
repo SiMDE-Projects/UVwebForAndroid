@@ -17,6 +17,8 @@
         </activity>
 
         <activity android:name="fr.utc.assos.uvweb.ui.activity.UvActivity" />
+
+        <activity android:name="fr.utc.assos.uvweb.ui.activity.CommentActivity" />
     </application>
 
 </manifest>

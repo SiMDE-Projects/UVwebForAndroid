@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.Newsfeed;
 import fr.utc.assos.uvweb.model.NewsfeedItem;
+import fr.utc.assos.uvweb.ui.activity.CommentActivity;
 import fr.utc.assos.uvweb.ui.adapter.NewsfeedAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -80,6 +82,6 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
 
     @Override
     public void onClick(NewsfeedItem item) {
-        //TODO open comment detail
+        startActivity(new Intent(getActivity(), CommentActivity.class));
     }
 }

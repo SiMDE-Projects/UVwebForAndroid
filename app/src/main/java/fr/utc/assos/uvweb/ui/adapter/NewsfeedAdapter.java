@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
         holder.dateView.setText(item.getDate());
         holder.uvNameView.setText(item.getUvName());
         holder.commentView.setText(item.getComment());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 itemClickListener.onClick(item);
@@ -60,6 +61,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
         private final TextView uvNameView;
         private final TextView commentView;
         private final TextView dateView;
+        private final Button detailButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -67,6 +69,7 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
             uvNameView = (TextView) itemView.findViewById(R.id.uvname);
             commentView = (TextView) itemView.findViewById(R.id.comment);
             dateView = (TextView) itemView.findViewById(R.id.date);
+            detailButton = (Button) itemView.findViewById(R.id.view);
         }
     }
 

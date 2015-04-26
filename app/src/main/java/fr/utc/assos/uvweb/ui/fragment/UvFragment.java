@@ -1,5 +1,6 @@
 package fr.utc.assos.uvweb.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,13 +15,15 @@ import android.widget.Toast;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.UvDetail;
+import fr.utc.assos.uvweb.model.UvDetailComment;
 import fr.utc.assos.uvweb.model.UvListItem;
+import fr.utc.assos.uvweb.ui.activity.CommentActivity;
 import fr.utc.assos.uvweb.ui.adapter.CommentAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UvFragment extends Fragment implements Callback<UvDetail> {
+public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAdapter.ItemClickListener {
 
     private static final String TAG = UvFragment.class.getSimpleName();
 
@@ -53,7 +56,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail> {
 
         RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new CommentAdapter();
+        adapter = new CommentAdapter(this);
         recycler.setAdapter(adapter);
 
         nameView = (TextView) rootView.findViewById(R.id.name);
@@ -81,5 +84,10 @@ public class UvFragment extends Fragment implements Callback<UvDetail> {
     public void failure(RetrofitError error) {
         Log.e(TAG, error.getMessage(), error);
         Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(UvDetailComment comment) {
+        startActivity(new Intent(getActivity(), CommentActivity.class));
     }
 }
