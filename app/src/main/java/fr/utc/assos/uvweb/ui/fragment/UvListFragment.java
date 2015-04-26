@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.ui;
+package fr.utc.assos.uvweb.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +22,8 @@ import java.util.List;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.UvListItem;
+import fr.utc.assos.uvweb.ui.adapter.UvListAdapter;
+import fr.utc.assos.uvweb.ui.activity.UvActivity;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

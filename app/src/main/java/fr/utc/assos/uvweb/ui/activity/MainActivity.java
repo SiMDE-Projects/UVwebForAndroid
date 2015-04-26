@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.ui;
+package fr.utc.assos.uvweb.ui.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,6 +10,9 @@ import android.support.v4.view.ViewPager;
 import java.util.Locale;
 
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.ui.fragment.NewsfeedFragment;
+import fr.utc.assos.uvweb.ui.view.SlidingTabLayout;
+import fr.utc.assos.uvweb.ui.fragment.UvListFragment;
 
 public class MainActivity extends ToolbarActivity {
     private static final int FRAGMENT_COUNT = 2;

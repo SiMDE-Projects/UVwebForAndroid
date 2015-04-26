@@ -16,7 +16,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:contentInsetStart="0dp">
 
-        <fr.utc.assos.uvweb.ui.SlidingTabLayout
+        <fr.utc.assos.uvweb.ui.view.SlidingTabLayout
             android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

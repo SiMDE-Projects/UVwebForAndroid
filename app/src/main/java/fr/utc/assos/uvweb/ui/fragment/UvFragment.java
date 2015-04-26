@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.ui;
+package fr.utc.assos.uvweb.ui.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

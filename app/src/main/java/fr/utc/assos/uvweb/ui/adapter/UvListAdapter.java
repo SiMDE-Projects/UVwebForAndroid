@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.ui;
+package fr.utc.assos.uvweb.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

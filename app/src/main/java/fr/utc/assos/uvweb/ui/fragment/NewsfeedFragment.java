@@ -1,4 +1,4 @@
-package fr.utc.assos.uvweb.ui;
+package fr.utc.assos.uvweb.ui.fragment;
 
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -18,6 +18,7 @@ import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.Newsfeed;
 import fr.utc.assos.uvweb.model.NewsfeedItem;
+import fr.utc.assos.uvweb.ui.adapter.NewsfeedAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

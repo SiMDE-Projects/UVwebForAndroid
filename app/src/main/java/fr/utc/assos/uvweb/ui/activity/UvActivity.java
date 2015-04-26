@@ -1,10 +1,11 @@
-package fr.utc.assos.uvweb.ui;
+package fr.utc.assos.uvweb.ui.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.model.UvListItem;
+import fr.utc.assos.uvweb.ui.fragment.UvFragment;
 
 public class UvActivity extends ToolbarActivity {
     public static final String ARG_UV = "arg_uv";
