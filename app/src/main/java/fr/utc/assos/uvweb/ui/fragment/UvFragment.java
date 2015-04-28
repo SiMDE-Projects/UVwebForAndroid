@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,10 +30,15 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     private static final String ARG_UV = "arg_uv";
 
+    private static final int LOADING_STATE_IN_PROGRESS = 0;
+    private static final int LOADING_STATE_COMPLETE = 1;
+
     private UvListItem uv;
 
     private TextView nameView;
     private TextView titleView;
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     private CommentAdapter adapter;
 
@@ -54,10 +60,12 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.fragment_uv, container, false);
 
-        RecyclerView recycler = (RecyclerView) rootView.findViewById(R.id.recycler);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
+        progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CommentAdapter(this);
-        recycler.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         nameView = (TextView) rootView.findViewById(R.id.name);
         titleView = (TextView) rootView.findViewById(R.id.title);
@@ -72,12 +80,24 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        setLoadingState(LOADING_STATE_IN_PROGRESS);
         UvwebProvider.getUvDetail(uv.getName(), this);
+    }
+
+    private void setLoadingState(int loadingState) {
+        if (loadingState == LOADING_STATE_IN_PROGRESS) {
+            progressBar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void success(UvDetail uvDetail, Response response) {
         adapter.setComments(uvDetail.getDetail().getComments());
+        setLoadingState(LOADING_STATE_COMPLETE);
     }
 
     @Override
