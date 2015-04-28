@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
@@ -32,6 +36,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     private static final int LOADING_STATE_IN_PROGRESS = 0;
     private static final int LOADING_STATE_COMPLETE = 1;
+    private static final String STATE_COMMENTS = "state_comments";
 
     private UvListItem uv;
 
@@ -41,6 +46,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     private ProgressBar progressBar;
 
     private CommentAdapter adapter;
+    private List<UvDetailComment> comments;
 
     public static UvFragment newInstance(UvListItem uv) {
         UvFragment fragment = new UvFragment();
@@ -80,8 +86,18 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        setLoadingState(LOADING_STATE_IN_PROGRESS);
-        UvwebProvider.getUvDetail(uv.getName(), this);
+        if (savedInstanceState == null) {
+            setLoadingState(LOADING_STATE_IN_PROGRESS);
+            UvwebProvider.getUvDetail(uv.getName(), this);
+        } else {
+            comments = savedInstanceState.getParcelableArrayList(STATE_COMMENTS);
+            updateViews();
+        }
+    }
+
+    private void updateViews() {
+        adapter.setComments(comments);
+        setLoadingState(LOADING_STATE_COMPLETE);
     }
 
     private void setLoadingState(int loadingState) {
@@ -95,9 +111,17 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (comments != null) {
+            outState.putParcelableArrayList(STATE_COMMENTS, new ArrayList<>(comments));
+        }
+    }
+
+    @Override
     public void success(UvDetail uvDetail, Response response) {
-        adapter.setComments(uvDetail.getDetail().getComments());
-        setLoadingState(LOADING_STATE_COMPLETE);
+        comments = uvDetail.getDetail().getComments();
+        updateViews();
     }
 
     @Override
