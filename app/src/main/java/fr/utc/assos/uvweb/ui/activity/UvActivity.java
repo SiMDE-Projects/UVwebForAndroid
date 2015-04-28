@@ -1,6 +1,7 @@
 package fr.utc.assos.uvweb.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 
 import fr.utc.assos.uvweb.R;
@@ -32,7 +33,7 @@ public class UvActivity extends ToolbarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         return super.onOptionsItemSelected(item);
