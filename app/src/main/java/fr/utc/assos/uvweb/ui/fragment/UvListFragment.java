@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -31,6 +32,12 @@ import retrofit.client.Response;
 public class UvListFragment extends Fragment implements Callback<List<UvListItem>>,UvListAdapter.ItemClickListener, SearchView.OnQueryTextListener {
     private static final String TAG = UvListFragment.class.getSimpleName();
     private static final String STATE_UVS = "uvs";
+    private static final int LOADING_STATE_IN_PROGRESS = 0;
+    private static final int LOADING_STATE_COMPLETE = 1;
+
+    private RecyclerView recyclerView;
+    private ProgressBar progressBar;
+
     private UvListAdapter adapter;
     private List<UvListItem> uvs;
 
@@ -50,11 +57,12 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
         setHasOptionsMenu(true);
 
         View root = inflater.inflate(R.layout.fragment_uvlist, container, false);
-        RecyclerView recycler = (RecyclerView) root.findViewById(R.id.recycler);
+        recyclerView = (RecyclerView) root.findViewById(R.id.recycler);
+        progressBar = (ProgressBar) root.findViewById(R.id.progressbar);
 
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new UvListAdapter(this);
-        recycler.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         return root;
     }
@@ -63,10 +71,21 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null) {
+            setLoadingState(LOADING_STATE_IN_PROGRESS);
             UvwebProvider.getUvs(this);
         } else {
             uvs = savedInstanceState.getParcelableArrayList(STATE_UVS);
             updateViews();
+        }
+    }
+
+    private void setLoadingState(int loadingState) {
+        if (loadingState == LOADING_STATE_IN_PROGRESS) {
+            progressBar.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
         }
     }
 
@@ -86,6 +105,7 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
 
     private void updateViews() {
         adapter.setUvs(uvs);
+        setLoadingState(LOADING_STATE_COMPLETE);
     }
 
     @Override
