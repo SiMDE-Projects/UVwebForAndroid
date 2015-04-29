@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.api;
 
 import java.util.List;
 
+import fr.utc.assos.uvweb.BuildConfig;
 import fr.utc.assos.uvweb.model.Newsfeed;
 import fr.utc.assos.uvweb.model.UvDetail;
 import fr.utc.assos.uvweb.model.UvListItem;
@@ -11,6 +12,7 @@ import retrofit.RestAdapter;
 public class UvwebProvider {
     private static RestAdapter restAdapter = new RestAdapter.Builder()
             .setEndpoint("https://assos.utc.fr/uvweb")
+            .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
             .build();
     private static UvwebApi uvwebApi = restAdapter.create(UvwebApi.class);
 
