@@ -5,6 +5,7 @@ import android.view.MenuItem;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.model.Comment;
+import fr.utc.assos.uvweb.ui.fragment.CommentFragment;
 
 public class CommentActivity extends ToolbarActivity {
 
@@ -19,6 +20,11 @@ public class CommentActivity extends ToolbarActivity {
         Comment comment = getIntent().getParcelableExtra(ARG_COMMENT);
         String uvName = getIntent().getStringExtra(ARG_UVNAME);
         setTitle(getString(R.string.title_comment, comment.getAuthor(), uvName));
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_comment_container, CommentFragment.newInstance(uvName, comment))
+                .commit();
     }
 
     @Override
