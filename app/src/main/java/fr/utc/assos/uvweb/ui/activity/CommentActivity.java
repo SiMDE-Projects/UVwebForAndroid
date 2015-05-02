@@ -19,11 +19,12 @@ public class CommentActivity extends ToolbarActivity {
 
         Comment comment = getIntent().getParcelableExtra(ARG_COMMENT);
         String uvName = getIntent().getStringExtra(ARG_UVNAME);
-        setTitle(getString(R.string.title_comment, comment.getAuthor(), uvName));
+
+        setTitle(uvName);
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_comment_container, CommentFragment.newInstance(uvName, comment))
+                .replace(R.id.fragment_comment_container, CommentFragment.newInstance(comment))
                 .commit();
     }
 
