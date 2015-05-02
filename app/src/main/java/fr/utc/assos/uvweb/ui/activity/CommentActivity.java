@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.model.UvDetailComment;
+import fr.utc.assos.uvweb.model.Comment;
 
 public class CommentActivity extends ToolbarActivity {
 
@@ -15,7 +15,7 @@ public class CommentActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        UvDetailComment comment = getIntent().getParcelableExtra(ARG_COMMENT);
+        Comment comment = getIntent().getParcelableExtra(ARG_COMMENT);
         setTitle(comment.getAuthor());
     }
 

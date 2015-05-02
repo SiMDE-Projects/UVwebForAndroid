@@ -6,9 +6,9 @@ import java.util.List;
 
 public class Newsfeed {
     @SerializedName("comments")
-    private List<NewsfeedItem> items;
+    private List<Comment> comments;
 
-    public List<NewsfeedItem> getItems() {
-        return items;
+    public List<Comment> getComments() {
+        return comments;
     }
 }

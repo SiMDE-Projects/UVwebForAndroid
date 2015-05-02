@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UvDetailComment implements Parcelable {
+public class Comment implements Parcelable {
     @SerializedName("identity")
     private String author;
     private int globalRate;
@@ -13,14 +13,17 @@ public class UvDetailComment implements Parcelable {
     private String semester;
     private boolean passed;
     private String comment;
+    @SerializedName("name")
+    private String uvName;
 
-    public UvDetailComment(Parcel in) {
+    public Comment(Parcel in) {
         author = in.readString();
         globalRate = in.readInt();
         date = in.readString();
         semester = in.readString();
         passed = in.readInt() == 1;
         comment = in.readString();
+        uvName = in.readString();
     }
 
 
@@ -48,6 +51,10 @@ public class UvDetailComment implements Parcelable {
         return comment;
     }
 
+    public String getUvName() {
+        return uvName;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -61,15 +68,16 @@ public class UvDetailComment implements Parcelable {
         dest.writeString(semester);
         dest.writeInt(passed ? 1 : 0);
         dest.writeString(comment);
+        dest.writeString(uvName);
     }
 
-    public static final Parcelable.Creator<UvDetailComment> CREATOR = new Parcelable.Creator<UvDetailComment>() {
-        public UvDetailComment createFromParcel(Parcel in) {
-            return new UvDetailComment(in);
+    public static final Parcelable.Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
+        public Comment createFromParcel(Parcel in) {
+            return new Comment(in);
         }
 
-        public UvDetailComment[] newArray(int size) {
-            return new UvDetailComment[size];
+        public Comment[] newArray(int size) {
+            return new Comment[size];
         }
     };
 }

@@ -18,8 +18,8 @@ import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
+import fr.utc.assos.uvweb.model.Comment;
 import fr.utc.assos.uvweb.model.Newsfeed;
-import fr.utc.assos.uvweb.model.NewsfeedItem;
 import fr.utc.assos.uvweb.ui.activity.CommentActivity;
 import fr.utc.assos.uvweb.ui.adapter.NewsfeedAdapter;
 import retrofit.Callback;
@@ -36,7 +36,7 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
     private RecyclerView recyclerView;
 
     private NewsfeedAdapter adapter;
-    private List<NewsfeedItem> items;
+    private List<Comment> comments;
     private ProgressBar progressBar;
 
 
@@ -72,7 +72,7 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
             setLoadingState(LOADING_STATE_IN_PROGRESS);
             UvwebProvider.getNewsfeed(this);
         } else {
-            items = savedInstanceState.getParcelableArrayList(STATE_NEWSFEED_ITEMS);
+            comments = savedInstanceState.getParcelableArrayList(STATE_NEWSFEED_ITEMS);
             updateViews();
         }
     }
@@ -80,19 +80,19 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (items != null) {
-            outState.putParcelableArrayList(STATE_NEWSFEED_ITEMS, new ArrayList<Parcelable>(items));
+        if (comments != null) {
+            outState.putParcelableArrayList(STATE_NEWSFEED_ITEMS, new ArrayList<Parcelable>(comments));
         }
     }
 
     @Override
     public void success(Newsfeed newsfeed, Response response) {
-        items = newsfeed.getItems();
+        comments = newsfeed.getComments();
         updateViews();
     }
 
     private void updateViews() {
-        adapter.setItems(items);
+        adapter.setComments(comments);
         setLoadingState(LOADING_STATE_COMPLETE);
     }
 
@@ -103,7 +103,9 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
     }
 
     @Override
-    public void onClick(NewsfeedItem item) {
-        startActivity(new Intent(getActivity(), CommentActivity.class));
+    public void onClick(Comment comment) {
+        Intent intent = new Intent(getActivity(), CommentActivity.class);
+        intent.putExtra(CommentActivity.ARG_COMMENT, comment);
+        startActivity(intent);
     }
 }

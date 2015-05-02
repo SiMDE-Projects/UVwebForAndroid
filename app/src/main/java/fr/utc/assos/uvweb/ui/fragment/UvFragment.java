@@ -2,7 +2,6 @@ package fr.utc.assos.uvweb.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,7 +19,7 @@ import java.util.List;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.UvDetail;
-import fr.utc.assos.uvweb.model.UvDetailComment;
+import fr.utc.assos.uvweb.model.Comment;
 import fr.utc.assos.uvweb.model.UvListItem;
 import fr.utc.assos.uvweb.ui.activity.CommentActivity;
 import fr.utc.assos.uvweb.ui.adapter.CommentAdapter;
@@ -46,7 +45,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     private ProgressBar progressBar;
 
     private CommentAdapter adapter;
-    private List<UvDetailComment> comments;
+    private List<Comment> comments;
 
     public static UvFragment newInstance(UvListItem uv) {
         UvFragment fragment = new UvFragment();
@@ -131,7 +130,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     }
 
     @Override
-    public void onClick(UvDetailComment comment) {
+    public void onClick(Comment comment) {
         Intent intent = new Intent(getActivity(), CommentActivity.class);
         intent.putExtra(CommentActivity.ARG_COMMENT, comment);
         startActivity(intent);

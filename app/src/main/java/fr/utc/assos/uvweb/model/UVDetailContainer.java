@@ -4,13 +4,13 @@ import java.util.List;
 
 public class UVDetailContainer {
     private UvDetailInfo uv;
-    private List<UvDetailComment> comments;
+    private List<Comment> comments;
 
     public UvDetailInfo getUv() {
         return uv;
     }
 
-    public List<UvDetailComment> getComments() {
+    public List<Comment> getComments() {
         return comments;
     }
 }

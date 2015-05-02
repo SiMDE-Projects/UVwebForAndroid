@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.model.NewsfeedItem;
+import fr.utc.assos.uvweb.model.Comment;
 
 public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHolder> {
 
-    private List<NewsfeedItem> items = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
     private ItemClickListener itemClickListener;
 
     public NewsfeedAdapter(ItemClickListener itemClickListener) {
@@ -31,27 +31,27 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final NewsfeedItem item = items.get(position);
+        final Comment comment = comments.get(position);
         Context context = holder.itemView.getContext();
-        holder.authorView.setText(context.getString(R.string.newsfeed_author, item.getAuthor(), item.getGlobalRate()));
-        holder.dateView.setText(item.getDate());
-        holder.uvNameView.setText(item.getUvName());
-        holder.commentView.setText(item.getComment());
+        holder.authorView.setText(context.getString(R.string.newsfeed_author, comment.getAuthor(), comment.getGlobalRate()));
+        holder.dateView.setText(comment.getDate());
+        holder.uvNameView.setText(comment.getUvName());
+        holder.commentView.setText(comment.getComment());
         holder.detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onClick(item);
+                itemClickListener.onClick(comment);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return comments.size();
     }
 
-    public void setItems(List<NewsfeedItem> items) {
-        this.items = items;
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
         notifyDataSetChanged();
     }
 
@@ -74,6 +74,6 @@ public class NewsfeedAdapter extends RecyclerView.Adapter<NewsfeedAdapter.ViewHo
     }
 
     public interface ItemClickListener {
-        void onClick(NewsfeedItem item);
+        void onClick(Comment comment);
     }
 }

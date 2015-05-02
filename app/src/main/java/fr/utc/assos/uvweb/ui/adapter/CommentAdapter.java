@@ -19,12 +19,12 @@ import java.util.List;
 import java.util.Locale;
 
 import fr.utc.assos.uvweb.R;
-import fr.utc.assos.uvweb.model.UvDetailComment;
+import fr.utc.assos.uvweb.model.Comment;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private static final String COMMENT_DATE_FORMAT = "dd/MM/yy";
 
-    private List<UvDetailComment> comments = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
     private ItemClickListener itemClickListener;
 
     public CommentAdapter(ItemClickListener itemClickListener) {
@@ -40,7 +40,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     @Override
     public void onBindViewHolder(CommentAdapter.ViewHolder holder, final int position) {
         Context context = holder.itemView.getContext();
-        UvDetailComment comment = comments.get(position);
+        Comment comment = comments.get(position);
         holder.authorView.setText(comment.getAuthor());
         holder.commentView.setText(comment.getComment());
         holder.rateView.setText(context.getString(R.string.global_rate, comment.getGlobalRate()));
@@ -58,7 +58,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return comments.size();
     }
 
-    public void setComments(List<UvDetailComment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments.addAll(comments);
         sortComments();
         notifyDataSetChanged();
@@ -66,9 +66,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     private void sortComments() {
         final DateFormat format = new SimpleDateFormat(COMMENT_DATE_FORMAT, Locale.FRENCH);
-        Comparator<UvDetailComment> comparator = new Comparator<UvDetailComment>() {
+        Comparator<Comment> comparator = new Comparator<Comment>() {
             @Override
-            public int compare(UvDetailComment lhs, UvDetailComment rhs) {
+            public int compare(Comment lhs, Comment rhs) {
                 try {
                     Date lDate = format.parse(lhs.getDate());
                     Date rDate = format.parse(rhs.getDate());
@@ -100,6 +100,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     public interface ItemClickListener {
-        void onClick(UvDetailComment comment);
+        void onClick(Comment comment);
     }
 }
