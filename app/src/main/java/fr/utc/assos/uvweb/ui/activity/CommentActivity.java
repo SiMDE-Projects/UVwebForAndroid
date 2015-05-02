@@ -9,6 +9,7 @@ import fr.utc.assos.uvweb.model.Comment;
 public class CommentActivity extends ToolbarActivity {
 
     public static final String ARG_COMMENT = "arg_comment";
+    public static final String ARG_UVNAME = "arg_uvname";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +17,8 @@ public class CommentActivity extends ToolbarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Comment comment = getIntent().getParcelableExtra(ARG_COMMENT);
-        setTitle(comment.getAuthor());
+        String uvName = getIntent().getStringExtra(ARG_UVNAME);
+        setTitle(getString(R.string.title_comment, comment.getAuthor(), uvName));
     }
 
     @Override

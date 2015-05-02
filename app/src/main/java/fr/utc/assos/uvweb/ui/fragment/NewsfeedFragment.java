@@ -106,6 +106,7 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
     public void onClick(Comment comment) {
         Intent intent = new Intent(getActivity(), CommentActivity.class);
         intent.putExtra(CommentActivity.ARG_COMMENT, comment);
+        intent.putExtra(CommentActivity.ARG_UVNAME, comment.getUvName());
         startActivity(intent);
     }
 }
