@@ -132,6 +132,8 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     @Override
     public void onClick(UvDetailComment comment) {
-        startActivity(new Intent(getActivity(), CommentActivity.class));
+        Intent intent = new Intent(getActivity(), CommentActivity.class);
+        intent.putExtra(CommentActivity.ARG_COMMENT, comment);
+        startActivity(intent);
     }
 }

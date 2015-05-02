@@ -4,13 +4,19 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import fr.utc.assos.uvweb.R;
+import fr.utc.assos.uvweb.model.UvDetailComment;
 
 public class CommentActivity extends ToolbarActivity {
+
+    public static final String ARG_COMMENT = "arg_comment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        UvDetailComment comment = getIntent().getParcelableExtra(ARG_COMMENT);
+        setTitle(comment.getAuthor());
     }
 
     @Override
