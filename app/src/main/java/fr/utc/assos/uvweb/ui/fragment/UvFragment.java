@@ -39,8 +39,6 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     private UvListItem uv;
 
-    private TextView nameView;
-    private TextView titleView;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
 
@@ -71,12 +69,6 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CommentAdapter(this);
         recyclerView.setAdapter(adapter);
-
-        nameView = (TextView) rootView.findViewById(R.id.name);
-        titleView = (TextView) rootView.findViewById(R.id.title);
-
-        nameView.setText(uv.getName());
-        titleView.setText(uv.getTitle());
 
         return rootView;
     }
