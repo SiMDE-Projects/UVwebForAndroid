@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.ui.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.model.Comment;
@@ -21,6 +22,12 @@ public class CommentActivity extends ToolbarActivity {
         String uvName = getIntent().getStringExtra(ARG_UVNAME);
 
         setTitle(uvName);
+
+        TextView rateView = (TextView) findViewById(R.id.globalrate);
+        TextView authorView = (TextView) findViewById(R.id.author);
+
+        rateView.setText(getString(R.string.global_rate, comment.getGlobalRate()));
+        authorView.setText(comment.getAuthor());
 
         getSupportFragmentManager()
                 .beginTransaction()

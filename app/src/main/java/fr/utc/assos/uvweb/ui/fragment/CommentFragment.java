@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.model.Comment;
@@ -34,13 +33,6 @@ public class CommentFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_comment, container, false);
-
-        TextView rateView = (TextView) root.findViewById(R.id.globalrate);
-        TextView authorView = (TextView) root.findViewById(R.id.author);
-
-        rateView.setText(getString(R.string.global_rate, comment.getGlobalRate()));
-        authorView.setText(comment.getAuthor());
-
         return root;
     }
 }

@@ -4,30 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/teal"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/author"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="72dp"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/globalrate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="72dp"
-            android:textColor="@color/white"
-            android:textSize="24sp" />
-    </LinearLayout>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
