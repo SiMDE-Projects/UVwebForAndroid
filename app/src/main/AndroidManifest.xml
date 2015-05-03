@@ -27,6 +27,16 @@
         </activity>
 
         <activity android:name="fr.utc.assos.uvweb.ui.activity.CommentActivity" />
+
+        <activity
+            android:name="fr.utc.assos.uvweb.ui.activity.AboutActivity"
+            android:label="@string/about"
+            android:parentActivityName="fr.utc.assos.uvweb.ui.activity.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="fr.utc.assos.uvweb.ui.activity.MainActivity" />
+        </activity>
+
     </application>
 
 </manifest>

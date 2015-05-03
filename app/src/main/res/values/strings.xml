@@ -7,4 +7,5 @@
     <string name="action_search_uv">Rechercher une UV</string>
     <string name="global_rate">%1$d/10</string>
     <string name="view">Voir en détail</string>
+    <string name="about">À propos</string>
 </resources>
