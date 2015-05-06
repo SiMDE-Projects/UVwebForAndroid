@@ -23,6 +23,8 @@ import fr.utc.assos.uvweb.model.Comment;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private static final String COMMENT_DATE_FORMAT = "dd/MM/yy";
+    private static final int VIEWTYPE_HEADER = 0;
+    private static final int VIEWTYPE_COMMENT = 1;
 
     private List<Comment> comments = new ArrayList<>();
     private ItemClickListener itemClickListener;
@@ -33,14 +35,35 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public CommentAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_comment, parent, false);
-        return new ViewHolder(rootView);
+        View rootView;
+        switch (viewType) {
+            case VIEWTYPE_HEADER:
+                rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_header, parent, false);
+                return new HeaderViewHolder(rootView);
+            case VIEWTYPE_COMMENT:
+            default:
+                rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_detail_comment, parent, false);
+                return new CommentViewHolder(rootView);
+        }
     }
 
     @Override
     public void onBindViewHolder(CommentAdapter.ViewHolder holder, final int position) {
+        switch (getItemViewType(position)) {
+            case VIEWTYPE_HEADER:
+                bindHeaderViewHolder((HeaderViewHolder) holder, position);
+                break;
+            case VIEWTYPE_COMMENT:
+            default:
+                bindCommentViewHolder((CommentViewHolder) holder, position - 1);
+                break;
+        }
+
+    }
+
+    private void bindCommentViewHolder(CommentViewHolder holder, final int commentPosition) {
         Context context = holder.itemView.getContext();
-        Comment comment = comments.get(position);
+        Comment comment = comments.get(commentPosition);
         holder.authorView.setText(comment.getAuthor());
         holder.commentView.setText(comment.getComment());
         holder.rateView.setText(context.getString(R.string.global_rate, comment.getGlobalRate()));
@@ -48,14 +71,23 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         holder.detailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onClick(comments.get(position));
+                itemClickListener.onClick(comments.get(commentPosition));
             }
         });
     }
 
+    private void bindHeaderViewHolder(HeaderViewHolder holder, final int position) {
+        //TODO implement
+    }
+
     @Override
     public int getItemCount() {
-        return comments.size();
+        return comments.size() + 1;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? VIEWTYPE_HEADER : VIEWTYPE_COMMENT;
     }
 
     public void setComments(List<Comment> comments) {
@@ -82,20 +114,32 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Collections.sort(this.comments, comparator);
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public abstract class ViewHolder extends RecyclerView.ViewHolder {
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
+    }
+
+    private class CommentViewHolder extends ViewHolder {
         private final TextView authorView;
         private final TextView commentView;
         private final TextView rateView;
         private final TextView dateView;
         private final Button detailButton;
 
-        public ViewHolder(View itemView) {
+        public CommentViewHolder(View itemView) {
             super(itemView);
             authorView = (TextView) itemView.findViewById(R.id.author);
             commentView = (TextView) itemView.findViewById(R.id.comment);
             rateView = (TextView) itemView.findViewById(R.id.globalrate);
             dateView = (TextView) itemView.findViewById(R.id.date);
             detailButton = (Button) itemView.findViewById(R.id.view);
+        }
+    }
+
+    private class HeaderViewHolder extends ViewHolder {
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
         }
     }
 
