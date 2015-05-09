@@ -6,6 +6,7 @@ public class UVDetailContainer {
     private UvDetailInfo uv;
     private List<Comment> comments;
     private List<Poll> polls;
+    private float averageRate;
 
     public UvDetailInfo getUv() {
         return uv;
@@ -17,5 +18,9 @@ public class UVDetailContainer {
 
     public List<Poll> getPolls() {
         return polls;
+    }
+
+    public float getAverageRate() {
+        return averageRate;
     }
 }

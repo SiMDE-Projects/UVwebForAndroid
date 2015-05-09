@@ -7,7 +7,14 @@
     android:padding="16dp">
 
     <TextView
-        android:text="9/10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/average_rate_label"
+        android:textColor="@color/gray_dark"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/average_rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp" />

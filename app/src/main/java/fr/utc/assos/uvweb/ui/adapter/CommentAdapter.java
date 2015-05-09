@@ -27,6 +27,8 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private static final int VIEWTYPE_COMMENT = 1;
 
     private List<Comment> comments = new ArrayList<>();
+    private float averageRate;
+
     private ItemClickListener itemClickListener;
 
     public CommentAdapter(ItemClickListener itemClickListener) {
@@ -51,14 +53,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(CommentAdapter.ViewHolder holder, final int position) {
         switch (getItemViewType(position)) {
             case VIEWTYPE_HEADER:
-                bindHeaderViewHolder((HeaderViewHolder) holder, position);
+                bindHeaderViewHolder((HeaderViewHolder) holder);
                 break;
             case VIEWTYPE_COMMENT:
             default:
                 bindCommentViewHolder((CommentViewHolder) holder, position - 1);
                 break;
         }
-
     }
 
     private void bindCommentViewHolder(CommentViewHolder holder, final int commentPosition) {
@@ -76,8 +77,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         });
     }
 
-    private void bindHeaderViewHolder(HeaderViewHolder holder, final int position) {
-        //TODO implement
+    private void bindHeaderViewHolder(HeaderViewHolder holder) {
+        Context context = holder.itemView.getContext();
+        holder.rateView.setText(context.getString(R.string.average_rate, averageRate));
     }
 
     @Override
@@ -90,9 +92,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return position == 0 ? VIEWTYPE_HEADER : VIEWTYPE_COMMENT;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(List<Comment> comments, float averageRate) {
         this.comments.addAll(comments);
         sortComments();
+        this.averageRate = averageRate;
         notifyDataSetChanged();
     }
 
@@ -138,8 +141,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     }
 
     private class HeaderViewHolder extends ViewHolder {
+        private final TextView rateView;
+
         public HeaderViewHolder(View itemView) {
             super(itemView);
+            rateView = (TextView) itemView.findViewById(R.id.average_rate);
         }
     }
 

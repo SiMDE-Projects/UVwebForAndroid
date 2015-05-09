@@ -8,4 +8,6 @@
     <string name="global_rate">%1$d/10</string>
     <string name="view">Voir en détail</string>
     <string name="about">À propos</string>
+    <string name="average_rate_label">Note moyenne</string>
+    <string name="average_rate">%1$.2f/10</string>
 </resources>

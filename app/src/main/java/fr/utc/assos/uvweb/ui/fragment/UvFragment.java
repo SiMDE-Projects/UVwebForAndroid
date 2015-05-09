@@ -36,6 +36,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     private static final int LOADING_STATE_IN_PROGRESS = 0;
     private static final int LOADING_STATE_COMPLETE = 1;
     private static final String STATE_COMMENTS = "state_comments";
+    private static final String STATE_AVERAGE_RATE = "state_averagerate";
 
     private UvListItem uv;
 
@@ -44,6 +45,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     private CommentAdapter adapter;
     private List<Comment> comments;
+    private float averageRate;
 
     public static UvFragment newInstance(UvListItem uv) {
         UvFragment fragment = new UvFragment();
@@ -82,12 +84,13 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
             UvwebProvider.getUvDetail(uv.getName(), this);
         } else {
             comments = savedInstanceState.getParcelableArrayList(STATE_COMMENTS);
+            averageRate = savedInstanceState.getFloat(STATE_AVERAGE_RATE);
             updateViews();
         }
     }
 
     private void updateViews() {
-        adapter.setComments(comments);
+        adapter.setComments(comments, averageRate);
         setLoadingState(LOADING_STATE_COMPLETE);
     }
 
@@ -106,12 +109,14 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
         super.onSaveInstanceState(outState);
         if (comments != null) {
             outState.putParcelableArrayList(STATE_COMMENTS, new ArrayList<>(comments));
+            outState.putFloat(STATE_AVERAGE_RATE, averageRate);
         }
     }
 
     @Override
     public void success(UvDetail uvDetail, Response response) {
         comments = uvDetail.getDetail().getComments();
+        averageRate = uvDetail.getDetail().getAverageRate();
         updateViews();
     }
 
