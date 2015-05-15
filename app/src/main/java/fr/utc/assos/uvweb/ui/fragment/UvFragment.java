@@ -117,7 +117,9 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     public void success(UvDetail uvDetail, Response response) {
         comments = uvDetail.getDetail().getComments();
         averageRate = uvDetail.getDetail().getAverageRate();
-        updateViews();
+        if (getActivity() != null) {
+            updateViews();
+        }
     }
 
     @Override

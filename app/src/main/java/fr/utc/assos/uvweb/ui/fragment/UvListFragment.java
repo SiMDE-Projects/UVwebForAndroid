@@ -92,7 +92,9 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     @Override
     public void success(List<UvListItem> uvs, Response response) {
         this.uvs = uvs;
-        updateViews();
+        if (getActivity() != null) {
+            updateViews();
+        }
     }
 
     @Override

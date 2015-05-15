@@ -88,7 +88,9 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
     @Override
     public void success(Newsfeed newsfeed, Response response) {
         comments = newsfeed.getComments();
-        updateViews();
+        if (getActivity() != null) {
+            updateViews();
+        }
     }
 
     private void updateViews() {
