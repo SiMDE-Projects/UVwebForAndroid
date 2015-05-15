@@ -14,4 +14,6 @@
     <string name="poll_success_rate">%1$.1f%%</string>
     <string name="about_credits">Maxime Uzan\nThomas Keunebroek\nAlexandre Masciulli</string>
     <string name="licenses">Licences open source</string>
+    <string name="author_passed">%1$s (obtenue en %2$s)</string>
+    <string name="author_failed">%1$s (ratée en %2$s)</string>
 </resources>

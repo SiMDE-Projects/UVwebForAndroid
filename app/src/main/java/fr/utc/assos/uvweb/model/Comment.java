@@ -11,7 +11,7 @@ public class Comment implements Parcelable {
     private int globalRate;
     private String date;
     private String semester;
-    private boolean passed;
+    private String passed;
     private String comment;
     @SerializedName("name")
     private String uvName;
@@ -21,7 +21,7 @@ public class Comment implements Parcelable {
         globalRate = in.readInt();
         date = in.readString();
         semester = in.readString();
-        passed = in.readInt() == 1;
+        passed = in.readString();
         comment = in.readString();
         uvName = in.readString();
     }
@@ -43,7 +43,7 @@ public class Comment implements Parcelable {
         return semester;
     }
 
-    public boolean isPassed() {
+    public String getPassed() {
         return passed;
     }
 
@@ -66,7 +66,7 @@ public class Comment implements Parcelable {
         dest.writeInt(globalRate);
         dest.writeString(date);
         dest.writeString(semester);
-        dest.writeInt(passed ? 1 : 0);
+        dest.writeString(passed);
         dest.writeString(comment);
         dest.writeString(uvName);
     }

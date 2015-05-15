@@ -24,8 +24,11 @@ import fr.utc.assos.uvweb.model.Poll;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private static final String COMMENT_DATE_FORMAT = "dd/MM/yy";
+
     private static final int VIEWTYPE_HEADER = 0;
     private static final int VIEWTYPE_COMMENT = 1;
+
+    private static final String TAG_PASSED = "obtenue";
 
     private List<Comment> comments = new ArrayList<>();
     private List<Poll> polls = new ArrayList<>();
@@ -67,7 +70,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private void bindCommentViewHolder(CommentViewHolder holder, final int commentPosition) {
         Context context = holder.itemView.getContext();
         Comment comment = comments.get(commentPosition);
-        holder.authorView.setText(comment.getAuthor());
+
+        if (comment.getPassed().equals(TAG_PASSED)) {
+            holder.authorView.setText(context.getString(R.string.author_passed, comment.getAuthor(), comment.getSemester()));
+        } else {
+            holder.authorView.setText(context.getString(R.string.author_failed, comment.getAuthor(), comment.getSemester()));
+        }
+
         holder.commentView.setText(comment.getComment());
         holder.rateView.setText(context.getString(R.string.global_rate, comment.getGlobalRate()));
         holder.dateView.setText(comment.getDate());
