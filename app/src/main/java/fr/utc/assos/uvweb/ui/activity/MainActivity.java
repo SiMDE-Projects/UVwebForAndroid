@@ -50,9 +50,13 @@ public class MainActivity extends ToolbarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_about) {
-            startActivity(new Intent(this, AboutActivity.class));
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                startActivity(new Intent(this, AboutActivity.class));
+                return true;
+            case R.id.action_licenses:
+                startActivity(new Intent(this, LicensesActivity.class));
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

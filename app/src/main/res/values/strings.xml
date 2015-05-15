@@ -13,4 +13,5 @@
     <string name="success_rate">Taux de réussite</string>
     <string name="poll_success_rate">%1$.1f%%</string>
     <string name="about_credits">Maxime Uzan\nThomas Keunebroek\nAlexandre Masciulli</string>
+    <string name="licenses">Licences open source</string>
 </resources>
