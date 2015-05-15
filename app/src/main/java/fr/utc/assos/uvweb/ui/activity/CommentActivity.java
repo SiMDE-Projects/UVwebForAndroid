@@ -12,6 +12,7 @@ public class CommentActivity extends ToolbarActivity {
 
     public static final String ARG_COMMENT = "arg_comment";
     public static final String ARG_UVNAME = "arg_uvname";
+    private static final String TAG_PASSED = "obtenue";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,11 @@ public class CommentActivity extends ToolbarActivity {
         TextView authorView = (TextView) findViewById(R.id.author);
 
         rateView.setText(getString(R.string.global_rate, comment.getGlobalRate()));
-        authorView.setText(comment.getAuthor());
+        if (comment.getPassed().equals(TAG_PASSED)) {
+            authorView.setText(getString(R.string.author_passed, comment.getAuthor(), comment.getSemester()));
+        } else {
+            authorView.setText(getString(R.string.author_failed, comment.getAuthor(), comment.getSemester()));
+        }
 
         getSupportFragmentManager()
                 .beginTransaction()
