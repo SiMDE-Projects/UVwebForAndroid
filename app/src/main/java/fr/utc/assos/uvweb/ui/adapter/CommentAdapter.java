@@ -20,6 +20,7 @@ import java.util.Locale;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.model.Comment;
+import fr.utc.assos.uvweb.model.Poll;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
     private static final String COMMENT_DATE_FORMAT = "dd/MM/yy";
@@ -27,6 +28,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private static final int VIEWTYPE_COMMENT = 1;
 
     private List<Comment> comments = new ArrayList<>();
+    private List<Poll> polls = new ArrayList<>();
     private float averageRate;
 
     private ItemClickListener itemClickListener;
@@ -80,6 +82,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private void bindHeaderViewHolder(HeaderViewHolder holder) {
         Context context = holder.itemView.getContext();
         holder.rateView.setText(context.getString(R.string.average_rate, averageRate));
+
+        if (polls.size() < 0) {
+            holder.successRateTitleView.setVisibility(View.GONE);
+        }
+
+        for (int i = 0; i < polls.size(); i++) {
+            if (i >= holder.pollListView.getChildCount()) {
+                break;
+            }
+            Poll poll = polls.get(i);
+            TextView pollView = (TextView) holder.pollListView.getChildAt(i);
+            pollView.setText(context.getString(R.string.poll_success_rate, poll.getSuccessRate()));
+        }
     }
 
     @Override
@@ -92,10 +107,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         return position == 0 ? VIEWTYPE_HEADER : VIEWTYPE_COMMENT;
     }
 
-    public void setComments(List<Comment> comments, float averageRate) {
+    public void setComments(List<Comment> comments, float averageRate, List<Poll> polls) {
+        this.comments.clear();
         this.comments.addAll(comments);
         sortComments();
         this.averageRate = averageRate;
+        this.polls.clear();
+        this.polls.addAll(polls);
         notifyDataSetChanged();
     }
 
@@ -142,10 +160,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     private class HeaderViewHolder extends ViewHolder {
         private final TextView rateView;
+        private final ViewGroup pollListView;
+        private final TextView successRateTitleView;
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
             rateView = (TextView) itemView.findViewById(R.id.average_rate);
+            pollListView = (ViewGroup) itemView.findViewById(R.id.poll_list);
+            successRateTitleView = (TextView) itemView.findViewById(R.id.success_rate_label);
         }
     }
 

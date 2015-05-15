@@ -2,6 +2,7 @@ package fr.utc.assos.uvweb.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
+import fr.utc.assos.uvweb.model.Poll;
 import fr.utc.assos.uvweb.model.UvDetail;
 import fr.utc.assos.uvweb.model.Comment;
 import fr.utc.assos.uvweb.model.UvListItem;
@@ -35,6 +37,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     private static final int LOADING_STATE_IN_PROGRESS = 0;
     private static final int LOADING_STATE_COMPLETE = 1;
     private static final String STATE_COMMENTS = "state_comments";
+    private static final String STATE_POLLS = "state_polls";
     private static final String STATE_AVERAGE_RATE = "state_averagerate";
 
     private UvListItem uv;
@@ -44,6 +47,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     private CommentAdapter adapter;
     private List<Comment> comments;
+    private List<Poll> polls;
     private float averageRate;
 
     public static UvFragment newInstance(UvListItem uv) {
@@ -83,13 +87,14 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
             UvwebProvider.getUvDetail(uv.getName(), this);
         } else {
             comments = savedInstanceState.getParcelableArrayList(STATE_COMMENTS);
+            polls = savedInstanceState.getParcelableArrayList(STATE_POLLS);
             averageRate = savedInstanceState.getFloat(STATE_AVERAGE_RATE);
             updateViews();
         }
     }
 
     private void updateViews() {
-        adapter.setComments(comments, averageRate);
+        adapter.setComments(comments, averageRate, polls);
         setLoadingState(LOADING_STATE_COMPLETE);
     }
 
@@ -108,6 +113,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
         super.onSaveInstanceState(outState);
         if (comments != null) {
             outState.putParcelableArrayList(STATE_COMMENTS, new ArrayList<>(comments));
+            outState.putParcelableArrayList(STATE_POLLS, new ArrayList<>(polls));
             outState.putFloat(STATE_AVERAGE_RATE, averageRate);
         }
     }
@@ -116,6 +122,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     public void success(UvDetail uvDetail, Response response) {
         comments = uvDetail.getDetail().getComments();
         averageRate = uvDetail.getDetail().getAverageRate();
+        polls = uvDetail.getDetail().getPolls();
         if (getActivity() != null) {
             updateViews();
         }
