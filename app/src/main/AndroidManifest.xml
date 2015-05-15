@@ -27,10 +27,12 @@
                 android:value="fr.utc.assos.uvweb.ui.activity.MainActivity" />
         </activity>
 
-        <activity android:name="fr.utc.assos.uvweb.ui.activity.CommentActivity" />
+        <activity android:name="fr.utc.assos.uvweb.ui.activity.CommentActivity"
+            android:theme="@style/AppTheme.WhiteBackground" />
 
         <activity
             android:name="fr.utc.assos.uvweb.ui.activity.AboutActivity"
+            android:theme="@style/AppTheme.WhiteBackground"
             android:label="@string/about"
             android:parentActivityName="fr.utc.assos.uvweb.ui.activity.MainActivity">
             <meta-data
