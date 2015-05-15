@@ -83,7 +83,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         Context context = holder.itemView.getContext();
         holder.rateView.setText(context.getString(R.string.average_rate, averageRate));
 
-        if (polls.size() < 0) {
+        if (polls.size() == 0) {
             holder.successRateTitleView.setVisibility(View.GONE);
         }
 
