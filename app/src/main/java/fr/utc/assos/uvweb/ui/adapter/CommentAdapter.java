@@ -102,7 +102,19 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             }
             Poll poll = polls.get(i);
             TextView pollView = (TextView) holder.pollListView.getChildAt(i);
-            pollView.setText(context.getString(R.string.poll_success_rate, poll.getSuccessRate()));
+            pollView.setText(context.getString(R.string.poll_success_rate, getSeasonForPoll(poll), getYearForPoll(poll), poll.getSuccessRate()));
+        }
+    }
+
+    private String getSeasonForPoll(Poll poll) {
+        return String.valueOf(poll.getSeason().toUpperCase().charAt(0));
+    }
+
+    private int getYearForPoll(Poll poll) {
+        if (poll.getYear() >= 2000) {
+            return poll.getYear() - 2000;
+        } else {
+            return poll.getYear() - 1900;
         }
     }
 
