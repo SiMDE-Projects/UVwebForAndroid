@@ -1,7 +1,9 @@
 package fr.utc.assos.uvweb.ui.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,19 +24,54 @@ public class MainActivity extends ToolbarActivity {
     private static final int FRAGMENT_POSITION_NEWSFEED = 0;
     private static final int FRAGMENT_POSITION_UVLIST = 1;
 
+    private static final String PREF_LAST_TAB = "pref_last_tab";
+    private static final int PREF_LAST_TAB_DEFAULT = 0;
+
+    private SharedPreferences preferences;
+    private ViewPager pager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        pager = (ViewPager) findViewById(R.id.pager);
         SlidingTabLayout slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
 
         PagerAdapter adapter = new HomeFragmentPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(adapter);
+        slidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // no-op
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                saveLastTabIndex(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // no-op
+            }
+        });
+
+        loadLastTabIndex();
 
         slidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.white));
         slidingTabLayout.setDividerColors(getResources().getColor(android.R.color.transparent));
         slidingTabLayout.setCustomTabViewTextColor(getResources().getColor(R.color.white));
         slidingTabLayout.setViewPager(pager);
+    }
+
+    private void loadLastTabIndex() {
+        pager.setCurrentItem(preferences.getInt(PREF_LAST_TAB, PREF_LAST_TAB_DEFAULT));
+    }
+
+    private void saveLastTabIndex(int position) {
+        preferences.edit().putInt(PREF_LAST_TAB, position).apply();
     }
 
     @Override
