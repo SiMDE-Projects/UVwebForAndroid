@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-
-<resources>
-    <color name="pressed_uvweb">#cc33b5e5</color>
-    <color name="grey_background">#ff4c4c4c</color>
-    <color name="background_holo_light">#ffeeeeee</color>
-    <color name="main_color">#ff73bbab</color>
-</resources>
