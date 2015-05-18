@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">UVweb</string>
+    <string name="loading_error">Erreur de chargement</string>
+    <string name="newsfeed_author">%1$s a attribué la note de %2$d/10</string>
+    <string name="title_newsfeed">Activité</string>
+    <string name="title_uv_list">Liste des UVs</string>
+    <string name="action_search_uv">Rechercher une UV</string>
+    <string name="global_rate">%1$d/10</string>
+    <string name="view">Voir en détail</string>
+    <string name="about">À propos</string>
+    <string name="average_rate_label">Note moyenne</string>
+    <string name="average_rate">%1$.2f/10</string>
+    <string name="success_rate">Taux de réussite</string>
+    <string name="poll_success_rate">%1$s%2$02d : %3$.1f%%</string>
+    <string name="about_credits">Maxime Uzan\nThomas Keunebroek\nAlexandre Masciulli</string>
+    <string name="licenses">Licences open source</string>
+    <string name="author_passed">%1$s (obtenue en %2$s)</string>
+    <string name="author_failed">%1$s (ratée en %2$s)</string>
+</resources>
