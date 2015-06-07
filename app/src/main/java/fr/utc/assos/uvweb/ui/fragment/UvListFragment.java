@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,13 +23,13 @@ import java.util.List;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.UvListItem;
-import fr.utc.assos.uvweb.ui.adapter.UvListAdapter;
 import fr.utc.assos.uvweb.ui.activity.UvActivity;
+import fr.utc.assos.uvweb.ui.adapter.UvListAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UvListFragment extends Fragment implements Callback<List<UvListItem>>,UvListAdapter.ItemClickListener, SearchView.OnQueryTextListener {
+public class UvListFragment extends Fragment implements Callback<List<UvListItem>>, UvListAdapter.ItemClickListener, SearchView.OnQueryTextListener {
     private static final String TAG = UvListFragment.class.getSimpleName();
     private static final String STATE_UVS = "uvs";
     private static final int LOADING_STATE_IN_PROGRESS = 0;
@@ -113,7 +113,10 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     @Override
     public void failure(RetrofitError error) {
         Log.e(TAG, "Failed loading UV list", error);
-        Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+        Snackbar.make(getView(), getString(R.string.loading_error), Snackbar.LENGTH_SHORT).show();
+        if (getActivity() != null) {
+            setLoadingState(LOADING_STATE_COMPLETE);
+        }
     }
 
     @Override

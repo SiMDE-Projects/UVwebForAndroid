@@ -2,7 +2,7 @@ package fr.utc.assos.uvweb.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,16 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
+import fr.utc.assos.uvweb.model.Comment;
 import fr.utc.assos.uvweb.model.Poll;
 import fr.utc.assos.uvweb.model.UvDetail;
-import fr.utc.assos.uvweb.model.Comment;
 import fr.utc.assos.uvweb.model.UvListItem;
 import fr.utc.assos.uvweb.ui.activity.CommentActivity;
 import fr.utc.assos.uvweb.ui.adapter.CommentAdapter;
@@ -28,7 +27,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAdapter.ItemClickListener {
+public class UvFragment extends Fragment implements Callback<UvDetail>, CommentAdapter.ItemClickListener {
 
     private static final String TAG = UvFragment.class.getSimpleName();
 
@@ -66,7 +65,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_uv, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_uv, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar);
@@ -131,7 +130,10 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     @Override
     public void failure(RetrofitError error) {
         Log.e(TAG, error.getMessage(), error);
-        Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+        Snackbar.make(getView(), getString(R.string.loading_error), Snackbar.LENGTH_SHORT).show();
+        if (getActivity() != null) {
+            setLoadingState(LOADING_STATE_COMPLETE);
+        }
     }
 
     @Override
