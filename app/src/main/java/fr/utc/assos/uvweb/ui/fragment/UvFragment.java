@@ -132,6 +132,9 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     public void failure(RetrofitError error) {
         Log.e(TAG, error.getMessage(), error);
         Snackbar.make(getView(), getString(R.string.loading_error), Snackbar.LENGTH_SHORT).show();
+        if (getActivity() != null) {
+            setLoadingState(LOADING_STATE_COMPLETE);
+        }
     }
 
     @Override

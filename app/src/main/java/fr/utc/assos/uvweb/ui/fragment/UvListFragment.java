@@ -114,6 +114,9 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     public void failure(RetrofitError error) {
         Log.e(TAG, "Failed loading UV list", error);
         Snackbar.make(getView(), getString(R.string.loading_error), Snackbar.LENGTH_SHORT).show();
+        if (getActivity() != null) {
+            setLoadingState(LOADING_STATE_COMPLETE);
+        }
     }
 
     @Override

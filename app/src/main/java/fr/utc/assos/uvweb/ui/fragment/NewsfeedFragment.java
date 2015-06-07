@@ -102,6 +102,9 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
     public void failure(RetrofitError error) {
         Log.e(TAG, "Failed loading newsfeed", error);
         Snackbar.make(getView(), getString(R.string.loading_error), Snackbar.LENGTH_SHORT).show();
+        if (getActivity() != null) {
+            setLoadingState(LOADING_STATE_COMPLETE);
+        }
     }
 
     @Override
