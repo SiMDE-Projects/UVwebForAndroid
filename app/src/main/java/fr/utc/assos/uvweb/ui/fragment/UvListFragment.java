@@ -23,13 +23,13 @@ import java.util.List;
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
 import fr.utc.assos.uvweb.model.UvListItem;
-import fr.utc.assos.uvweb.ui.adapter.UvListAdapter;
 import fr.utc.assos.uvweb.ui.activity.UvActivity;
+import fr.utc.assos.uvweb.ui.adapter.UvListAdapter;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UvListFragment extends Fragment implements Callback<List<UvListItem>>,UvListAdapter.ItemClickListener, SearchView.OnQueryTextListener {
+public class UvListFragment extends Fragment implements Callback<List<UvListItem>>, UvListAdapter.ItemClickListener, SearchView.OnQueryTextListener {
     private static final String TAG = UvListFragment.class.getSimpleName();
     private static final String STATE_UVS = "uvs";
     private static final int LOADING_STATE_IN_PROGRESS = 0;

@@ -2,7 +2,6 @@ package fr.utc.assos.uvweb.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +17,9 @@ import java.util.List;
 
 import fr.utc.assos.uvweb.R;
 import fr.utc.assos.uvweb.api.UvwebProvider;
+import fr.utc.assos.uvweb.model.Comment;
 import fr.utc.assos.uvweb.model.Poll;
 import fr.utc.assos.uvweb.model.UvDetail;
-import fr.utc.assos.uvweb.model.Comment;
 import fr.utc.assos.uvweb.model.UvListItem;
 import fr.utc.assos.uvweb.ui.activity.CommentActivity;
 import fr.utc.assos.uvweb.ui.adapter.CommentAdapter;
@@ -28,7 +27,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAdapter.ItemClickListener {
+public class UvFragment extends Fragment implements Callback<UvDetail>, CommentAdapter.ItemClickListener {
 
     private static final String TAG = UvFragment.class.getSimpleName();
 
@@ -66,7 +65,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_uv, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_uv, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar);
