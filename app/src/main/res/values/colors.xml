@@ -4,6 +4,7 @@
     <color name="teal_dark">#FF009688</color>
     <color name="black">#FF212121</color>
     <color name="white">#FFFAFAFA</color>
+    <color name="white_transparent">#7FFAFAFA</color>
     <color name="gray_dark">#FF9E9E9E</color>
     <color name="gray_darker">#FF616161</color>
 </resources>
