@@ -13,7 +13,7 @@ public class AboutActivity extends ToolbarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView versionView = (TextView) findViewById(R.id.version);
         String versionName = BuildConfig.VERSION_NAME;
