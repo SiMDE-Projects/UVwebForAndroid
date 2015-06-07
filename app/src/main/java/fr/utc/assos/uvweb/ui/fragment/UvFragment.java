@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,7 +131,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>,CommentAd
     @Override
     public void failure(RetrofitError error) {
         Log.e(TAG, error.getMessage(), error);
-        Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+        Snackbar.make(getView(), getString(R.string.loading_error), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

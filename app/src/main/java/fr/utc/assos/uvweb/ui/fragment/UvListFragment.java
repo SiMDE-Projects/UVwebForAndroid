@@ -3,6 +3,7 @@ package fr.utc.assos.uvweb.ui.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,7 +113,7 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     @Override
     public void failure(RetrofitError error) {
         Log.e(TAG, "Failed loading UV list", error);
-        Toast.makeText(getActivity(), getString(R.string.loading_error), Toast.LENGTH_SHORT).show();
+        Snackbar.make(getView(), getString(R.string.loading_error), Snackbar.LENGTH_SHORT).show();
     }
 
     @Override
