@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +75,7 @@ public class UvFragment extends Fragment implements Callback<UvDetail>, CommentA
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar);
         Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        TextView titleView = (TextView) rootView.findViewById(R.id.title);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CommentAdapter(this);
@@ -83,6 +85,8 @@ public class UvFragment extends Fragment implements Callback<UvDetail>, CommentA
         activity.setSupportActionBar(toolbar);
         activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         activity.setTitle(uv.getName());
+
+        titleView.setText(uv.getTitle());
 
         return rootView;
     }
