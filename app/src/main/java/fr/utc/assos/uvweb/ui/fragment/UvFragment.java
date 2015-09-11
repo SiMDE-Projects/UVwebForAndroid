@@ -4,10 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -69,10 +73,16 @@ public class UvFragment extends Fragment implements Callback<UvDetail>, CommentA
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler);
         progressBar = (ProgressBar) rootView.findViewById(R.id.progressbar);
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new CommentAdapter(this);
         recyclerView.setAdapter(adapter);
+
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.setTitle(uv.getName());
 
         return rootView;
     }
