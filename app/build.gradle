@@ -8,8 +8,8 @@ android {
         applicationId "fr.utc.assos.uvweb"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 9
-        versionName "2.0.2"
+        versionCode 10
+        versionName "2.0.3"
     }
 
     signingConfigs {
