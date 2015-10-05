@@ -67,13 +67,12 @@ public class NewsfeedFragment extends Fragment implements Callback<Newsfeed>, Ne
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        if (savedInstanceState == null) {
+        if (savedInstanceState != null &&
+                (comments = savedInstanceState.getParcelableArrayList(STATE_NEWSFEED_ITEMS)) != null) {
+            updateViews();
+        } else {
             setLoadingState(LOADING_STATE_IN_PROGRESS);
             UvwebProvider.getNewsfeed(this);
-        } else {
-            comments = savedInstanceState.getParcelableArrayList(STATE_NEWSFEED_ITEMS);
-            updateViews();
         }
     }
 
