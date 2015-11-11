@@ -92,15 +92,18 @@ public class UvFragment extends Fragment implements Callback<UvDetail>, CommentA
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null &&
-                (comments = savedInstanceState.getParcelableArrayList(STATE_COMMENTS)) != null) {
-            polls = savedInstanceState.getParcelableArrayList(STATE_POLLS);
-            averageRate = savedInstanceState.getFloat(STATE_AVERAGE_RATE);
-            updateViews();
-        } else {
-            setLoadingState(LOADING_STATE_IN_PROGRESS);
-            UvwebProvider.getUvDetail(uv.getName(), this);
+        if (savedInstanceState != null) {
+            comments = savedInstanceState.getParcelableArrayList(STATE_COMMENTS);
+            if (comments != null) {
+                polls = savedInstanceState.getParcelableArrayList(STATE_POLLS);
+                averageRate = savedInstanceState.getFloat(STATE_AVERAGE_RATE);
+                updateViews();
+                return;
+            }
         }
+
+        setLoadingState(LOADING_STATE_IN_PROGRESS);
+        UvwebProvider.getUvDetail(uv.getName(), this);
     }
 
     private void updateViews() {
