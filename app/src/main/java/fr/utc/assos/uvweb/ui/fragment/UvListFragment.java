@@ -70,12 +70,15 @@ public class UvListFragment extends Fragment implements Callback<List<UvListItem
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null && (uvs = savedInstanceState.getParcelableArrayList(STATE_UVS)) != null) {
-            updateViews();
-        } else {
-            setLoadingState(LOADING_STATE_IN_PROGRESS);
-            UvwebProvider.getUvs(this);
+        if (savedInstanceState != null) {
+            uvs = savedInstanceState.getParcelableArrayList(STATE_UVS);
+            if (uvs != null) {
+                updateViews();
+                return;
+            }
         }
+        setLoadingState(LOADING_STATE_IN_PROGRESS);
+        UvwebProvider.getUvs(this);
     }
 
     private void setLoadingState(int loadingState) {
