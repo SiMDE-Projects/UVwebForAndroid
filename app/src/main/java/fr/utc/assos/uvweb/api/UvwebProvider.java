@@ -9,9 +9,9 @@ import fr.utc.assos.uvweb.model.UvListItem;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 
-public class UvwebProvider {
+public final class UvwebProvider {
     private UvwebProvider() {
-        // Class should be instanciated
+        // Class should not be instantiated
     }
 
     private static RestAdapter restAdapter = new RestAdapter.Builder()
