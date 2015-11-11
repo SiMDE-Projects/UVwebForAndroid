@@ -10,6 +10,10 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 
 public class UvwebProvider {
+    private UvwebProvider() {
+        // Class should be instanciated
+    }
+
     private static RestAdapter restAdapter = new RestAdapter.Builder()
             .setEndpoint("https://assos.utc.fr/uvweb")
             .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
