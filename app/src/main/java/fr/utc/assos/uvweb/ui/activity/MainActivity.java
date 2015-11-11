@@ -90,8 +90,9 @@ public class MainActivity extends ToolbarActivity {
             case R.id.action_licenses:
                 startActivity(new Intent(this, LicensesActivity.class));
                 return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     private class HomeFragmentPagerAdapter extends FragmentStatePagerAdapter {
@@ -107,7 +108,7 @@ public class MainActivity extends ToolbarActivity {
                 case FRAGMENT_POSITION_UVLIST:
                     return new UvListFragment();
                 default:
-                    throw new IllegalArgumentException();
+                    throw new IndexOutOfBoundsException();
             }
         }
 
@@ -124,8 +125,9 @@ public class MainActivity extends ToolbarActivity {
                     return getString(R.string.title_newsfeed).toUpperCase(locale);
                 case FRAGMENT_POSITION_UVLIST:
                     return getString(R.string.title_uv_list).toUpperCase(locale);
+                default:
+                    throw new IndexOutOfBoundsException();
             }
-            return null;
         }
     }
 }
