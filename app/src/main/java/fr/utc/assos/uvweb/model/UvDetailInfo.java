@@ -1,8 +1,8 @@
 package fr.utc.assos.uvweb.model;
 
 public class UvDetailInfo {
-    String name;
-    String title;
+    private String name;
+    private String title;
 
     public String getName() {
         return name;
