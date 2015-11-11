@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class UvDetail {
     @SerializedName("details")
-    private UVDetailContainer detail;
+    private UvDetailContainer detail;
 
-    public UVDetailContainer getDetail() {
+    public UvDetailContainer getDetail() {
         return detail;
     }
 }

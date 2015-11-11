@@ -2,7 +2,7 @@ package fr.utc.assos.uvweb.model;
 
 import java.util.List;
 
-public class UVDetailContainer {
+public class UvDetailContainer {
     private UvDetailInfo uv;
     private List<Comment> comments;
     private List<Poll> polls;
