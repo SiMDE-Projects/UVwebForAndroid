@@ -12,20 +12,10 @@ android {
         versionName "2.0.4"
     }
 
-    signingConfigs {
-        release {
-            storeFile file("key.jks")
-            storePassword "xxx"
-            keyAlias "keyalias"
-            keyPassword "xxx"
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
         }
     }
 }
